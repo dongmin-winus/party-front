@@ -163,8 +163,10 @@ export default {
           }
           this.evaluatePop = true;
       },
-      closeEvaluteModal() {
+      async closeEvaluteModal() {
           this.evaluatePop = false;
+          await this.$store.dispatch('FETCH_CONTACT_REVIEW', this.district_id);
+          this.contactReviews = {...this.$store.state.contactReviews}; 
       },
 
       async init(){

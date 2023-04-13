@@ -123,5 +123,9 @@ export default {
 
       return arr;
     },
+
+    maxVal(arr, key) {
+      return Math.max.apply(null, arr.map(item => item[key]));
+    },
   },
 }
