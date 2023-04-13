@@ -176,7 +176,6 @@ import InputThumbnail from "../../components/form/posts/inputThumbnail";
 import InputAddress from "../../components/form/inputAddress";
 import Form from "@/utils/Form";
 import {debounce} from "@/utils/debounce";
-import { fetchChatgpt } from '../../api/index'
 export default {
     components: {InputAddress, InputThumbnail, InputImg, InputLink, InputCamera},
     auth: true,
@@ -210,12 +209,6 @@ export default {
                 price: "",
                 address: "",
                 address_detail: "",
-            },
-            comment: {
-                commentable_type: "post",
-                commentable_id: null,
-                content: "",
-                user: 1,
             },
             parasole:false,
             errors: {},
@@ -285,27 +278,9 @@ export default {
             // store
             this.$axios.post("/api/posts", form)
                 .then((response) => {
-                    console.log(this.form.title, 'form')
                     alert("성공적으로 처리되었습니다.");
 
-                    this.comment.content = this.form.title; // 제목 저장
-                    this.comment.commentable_id = response.data.data.toString(); //id 값 저장
-                    
-
-                    //챗봇 데이터 확인
-                    fetchChatgpt(this.form.title).then((res) => {
-                          console.log(res.data.choices[0].message.content, '챗봇 데이터')
-                          this.comment.content = res.data.choices[0].message.content;
-                          console.log(this.comment);
-
-                          this.$axios.post("/api/comments", this.comment)
-                            .then(response => {
-                              console.log(response.data.data, '댓글 저장')});
-                            }).catch((err) => {
-                          console.log(err)
-                        });
-
-                        this.$router.back();
+                    this.$router.back();
                 })
                 .catch((error) => {
                     if (error.response && error.response.data)

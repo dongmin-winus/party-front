@@ -1,6 +1,6 @@
 // import {getDistrict, setDistrict} from '../utils/LocalStorage';
 
-import { fetchStores, fetchNearCoords } from '../api/index'
+import { fetchStores, fetchNearCoords, fetchContactsReview } from '../api/index'
 
 export const state = () => ({
     district: {
@@ -16,6 +16,17 @@ export const state = () => ({
     },
     postMeta: {},
     postCurrentY: '',
+
+    //for contacts/review
+    contactItem: {},
+    contactReviews: null,
+    options: [
+        { value: 5, color: 'red', label: '최고', image: '/images/contacts/f_5.png' },
+        { value: 4, color: '#ffd627', label: '좋음', image: '/images/contacts/f_4.png' },
+        { value: 3, color: '#00ba00', label: '보통', image: '/images/contacts/f_3.png' },
+        { value: 2, color: '#296fe5', label: '별로', image: '/images/contacts/f_2.png' },
+        { value: 1, color: '#837f7f', label: '최악', image: '/images/contacts/f_1.png' },
+    ],
 
     //for mapView
     coords: [],
@@ -38,6 +49,16 @@ export const getters = {
     },
     getPostCurrentY(state) {
         return state.postCurrentY;
+    },
+
+    getContactItem(state) {
+        return state.contactItem;
+    },
+    getOptions(state) {
+        return state.options;
+    },
+    getContactReviews(state) {
+        return state.contactReviews;
     }
 }
 
@@ -59,6 +80,17 @@ export const actions = {
         commit('INIT_POST_STATE')
     },
 
+    //for contacts/review
+    async FETCH_CONTACT_ITEM({ commit }, item) {
+        // const { data } = await fetchContactItem(payload);
+        commit('SET_CONTACT_ITEM', item);
+    },
+    async FETCH_CONTACT_REVIEW({ commit }, payload) {
+        const { data } = await fetchContactsReview(payload);
+        commit('SET_CONTACT_REVIEW', data);
+    },
+
+    //for mapView
     async fetchCurrentStores({ commit }, payload) {
         const { data } = await fetchStores(payload);
         commit('setCurrentStores', data);
@@ -98,6 +130,16 @@ export const mutations = {
         state.postCurrentY = 0;
     },
 
+
+    //for contacts/review
+    SET_CONTACT_ITEM(state, item) {
+        state.contactItem = item;
+    },
+    SET_CONTACT_REVIEW(state, data) {
+        state.contactReviews = data;
+    },
+
+    //for mapView
     setCurrentStores(state, stores) {
         state.currentStoreList = stores;
     },

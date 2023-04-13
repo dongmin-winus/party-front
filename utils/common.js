@@ -47,6 +47,81 @@ export default {
     },
     validatePhone(phoneNumber) {
       return /^010\d{8}$/.test(phoneNumber)
-    }
+    },
+
+    replaceContent(content) {
+      let replaced = content.replace(/<\/?[^>]+>/ig, " ").replace(/&\s?nbsp;/ig, " ").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+      return replaced;
+    },
+
+    replaceWriter(target, maskLength, mask = '...') {
+      return target.substring(0, maskLength) + mask;
+    },
+
+    aggregate(arr, prop) {
+      return arr.reduce((acc, curr) => {
+        const key = curr[prop];
+        if (!acc[key]) {
+          acc[key] = [curr];
+        } else {
+          acc[key].push(curr);
+        }
+        return acc;
+      }, {});
+    },
+    countBy(arr, prop, legend = []) {
+      const acc = arr.reduce((acc, curr) => {
+        const key = curr[prop];
+        if (!acc[key]) {
+          acc[key] = 1;
+        } else if (acc[key]) {
+          acc[key]++;
+        } else {
+          acc[key] = 0;
+        }
+        return acc;
+      }, {});
+      //acc와 legend를 비교해서 legend에만 있는 key를 acc에 key:0으로 추가
+      if (legend.length > 0) {
+        legend.forEach((value) => {
+          if (!acc[value]) {
+            acc[value] = 0;
+          }
+        });
+      }
+      return acc;
+    },
+
+    convertObjByValueAsc(obj) {
+      const arr = Object.entries(obj) // 객체를 [key, value] 배열의 배열로 변환
+        .sort((a, b) => a[1] - b[1]) // value 값을 기준으로 내림차순 정렬
+        .map(([key, value]) => ({ key: Number(key), value })); // 배열 요소를 { key, value } 형태의 객체로 변환
+
+      return arr;
+    },
+
+    convertObjByValueDesc(obj) {
+      const arr = Object.entries(obj) // 객체를 [key, value] 배열의 배열로 변환
+        .sort((a, b) => b[1] - a[1]) // value 값을 기준으로 내림차순 정렬
+        .map(([key, value]) => ({ key: Number(key), value })); // 배열 요소를 { key, value } 형태의 객체로 변환
+
+      return arr;
+    },
+
+    convertObjByKeyAsc(obj) {
+      const arr = Object.entries(obj) // 객체를 [key, value] 배열의 배열로 변환
+        .sort(([aKey], [bKey]) => aKey - bKey) // key 값을 기준으로 오름차순 정렬
+        .map(([key, value]) => ({ key: Number(key), value })); // 배열 요소를 { key, value } 형태의 객체로 변환
+
+      return arr;
+    },
+
+    convertObjByKeyDesc(obj) {
+      const arr = Object.entries(obj) // 객체를 [key, value] 배열의 배열로 변환
+        .sort(([aKey], [bKey]) => bKey - aKey) // key 값을 기준으로 내림차순 정렬
+        .map(([key, value]) => ({ key: Number(key), value })); // 배열 요소를 { key, value } 형태의 객체로 변환
+
+      return arr;
+    },
   },
 }
