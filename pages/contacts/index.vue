@@ -335,7 +335,7 @@ export default {
           if(!this.contactReviews) return [];
           let goodList = this.contactReviews.data.filter(item => item.grade > 2);
           goodList.push({
-            id: this.contactReviews.data.length + 1,
+            id: this.maxVal(this.contactReviews.data, 'id') + 1,
             created_at: '',
             user: {
                 nickname: ''
@@ -349,7 +349,7 @@ export default {
           if(!this.contactReviews.data) return [];
           let badList = this.contactReviews.data.filter(item => item.grade < 3);
           badList.push({
-            id: this.contactReviews.data.length + 2,
+            id: this.maxVal(this.contactReviews.data, 'id') + 2,
             created_at: '',
             user: {
                 nickname: ''
@@ -457,6 +457,7 @@ export default {
             }
         },
 
+
         getColor(evaluate) {
             console.log(evaluate, this.options)
             return this.options.find(item => item.value === evaluate).color;
@@ -474,8 +475,10 @@ export default {
           }
             this.evaluatePop = true;
         },
-        closeEvaluteModal() {
+        async closeEvaluteModal() {
             this.evaluatePop = false;
+            await this.$store.dispatch('FETCH_CONTACT_REVIEW', this.district_id);
+            this.contactReviews = {...this.$store.state.contactReviews}; 
         },
     },
     /*watch: {
