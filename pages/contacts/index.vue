@@ -1,5 +1,5 @@
 <template>
-    <div class="area-region-activity">
+    <div class="area-region-activity ">
         <!-- 헤더영역 -->
         <header-type01 />
 
@@ -121,86 +121,121 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="fragment fragment-board" v-if="contactReviews">
+                                <div class="title-container">
+                                    <div class="left">의원 평가</div>
+                                    <div class="right">
+                                        <img src="/images/arrowRight-gray.png" alt="" style="width:14px;" @click="$router.push('/contacts/evaluateList')">
+                                    </div>
+                                </div>
+                                <!-- <div class="title-contaiiner">
+                                    <span class="title">의원 평가</span>
+                                    <div class="evaluate-count">총 {{evaluateCount}}개의 평가</div>
+                                </div> -->
 
+                                <div class="evaluation-container">
+                                    <div class="average-container">
+                                        <div class="average">
+                                            <div class="average-title">평균 만족도</div>
+                                        </div>
+                                        <div class="mt-12"></div>
+                                        <div class="average">
+                                            <!-- smile & evaluate percentage -->
+                                            <div class="smile">
+                                                <img :src="makeAvgImg" >
+                                                <div class="smile-label">{{evaluateAvg}}% ({{totalCount}}명)</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="graph-container">
+                                        <!-- one-to-five histogram & smiles here -->
+                                        <div class="wrapper"
+                                            v-for="(option,index) in options" :key="item.value"
+                                        >
+                                            <div class="evaluate-magnitude">{{aggregateReviews[index].value}}</div>
+                                            <div class="mt-12"></div>
+                                            <div class="barcontainer">
+                                                <div class="bar" :style="`height:${barProgress(index)}%`"></div>
+                                                
+                                            </div>
+                                            <div class="smile">
+                                                <img :src="option.image" :alt="option.label">
+                                                <div class="smile-label"><span :style="`color:${option.color}`">{{option.label}}</span></div>
+                                            </div>
+                                        </div>
+         
+                                    </div>
+
+                                </div>
+                            </div>
                             <div class="mt-40"></div>
                         </div>
                     </section>
 
-                    <img src="/images/about-bg.png" alt="" class="deco-about">
                 </div>
             </section>
 
-                        <quicks 
+            <section class="section-evaluation" v-if="contactReviews">
+              <div class="wrap">
+                <div class="m-input-checkboxes type01">
+                    <div class="m-input-checkbox">
+                        <input type="radio" id="1" value="good" v-model="toggleList">
+                        <label for="1">긍정적 의견</label>
+                    </div>
+                    <div class="m-input-checkbox">
+                        <input type="radio" id="2" value="bad" v-model="toggleList">
+                        <label for="2">부정적 의견</label>
+                    </div>
+                </div>
+              </div>
+              <div class="mt-20"></div>
+              <swiper v-show="toggleList == 'good'" :options="swiperOptions">
+                <swiper-slide v-for="(slide,index) in goodList" :key="slide.id">
+                  <div class="content">
+                    <div><img src="/images/double-quote.png" style="width:27px; height:24px;" alt=""></div>
+                    <div class="mt-8"></div>
+                    <p>{{slide.comment}}</p>
+                    <div class="mt-8"></div>
+                    <div class="writer">
+                      {{replaceWriter(slide.user.nickname,2,"**")}}님의 의견
+                    </div>
+                  </div>
+                </swiper-slide>
+              </swiper>
+              <swiper v-show="toggleList == 'bad'" :options="swiperOptions">
+                <swiper-slide v-for="(slide,index) in badList" :key="slide.id">
+                  <div class="content">
+                    <div><img src="/images/double-quote.png" style="width:27px; height:24px;" alt=""></div>
+                    <div class="mt-8"></div>
+                    <p>{{slide.comment}}</p>
+                    <div class="mt-8"></div>
+                    <div class="writer">
+                      {{replaceWriter(slide.user.nickname,2,"**")}}님의 의견
+                    </div>
+                  </div>
+                </swiper-slide>
+              </swiper>
+              <div class="mt-20">
+                <!-- 의원평가하기 버튼 -->
+                <button class="m-btn type02 bg-revert-primary width-100 " @click="openEvaluateModal">의원 평가하기</button>
+              </div>
+            </section>
+            <img src="/images/about-bg.png" alt="" class="deco-about">
+            <!-- <quicks 
                 :createUrl="'/posts/create'"
                 :btnName="'글쓰기'"
-            />
+            /> -->
         </div>
 
         <!-- 하단 네비게이션바 -->
         <navigation />
-        <modal
+        <!-- 평가 모달 -->
+        <evaluate-modal
             v-if="evaluatePop"
-            @cancel="closeEvaluteModal"
-        >
-            <div class="m-pop-title" style="margin-top:-40px">
-                의원 평가하기
-            </div>
-            <div class="pop-container">
-            <section class="head-wrapper">
-                <div class="img-container">
-                    <div class="crop-image" :style="`background-image:url('${item.img.url}')`"></div>
-                    <div class="mt-8"></div>
-                    <div class="m-pop-title bold">
-                        {{item.korean_name}} 의원
-                    </div>
-                </div>
-            </section>
-            <section class="body-wrapper">
-                <div class="m-pop-title left">
-                    <span class="point">Q1</span>
-                    <span class="question">{{item.korean_name}} 의원의 활동에 만족하시나요?</span>
-                     
-                </div>
-                <div class="mt-8"></div>
-                <div class="smile-container">
-                    <div class="smile" :class="{'active':selectedOption === option.value}"
-                        v-for="(option,index) in options" :key="option.value"
-                    >
-                        <label>
-                            <input type="radio" :value="option.value" v-model="selectedOption">
-                            <img :src="option.image" :alt="option.label">
-                        </label>
-                        <div class="m-pop-title">
-                            {{option.label}}
-                        </div>
-                    </div>
-                </div>
-                <!-- <div class="m-pop-title">
-                    <star-rating
-                        :star-size="20"
-                        :show-rating="false"
-                        :read-only="false"
-                        :increment="0.5"
-                        :rating="temp.evaluate"
-                        @rating-selected="onRatingSelected"
-                    />
-                </div> -->
-                <div class="mt-8"></div>
-                <div class="m-pop-title left">
-                    <span class="point">Q2</span>
-                     <span class="question">의원에 대한 의견을 남겨주세요.</span>
-                </div>
-                <div class="m-input-textarea type01 lightgrey">
-                    <textarea name="" id="" placeholder="의원 평가를 입력해주세요" cols="30" rows="10"></textarea>
-                </div>
-            </section>
-            <div class="mt-8"></div>
-
-            </div>
-            <div class="m-pop-title sticky">
-                <button class="m-btn type02 width-100" @click="">의원 평가 제출하기</button>
-            </div>
-        </modal>
+            @close="closeEvaluteModal"
+            :item="item"
+            :options="options"
+        />
     </div>
 
 </template>
@@ -211,30 +246,76 @@ import InputLink from "../../components/form/posts/inputLink";
 import InputImg from "../../components/form/posts/inputImg";
 import InputThumbnail from "../../components/form/posts/inputThumbnail";
 import InputAddress from "../../components/form/inputAddress";
-import Form from "@/utils/Form";
-
+import EvaluateModal from "../../components/contacts/EvaluateModal.vue"
+import common from "../../utils/common";
 export default {
-    components: {InputAddress, InputThumbnail, InputImg, InputLink, InputCamera},
+    components: {InputAddress, InputThumbnail, InputImg, InputLink, InputCamera, EvaluateModal},
     auth: false,
+    mixins: [common],
     data() {
-        return {
-            item: null,
-            temp: null,
-            proposals:[],
-            speeches:[],
-            errors: {},
-            evaluatePop: false,
-            selectedOption: undefined,
-            options: [
-                { value: 5, label: '최고', image: '/images/contacts/f_5.png' },
-                { value: 4, label: '좋음', image: '/images/contacts/f_4.png' },
-                { value: 3, label: '보통', image: '/images/contacts/f_3.png' },
-                { value: 2, label: '별로', image: '/images/contacts/f_2.png' },
-                { value: 1, label: '최악', image: '/images/contacts/f_1.png' },
-            ],
-        }
+      return {
+        item: null,
+        temp: null,
+        proposals:[],
+        speeches:[],
+        errors: {},
+        evaluatePop: false,
+        selectedOption: undefined,
+        toggleList: 'good',
+        swiperOptions: {
+          slidesPerView: 'auto',
+          centeredSlides: false,
+          spaceBetween: 20,
+        },
+        contactReviews: null,
+      }
     },
     computed: {
+        district_id() {
+            return this.$store.getters.getDistrict.id
+        },
+        contactItem: {
+            get() {
+                return this.$store.getters.getContactItem
+            },
+            set(value) {
+                this.$store.dispatch('FETCH_CONTACT_ITEM', value)
+            }
+        },
+        aggregateReviews() {
+            let reviews = this.contactReviews.data;
+            const countBy = this.countBy(reviews, 'grade', [1,2,3,4,5]);
+            const result = this.convertObjByKeyDesc(countBy);
+            return result;
+        },
+        options() {
+            return this.$store.getters.getOptions
+        },
+        totalCount() {
+            return this.aggregateReviews.reduce((acc, cur) => {
+                return acc + cur.value;
+            }, 0);
+        },
+        evaluateAvg() {
+            const totalCount = this.totalCount;
+            const sum = this.options.reduce((acc, cur, index) => {
+                return acc + cur.value * this.aggregateReviews[index].value;
+            }, 0);
+            return Math.floor((sum / (totalCount * 5)) * 100);
+        },
+        makeAvgImg(){
+            let img = '/images/contacts/f_1.png';
+            if(this.evaluateAvg >= 80) {
+                img = '/images/contacts/f_5.png';
+            }else if(this.evaluateAvg >= 60) {
+                img = '/images/contacts/f_4.png';
+            }else if(this.evaluateAvg >= 40) {
+                img = '/images/contacts/f_3.png';
+            }else if(this.evaluateAvg >= 20) {
+                img = '/images/contacts/f_2.png';
+            }
+            return img;
+        },
         computeDae() {
             let str = ['데이터가 없습니다'];
             if(this.item.DAE) {
@@ -243,13 +324,42 @@ export default {
                 if(partyName === '미래통합당') {
                     partyName = '국민의힘';
                 }
-                // console.log(partyName,5655555555)
                 return partyName;
             }else {
                 return str[0];
             }
             
         },
+
+        goodList() {
+          if(!this.contactReviews) return [];
+          let goodList = this.contactReviews.data.filter(item => item.grade > 2);
+          goodList.push({
+            id: this.contactReviews.data.length + 1,
+            created_at: '',
+            user: {
+                nickname: ''
+            },
+            grade:5,
+            content: ''
+          });
+          return goodList;
+        },
+        badList() {
+          if(!this.contactReviews.data) return [];
+          let badList = this.contactReviews.data.filter(item => item.grade < 3);
+          badList.push({
+            id: this.contactReviews.data.length + 2,
+            created_at: '',
+            user: {
+                nickname: ''
+            },
+            grade:1,
+            content: ''
+          });
+          return badList;
+        },
+
         district(){
             return this.$store.state.district;
         },
@@ -258,6 +368,7 @@ export default {
             if(this.item && this.item.congress_homepage)
                 return this.item.congress_homepage.includes("http") ? this.item.congress_homepage : "http://" + this.item.congress_homepage;
         }
+        
     },
     methods: {
         async init(){
@@ -293,7 +404,8 @@ export default {
                     this.item = {
                         ...this.temp,
                         ...data.nprlapfmaufmqytet[1].row[0],
-                    }
+                    },
+                    this.contactItem = this.item;
                 }
             } catch (error) {
                 console.error(error);
@@ -337,7 +449,6 @@ export default {
                     }
                 })
                 if(data) {
-                    // console.log({data},3344);
                     this.speeches =  data.npeslxqbanwkimebr[1].row;
 
                 }
@@ -345,7 +456,22 @@ export default {
                 console.error(error);
             }
         },
+
+        getColor(evaluate) {
+            console.log(evaluate, this.options)
+            return this.options.find(item => item.value === evaluate).color;
+        },
+        barProgress(index) {
+            const totalCount = this.totalCount;
+            let value = this.aggregateReviews[index].value;
+            return Math.floor((value / totalCount) * 100);
+        },
+
         openEvaluateModal() {
+          if(!this.$auth.user) {
+            this.$router.push('/auth/login');
+            return;
+          }
             this.evaluatePop = true;
         },
         closeEvaluteModal() {
@@ -358,8 +484,10 @@ export default {
         }
     },*/
 
-    mounted() {
-        this.init();
+    async mounted() {
+        await this.init();
+        await this.$store.dispatch('FETCH_CONTACT_REVIEW', this.district_id);
+        this.contactReviews = this.$store.state.contactReviews;
     },
 }
 </script>
@@ -374,6 +502,124 @@ export default {
     }
     .head-wrapper {
         background: #f8f8f8;
+    }
+    .title-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0px 20px 20px 0px;
+    }
+    .title-container .left {
+        font-size:24px;
+        font-weight: 500;
+    }
+    .evaluation-container {
+        padding-top:10px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        /* height:200px; */
+    }
+    .evaluation-container .average-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        width:30%;
+    }
+    .average-container .average .average-title {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 147px;
+        height: 35px;
+        border-radius: 5px;
+        font-size: 18px;
+        background-color: #f0f0f0;
+    }
+    
+    .average-container .average .smile {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .average-container .average .smile img {
+        width:65px;
+        height:65px;
+    }
+    .average-container .average .smile .smile-label {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size:18px;
+    }
+    .evaluation-container .graph-container {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        width:50%;
+        height: 100%;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .graph-container .wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .graph-container .wrapper .barcontainer{
+        background-color: #f5f5f5;
+        position: relative;
+        transform: translateY(-50%);
+        top: 50%;
+        width: 12px;
+        height: 73px;
+        border-radius: 5px;
+        /* float: left; */
+    }
+
+    .wrapper .evaluate-magnitude {
+        margin-bottom:30px;
+        font-size: 15px;
+    }
+
+    .wrapper .smile {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        margin-top: -30px;
+    }
+
+    .wrapper .smile img {
+        width: 20px;
+        height: 20px;
+    }
+
+    .bar{
+        background-color: #d2d2d2;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        border-radius: 5px;
+        /* height: 80%; */
+        box-sizing: border-box;
+        animation: grow 1.5s ease-out forwards;
+        transform-origin: bottom;
+    }
+
+    .wrapper:first-child .bar {
+        background-color: red;
+    }
+    @keyframes grow{
+        from{
+            transform: scaleY(0);
+        }
     }
     .img-container {
         width: 100%;
@@ -409,30 +655,47 @@ export default {
     .smile-container .smile.active {
         opacity: 1;
     }
-    .smile-container .smile img {
+    .smile img {
         width: 45px;
         height: 45px;
         
     }
+
+    .section-evaluation {
+        padding: 20px;
+        background-color:#F7F7F7;
+    }
     
-    .m-pop-title.bold {
-        font-weight: 700;
-    }
-    .m-pop-title.left {
-        text-align: left;
-    }
-    .m-pop-title.left .question {
-        font-size: 19px;
-        font-weight: 400;
+    .swiper-container {
+        width: 100%;
+        /* padding-left: 50px; */
     }
 
-    .m-input-textarea.type01 textarea {
-        border: 1px solid #e5e5e5;
-        background: #f8f8f8;
+    .swiper-slide {
+      width: 70%;
+      opacity: 0.4;
+      transition: opacity 0.3s;
     }
 
-    .m-pop-title.sticky {
-        position: sticky;
-        z-index: 1;
+    .swiper-slide-active {
+        opacity: 1;
+    }
+
+    .swiper-slide .content {
+      background-color: white;
+      border-radius: 10px;
+      border: 1px solid #eeeeee;
+      padding: 10px;
+      height: 270px;
+      overflow:hidden;
+
+    }
+    .swiper-slide .content .writer {
+        position: absolute;
+        right:0;
+        bottom: 0;
+        margin-bottom: 15px;
+        margin-right: 15px;
+        color:#bdbdbd;
     }
 </style>

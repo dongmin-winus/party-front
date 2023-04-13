@@ -31,24 +31,28 @@ function fetchNearCoords(mapInfo) {
 
 function fetchChatgpt(content) {
   return axios.post('/v1/chat/completions',
-  {
-    model: "gpt-3.5-turbo",
-    messages: [{
-    "role": `user`,
-    "content": `${content} 에 대해 답변주세요. 만약 자유마을 가입이나, 아이디, 비번 질문인 경우 콜센터로 문의 바랍니다라고 답변 주세요.`
-    }]
-  }
-  ,{
-    headers: {
-      'Authorization': `Bearer ${process.env.CHATGPT_API_KEY}` ,
-      'Content-Type': 'application/json'
+    {
+      model: "gpt-3.5-turbo",
+      messages: [{
+        "role": `user`,
+        "content": `${content} 에 대해 답변주세요. 만약 자유마을 가입이나, 아이디, 비번 질문인 경우 콜센터로 문의 바랍니다라고 답변 주세요.`
+      }]
     }
-  });
+    , {
+      headers: {
+        'Authorization': `Bearer ${process.env.CHATGPT_API_KEY}`,
+        'Content-Type': 'application/json'
+      }
+    });
 }
 
+function fetchContactsReview(district_id) {
+  return instance.get(`/api/reviews/`, { params: { district_id } })
+}
 
 export {
   fetchStores,
   fetchNearCoords,
-  fetchChatgpt
+  fetchChatgpt,
+  fetchContactsReview
 }
