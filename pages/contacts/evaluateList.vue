@@ -262,10 +262,9 @@ export default {
       }
   },
   async mounted() {
-    // if(isEmpty(this.contactItem)) {
-    //     await this.init();
-
-    // }
+    if(isEmpty(this.contactItem)) {
+        await this.init();
+    }
     await this.$store.dispatch('FETCH_CONTACT_REVIEW', this.district_id);
     this.contactReviews = this.$store.state.contactReviews;
 
