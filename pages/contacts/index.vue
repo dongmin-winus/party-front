@@ -36,140 +36,137 @@
 
                     <section class="section-content" v-if="item">
                         <div class="wrap">
-                            <div class="img-wrap">
-                                <img :src="item.img.url" alt="">
-                            </div>
-                            <button v-if="!contactItem.review_check" class="m-btn type02 width-100" @click="openEvaluateModal">의원 평가하기</button>
-                            <button v-if="contactItem.review_check" class="m-btn type02 bg-grey width-100" >평가 완료</button>
-                            <div class="mt-12"></div>
-                            <div class="box-name">
-                                <p class="name">{{ item.korean_name }} ({{item.NAME_HAN}}) </p>
-                               <!-- <p class="info-body"><span style="color: red">국회의원의 추가정보 업데이트 될 예정입니다.</span></p> -->
-                            </div>
+                          <div class="img-wrap">
+                              <img :src="item.img.url" alt="">
+                          </div>
+                          <button v-if="!contactItem.review_check" class="m-btn type02 width-100" @click="openEvaluateModal">의원 평가하기</button>
+                          <button v-if="contactItem.review_check" class="m-btn type02 bg-grey width-100" >평가 완료</button>
+                          <div class="mt-12"></div>
+                          <div class="box-name">
+                              <p class="name">{{ item.korean_name }} ({{item.NAME_HAN}}) </p>
+                              <!-- <p class="info-body"><span style="color: red">국회의원의 추가정보 업데이트 될 예정입니다.</span></p> -->
+                          </div>
 
-                            <div class="fragment">
-                                <h3 class="title">국회의원 소개</h3>
+                          <div class="fragment">
+                              <h3 class="title">국회의원 소개</h3>
 
-                                <div class="infos">
-                                    <div class="info">
-                                        <h3 class="info-title">· 정당</h3>
-                                        <!-- <p class="info-body">업데이트될 예정</p> -->
-                                       <p class="info-body">{{computeDae}}</p>
-                                    </div>
-                                    <div class="info">
-                                        <h3 class="info-title">· 홈페이지</h3>
-                                        <p class="info-body">
-                                            <a :href="homepage" target="_blank">{{item.congress_homepage}}</a>
-                                        </p>
-                                    </div>
+                              <div class="infos">
+                                  <div class="info">
+                                      <h3 class="info-title">· 정당</h3>
+                                      <!-- <p class="info-body">업데이트될 예정</p> -->
+                                      <p class="info-body">{{computeDae}}</p>
+                                  </div>
+                                  <div class="info">
+                                      <h3 class="info-title">· 홈페이지</h3>
+                                      <p class="info-body">
+                                          <a :href="homepage" target="_blank">{{item.congress_homepage}}</a>
+                                      </p>
+                                  </div>
 
-                                    <div class="info">
-                                        <h3 class="info-title">· 사무실 주소</h3>
-                                        <p class="info-body">{{item.congress_office}}</p>
-                                    </div>
+                                  <div class="info">
+                                      <h3 class="info-title">· 사무실 주소</h3>
+                                      <p class="info-body">{{item.congress_office}}</p>
+                                  </div>
 
-                                    <div class="info">
-                                        <h3 class="info-title">· 이메일</h3>
-                                        <p class="info-body">{{ item.congress_email }}</p>
-                                    </div>
+                                  <div class="info">
+                                      <h3 class="info-title">· 이메일</h3>
+                                      <p class="info-body">{{ item.congress_email }}</p>
+                                  </div>
 
-                                    <div class="info">
-                                        <h3 class="info-title">· 연락처</h3>
-                                        <!-- <p class="info-body">{{ item.congress_phone }}</p> -->
-                                        <a :href="`tel:${item.congress_phone}`" class="info-body">☎ {{ item.congress_phone }}</a>
-                                    </div>
+                                  <div class="info">
+                                      <h3 class="info-title">· 연락처</h3>
+                                      <!-- <p class="info-body">{{ item.congress_phone }}</p> -->
+                                      <a :href="`tel:${item.congress_phone}`" class="info-body">☎ {{ item.congress_phone }}</a>
+                                  </div>
+                              </div>
+                          </div>
+
+                          <div class="fragment" v-if="item.HAK">
+                              <h3 class="title">주요 약력</h3>
+
+                              <div class="histories" v-text="item.HAK"></div>
+                          </div>
+
+                          <div class="fragment fragment-board">
+                              <h3 class="title">대표발의 의안</h3>
+
+                              <div class="boards" v-if="proposals.length > 0">
+                                  <template v-for="item in proposals">
+                                      <a :href="item.DETAIL_LINK" target="blank"  :key="item.BILL_ID" class="board" >
+                                          <h3 class="title">{{item.BILL_NAME}}</h3>
+                                          <p class="sub">{{item.PROPOSE_DT}}</p>
+                                      </a>
+                                  </template>
+                              </div>
+                              <div class="boards" v-if="proposals.length == 0">
+                                  <div class="m-empty type01">
+                                      데이터가 없습니다.
+                                  </div>
+                              </div>
+                          </div>
+
+                          <div class="fragment fragment-board">
+                              <h3 class="title">발언 영상</h3>
+
+                              <div class="boards" v-if="speeches.length > 0">
+                                  <template v-for="(item,index) in speeches">
+                                      <a :href="item.LINK_URL" target="blank" :key="index" class="board">
+                                          <h3 class="title">{{item.TITLE}}</h3>
+                                          <p class="sub">{{item.TAKING_DATE}}</p>
+                                      </a>
+                                  </template>    
+                              </div>
+                              <div class="boards" v-if="speeches.length == 0">
+                                  <div class="m-empty type01">
+                                      데이터가 없습니다.
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="fragment fragment-board" v-if="!isDeepEmpty(contactReviews)">
+                            <div class="title-container">
+                                <div class="left">의원 평가</div>
+                                <div class="right">
+                                    <img src="/images/arrowRight-gray.png" alt="" style="width:14px;" @click="$router.push('/contacts/evaluateList')">
                                 </div>
                             </div>
+                            <!-- <div class="title-contaiiner">
+                                <span class="title">의원 평가</span>
+                                <div class="evaluate-count">총 {{evaluateCount}}개의 평가</div>
+                            </div> -->
 
-                            <div class="fragment" v-if="item.HAK">
-                                <h3 class="title">주요 약력</h3>
-
-                                <div class="histories" v-text="item.HAK"></div>
+                            <div class="evaluation-container">
+                              <div class="average-container">
+                                  <div class="average">
+                                      <div class="average-title">평균 만족도</div>
+                                  </div>
+                                  <div class="mt-12"></div>
+                                  <div class="average">
+                                      <!-- smile & evaluate percentage -->
+                                      <div class="smile">
+                                          <img :src="makeAvgImg" >
+                                          <div class="smile-label">{{evaluateAvg}}% ({{totalCount}}명)</div>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="graph-container">
+                                <!-- one-to-five histogram & smiles here -->
+                                <div class="wrapper"
+                                    v-for="(option,index) in options" :key="item.value"
+                                >
+                                  <div class="evaluate-magnitude">{{aggregateReviews[index].value}}</div>
+                                  <div class="mt-12"></div>
+                                  <div class="barcontainer">
+                                    <div class="bar" :style="`height:${barProgress(index)}%`"></div>
+                                  </div>
+                                  <div class="smile">
+                                    <img :src="option.image" :alt="option.label">
+                                    <div class="smile-label"><span :style="`color:${option.color}`">{{option.label}}</span></div>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
-
-                            <div class="fragment fragment-board">
-                                <h3 class="title">대표발의 의안</h3>
-
-                                <div class="boards" v-if="proposals.length > 0">
-                                    <template v-for="item in proposals">
-                                        <a :href="item.DETAIL_LINK" target="blank"  :key="item.BILL_ID" class="board" >
-                                            <h3 class="title">{{item.BILL_NAME}}</h3>
-                                            <p class="sub">{{item.PROPOSE_DT}}</p>
-                                        </a>
-                                    </template>
-                                </div>
-                                <div class="boards" v-if="proposals.length == 0">
-                                    <div class="m-empty type01">
-                                        데이터가 없습니다.
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="fragment fragment-board">
-                                <h3 class="title">발언 영상</h3>
-
-                                <div class="boards" v-if="speeches.length > 0">
-                                    <template v-for="(item,index) in speeches">
-                                        <a :href="item.LINK_URL" target="blank" :key="index" class="board">
-                                            <h3 class="title">{{item.TITLE}}</h3>
-                                            <p class="sub">{{item.TAKING_DATE}}</p>
-                                        </a>
-                                    </template>    
-                                </div>
-                                <div class="boards" v-if="speeches.length == 0">
-                                    <div class="m-empty type01">
-                                        데이터가 없습니다.
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="fragment fragment-board" v-if="!isDeepEmpty(contactReviews)">
-                                <div class="title-container">
-                                    <div class="left">의원 평가</div>
-                                    <div class="right">
-                                        <img src="/images/arrowRight-gray.png" alt="" style="width:14px;" @click="$router.push('/contacts/evaluateList')">
-                                    </div>
-                                </div>
-                                <!-- <div class="title-contaiiner">
-                                    <span class="title">의원 평가</span>
-                                    <div class="evaluate-count">총 {{evaluateCount}}개의 평가</div>
-                                </div> -->
-
-                                <div class="evaluation-container">
-                                    <div class="average-container">
-                                        <div class="average">
-                                            <div class="average-title">평균 만족도</div>
-                                        </div>
-                                        <div class="mt-12"></div>
-                                        <div class="average">
-                                            <!-- smile & evaluate percentage -->
-                                            <div class="smile">
-                                                <img :src="makeAvgImg" >
-                                                <div class="smile-label">{{evaluateAvg}}% ({{totalCount}}명)</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="graph-container">
-                                        <!-- one-to-five histogram & smiles here -->
-                                        <div class="wrapper"
-                                            v-for="(option,index) in options" :key="item.value"
-                                        >
-                                            <div class="evaluate-magnitude">{{aggregateReviews[index].value}}</div>
-                                            <div class="mt-12"></div>
-                                            <div class="barcontainer">
-                                                <div class="bar" :style="`height:${barProgress(index)}%`"></div>
-                                                
-                                            </div>
-                                            <div class="smile">
-                                                <img :src="option.image" :alt="option.label">
-                                                <div class="smile-label"><span :style="`color:${option.color}`">{{option.label}}</span></div>
-                                            </div>
-                                        </div>
-         
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="mt-40"></div>
+                          </div>
+                          <div class="mt-40"></div>
                         </div>
                     </section>
 
@@ -308,13 +305,13 @@ export default {
         },
         makeAvgImg(){
             let img = '/images/contacts/f_1.png';
-            if(this.evaluateAvg >= 80) {
+            if(this.evaluateAvg > 80) {
                 img = '/images/contacts/f_5.png';
-            }else if(this.evaluateAvg >= 60) {
+            }else if(this.evaluateAvg > 60) {
                 img = '/images/contacts/f_4.png';
-            }else if(this.evaluateAvg >= 40) {
+            }else if(this.evaluateAvg > 40) {
                 img = '/images/contacts/f_3.png';
-            }else if(this.evaluateAvg >= 20) {
+            }else if(this.evaluateAvg > 20) {
                 img = '/images/contacts/f_2.png';
             }
             return img;
