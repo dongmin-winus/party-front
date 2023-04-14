@@ -39,8 +39,8 @@
                           <div class="img-wrap">
                               <img :src="item.img.url" alt="">
                           </div>
-                          <button v-if="!contactItem.review_check" class="m-btn type02 width-100" @click="openEvaluateModal">의원 평가하기</button>
-                          <button v-else="contactItem.review_check" class="m-btn type02 bg-grey width-100" >평가 완료</button>
+                          <button v-if="!review_check" class="m-btn type02 width-100" @click="openEvaluateModal">의원 평가하기</button>
+                          <button v-else="review_check" class="m-btn type02 bg-grey width-100" >평가 완료</button>
                           <div class="mt-12"></div>
                           <div class="box-name">
                               <p class="name">{{ item.korean_name }} ({{item.NAME_HAN}}) </p>
@@ -178,11 +178,11 @@
                 <div class="m-input-checkboxes type01">
                     <div class="m-input-checkbox">
                         <input type="radio" id="1" value="good" v-model="toggleList">
-                        <label for="1">긍정적 의견</label>
+                        <label for="1">긍정적 의견 {{goodList.length == 0 ? goodList.length : goodList.length -1}}</label>
                     </div>
                     <div class="m-input-checkbox">
                         <input type="radio" id="2" value="bad" v-model="toggleList">
-                        <label for="2">부정적 의견</label>
+                        <label for="2">부정적 의견 {{badList.length == 0 ? badList.length : badList.length -1}}</label>
                     </div>
                 </div>
               </div>
@@ -215,8 +215,8 @@
               </swiper>
               <div class="mt-20">
                 <!-- 의원평가하기 버튼 -->
-                <button v-if="!contactItem.review_check" class="m-btn type02 bg-revert-primary width-100 " @click="openEvaluateModal">의원 평가하기</button>
-                <button v-else="contactItem.review_check" class="m-btn type02 bg-grey width-100" >평가 완료</button>
+                <button v-if="!review_check" class="m-btn type02 bg-revert-primary width-100 " @click="openEvaluateModal">의원 평가하기</button>
+                <button v-else="review_check" class="m-btn type02 bg-grey width-100" >평가 완료</button>
               </div>
             </section>
             <img src="/images/about-bg.png" alt="" class="deco-about">
@@ -232,6 +232,7 @@
         <evaluate-modal
             v-if="evaluatePop"
             @close="closeEvaluteModal"
+            @stored="handleStored"
             :item="item"
             :options="options"
         />
@@ -268,6 +269,7 @@ export default {
           spaceBetween: 20,
         },
         contactReviews: null,
+        review_check: false,
       }
     },
     computed: {
@@ -334,29 +336,33 @@ export default {
         goodList() {
           if(this.isDeepEmpty(this.contactReviews)) return [];
           let goodList = this.contactReviews.data.filter(item => item.grade > 2);
-          goodList.push({
-            id: this.maxVal(this.contactReviews.data, 'id') + 1,
-            created_at: '',
-            user: {
-                nickname: ''
-            },
-            grade:5,
-            content: ''
-          });
+          if(!isEmpty(goodList)) {
+            goodList.push({
+              id: this.maxVal(this.contactReviews.data, 'id') + 1,
+              created_at: '',
+              user: {
+                  nickname: ''
+              },
+              grade:5,
+              comment: ''
+            });
+          }
           return goodList;
         },
         badList() {
           if(this.isDeepEmpty(this.contactReviews)) return [];
           let badList = this.contactReviews.data.filter(item => item.grade < 3);
-          badList.push({
-            id: this.maxVal(this.contactReviews.data, 'id') + 2,
-            created_at: '',
-            user: {
-                nickname: ''
-            },
-            grade:1,
-            content: ''
-          });
+          if(!isEmpty(badList)) {
+            badList.push({
+              id: this.maxVal(this.contactReviews.data, 'id') + 2,
+              created_at: '',
+              user: {
+                  nickname: ''
+              },
+              grade:1,
+              comment: ''
+            });
+          }
           return badList;
         },
 
@@ -376,6 +382,7 @@ export default {
                 const response = await this.$axios.get(`/api/districts/${this.$store.state.district.id}/contacts`)
                 if(response) {
                     this.temp = response.data.data;
+                    this.review_check = this.temp.review_check;
                     await this.nprlapfmaufmqytet(this.temp.korean_name); //의원 약력 등 정보
                     await this.nzmimeepazxkubdpn(this.temp.korean_name); //의원 대표발의 법안
                     await this.npeslxqbanwkimebr(this.temp.korean_name); //의원 발언 영상
@@ -475,11 +482,14 @@ export default {
           }
             this.evaluatePop = true;
         },
-        async closeEvaluteModal() {
-            this.evaluatePop = false;
-            await this.init();
+        async handleStored() {
+          this.closeEvaluteModal();
+            this.review_check = true;
             await this.$store.dispatch('FETCH_CONTACT_REVIEW', this.district_id);
             this.contactReviews = {...this.$store.state.contactReviews}; 
+        },
+        closeEvaluteModal() {
+            this.evaluatePop = false;
         },
         isDeepEmpty(input) {
           if(isEmpty(input)) {
