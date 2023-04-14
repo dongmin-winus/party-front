@@ -466,7 +466,6 @@ export default {
 
 
         getColor(evaluate) {
-            console.log(evaluate, this.options)
             return this.options.find(item => item.value === evaluate).color;
         },
         barProgress(index) {

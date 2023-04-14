@@ -105,6 +105,7 @@
 import { isEmpty } from 'lodash';
 import EvaluateModal from '~/components/contacts/EvaluateModal.vue'
 import common from '../../utils/common'
+import { reviewCheck } from '../../api/index'
 export default {
   components: {
     EvaluateModal
@@ -189,6 +190,7 @@ export default {
               const response = await this.$axios.get(`/api/districts/${this.$store.state.district.id}/contacts`)
               if(response) {
                   this.temp = response.data.data;
+                  this.review_check = this.temp.review_check;
                   await this.nprlapfmaufmqytet(response.data.data.korean_name); //의원 약력 등 정보
               }
                   
@@ -222,9 +224,7 @@ export default {
       },
 
       positiveLoadMore(state) {
-        console.log({state},32323)
         if(this.positiveList.meta.current_page <= this.positiveList.meta.last_page){
-          // this.form.page = this.meta.current_page + 1;
 
           this.$axios.get("/api/reviews/", {
             params: {
@@ -243,7 +243,6 @@ export default {
       },
       negativeLoadMore(state) {
         if(this.negativeList.meta.current_page <= this.negativeList.meta.last_page){
-          // this.form.page = this.meta.current_page + 1;
 
           this.$axios.get("/api/reviews/", {
             params: {
@@ -262,6 +261,7 @@ export default {
       }
   },
   async mounted() {
+    
     if(isEmpty(this.contactItem)) {
         await this.init();
     }
@@ -270,6 +270,7 @@ export default {
 
   },
   async asyncData({ store, $axios }) {
+    const review_check = await reviewCheck(store.getters.getDistrict.id);
     const resPositive = await $axios.get(`/api/reviews/`,{
       params: {
         district_id: store.getters.getDistrict.id,
@@ -288,6 +289,7 @@ export default {
       positiveList : resPositive.data,
       negativeList : resNegative.data,
       hasLoaded: true,
+      review_check : review_check.data.review_check
     }
   },
 }
