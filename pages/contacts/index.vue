@@ -40,7 +40,7 @@
                               <img :src="item.img.url" alt="">
                           </div>
                           <button v-if="!contactItem.review_check" class="m-btn type02 width-100" @click="openEvaluateModal">의원 평가하기</button>
-                          <button v-if="contactItem.review_check" class="m-btn type02 bg-grey width-100" >평가 완료</button>
+                          <button v-else="contactItem.review_check" class="m-btn type02 bg-grey width-100" >평가 완료</button>
                           <div class="mt-12"></div>
                           <div class="box-name">
                               <p class="name">{{ item.korean_name }} ({{item.NAME_HAN}}) </p>
@@ -216,7 +216,7 @@
               <div class="mt-20">
                 <!-- 의원평가하기 버튼 -->
                 <button v-if="!contactItem.review_check" class="m-btn type02 bg-revert-primary width-100 " @click="openEvaluateModal">의원 평가하기</button>
-                <button v-if="contactItem.review_check" class="m-btn type02 bg-grey width-100" >평가 완료</button>
+                <button v-else="contactItem.review_check" class="m-btn type02 bg-grey width-100" >평가 완료</button>
               </div>
             </section>
             <img src="/images/about-bg.png" alt="" class="deco-about">
@@ -477,6 +477,7 @@ export default {
         },
         async closeEvaluteModal() {
             this.evaluatePop = false;
+            await this.init();
             await this.$store.dispatch('FETCH_CONTACT_REVIEW', this.district_id);
             this.contactReviews = {...this.$store.state.contactReviews}; 
         },

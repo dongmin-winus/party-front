@@ -82,7 +82,8 @@
       </div>
     </div>
     <!-- 의원평가하기 버튼 -->
-    <button class="m-btn type02 bg-revert-primary width-80 sticky" @click="openEvaluateModal">의원 평가하기</button>
+    <button v-if="!contactItem.review_check" class="m-btn type02 bg-revert-primary width-80 sticky" @click="openEvaluateModal">의원 평가하기</button>
+    <!-- <button v-else="contactItem.review_check" class="m-btn type02 bg-grey width-100" >평가 완료</button> -->
 
     <!-- 평가 모달 -->
     <evaluate-modal
@@ -165,6 +166,7 @@ export default {
       },
       async closeEvaluteModal() {
           this.evaluatePop = false;
+          this.init();
           await this.$store.dispatch('FETCH_CONTACT_REVIEW', this.district_id);
           this.contactReviews = {...this.$store.state.contactReviews}; 
       },
