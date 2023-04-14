@@ -114,7 +114,7 @@ export default {
         console.log(response.data)
         if(response.status === 200) {
             alert("성공적으로 처리되었습니다.");
-            this.$emit('close')
+            this.$emit('stored')
         }
       } catch (error) {
         if (error.response && error.response.data)
