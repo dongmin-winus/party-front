@@ -26,17 +26,20 @@
           <div class="m-input-checkboxes type01">
               <div class="m-input-checkbox">
                   <input type="radio" id="1" value="good" v-model="toggleList">
-                  <label for="1">긍정적 의견 {{goodList.length}}</label>
+                  <label for="1">긍정적 의견 {{positiveList.meta.total}}</label>
               </div>
               <div class="m-input-checkbox">
                   <input type="radio" id="2" value="bad" v-model="toggleList">
-                  <label for="2">부정적 의견 {{badList.length}}</label>
+                  <label for="2">부정적 의견 {{negativeList.meta.total}}</label>
               </div>
           </div>
           <div class="mt-40"></div>
-          <div class="m-boards type01" v-if="contactReviews">
+          <div class="m-boards type01" >
+            <div class="m-loading type02" v-show="!hasLoaded">
+                <div class="m-loading-inner"></div>
+            </div>
             <div v-show="toggleList == 'good'">
-              <div class="m-board gray" v-for="item in goodList" :key="item.id">
+              <div class="m-board gray" v-for="item in positiveList.data" :key="item.id">
                   <div class="m-board-top">
                       <div class="left">
                         <p class="writer">{{ replaceWriter(item.user.nickname, 2, '**') }}님의 의견</p>
@@ -55,27 +58,29 @@
 
                   </div>
               </div>
+              <scroll-loading @load="positiveLoadMore" v-if="positiveList.links.next" />
             </div>
             <div v-show="toggleList == 'bad'">
-              <div class="m-board gray" v-for="item in badList" :key="item.id">
-                  <div class="m-board-top">
-                      <div class="left">
-                        <p class="writer">{{ replaceWriter(item.user.nickname, 2, '**') }}님의 의견</p>
-                      </div>
-                      <div class="right">
-                        <p class="date">{{ item.created_at }}</p>
-                      </div>
-                  </div>
+              <div class="m-board gray" v-for="item in negativeList.data" :key="item.id">
+                <div class="m-board-top">
+                    <div class="left">
+                      <p class="writer">{{ replaceWriter(item.user.nickname, 2, '**') }}님의 의견</p>
+                    </div>
+                    <div class="right">
+                      <p class="date">{{ item.created_at }}</p>
+                    </div>
+                </div>
 
-                  <div class="m-board-content">
-                      <div class="evaluate-container">
-                          <span>의원활동 만족도</span> <img :src="getSmile(item.grade)" alt=""> <span :style="`color:${getColor(item.grade)}`">{{getLabel(item.grade)}}</span>
-                      </div>
-                      <div class="mt-12"></div>
-                      <p class="content-body" v-if="item.comment">{{replaceContent(item.comment)}}</p>
+                <div class="m-board-content">
+                    <div class="evaluate-container">
+                        <span>의원활동 만족도</span> <img :src="getSmile(item.grade)" alt=""> <span :style="`color:${getColor(item.grade)}`">{{getLabel(item.grade)}}</span>
+                    </div>
+                    <div class="mt-12"></div>
+                    <p class="content-body" v-if="item.comment">{{replaceContent(item.comment)}}</p>
 
-                  </div>
+                </div>
               </div>
+              <scroll-loading @load="negativeLoadMore" v-if="negativeList.links.next" />
             </div>
           </div>
         </div>
@@ -140,7 +145,10 @@ export default {
       toggleList: 'good',
       temp:null,
       contactReviews:null,
+      positiveList: {},
+      negativeList: {},
       review_check:false,
+      hasLoaded: false,
     }
   },
   methods: {
@@ -168,11 +176,11 @@ export default {
       },
       async handleStored() {
         this.closeEvaluteModal();
-          this.review_check = true;
-          await this.$store.dispatch('FETCH_CONTACT_REVIEW', this.district_id);
-          this.contactReviews = {...this.$store.state.contactReviews}; 
+        this.review_check = true;
+        await this.$store.dispatch('FETCH_CONTACT_REVIEW', this.district_id);
+        this.contactReviews = {...this.$store.state.contactReviews}; 
       },
-      async closeEvaluteModal() {
+      closeEvaluteModal() {
           this.evaluatePop = false;
       },
 
@@ -212,14 +220,76 @@ export default {
               console.error(error);
           }
       },
+
+      positiveLoadMore(state) {
+        console.log({state},32323)
+        if(this.positiveList.meta.current_page <= this.positiveList.meta.last_page){
+          // this.form.page = this.meta.current_page + 1;
+
+          this.$axios.get("/api/reviews/", {
+            params: {
+              district_id: this.district_id,
+              category: 'positive',
+              page: this.positiveList.meta.current_page + 1
+            }
+          }).then(response => {
+              const data = response.data;
+              this.positiveList.data = [...this.positiveList.data, ...data.data];
+              this.positiveList.links = {...data.links};
+              this.positiveList.meta = {...data.meta};
+              state.loaded();
+          });
+        }
+      },
+      negativeLoadMore(state) {
+        if(this.negativeList.meta.current_page <= this.negativeList.meta.last_page){
+          // this.form.page = this.meta.current_page + 1;
+
+          this.$axios.get("/api/reviews/", {
+            params: {
+              district_id: this.district_id,
+              category: 'negative',
+              page: this.negativeList.meta.current_page + 1
+            }
+          }).then(response => {
+              const data = response.data;
+              this.negativeList.data = [...this.negativeList.data, ...data.data];
+              this.negativeList.links = {...data.links};
+              this.negativeList.meta = {...data.meta};
+              state.loaded();
+          });
+        }
+      }
   },
   async mounted() {
-    if(isEmpty(this.contactItem)) {
-        await this.init();
+    // if(isEmpty(this.contactItem)) {
+    //     await this.init();
 
-    }
+    // }
     await this.$store.dispatch('FETCH_CONTACT_REVIEW', this.district_id);
     this.contactReviews = this.$store.state.contactReviews;
+
+  },
+  async asyncData({ store, $axios }) {
+    const resPositive = await $axios.get(`/api/reviews/`,{
+      params: {
+        district_id: store.getters.getDistrict.id,
+        category: 'positive',
+        page:1
+      }
+    })
+    const resNegative = await $axios.get(`/api/reviews/`,{
+      params: {
+        district_id: store.getters.getDistrict.id,
+        category: 'negative',
+        page:1
+      }
+    })
+    return {
+      positiveList : resPositive.data,
+      negativeList : resNegative.data,
+      hasLoaded: true,
+    }
   },
 }
 </script>

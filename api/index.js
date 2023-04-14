@@ -46,8 +46,8 @@ function fetchChatgpt(content) {
     });
 }
 
-function fetchContactsReview(district_id) {
-  return instance.get(`/api/reviews/`, { params: { district_id } })
+function fetchContactsReview(district_id, category = '') {
+  return instance.get(`/api/reviews/`, { params: { district_id }, category })
 }
 
 export {
