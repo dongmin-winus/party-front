@@ -39,7 +39,8 @@
                             <div class="img-wrap">
                                 <img :src="item.img.url" alt="">
                             </div>
-                            <button class="m-btn type02 width-100" @click="openEvaluateModal">의원 평가하기</button>
+                            <button v-if="!contactItem.review_check" class="m-btn type02 width-100" @click="openEvaluateModal">의원 평가하기</button>
+                            <button v-if="contactItem.review_check" class="m-btn type02 bg-grey width-100" >평가 완료</button>
                             <div class="mt-12"></div>
                             <div class="box-name">
                                 <p class="name">{{ item.korean_name }} ({{item.NAME_HAN}}) </p>
@@ -121,7 +122,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="fragment fragment-board" v-if="contactReviews">
+                            <div class="fragment fragment-board" v-if="!isDeepEmpty(contactReviews)">
                                 <div class="title-container">
                                     <div class="left">의원 평가</div>
                                     <div class="right">
@@ -175,7 +176,7 @@
                 </div>
             </section>
 
-            <section class="section-evaluation" v-if="contactReviews">
+            <section class="section-evaluation" v-if="!isDeepEmpty(contactReviews)">
               <div class="wrap">
                 <div class="m-input-checkboxes type01">
                     <div class="m-input-checkbox">
@@ -217,7 +218,8 @@
               </swiper>
               <div class="mt-20">
                 <!-- 의원평가하기 버튼 -->
-                <button class="m-btn type02 bg-revert-primary width-100 " @click="openEvaluateModal">의원 평가하기</button>
+                <button v-if="!contactItem.review_check" class="m-btn type02 bg-revert-primary width-100 " @click="openEvaluateModal">의원 평가하기</button>
+                <button v-if="contactItem.review_check" class="m-btn type02 bg-grey width-100" >평가 완료</button>
               </div>
             </section>
             <img src="/images/about-bg.png" alt="" class="deco-about">
@@ -241,6 +243,7 @@
 </template>
 
 <script>
+import isEmpty from 'lodash/isEmpty'
 import InputCamera from '../../components/form/posts/inputCamera';
 import InputLink from "../../components/form/posts/inputLink";
 import InputImg from "../../components/form/posts/inputImg";
@@ -332,7 +335,7 @@ export default {
         },
 
         goodList() {
-          if(!this.contactReviews) return [];
+          if(this.isDeepEmpty(this.contactReviews)) return [];
           let goodList = this.contactReviews.data.filter(item => item.grade > 2);
           goodList.push({
             id: this.maxVal(this.contactReviews.data, 'id') + 1,
@@ -346,7 +349,7 @@ export default {
           return goodList;
         },
         badList() {
-          if(!this.contactReviews.data) return [];
+          if(this.isDeepEmpty(this.contactReviews)) return [];
           let badList = this.contactReviews.data.filter(item => item.grade < 3);
           badList.push({
             id: this.maxVal(this.contactReviews.data, 'id') + 2,
@@ -480,6 +483,22 @@ export default {
             await this.$store.dispatch('FETCH_CONTACT_REVIEW', this.district_id);
             this.contactReviews = {...this.$store.state.contactReviews}; 
         },
+        isDeepEmpty(input) {
+          if(isEmpty(input)) {
+            return true
+          }
+          if(typeof input === 'object') {
+            for(const item of Object.values(input)) {
+              // if item is not undefined and is a primitive, return false
+              // otherwise dig deeper
+              if((item !== undefined && typeof item !== 'object') || !this.isDeepEmpty(item)) {
+                return false
+              }
+            }
+            return true
+          }
+          return isEmpty(input)
+        }
     },
     /*watch: {
         district (newData, oldData) {

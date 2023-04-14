@@ -1678,6 +1678,9 @@ html {
 .bg-lightGray {
     background-color:#eee !important;
 }
+.bg-grey {
+    background-color:#828282 !important;
+}
 .m-btn.type03 {
     display:flex; align-items: center; justify-content: center;
     height:45px; padding:0 16px;
