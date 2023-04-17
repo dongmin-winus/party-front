@@ -1,6 +1,6 @@
 import axios from 'axios'
 const instance = axios.create({
-  baseURL: process.env.baseURL,
+  baseURL: process.env.AXIOS_BASE_URL,
 })
 const kakaoInstance = axios.create({
   baseURL: process.env.KAKAO_REST_API_KEY,
