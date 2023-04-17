@@ -7,8 +7,8 @@
             <img :src="imgUrl" alt="" v-else-if="imgUrl">
             <img src="/images/picturePlus.png" alt="" style="width:17px;" v-else>
         </div>
-
-        <h3 class="title" v-if="!this.file">사진 선택</h3>
+        <div class="mt-8"></div>
+        <h3 class="title" v-if="!(this.file || this.imgUrl)">사진 선택</h3>
     </label>
 </template>
 <script>
