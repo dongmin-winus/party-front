@@ -1,11 +1,14 @@
 <template>
   <div class="m-pop type01" @click.stop="handleBackdropClick($event, 'm-pop type01')">
-    <div class="m-pop-inner">
-      <button class="btn-close" @click.prevent="emitEvent('cancel')">
+    <div v-if="noPaddingModal" class="m-pop-outter">
+      <slot name="outter" />
+    </div>
+    <div v-if="paddingModal" class="m-pop-inner">
+      <button v-if="cancelBtn" class="btn-close" @click.prevent="emitEvent('cancel')">
         <img src="/images/x.png" alt="x" style="width:21px;">
       </button>
       <div class="mt-8">
-      <slot />
+      <slot name="inner" />
       </div>
     </div>
   </div>
@@ -15,6 +18,18 @@
 import common from '../utils/common'
 export default {
   props: {
+    noPaddingModal:{
+      type: Boolean,
+      default: false
+    },
+    paddingModal: {
+      type: Boolean,
+      default: true 
+    },
+    cancelBtn: {
+      type: Boolean,
+      default: true
+    },
     cancel: {
       type: String,
       default: ''

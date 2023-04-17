@@ -401,16 +401,24 @@
         <navigation />
         <modal
             v-if="activateNoticePop"
-            @cancel="closeNoticePopup"
+            :noPaddingModal="true"
+            :paddingModal="false"
+            :cancelBtn="false"
         >
-            <vueper-slides autoplay fixed-height="300px">
-                <vueper-slide
-                    v-for="(content, i) in noticePopupContents"
-                    :key="i"
-                    :image="content.image.url"
-                >
-                </vueper-slide>
-            </vueper-slides>
+            <template #outter>
+                <vueper-slides autoplay fixed-height="300px">
+                    <vueper-slide
+                        v-for="(content, i) in noticePopupContents"
+                        :key="i"
+                        :image="content.image.url"
+                    >
+                    </vueper-slide>
+                </vueper-slides>
+                <div class="btn-container">
+                    <button class="btn" @click="closeNoticePopup">하루 동안 그만보기</button>
+                    <button class="btn" @click="justClosePopup">닫기</button>
+                </div>
+            </template>
         </modal>
 
     </div>
@@ -511,7 +519,11 @@ export default {
             // if(this.notOpenChecked) {
             //     Cookies.set("popToday","close",{expires: 1, secure: false})
             // }
+
             Cookies.set("popToday","close",{expires: 1, secure: false})
+            this.activateNoticePop = false;
+        },
+        justClosePopup() {
             this.activateNoticePop = false;
         },
         setContainer(container) {
@@ -675,5 +687,17 @@ export default {
 <style scoped>
     .fragment .subtitle {
         font-size: 1.2em !important;
+    }
+    .btn-container {
+        display: flex;
+        width:100%;
+        justify-content: center;
+        align-content: center;
+    }
+    .btn-container .btn {
+        flex:1;
+        height:60px;
+        font-size:20px;
+        border: 1px solid #e6e6e6;
     }
 </style>

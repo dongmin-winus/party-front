@@ -3,54 +3,56 @@
     <modal
         @cancel="closeEvaluteModal"
     >
-        <div class="m-pop-title" style="margin-top:-40px">
-            의원 평가하기
-        </div>
-        <div class="pop-container">
-        <section class="head-wrapper">
-            <div class="img-container">
-                <div class="crop-image" :style="`background-image:url('${item.img.url}')`"></div>
-                <div class="mt-8"></div>
-                <div class="m-pop-title bold">
-                    {{item.korean_name}} 의원
-                </div>
+        <template #inner>
+            <div class="m-pop-title" style="margin-top:-40px">
+                의원 평가하기
             </div>
-        </section>
-        <section class="body-wrapper">
-            <div class="m-pop-title left">
-                <span class="point">Q1</span>
-                <span class="question">{{item.korean_name}} 의원의 활동에 만족하시나요?</span>
-                  
-            </div>
-            <div class="mt-8"></div>
-            <div class="smile-container">
-                <div class="smile" :class="{'active':grade === option.value}"
-                    v-for="(option,index) in options" :key="option.value"
-                >
-                    <label>
-                        <input type="radio" :value="option.value" v-model="grade">
-                        <img :src="option.image" :alt="option.label">
-                    </label>
-                    <div class="m-pop-title">
-                        {{option.label}}
+            <div class="pop-container">
+            <section class="head-wrapper">
+                <div class="img-container">
+                    <div class="crop-image" :style="`background-image:url('${item.img.url}')`"></div>
+                    <div class="mt-8"></div>
+                    <div class="m-pop-title bold">
+                        {{item.korean_name}} 의원
                     </div>
                 </div>
-            </div>
+            </section>
+            <section class="body-wrapper">
+                <div class="m-pop-title left">
+                    <span class="point">Q1</span>
+                    <span class="question">{{item.korean_name}} 의원의 활동에 만족하시나요?</span>
+                    
+                </div>
+                <div class="mt-8"></div>
+                <div class="smile-container">
+                    <div class="smile" :class="{'active':grade === option.value}"
+                        v-for="(option,index) in options" :key="option.value"
+                    >
+                        <label>
+                            <input type="radio" :value="option.value" v-model="grade">
+                            <img :src="option.image" :alt="option.label">
+                        </label>
+                        <div class="m-pop-title">
+                            {{option.label}}
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-8"></div>
+                <div class="m-pop-title left">
+                    <span class="point">Q2</span>
+                    <span class="question">의원에 대한 의견을 남겨주세요.</span>
+                </div>
+                <div class="m-input-textarea type01 lightgrey">
+                    <textarea maxlength="136" v-model="comment" placeholder="의원 평가를 입력해주세요" cols="30" rows="10"></textarea>
+                </div>
+            </section>
             <div class="mt-8"></div>
-            <div class="m-pop-title left">
-                <span class="point">Q2</span>
-                  <span class="question">의원에 대한 의견을 남겨주세요.</span>
-            </div>
-            <div class="m-input-textarea type01 lightgrey">
-                <textarea maxlength="136" v-model="comment" placeholder="의원 평가를 입력해주세요" cols="30" rows="10"></textarea>
-            </div>
-        </section>
-        <div class="mt-8"></div>
 
-        </div>
-        <div class="m-pop-title sticky">
-            <button class="m-btn type02 width-100" @click="store">의원 평가 제출하기</button>
-        </div>
+            </div>
+            <div class="m-pop-title sticky">
+                <button class="m-btn type02 width-100" @click="store">의원 평가 제출하기</button>
+            </div>
+        </template>
     </modal>
     
   </div>
