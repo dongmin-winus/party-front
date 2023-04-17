@@ -173,18 +173,33 @@
             @cancel="activeDisSearch = false"
         >
             <template #inner>
-            <div class="m-pop-title">
-                <p class="subtitle">검색하신 마을에 방문합니다.</p>
-                <span class="point">동네 찾기</span>
-            </div>
+                <div class="m-pop-title">
+                    <p class="subtitle">검색하신 마을에 방문합니다.</p>
+                    <span class="point">동네 찾기</span>
+                </div>
 
-            <input-region @change="changeDistrict"/>
+                <input-region 
+                    :districtContainer="container"
+                    @change="changeDistrict"
+                />
 
-            <div class="mt-20"></div>
+                <div class="mt-20"></div>
 
-            <button type="button" class="m-btn type03 width-100" @click="searchDis">검색하기</button>
+                <button type="button" class="m-btn type03 width-100" @click="searchDis">검색하기</button>
+                <div class="mt-8"></div>
+                <div class="image-container" @click="activeFinder = true">
+                    <img class="img" src="/images/village-search.png" alt="" >
+                </div>
             </template>
         </modal>
+        <Finder
+            v-if="activeFinder"
+            :title="'주소로 행정동 찾기'"
+            :excecute="'변환하기'"
+            :cancel="'검색하기'"
+            @cancel="activeFinder = false"
+            @setContainer="setContainer"
+        />
     </div>
 
 </template>
@@ -195,9 +210,11 @@ export default {
     data() {
         return {
             active: false,
+            activeFinder: false,
             activeSidebar: false,
             activeSearch: false,
             activeDisSearch: false,
+            container:{},
             searchingDistrict: {},
             form: {
                 district: "",
@@ -210,6 +227,9 @@ export default {
         handleActive() {
             this.active = !this.active;
             this.activeSearch = false;
+        },
+        setContainer(container) {
+            this.container = container;
         },
         scrollTop() {
             window.scrollTo(0, 0);
@@ -323,5 +343,11 @@ export default {
     transform: scale(0.95);
     box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
   }
+}
+
+.image-container .img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 </style>
