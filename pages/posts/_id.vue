@@ -231,13 +231,17 @@
                 </div>
 
                 <div class="wrap">
+                    <trigger-observer @transparent="hideQuicks">
                     <comments :commentable_id="item.id" commentable_type="post" @calculateCommentCount="calculateCommentCount" @removed="commentRemoved" v-if="item.id"/>
+
+                    </trigger-observer>
                 </div>
             </div>
 
             <quicks 
                 :create-url="`/posts/create?board=${item.board}`"
                 :btnName="'글쓰기'"
+                v-show="showQuicks"
             />
         </div>
 
@@ -253,9 +257,10 @@ import InputLink from "../../components/form/posts/inputLink";
 import InputImg from "../../components/form/posts/inputImg";
 import InputThumbnail from "../../components/form/posts/inputThumbnail";
 import KakaoHelper from '../../utils/KakaoHelper';
+import TriggerObserver from '../../components/triggerObserver';
 import { mapActions } from 'vuex';
 export default {
-    components: {InputThumbnail, InputImg, InputLink, InputCamera},
+    components: {InputThumbnail, InputImg, InputLink, InputCamera, TriggerObserver},
     auth: false,
     data() {
         return {
@@ -276,10 +281,15 @@ export default {
             tabIndex: 0,
 
             activeSpamPop: false,
+
+            showQuicks: true,
         }
     },
     methods: {
         ...mapActions(['CLEAR_POST_STATE']),
+        hideQuicks() {
+            this.showQuicks = !this.showQuicks;
+        },
         storeScrap() {
             this.$axios.post(`/api/scrapItems`, this.form)
                 .then(response => {
