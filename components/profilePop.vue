@@ -77,7 +77,10 @@ export default {
         },
         async deleteImg() {
             try {
-                const { data } = await this.$axios.delete(`/api/auth/image`)
+                const { data } = await this.$axios.put(`/api/auth/image`,{
+                    ...this.form,
+                    profile_photo: null,
+                })
                 .then(response => {
                     alert(response.data.message);
                 });
