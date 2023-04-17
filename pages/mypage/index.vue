@@ -1,6 +1,6 @@
 <template>
     <div class="area-mypage">
-        <!-- 신고 팝업 -->
+        <!-- 프로필 수정 팝업 -->
         <profile-pop v-if="isProfilePopActive" @close="isProfilePopActive = false" />
 
         <!-- 헤더영역 -->
