@@ -236,13 +236,16 @@ export default {
                     id: 0,
                     district: "자유마을"
                 });
+                this.$router.push("/");
             }
 
 
             let route = this.$route.name;
+
             if(route === 'infos' || route === 'staff' || route === 'contacts' 
             || route === 'notices') {
-                location.href=`/${route}`;
+                if(district)
+                    location.href=`/${route}`;
             }else if(route === 'index') {
                 location.href="/"
             }
