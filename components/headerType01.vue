@@ -172,6 +172,7 @@
             v-if="activeDisSearch"
             @cancel="activeDisSearch = false"
         >
+            <template #inner>
             <div class="m-pop-title">
                 <p class="subtitle">검색하신 마을에 방문합니다.</p>
                 <span class="point">동네 찾기</span>
@@ -182,6 +183,7 @@
             <div class="mt-20"></div>
 
             <button type="button" class="m-btn type03 width-100" @click="searchDis">검색하기</button>
+            </template>
         </modal>
     </div>
 
