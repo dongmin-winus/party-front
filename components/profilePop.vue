@@ -5,14 +5,14 @@
                 <img src="/images/x.png" alt="" style="width:21px;">
             </button>
             <div class="nav-wrap">
-                <profile-img id="img" :imgUrl="profileImage" @change="(data) => this.changeData(data)"/>
+                <profile-img id="img" :isDefaultImage="isDefaultImage" :imgUrl="profileImage" @change="(data) => this.changeData(data)"/>
             </div>
             <div class="m-input m-input-text type01">
                 <input type="text" placeholder="이름 입력" v-model="form.nickname">
             </div>
 
             <div class="mt-20"></div>
-            <button type="button" class="m-btn type02 bg-red width-100" @click="deleteImg">프로필 삭제</button>
+            <button v-show="!isDefaultImage" type="button" class="m-btn type02 bg-red width-100" @click="deleteImg">프로필 삭제</button>
             <div class="mt-8"></div>
             <button type="button" class="m-btn type02 width-100" @click="save">저장하기</button>
         </div>
@@ -29,7 +29,12 @@ export default {
     computed: {
         profileImage() {
             return this.imgUrl? this.imgUrl: this.$auth.user.img.url;
-        }
+        },
+        isDefaultImage() {
+          const regex = /\/([^\/]+)$/; // 슬래시 이후의 문자열을 그룹화
+          const fileName = this.profileImage.match(regex)[1];
+          return fileName === 'profile_sample-preview.jpg';
+        },
     },
     data() {
         return {
@@ -47,6 +52,7 @@ export default {
     },
 
     methods: {
+
         async save() {
             let result = true;
 
@@ -68,7 +74,8 @@ export default {
             .then(response => {
                 alert(response.data.message);
                 this.$auth.setUser(response.data.data);
-                this.$emit('close',this.imgUrl);
+                this.isDefaultImage ? this.$emit('close',this.imgUrl) : this.$emit('close');
+                // this.$emit('close',this.imgUrl);
             });
           } catch (error) {
             if (error.response && error.response.data)
@@ -92,6 +99,8 @@ export default {
             } 
         },
         changeData(data) {
+          if(data)
+            this.imgUrl = `/${data.name}`;
           this.form.profile_photo = data;
         },
         close(){
