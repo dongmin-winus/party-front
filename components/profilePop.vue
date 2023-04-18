@@ -12,7 +12,7 @@
             </div>
 
             <div class="mt-20"></div>
-            <button type="button" class="m-btn type02 bg-red width-100" @click="deleteImg">사진 삭제하기</button>
+            <button type="button" class="m-btn type02 bg-red width-100" @click="deleteImg">프로필 삭제</button>
             <div class="mt-8"></div>
             <button type="button" class="m-btn type02 width-100" @click="save">저장하기</button>
         </div>
@@ -28,13 +28,13 @@ export default {
     },
     computed: {
         profileImage() {
-            return this.$auth.user.img ? this.$auth.user.img.url : "";
+            return this.imgUrl? this.imgUrl: this.$auth.user.img.url;
         }
     },
     data() {
         return {
             item: "",
-
+            imgUrl: "",
             form: {
                 nickname: "",
                 profile_photo: "",
@@ -68,7 +68,7 @@ export default {
             .then(response => {
                 alert(response.data.message);
                 this.$auth.setUser(response.data.data);
-                this.close();
+                this.$emit('close',this.imgUrl);
             });
           } catch (error) {
             if (error.response && error.response.data)
@@ -78,16 +78,14 @@ export default {
         },
         async deleteImg() {
         
-        let form = new FormData();      
-        form.append("_method","PUT");   
-        form.append("nickname",this.form.nickname);   
-        form.append("profile_photo",this.form.profile_photo);
+          this.form.profile_photo = "";
 
            try { 
-                const { data } = await this.$axios.put(`/api/auth/image`, this.form)
-                .then(response => {
-                    alert(response.data.message);
-                });
+                const {data} = await this.$axios.put(`/api/auth/image`, this.form)
+                if(data.url) {
+                  alert('기본 프로필로 설정되었습니다.');
+                  this.imgUrl = data.url;
+                }
             } catch (error) {
                 if (error.response && error.response.data)
                 this.errors = error.response.data.errors;

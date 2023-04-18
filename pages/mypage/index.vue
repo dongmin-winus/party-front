@@ -1,7 +1,7 @@
 <template>
     <div class="area-mypage">
         <!-- 프로필 수정 팝업 -->
-        <profile-pop v-if="isProfilePopActive" @close="isProfilePopActive = false" />
+        <profile-pop v-if="isProfilePopActive" @close="closeModal" />
 
         <!-- 헤더영역 -->
         <div class="m-header type02">
@@ -26,7 +26,7 @@
         <div class="container">
             <div class="box-info">
                 <div class="back">
-                    <div class="m-thumbnail type03" :style="`background-image:url('${this.$auth.user.img.url}')`" v-if="this.$auth.user.img"></div>
+                    <div class="m-thumbnail type03" :style="`background-image:url('${profileUrl}')`" v-if="this.$auth.user.img"></div>
                     <div class="mt-16 btn-wrap">
                         <div class="inner">
                             <p class="btn-title">회원</p>
@@ -270,15 +270,23 @@ export default {
     data() {
         return {
             isProfilePopActive: false,
+            changedUrl: "",
         }
     },
     methods: {
         store() {
 
         },
+        closeModal(profileUrl) {
+            this.isProfilePopActive = false;
+            this.changedUrl = profileUrl;
+        }
     },
 
     computed: {
+        profileUrl() {
+            return this.changedUrl ? this.changedUrl :this.$auth.user.img.url;
+        },
         activityClass(){            
             
             let activityIndex = this.$auth.user.activity_index;
