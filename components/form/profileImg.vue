@@ -3,7 +3,7 @@
         <input type="file" :id="id" accept="image/*" @change="changeFile" ref="file">
 
         <div :class="`img-wrap ${file || imgUrl ? 'active' : ''}`">
-            <img :src="fileImgUrl" alt="" v-if="file">
+            <img :src="fileImgUrl" alt="" v-if="fileImgUrl">
             <img :src="imgUrl" alt="" v-else-if="imgUrl">
             <img src="/images/picturePlus.png" alt="" style="width:17px;" v-else>
         </div>
@@ -24,8 +24,18 @@ export default {
                 return "thumbnail";
             }
         },
+        isDefaultImage: {
+            type: Boolean,
+            default: false
+        }
     },
-
+    computed: {
+        fileImgUrl(){
+            if(this.file && !this.isDefaultImage)
+                return URL.createObjectURL(this.file);
+            return "";
+        }
+    },
     data(){
         return {
             file: "",
@@ -46,13 +56,7 @@ export default {
         // }
     },
 
-    computed: {
-        fileImgUrl(){
-            if(this.file)
-                return URL.createObjectURL(this.file);
-            return "";
-        }
-    }
+
 }
 </script>
 
