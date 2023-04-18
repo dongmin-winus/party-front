@@ -58,12 +58,13 @@ export default {
             if(!result)
                 return alert("금지된 닉네임입니다.");
 
-          let form = new FormData();
+            let form = new FormData();
             form.append("_method","PUT");
             form.append("nickname",this.form.nickname);
-          form.append("profile_photo",this.form.profile_photo);
+            form.append("profile_photo",this.form.profile_photo);
+         
           try {
-            const { data } = await this.$axios.post('/api/auth/profile', form)
+            const { data } = await this.$axios.post(`/api/auth/profile`, form)
             .then(response => {
                 alert(response.data.message);
                 this.$auth.setUser(response.data.data);
@@ -72,22 +73,25 @@ export default {
           } catch (error) {
             if (error.response && error.response.data)
               this.errors = error.response.data.errors;
-          }
+          } 
 
         },
         async deleteImg() {
-            try {
-                const { data } = await this.$axios.put(`/api/auth/image`,{
-                    ...this.form,
-                    profile_photo: null,
-                })
+        
+        let form = new FormData();      
+        form.append("_method","PUT");   
+        form.append("nickname",this.form.nickname);   
+        form.append("profile_photo",this.form.profile_photo);
+
+           try { 
+                const { data } = await this.$axios.put(`/api/auth/image`, this.form)
                 .then(response => {
                     alert(response.data.message);
                 });
             } catch (error) {
                 if (error.response && error.response.data)
                 this.errors = error.response.data.errors;
-            }
+            } 
         },
         changeData(data) {
           this.form.profile_photo = data;
