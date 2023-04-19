@@ -399,7 +399,8 @@
         </div>
 
         <navigation />
-        <modal
+        <!-- TODO 230419 슬라이더 비활성화헸음 살릴지 말지 결정안됨 -->
+        <!-- <modal
             v-if="activateNoticePop"
             :noPaddingModal="true"
             :paddingModal="false"
@@ -416,11 +417,40 @@
                 </vueper-slides>
                 <div class="btn-container">
                     <button class="btn" @click="closeNoticePopup">하루 동안 그만보기</button>
-                    <button class="btn" @click="justClosePopup">닫기</button>
+                    <button class="btn" @click="justClosePopup(1)">닫기</button>
                 </div>
             </template>
-        </modal>
+        </modal> -->
+        <modal
+            v-if="activateNoticePop"
+            :noPaddingModal="true"
+            :paddingModal="false"
+            :cancelBtn="false"
+            @cancel="activateNoticePop = false"
+        >
+            <template #outter>
+                <div 
+                    v-for="(content, index) in noticePopupContents" :key="index"
+                    v-show="content.id === getCurrentId"
+                >
+                    <div class="notice-modal">
+                        <template v-if="content.image">
+                            <img :src="content.image.url" alt="" class="modal-content">
+                        </template>
+                        <template v-if="content.youtube_url">
+                            <div class="youtube-container">
+                                <iframe :src="getEmbedUrl(content.youtube_url)" allowfullscreen ></iframe>
+                            </div>
+                        </template>
+                    </div>
+                    <div class="btn-container">
+                        <button class="btn" @click="closeAllDay(content,index)">하루 동안 그만보기</button>
+                        <button class="btn" @click="justClose(content,index)">닫기</button>
+                    </div>
+                </div>
 
+            </template>
+        </modal>
     </div>
 </template>
 
@@ -434,23 +464,11 @@ export default {
     components: {
         VueperSlides,VueperSlide
     },
-    created() {
-
-        console.log(this.district.id)
-        //post axios POST /api/districts/1/visit
-      /*  this.$axios.post(`/api/districts/${this.district.id}/visit`)
-            .then((response) => {
-                console.log(response);
-            })
-            .catch((error) => {
-                console.log(error);
-            }); */
-
-    },  
     data() {
         return {
             notOpenChecked:false,
             activateNoticePop: false,
+            currentId: 0,
             noticePopupContents:[],
             activeFinder:false,
             container:{},
@@ -495,36 +513,116 @@ export default {
             ],
         }
     },
-    methods: {
+    computed: {
+        district(){
+            return this.$store.state.district;
+        },
+
+        registerRateLevel(){
+            if(this.registerRates.rate <= 1)
+                return {
+                    level:1,
+                    label: "낮음"
+                };
+
+            if(this.registerRates.rate <= 3)
+                return {
+                    level:2,
+                    label: "보통"
+                };
+
+            if(this.registerRates.rate <= 5)
+                return {
+                    level:3,
+                    label: "조금 높음"
+                };
+
+            if(this.registerRates.rate <= 10)
+                return {
+                    level:4,
+                    label: "높음"
+                };
+
+            if(this.registerRates.rate <= 20)
+                return {
+                    level:5,
+                    label: "매우 높음"
+                };
+
+           return {
+                level:6,
+                label: "아주 높음"
+            };
+        },
+
+        getCurrentId() {
+            return this.currentId;
+        },
+    },
+
+    methods: { 
         async getNoticeContents() {
             try {
                 const {data} = await this.$axios.get('/api/banners/popups')
-                console.log({data});
                 if(data.banners.length) {
-                    this.noticePopupContents = data.banners;
+                    this.noticePopupContents = data.banners.filter(notice => {
+                        return !Cookies.get(`popup${notice.id}`)
+                    });
+                    if(this.noticePopupContents.length === 0) {
+                        Cookies.set('allPopClosedToday',true,{expires: 1, secure: false});
+                        return;
+                    };
+                    this.currentId = this.noticePopupContents[0].id;
                     this.activateNoticePop = true;
                 }
             } catch (error) {
 
             }
         },
+        closeAllDay(content, index) {
+            Cookies.set(`popup${content.id}`,"closed",{expires: 1, secure: false});
+
+            const lastIndex = this.noticePopupContents.length - 1;
+            if(lastIndex === index) {
+                this.activateNoticePop = false;
+            }else {
+                this.nextNotice(index);
+            }
+        },
+        justClose(content, index) {
+            const lastIndex = this.noticePopupContents.length - 1;
+            if(lastIndex === index) {
+                this.activateNoticePop = false;
+            }else {
+                this.nextNotice(index);
+            }
+        },
+        nextNotice(targetIdx) {
+            const idx = this.noticePopupContents.findIndex((notice,index) => {
+                return index === targetIdx;
+            });
+            this.currentId =  this.noticePopupContents[idx + 1].id;
+        },
+        getEmbedUrl(url){
+            let id = "";
+            let embedUrl = "";
+            let match = url.match(/^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/);
+
+            id = (match&&match[7].length==11)?match[7]:false;
+
+            if(id) {
+                embedUrl = "https://www.youtube.com/embed/" + id;
+            }
+
+            return embedUrl;
+        },
+
         active() {
             this.activeFinder = true;
         },
         closeModal() {
             this.activeFinder = false;
 
-        },
-        closeNoticePopup() {
-            // if(this.notOpenChecked) {
-            //     Cookies.set("popToday","close",{expires: 1, secure: false})
-            // }
-
-            Cookies.set("popToday","close",{expires: 1, secure: false})
-            this.activateNoticePop = false;
-        },
-        justClosePopup() {
-            this.activateNoticePop = false;
         },
         setContainer(container) {
             this.container = container;
@@ -545,7 +643,6 @@ export default {
         getRankings(count){
             this.$axios.get('/api/' + this.form.rankingUrl + "/" + count)
                 .then(response => {
-                    console.log(response.data.districtRegisterCounts);
                     this.districtRegisterCounts = response.data.districtRegisterCounts;
                 });
         },
@@ -602,50 +699,6 @@ export default {
         },
 
     },
-
-    computed: {
-        district(){
-            return this.$store.state.district;
-        },
-
-        registerRateLevel(){
-            if(this.registerRates.rate <= 1)
-                return {
-                    level:1,
-                    label: "낮음"
-                };
-
-            if(this.registerRates.rate <= 3)
-                return {
-                    level:2,
-                    label: "보통"
-                };
-
-            if(this.registerRates.rate <= 5)
-                return {
-                    level:3,
-                    label: "조금 높음"
-                };
-
-            if(this.registerRates.rate <= 10)
-                return {
-                    level:4,
-                    label: "높음"
-                };
-
-            if(this.registerRates.rate <= 20)
-                return {
-                    level:5,
-                    label: "매우 높음"
-                };
-
-           return {
-                level:6,
-                label: "아주 높음"
-            };
-        }
-    },
-
     watch: {
         district (newCount, oldCount) {
             this.updatePosts(this.district.id);
@@ -667,8 +720,7 @@ export default {
 
     async mounted() {
         await this.updatePosts(this.district.id);
-        // console.log(Cookies.get('popToday'),3333);
-        if(Cookies.get('popToday') !== 'close') {
+        if(!Cookies.get('allPopClosedToday')) {
             await this.getNoticeContents();
         }
 
@@ -699,5 +751,24 @@ export default {
         height:60px;
         font-size:20px;
         border: 1px solid #e6e6e6;
+    }
+    .notice-modal {
+        height:300px;
+    }
+    .notice-modal .modal-content {
+        width:100%;
+        height:100%;
+    }
+    .youtube-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 300px; /* 높이는 페이지에 맞게 조정할 수 있습니다. */
+    }
+
+    .youtube-container iframe {
+        width: 100%;
+        height: inherit;
+        max-width: 500px; /* 원하는 최대 너비로 조정할 수 있습니다. */
     }
 </style>
