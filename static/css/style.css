@@ -235,6 +235,14 @@ html {
 .m-pop.type01 .m-pop-title .point {
     font-size:22px; font-weight:500; color:#0BAF00;
 }
+
+.m-pop.type01 .m-pop-title {
+    margin-bottom:20px;
+    font-size:20px; font-weight:500; text-align: center;
+}
+.m-pop.type01 .m-pop-title .point {
+    font-size:22px; font-weight:500; color:#0BAF00;
+}
 .m-pop.type01 .m-pop-title + .m-pop-body {
     margin-top:-10px; margin-bottom:20px;
     text-align: center;
@@ -802,7 +810,7 @@ html {
     display:flex; align-items: flex-start; justify-content: center;
     margin:0 -30px; margin-bottom:36px;
 }
-.area-index .section-ranking .first .img-wrap {
+/* .area-index .section-ranking .first .img-wrap {
     position:relative;
 }
 .area-index .section-ranking .first .img-wrap .img {
@@ -811,10 +819,15 @@ html {
 .area-index .section-ranking .first .img-wrap .deco {
     position:absolute; left:50%; top:-25px; transform:translateX(-50%);
     z-index:1;
-}
+} */
 .area-index .section-ranking .rankings .ranking-wrap {
     padding:0 30px;
 }
+.area-index .section-ranking .rankings .ranking-wrap:first-child .deco {
+    position:absolute; left:50%; top:-25px; transform:translateX(-50%);
+    z-index:1;
+}
+
 .area-index .section-ranking .rankings .ranking {
     text-align: center;
 }
@@ -822,8 +835,27 @@ html {
     height:70px;
     position:relative;
 }
+.area-index .section-ranking .img-wrap .img-rect {
+    box-shadow:0px 6px 6px rgba(0,0,0,0.16);
+}
 .area-index .section-ranking .rankings .img-wrap img {
     position:absolute; left:50%; top:50%; transform:translate(-50%, -50%);
+}
+.area-index .section-ranking .rankings .img-wrap .more {
+    position: absolute;
+    top: 120%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius:20px;
+    padding: 3px 5px 3px 5px;
+    width:90px;
+    background:#FFF;
+    border:1px solid #E5E5E5;
+}
+.area-index .section-ranking .rankings .img-wrap .more .tri {
+    margin-left:4px;
+    font-size:12px;
+    color:#DC2626;
 }
 .area-index .section-ranking .ranking .fragment {
     margin-top:32px;
@@ -834,11 +866,20 @@ html {
 }
 .area-index .section-ranking .ranking .fragment .title {
     margin-bottom:4px;
-    font-size:24px; font-weight:500; font-family: GmarketSans; color:#F88600;
+    font-size:24px; font-weight:500; font-family: GmarketSans; color:#000;
 }
 .area-index .section-ranking .ranking .fragment .title .point {
-    font-size:32px; font-weight:bold; font-family: GmarketSans; color:#F88600;
+    font-size:32px; font-weight:bold; font-family: GmarketSans; color:#000;
 }
+.area-index .section-ranking .rankings .ranking-wrap:first-child .title {
+    margin-bottom:4px;
+    font-size:24px; font-weight:500; font-family: GmarketSans; color:#F88600;;
+}
+.area-index .section-ranking .rankings .ranking-wrap:first-child .point {
+    margin-bottom:4px;
+    font-size:32; font-weight:bold; font-family: GmarketSans; color:#F88600;;
+}
+
 .area-index .section-ranking .ranking .fragment .more {
     display:flex; align-items: center; justify-content: center;
     font-size:14px; color:#A1A1AA;
