@@ -25,17 +25,17 @@
                 </div>
                 <div class="mt-8"></div>
                 <div class="smile-container">
-                    <div class="smile" :class="{'active':grade === option.value}"
+                  <div :class="`smile ${grade === option.value ? `active` : ''}`"
                         v-for="(option,index) in options" :key="option.value"
-                    >
-                        <label>
-                            <input type="radio" :value="option.value" v-model="grade">
-                            <img :src="option.image" :alt="option.label">
-                        </label>
-                        <div class="m-pop-title">
-                            {{option.label}}
-                        </div>
-                    </div>
+                  >
+                      <label>
+                          <input type="radio" :value="option.value" v-model="grade">
+                          <img :src="option.image" :alt="option.label">
+                      </label>
+                      <div class="m-pop-title">
+                          {{option.label}}
+                      </div>
+                  </div>
                 </div>
                 <div class="mt-8"></div>
                 <div class="m-pop-title left">
@@ -87,35 +87,52 @@ export default {
         alert('의견은 135자 이상 작성할 수 없습니다.')
         this.content = oldValue;
       }
-
     }
   },
   data() {
     return {
       grade: undefined,
       comment:undefined,
+
+      review: undefined,
     }
   },
   methods: {
+    async getReview() {
+      if(this.userId !== 0) {
+        const response = await this.$axios.get(`/api/reviews/${this.district_id}`)
+        this.review = response.data[0]
+        this.grade = response.data[0].grade,
+        this.comment = response.data[0].comment
+      }
+    },
     closeEvaluteModal() {
       this.$emit('close')
     },
     async store() {
+      if(this.userId !== 0) {
+        this.update();
+        return;
+      }
       if (!this.grade) {
         alert('평가를 선택해주세요.')
-        return
+        return;
       }
       if (!this.comment) {
         alert('의견을 입력해주세요.')
         return
       }
+      if(this.comment.length < 10) {
+        alert('의견은 10자 이상 작성해주세요.')
+        return
+      }
       try {
         const response = await this.$axios.post('/api/reviews', {
-            district_id: this.district_id,
-            // user_id: this.$auth.user.id,
-            // user_name: this.$auth.user.name,
-            comment: this.replaceContent(this.comment),
-            grade: this.grade,
+          district_id: this.district_id,
+          // user_id: this.$auth.user.id,
+          // user_name: this.$auth.user.name,
+          comment: this.replaceContent(this.comment),
+          grade: this.grade,
         })
         console.log(response.data)
         if(response.status === 200) {
@@ -127,7 +144,26 @@ export default {
             this.errors = error.response.data.errors;
       }
     },
+    async update() {
+      try {
+        const response = await this.$axios.post(`/api/reviews/update/${this.review.id}`, {
+          ...this.review,
+          comment: this.replaceContent(this.comment),
+          grade: this.grade,
+        })
+        if(response.status === 200) {
+            alert("성공적으로 처리되었습니다.");
+            this.$emit('stored')
+        }
+      } catch (error) {
+        if (error.response && error.response.data)
+            this.errors = error.response.data.errors;
+      }
+    }
   },
+  async mounted() {
+    await this.getReview();
+  }
 }
 </script>
 
