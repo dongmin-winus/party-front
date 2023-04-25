@@ -154,7 +154,31 @@
 
 
             </section>
-
+            <div class="section-promotion">
+                <div class="wrap">
+                    <div class="content">
+                        <div class="m-title type01">
+                            <p class="sub">마을 소개</p>
+                            지역별 <span class="point">홍보</span>
+                        </div>
+                        <swiper :options="swiperOptions">
+                            <swiper-slide v-for="(slide,index) in promotionList" :key="slide.id">
+                                <nuxt-link v-if="index + 1 != promotionList.length" :to="`/posts/${slide.id}`">
+                                    <div class="content">
+                                        <img class="img" :src="slide.img.url" alt="-">
+                                        <p class="title" style="font-weight:500; font-size:20px">{{slide.title}}</p>
+                                        <div>
+                                            <p style="font-weight:300; font-size:16px;">{{ slide.content }}</p>
+                                        </div>
+                                    </div>
+                                </nuxt-link>
+                                <div class="mt-8"></div>
+                                <nuxt-link v-if="index + 1 != promotionList.length" :to="`/posts/${slide.id}`" class="m-btn type02 bg-revert-primary">자세히보기 +</nuxt-link>
+                            </swiper-slide>
+                        </swiper>
+                    </div>
+                </div>
+            </div>
             <section class="section-ranking">
                 <div class="wrap">
                     <div class="content">
@@ -273,8 +297,8 @@
 
             <section class="section-ad">
                 <div class="wrap">
-                    <a href="https://ghmon.com" target="_blank" class="link">
-                        <img src="https://dotmzh1fysixs.cloudfront.net/1009/banner4.jpg" alt="">
+                    <a :href="homeBanner1.link_url" target="_blank" class="link">
+                        <img :src="homeBanner1.image.url" alt="">
                     </a>
                 </div>
             </section>
@@ -377,8 +401,8 @@
             </section>
 
             <section class="section-ad2">
-                <a href="https://m.khmon.com/sign/6936" target="_blank" class="link">
-                    <img src="https://jayuvillage-bucket.s3.ap-northeast-2.amazonaws.com/1288/banner-3.jpg" alt="">
+                <a :href="homeBanner2.link_url" target="_blank" class="link">
+                    <img :src="homeBanner2.image.url" alt="">
                 </a>
             </section>
 
@@ -464,6 +488,11 @@ export default {
             noticePopupContents:[],
             activeFinder:false,
             container:{},
+            swiperOptions: {
+                slidesPerView: 'auto',
+                centeredSlides: false,
+                spaceBetween: 20,
+            },
             form: {
                 district_id: "",
                 district: "",
@@ -503,7 +532,23 @@ export default {
             districtRegisterCounts: [
 
             ],
+            promotionList: [],
+            homeBanners:[],
         }
+    },
+    async asyncData({$axios}) {
+        const homeBanners = await $axios.get('/api/banners/home');
+
+        const promotionList = await $axios.get('/api/promotion');
+        return {
+            promotionList: [
+                ...promotionList.data.data,
+                {"id":176,"title":"","img":{}, user:{},content:null,},
+            ],
+            homeBanners: {
+                ...homeBanners.data,
+            }
+        };
     },
     computed: {
         district(){
@@ -552,10 +597,32 @@ export default {
         },
         uptoThreeDistrictRegisterCounts() {
             return this.districtRegisterCounts.slice(0,3);
-        }
+        },
+        homeBanner1() {
+            return this.homeBanners.banners.find(banner => {
+                return banner.position === 'home1';
+            })
+        },
+        homeBanner2() {
+            return this.homeBanners.banners.find(banner => {
+                return banner.position === 'home2';
+            })
+        },
+
     },
 
     methods: { 
+        // homeBanner1() {
+        //     this.homeBanner1 =  this.homeBanners.filter(banner => {
+        //         return banner.position === 'home1';
+        //     })
+        // },
+        // homeBanner2() {
+        //     this.homeBanner2 = this.homeBanners.filter(banner => {
+
+        //         return banner.position === 'home2';
+        //     })
+        // },
         async getNoticeContents() {
             try {
                 const {data} = await this.$axios.get('/api/banners/popups')
@@ -737,7 +804,6 @@ export default {
             this.switchRankGuide(value);
             this.getRankings(10);
         },
-
     },
 
     async mounted() {
@@ -857,5 +923,46 @@ export default {
         width: 100%;
         height: inherit;
         max-width: 500px; /* 원하는 최대 너비로 조정할 수 있습니다. */
+    }
+
+    .swiper-container {
+        width: 100%;
+        /* padding-left: 50px; */
+    }
+
+    .swiper-slide {
+      width: 85%;
+      opacity: 0.4;
+      transition: opacity 0.3s;
+    }
+
+    .swiper-slide-active {
+        opacity: 1;
+    }
+
+    .swiper-slide .content {
+      background-color: white;
+      height: 300px;
+      overflow:hidden;
+      border-radius: 10px;
+    }
+    .swiper-slide .cotent .title {
+        font-size: 20px !important;
+        font-weight: 500 !important; 
+        margin-bottom: 5px;
+    }
+    .swiper-slide .content .img {
+        border-radius: 10px;
+        width:100%;
+        height:65%;
+        object-fit: cover;
+    }
+    .swiper-slide .content .writer {
+        position: absolute;
+        right:0;
+        bottom: 0;
+        margin-bottom: 15px;
+        margin-right: 15px;
+        color:#bdbdbd;
     }
 </style>

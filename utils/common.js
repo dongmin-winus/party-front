@@ -54,7 +54,7 @@ export default {
       return replaced;
     },
 
-    replaceWriter(target, maskLength, mask = '...') {
+    replaceText(target, maskLength, mask = '...') {
       return target.substring(0, maskLength) + mask;
     },
 

@@ -5,12 +5,12 @@
                 <div class="m-board-top">
                     <div class="left">
                         <h3 class="title">
-                            {{ item.name }}
+                            {{ replaceText(item.name, 2, '**') }}
                         </h3>
                     </div>
 
                     <div class="right">
-                        <h3 class="title" style="color:green">{{item.phone}}</h3>
+                        <h3 class="title" style="color:green">{{replaceText(item.phone,7, '****')}}</h3>
                     </div>
                 </div>
 
@@ -23,8 +23,9 @@
 </template>
 
 <script>
-
+import common from '../../utils/common.js'
 export default {
+    mixins: [common],
     props: {
         item: {
             required: true
@@ -47,7 +48,7 @@ export default {
             let date = new Date(this.item.created_at)
             return date.toISOString().replace('T',' ').replace(/\.\d{3}Z/, '');
 
-        }
+        },
     },
     methods: {
     },

@@ -42,7 +42,7 @@
               <div class="m-board gray" v-for="item in positiveList.data" :key="item.id">
                   <div class="m-board-top">
                       <div class="left">
-                        <p class="writer">{{ replaceWriter(item.user.nickname, 2, '**') }}님의 의견</p>
+                        <p class="writer">{{ replaceText(item.user.nickname, 2, '**') }}님의 의견</p>
                       </div>
                       <div class="right">
                         <p class="date">{{ item.created_at }}</p>
@@ -64,7 +64,7 @@
               <div class="m-board gray" v-for="item in negativeList.data" :key="item.id">
                 <div class="m-board-top">
                     <div class="left">
-                      <p class="writer">{{ replaceWriter(item.user.nickname, 2, '**') }}님의 의견</p>
+                      <p class="writer">{{ replaceText(item.user.nickname, 2, '**') }}님의 의견</p>
                     </div>
                     <div class="right">
                       <p class="date">{{ item.created_at }}</p>

@@ -195,7 +195,7 @@
                     <p>{{slide.comment}}</p>
                     <div class="mt-8"></div>
                     <div class="writer">
-                      {{replaceWriter(slide.user.nickname,2,"**")}}님의 의견
+                      {{replaceText(slide.user.nickname,2,"**")}}님의 의견
                     </div>
                   </div>
                 </swiper-slide>
@@ -208,7 +208,7 @@
                     <p>{{slide.comment}}</p>
                     <div class="mt-8"></div>
                     <div class="writer">
-                      {{replaceWriter(slide.user.nickname,2,"**")}}님의 의견
+                      {{replaceText(slide.user.nickname,2,"**")}}님의 의견
                     </div>
                   </div>
                 </swiper-slide>

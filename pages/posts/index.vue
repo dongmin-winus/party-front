@@ -71,7 +71,7 @@
                                 </div>
                                 <div class="right">
                                     <div class="thumbnail" :style="`background-image:url('${item.user.img.url}')`" v-if="item.user.img"></div>
-                                    <p class="writer">{{ replaceWriter(item.user.nickname) }}</p>
+                                    <p class="writer">{{ replaceText(item.user.nickname) }}</p>
                                     <p class="date">{{ item.diff_at }}</p>
                                 </div>
                             </div>
@@ -219,7 +219,7 @@ export default {
         },
 
         //item.user.nickname 을 받아서 6자 이후로는 ... 으로 처리
-        replaceWriter(content){
+        replaceText(content){
             if(content.length > 6){
                 return content.substring(0,6) + '...';
             }else{
