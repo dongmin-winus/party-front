@@ -40,7 +40,7 @@
                               <img :src="item.img.url" alt="">
                           </div>
                           <button v-if="!review_check" class="m-btn type02 width-100" @click="openEvaluateModal">의원 평가하기</button>
-                          <button v-else="review_check" class="m-btn type02 bg-grey width-100" >평가 완료</button>
+                          <button v-else="review_check" class="m-btn type02 width-100" @click="openEvaluateModal" >의원 평가 수정하기</button>
                           <div class="mt-12"></div>
                           <div class="box-name">
                               <p class="name">{{ item.korean_name }} ({{item.NAME_HAN}}) </p>
@@ -216,7 +216,7 @@
               <div class="mt-20">
                 <!-- 의원평가하기 버튼 -->
                 <button v-if="!review_check" class="m-btn type02 bg-revert-primary width-100 " @click="openEvaluateModal">의원 평가하기</button>
-                <button v-else="review_check" class="m-btn type02 bg-grey width-100" >평가 완료</button>
+                <button v-else="review_check" class="m-btn type02 bg-revert-primary width-100" >의원 평가 수정하기</button>
               </div>
             </section>
             <img src="/images/about-bg.png" alt="" class="deco-about">
@@ -235,6 +235,7 @@
             @stored="handleStored"
             :item="item"
             :options="options"
+            :userId="editModeUser"
         />
     </div>
 
@@ -364,6 +365,10 @@ export default {
             });
           }
           return badList;
+        },
+
+        editModeUser() {
+            return this.review_check ? this.$auth.user.id : 0;
         },
 
         district(){

@@ -70,6 +70,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    userId: {
+        type: Number,
+        default: 0,
+    }
   },
   mixins: [common],
   computed: {

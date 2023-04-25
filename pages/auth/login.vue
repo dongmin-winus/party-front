@@ -89,13 +89,6 @@ export default {
         }
     },
     mounted() {
-        Object.keys(Cookies.get()).forEach((cookie) => {
-            Cookies.remove(cookie);
-
-            // if (cookie.startsWith('TIARA')) {
-            //     Cookies.remove(cookie);
-            // }
-        });
 
     }
 }
