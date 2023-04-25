@@ -645,6 +645,7 @@ export default {
                 });
         },
 
+        //TODO daily-rankings 현재 처리되고 있지 않음
         rankingCount(ranking){
             if(this.form.rankingUrl === 'rankings')
                 return ranking.now_week_count;

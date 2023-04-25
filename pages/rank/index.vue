@@ -1,7 +1,6 @@
 <template>
   <div class="area-index">
       <header-type01
-          @updatePosts="updatePosts"
       />
 
       <!-- 내용 영역 -->
@@ -12,89 +11,69 @@
                         <div class="m-title type01">
                             <p class="sub">순위 현황 한 눈에 보기</p>
                             마을별 가입 <span class="point">TOP 10</span>
-                            <p style="padding: 10px;">마을 랭킹은 매주 일요일 00시부터<br />토요일 23시59분 마을 가입 수를<br />기반으로 집계되며, 매주 리셋됩니다. </p>
                         </div>
-
-                        <div class="m-tabs type04">
-
-                            <div class="m-tab-wrap">
-                                <button :class="`m-tab ${form.rankingUrl === 'rankings' ? 'active' : ''}`" @click="() => {form.rankingUrl='rankings'; getRankings(10)}">주간</button>
+                        <div class="m-input-checkboxes type01">
+                            <div class="mt-8"></div>
+                            <div class="m-input-checkbox">
+                                <input type="radio" id="1" value="total-rankings" v-model="toggleList">
+                                <label for="1">전체</label>
                             </div>
-
-                            <div class="m-tab-wrap">
-                                <button :class="`m-tab ${form.rankingUrl === 'monthly-rankings' ? 'active' : ''}`" @click="() => {form.rankingUrl='monthly-rankings'; getRankings(10)}">월별</button>
+                            <div class="m-input-checkbox">
+                                <input type="radio" id="2" value="daily-rankings" v-model="toggleList">
+                                <label for="2">일간</label>
                             </div>
-
-                            <div class="m-tab-wrap">
-                                <button :class="`m-tab ${form.rankingUrl === 'total-rankings' ? 'active' : ''}`" @click="() => {form.rankingUrl='total-rankings'; getRankings(10)}">전체</button>
+                            <div class="m-input-checkbox">
+                                <input type="radio" id="3" value="rankings" v-model="toggleList">
+                                <label for="3">주간</label>
+                            </div>
+                            <div class="m-input-checkbox">
+                                <input type="radio" id="4" value="monthly-rankings" v-model="toggleList">
+                                <label for="4">월간</label>
                             </div>
                         </div>
-
-                        <div class="rankings">
-                            <div class="ranking-wrap" v-if="districtRegisterCounts.length >= 2">
-                                <a href="#" class="ranking" @click.prevent="$store.commit('changeDistrict',  {
-                                    id: districtRegisterCounts[1].district_id,
-                                    district: districtRegisterCounts[1].district
-                                })">
-                                    <div class="img-wrap">
-                                        <img src="https://dotmzh1fysixs.cloudfront.net/1017/2st.png" width="100%" alt="">
-                                    </div>
-
-                                    <div class="fragment">
-                                        <p class="subtitle">{{ districtRegisterCounts[1].district }}</p>
-                                        <h3 class="title">
-                                            <span class="point">2</span>위
-                                        </h3>
-                                        <p class="more">{{ rankingCount(districtRegisterCounts[1]) }}
-                                            <span class="tri" v-if="rankingCount(districtRegisterCounts[1]) == 0">−</span>
-                                            <!-- <span class="tri" v-else-if="districtRegisterCounts[1].up_down === 'down'">▼</span> -->
-                                            <span class="tri" v-else>▲</span>
-                                        </p>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="ranking-wrap first" v-if="districtRegisterCounts.length >= 1">
-                                <div class="ranking" @click="$store.commit('changeDistrict',  {
-                                    id: districtRegisterCounts[0].district_id,
-                                    district: districtRegisterCounts[0].district
-                                })">
-                                    <div class="img-wrap">
-                                        <img src="https://dotmzh1fysixs.cloudfront.net/1016/crown.png" width="20px" alt="" class="deco">
-                                        <img src="https://dotmzh1fysixs.cloudfront.net/1015/1st.png" width="100px" alt="" class="img">
-                                    </div>
-
-                                    <div class="fragment">
-                                        <p class="subtitle">{{ districtRegisterCounts[0].district }}</p>
-                                        <h3 class="title">
-                                            <span class="point">1</span>위
-                                        </h3>
-                                        <p class="more">{{ rankingCount(districtRegisterCounts[0]) }}
-                                            <span class="tri" v-if="rankingCount(districtRegisterCounts[0]) == 0">−</span>
-                                           <!-- <span class="tri" v-else-if="districtRegisterCounts[0].up_down === 'down'">▼</span> -->
-                                            <span class="tri" v-else>▲</span>
-                                        </p>
-                                    </div>
+                        <div class="mt-8"></div>
+                        <div class="time-container">
+                            <div class="left"></div>
+                            <div class="right">
+                                <div class="time">
+                                    {{ guideText }} 기준
+                                </div>
+                                <div class="icon-container" >
+                                    <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path opacity="0.2" d="M18.1828 9.87501C18.1828 11.5181 17.6955 13.1243 16.7827 14.4905C15.8698 15.8567 14.5723 16.9215 13.0543 17.5503C11.5363 18.1791 9.86586 18.3436 8.25433 18.0231C6.64279 17.7025 5.1625 16.9113 4.00065 15.7494C2.8388 14.5876 2.04757 13.1073 1.72702 11.4958C1.40646 9.88423 1.57098 8.21383 2.19977 6.6958C2.82856 5.17777 3.89338 3.88028 5.25957 2.96742C6.62576 2.05456 8.23197 1.56732 9.87508 1.56732C12.0784 1.56732 14.1915 2.44259 15.7495 4.00059C17.3075 5.55858 18.1828 7.67168 18.1828 9.87501Z" fill="#777777"/>
+                                        <path d="M9.875 0.875C8.09497 0.875 6.35491 1.40284 4.87487 2.39177C3.39483 3.38071 2.24128 4.78631 1.56009 6.43085C0.8789 8.07538 0.70067 9.88498 1.04794 11.6308C1.3952 13.3766 2.25237 14.9803 3.51104 16.239C4.76971 17.4976 6.37336 18.3548 8.11919 18.7021C9.86502 19.0493 11.6746 18.8711 13.3192 18.1899C14.9637 17.5087 16.3693 16.3552 17.3582 14.8751C18.3472 13.3951 18.875 11.655 18.875 9.875C18.8725 7.48882 17.9235 5.2011 16.2362 3.51382C14.5489 1.82654 12.2612 0.87752 9.875 0.875ZM9.875 17.4904C8.36882 17.4904 6.89646 17.0437 5.64412 16.207C4.39178 15.3702 3.4157 14.1808 2.83931 12.7893C2.26292 11.3977 2.11211 9.86655 2.40595 8.38931C2.69979 6.91207 3.42508 5.55514 4.49011 4.49011C5.55514 3.42508 6.91208 2.69978 8.38931 2.40594C9.86655 2.1121 11.3978 2.26291 12.7893 2.8393C14.1808 3.41569 15.3702 4.39177 16.207 5.64412C17.0438 6.89646 17.4904 8.36882 17.4904 9.875C17.4881 11.894 16.685 13.8297 15.2574 15.2574C13.8297 16.685 11.894 17.4881 9.875 17.4904ZM9.18269 10.5673V5.72115C9.18269 5.53754 9.25563 5.36145 9.38547 5.23162C9.5153 5.10178 9.69139 5.02885 9.875 5.02885C10.0586 5.02885 10.2347 5.10178 10.3645 5.23162C10.4944 5.36145 10.5673 5.53754 10.5673 5.72115V10.5673C10.5673 10.7509 10.4944 10.927 10.3645 11.0568C10.2347 11.1867 10.0586 11.2596 9.875 11.2596C9.69139 11.2596 9.5153 11.1867 9.38547 11.0568C9.25563 10.927 9.18269 10.7509 9.18269 10.5673ZM10.9135 13.6827C10.9135 13.8881 10.8526 14.0889 10.7385 14.2596C10.6243 14.4304 10.4622 14.5635 10.2724 14.6421C10.0826 14.7207 9.87385 14.7413 9.67241 14.7012C9.47097 14.6611 9.28593 14.5622 9.1407 14.417C8.99547 14.2718 8.89656 14.0867 8.85649 13.8853C8.81642 13.6838 8.83699 13.475 8.91559 13.2853C8.99419 13.0955 9.12729 12.9333 9.29806 12.8192C9.46884 12.7051 9.66961 12.6442 9.875 12.6442C10.1504 12.6442 10.4146 12.7536 10.6093 12.9484C10.8041 13.1431 10.9135 13.4073 10.9135 13.6827Z" fill="#777777"/>
+                                    </svg>
                                 </div>
                             </div>
-                            <div class="ranking-wrap" v-if="districtRegisterCounts.length >= 3">
-                                <div class="ranking"  @click="$store.commit('changeDistrict',  {
-                                    id: districtRegisterCounts[2].district_id,
-                                    district: districtRegisterCounts[2].district
-                                })">
+                        </div>
+                        <div class="mt-32"></div>
+                        <div class="rankings">
+                            <div class="ranking-wrap" 
+                                v-if="districtRegisterCounts.length >= 1"
+                                v-for="(rank,index) in uptoThreeDistrictRegisterCounts" :key="rank.district_id"
+                            >
+                                <div class="ranking" 
+                                    @click="changeDistrictInRanking({
+                                        id: districtRegisterCounts[index].district_id,
+                                        district: districtRegisterCounts[index].district
+                                    })"
+                                >
                                     <div class="img-wrap">
-                                        <img src="https://dotmzh1fysixs.cloudfront.net/1014/3st.png" width="100%" alt="">
+                                        <img src="https://dotmzh1fysixs.cloudfront.net/1016/crown.png" width="20px" alt="" class="deco">
+                                        <img :src="`images/rankings/${index+1}.png`" width="100px" alt="" class="img-rect">
+                                        <div class="more">
+                                            <span class="zero" v-if="rankingCount(districtRegisterCounts[index]) == 0">−</span>
+                                            <template  v-else>
+                                                <span class="tri">▲</span>&nbsp;<span style="color:#DC2626"> {{ rankingCount(districtRegisterCounts[index])}} </span>
+                                            </template>
+                                        </div>
                                     </div>
 
                                     <div class="fragment">
-                                        <p class="subtitle">{{ districtRegisterCounts[2].district }}</p>
+                                        <p class="subtitle">{{ districtRegisterCounts[index].district }}</p>
                                         <h3 class="title">
-                                            <span class="point">3</span>위
+                                            <span class="point">{{ index+1 }}</span>위
                                         </h3>
-                                        <p class="more">{{ rankingCount(districtRegisterCounts[2]) }}
-                                            <span class="tri" v-if="rankingCount(districtRegisterCounts[2]) == 0">−</span>
-                                           <!-- <span class="tri" v-else-if="districtRegisterCounts[2].up_down === 'down'">▼</span> -->
-                                            <span class="tri" v-else>▲</span>
-                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -136,7 +115,7 @@
               </a>
           </section>
 
-                      <quicks 
+            <quicks 
                 :createUrl="'/posts/create'"
                 :btnName="'글쓰기'"
             />
@@ -153,11 +132,13 @@ export default {
     data() {
         return {
             activeFinder:false,
+            toggleList: 'total-rankings',
+            guideText: '',
             container:{},
             form: {
                 district_id: "",
                 district: "",
-                rankingUrl: "rankings",
+                rankingUrl: "total-rankings",
             },
             registerRates: {
                 population: 0,
@@ -170,6 +151,14 @@ export default {
             ],
         }
     },
+    computed: {
+        district(){
+            return this.$store.state.district;
+        },
+        uptoThreeDistrictRegisterCounts() {
+            return this.districtRegisterCounts.slice(0,3);
+        }
+    },
     methods: {
 
         search() {
@@ -177,7 +166,7 @@ export default {
                 return;
             }
             this.$store.commit("changeDistrict", this.form.district);
-            this.updatePosts(this.district.id);
+            // this.updatePosts(this.district.id);
             window.scrollTo(0,0);
             this.container = {};
         },
@@ -188,7 +177,6 @@ export default {
         getRankings(count){
             this.$axios.get("/api/" + this.form.rankingUrl + "/100")
                 .then(response => {
-                    console.log(response.data.districtRegisterCounts);
                     this.districtRegisterCounts = response.data.districtRegisterCounts;
                 });
         },
@@ -205,14 +193,27 @@ export default {
 
             return "-";
         },
-    },
-
-    computed: {
-        district(){
-            return this.$store.state.district;
+        switchRankGuide(toggleList) {
+            let guideText = '';
+            switch(toggleList) {
+                case 'daily-rankings':
+                    guideText = '전일';
+                    break;
+                case 'rankings':
+                    guideText = '전주 토요일 00:00 ~ 일요일 23:59';
+                    break;
+                case 'monthly-rankings':
+                    guideText = '매월 1회 (전달 1일부터 말일)';
+                    break;
+                case 'total-rankings':
+                    guideText = '총 누적';
+                    break;
+            }
+            this.guideText = guideText;
         },
-
     },
+
+
 
     watch: {
         district (newCount, oldCount) {
@@ -227,11 +228,17 @@ export default {
         "form.district"() {
             if(this.container.district)
                 this.search()
-        }
+        },
+        toggleList(value) {
+            this.form.rankingUrl = value;
+            this.switchRankGuide(value);
+            this.getRankings(100);
+        },
 
     },
 
     async mounted() {
+        this.switchRankGuide('total-rankings');
         this.getRankings(100);
 
         if(this.district.id != 0)
@@ -247,5 +254,23 @@ export default {
 <style scoped>
     .fragment .subtitle {
         font-size: 1.2em !important;
+    }
+    .time-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    .time-container .right {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        
+    }
+    .right .time {
+        font-size: 18px;
+        font-weight: 300;
+        color: #888888;
+        padding-right:10px;
     }
 </style>
