@@ -125,6 +125,7 @@ export default {
                 gender: this.$auth.user.gender,
                 // referrer: this.$auth.user.referrer,
                 district_id: this.$auth.user.district.id,
+                old_district_id: '',
             },
             errors: {},
         }
@@ -160,7 +161,7 @@ export default {
     },
 
     mounted() {
-
+        this.form.old_district_id = this.$auth.user.district.id;
     }
 }
 </script>
