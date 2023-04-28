@@ -28,7 +28,11 @@ export default {
     },
     computed: {
         profileImage() {
-            return this.imgUrl? this.imgUrl: this.$auth.user.img.url;
+            return this.imgUrl? 
+                    this.imgUrl: 
+                    this.$auth.user.img? 
+                        this.$auth.user.img.url: 
+                        '/images/profile_sample-preview.jpg';
         },
         isDefaultImage() {
           const regex = /\/([^\/]+)$/; // 슬래시 이후의 문자열을 그룹화
