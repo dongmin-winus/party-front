@@ -77,6 +77,10 @@
                   <div v-else class="rotate">{{item.day}}</div> 
                 </div>
               </div>
+              <div class="mt-12"></div>
+              <div class="m-title type03">
+                <span class="point">출석 체크</span> 또는<br> 응원의 <span class="point">댓글</span>을 적어주세요
+              </div>
             </div>
           </div>
         </section>
@@ -374,7 +378,7 @@ export default {
     margin:0px 15px 30px 15px;
     background:#fff; border-radius:5px;
     text-align: center;
-    min-height: 100vh;
+    min-height: 90vh;
     box-shadow: 12px 25px 50px -12px rgba(0, 0, 0, 0.25);
 
 }

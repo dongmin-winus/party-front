@@ -1060,6 +1060,13 @@ html {
     font-size:22px; font-weight:bold;
 }
 
+.m-title.type03 {
+    font-size:25px; font-weight:bold; font-family: "GmarketSans";
+}
+.m-title.type03 .point {
+    font-size:25px; font-weight:bold; font-family: "GmarketSans"; color:#0BAF00;
+}
+
 .m-items.type01 {
 
 }
