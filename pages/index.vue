@@ -192,10 +192,10 @@
                                 <input type="radio" id="1" value="total-rankings" v-model="toggleList">
                                 <label for="1">전체</label>
                             </div>
-                            <div class="m-input-checkbox">
+                            <!-- <div class="m-input-checkbox">
                                 <input type="radio" id="2" value="daily-rankings" v-model="toggleList">
                                 <label for="2">일간</label>
-                            </div>
+                            </div> -->
                             <div class="m-input-checkbox">
                                 <input type="radio" id="3" value="rankings" v-model="toggleList">
                                 <label for="3">주간</label>
