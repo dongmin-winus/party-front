@@ -88,6 +88,25 @@
         </div>
     </div>
     <navigation />
+    <transition name="bounce">
+      <modal
+        v-if="activateModal"
+        :noPaddingModal="true"
+        :paddingModal="false"
+        :cancelBtn="false"
+        @cancel="activateModal = false"
+      >
+        <template #outter>
+          <div class="attendance-modal">
+            <img src="/images/attendance_congrats.jpeg" alt="" class="modal-content">
+          </div>
+          <div class="btn-container">
+            <button class="btn" @click="activateModal = false">닫기</button>
+          </div>
+        </template>
+      </modal>
+    </transition>
+    
   </div>
 </template>
 
@@ -105,6 +124,8 @@ export default {
       stampInfo: [],  // 출석도장 정보
       currentMonthLastDay: null,  // 현재 달의 마지막 날
       hasStamped: false, // 출석도장을 찍었는지 여부
+      stampReward: 0, // 출석도장 선물대상인지 여부 (1이면 대상)
+      activateModal: false,
     }
   },
   async asyncData({ $axios }) {
@@ -176,8 +197,7 @@ export default {
       }
       this.makeStampInfo();
       if(this.stampReward) {
-        //TODO 선물 모달 컴포넌트 제작
-        alert('출석도장 선물을 받았습니다.')
+        this.activateModal = true;
       }else {
         alert('출석도장을 찍었습니다.')
       }
@@ -272,7 +292,8 @@ export default {
     // await this.getStamp();
     this.getCurrentMonthLastDay();
     this.makeStampInfo();
-    //TODO 서버에서 선물이 있는 날, 출석도장을 찍은 날짜들의 수를 받아온다.
+    //TODO remove after showing
+    this.activateModal = true;
   },
 }
 </script>
@@ -411,5 +432,42 @@ export default {
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
   padding: 10px;
   margin: 5px;
+}
+.btn-container {
+    display: flex;
+    width:100%;
+    justify-content: center;
+    align-content: center;
+}
+.btn-container .btn {
+    flex:1;
+    height:60px;
+    font-size:20px;
+    border: 1px solid #e6e6e6;
+}
+.attendance-modal {
+        height:300px;
+    }
+.attendance-modal .modal-content {
+    width:100%;
+    height:100%;
+}
+
+.bounce-enter-active {
+  animation: bounce-in 0.5s;
+}
+.bounce-leave-active {
+  animation: bounce-in 0.5s reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0.5);
+  }
+  50% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 </style>
