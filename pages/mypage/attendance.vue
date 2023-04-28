@@ -80,13 +80,23 @@
             </div>
           </div>
         </section>
+        <div class="mt-12"></div>
+        <div class="comments-wrap">
+          <div class="rounded">
+            <attendance-comments :commentable_id="1" :commentable_type="`attendance`"/>
+          </div>
+        </div>
     </div>
     <navigation />
   </div>
 </template>
 
 <script>
+import AttendanceComments from '../../components/attendanceComments/AttendanceComments.vue';
 export default {
+  components: {
+    AttendanceComments,
+  },
   data() {
     return {
       // giftDays: [3, 7, 12, 19, 24, 28,], // 선물이 있는 날 (서버에서 받아옴)
@@ -107,6 +117,7 @@ export default {
           stampedDays: response.data.stampedDays,
           hasStamped: response.data.hasStamped,
           giftDays: response.data.giftDays.map(item => Number(item)),
+          stampReward: response.data.stampReward,
         }
       }
     } catch (error) {
@@ -164,7 +175,12 @@ export default {
         console.log(error);
       }
       this.makeStampInfo();
-      alert('출석도장을 찍었습니다.')
+      if(this.stampReward) {
+        //TODO 선물 모달 컴포넌트 제작
+        alert('출석도장 선물을 받았습니다.')
+      }else {
+        alert('출석도장을 찍었습니다.')
+      }
     },
     /**
      * 출석도장을 찍을 수 있는지 여부를 반환한다.
@@ -386,5 +402,14 @@ export default {
   opacity: 0.3;
 
 }
-
+.comments-wrap {
+  padding: 5px;
+}
+.comments-wrap .rounded {
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  margin: 5px;
+}
 </style>

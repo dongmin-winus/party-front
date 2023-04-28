@@ -1,5 +1,5 @@
 <template>
-  <div style="padding-top:3px padding-left:3px">
+  <div class="icon-container">
       <svg width="33" height="30" viewBox="0 0 36 30" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clip-path="url(#clip0_2_683)">
 <path d="M16.2881 28.7642C7.98261 28.7642 1.22278 22.5902 1.22278 14.9975C1.22278 7.40484 7.98261 1.23578 16.2881 1.23578C24.5936 1.23578 31.3534 7.40978 31.3534 15.0025C31.3534 22.5951 24.5936 28.7691 16.2881 28.7691V28.7642Z" fill="#0BAF00"/>
@@ -26,6 +26,12 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.icon-container {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
 
+    margin-left:5px;
+}
 </style>
