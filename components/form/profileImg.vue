@@ -4,7 +4,7 @@
 
         <div :class="`img-wrap ${file || imgUrl ? 'active' : ''}`">
             <img :src="fileImgUrl" alt="" v-if="fileImgUrl">
-            <img :src="imgUrl" alt="" v-else-if="imgUrl">
+            <img :src="imgUrl" alt="" v-else-if="imgUrl && imgUrl !== '/images/profile_sample-preview.jpg'">
             <img src="/images/picturePlus.png" alt="" style="width:17px;" v-else>
         </div>
         <div class="mt-8"></div>
