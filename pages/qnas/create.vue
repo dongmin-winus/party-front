@@ -26,11 +26,17 @@
 
                 <div class="m-input-error" v-if="errors.title">{{errors.title[0]}}</div>
 
-                <div contenteditable="true" placeholder="글을 입력해주세요" class="m-editor type01" ref="content"></div>
+                <div contenteditable="true" placeholder="글을 입력해주세요" class="m-editor type02" ref="content"></div>
 
                 <div class="m-input-error" v-if="errors.content">{{errors.content[0]}}</div>
 
                 <div class="mt-40"></div>
+
+                <div class="notice-container">
+                    <ul>
+                        <li v-for="item in noticeItems">{{ item }}</li>
+                    </ul>
+                </div>
             </div>
         </div>
 
@@ -79,6 +85,14 @@ export default {
             errors: {},
 
             activeLinkPop: false,
+
+            noticeItems :[
+                '고객센터 운영시간은 10:00 ~ 18:00 입니다.',
+                '답변에는 시간이 소요됩니다. 조금만 기다려주세요.',
+                '문의내용을 자세하게 남겨주시면 빠른 답변에 도움이 됩니다.',
+                '산업안전보건법에 따라 고객응대 근로자 보호조치를 하고 있으며 모든 문의는 기록으로 남습니다.',
+                '문의하기 버튼을 누르시면 개인정보 수집 이용동의서에 동의하신 것으로 간주합니다.'
+            ]
         }
     },
     methods: {
@@ -156,5 +170,19 @@ export default {
 </script>
 
 <style scoped>
+    .notice-container {
+        /* background-color: cyan; */
+        min-height: 100px;
 
+        border-top: 1px solid rgb(221, 221, 221);
+
+        color: rgb(119, 119, 119);
+
+        padding-top: 10px;        
+        padding-left: 20px;
+    }
+    .notice-container li {
+        list-style: disc;
+        color: rgb(119, 119, 119);
+    }
 </style>

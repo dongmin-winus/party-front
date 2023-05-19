@@ -6,7 +6,33 @@ class KakaoHelper {
         this.domain = "https://jayuvillage.com";
     }
 
-    initSharePost(item, container= "#kakao"){
+    shareQna(item, container = "#kakao") {
+        this.kakao.Link.createDefaultButton({
+            container: container,
+            objectType: 'feed',
+            content: {
+                title: item.title,
+                description: '',
+                imageUrl:
+                    '',
+                link: {
+                    mobileWebUrl: `${this.domain}/qnas`,
+                    webUrl: `${this.domain}/qunas`,
+                },
+            },
+            buttons: [
+                {
+                    title: '보러가기',
+                    link: {
+                        mobileWebUrl: `${this.domain}/qnas`,
+                        webUrl: `${this.domain}/qnas}`,
+                    },
+                },
+            ],
+        })
+    }
+
+    initSharePost(item, container = "#kakao") {
         this.kakao.Link.createDefaultButton({
             container: container,
             objectType: 'feed',
@@ -32,7 +58,7 @@ class KakaoHelper {
         })
     }
 
-    sharePost(item){
+    sharePost(item) {
         this.kakao.Link.sendDefault({
             objectType: 'feed',
             content: {
@@ -57,7 +83,7 @@ class KakaoHelper {
         })
     }
 
-    shareScrap(item){
+    shareScrap(item) {
         this.kakao.Link.sendDefault({
             objectType: 'feed',
             content: {
@@ -82,7 +108,7 @@ class KakaoHelper {
         })
     }
 
-    shareScrapItem(item){
+    shareScrapItem(item) {
         this.kakao.Link.sendDefault({
             objectType: 'feed',
             content: {
@@ -107,14 +133,14 @@ class KakaoHelper {
         })
     }
 
-    shareScrapItems(items, nickname){
-        if(items.length === 0)
+    shareScrapItems(items, nickname) {
+        if (items.length === 0)
             return alert("최소 1개 이상의 게시글을 선택해주세요.");
 
-        if(items.length === 1)
+        if (items.length === 1)
             return this.shareScrapItem(items[0]);
 
-        if(items.length > 3)
+        if (items.length > 3)
             return alert("최대 3개의 게시글만 공유 가능합니다.");
 
         let contents = items.map(item => {
@@ -149,6 +175,7 @@ class KakaoHelper {
             ],*/
         })
     }
+
 }
 
 export default KakaoHelper;

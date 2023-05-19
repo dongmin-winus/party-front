@@ -20,6 +20,13 @@ html {
     padding:20px 0;
     outline:none;
 }
+
+.m-editor.type02 {
+    min-height:350px;
+    padding:20px 0;
+    outline:none;
+    overflow-y:auto;
+}
 .m-editor.type01 a {
     font-weight:bold; text-decoration: underline;
 }
