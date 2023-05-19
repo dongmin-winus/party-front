@@ -1,115 +1,277 @@
 <template>
-    <div class="area-my-boards">
-        <!-- 헤더영역 -->
-        <div class="m-header type02">
-            <div class="wrap">
-                <div class="left">
-                    <button class="btn-util" @click="$router.back()">
-                        <img src="/images/back.png" alt="" style="width:10px;">
-                    </button>
-                </div>
+  <div class="area-my-boards">
+      <!-- 헤더영역 -->
+      <div class="m-header type02">
+          <div class="wrap">
+              <div class="left">
+                  <button class="btn-util" @click="$router.back()">
+                      <img src="/images/back.png" alt="" style="width:10px;">
+                  </button>
+              </div>
 
-                <div class="center">
-                    <h3 class="title">고객센터</h3>
-                </div>
+              <div class="center">
+                  <h3 class="title">고객센터</h3>
+              </div>
 
-                <div class="right"></div>
+              <div class="right">
+                <button class="btn-util" id="kakao" @click="share">
+                      <img src="/images/qua_share.png" alt="" style="width:20px;">
+                  </button>
+              </div>
+          </div>
+      </div>
+
+      <!-- 내용 영역 -->
+      <div class="container">
+          <!-- <div class="notice-container" v-if="mockNoticeItem.data"> -->
+          <div class="notice-container" v-if="noticeItems.data.length > 0">
+            <div class="left">
+              <span class="point">공지</span> &nbsp;
+              <!-- <span> {{ mockNoticeItem.data[0].title }}</span> -->
+              <span> {{ noticeItems.data[0].title }}</span>
             </div>
-        </div>
+            <div class="right">
+              <img src="/images/arrowRight-gray.png" alt="">
+            </div>
+          </div>
 
-        <!-- 내용 영역 -->
-        <div class="container">
+          <div class="mt-32"></div>
+          <div class="wrap">
+            <div class="title-container">
+              <div class="left">
+                <p style="font-size:26px" v-if="$auth.user">{{ $auth.user.name }}님,</p>
+                <p style="font-size:20px; font-weight:300; color:rgba(110, 108, 108, 0.752)">
+                  궁금한 점이 있으시다면
+                  <br/>언제든지 문의주세요
+                </p>
+              </div>
+              <div class="right">
+                <nuxt-link to="/qnas/list" class="my-list">내 문의</nuxt-link>
+              </div>
+            </div>
+
+
             <div class="mt-32"></div>
-
-            <div class="wrap">
-<!--                <div class="m-tabs type03">
-                    <a href="#" class="m-tab active" @click.prevent="">내가 쓴 게시글</a>
-                    <nuxt-link to="/mypage/comments" class="m-tab">내가 쓴 댓글</nuxt-link>
-                </div>-->
-
-                <div class="mt-12">
-                    우측 하단 질문하기 버튼을 클릭하여 문의글을 남기세요. 빠른시간내에 답변드립니다. 
-                </div>
-
-                <div class="m-boards type02">
-                    <qna v-for="item in items.data" :key="item.id" :item="item" @removed="removed"/>
-                </div>
+            <div class="gray-container">
+              <div>
+                <p>자유마을 고객센터</p>
+              </div>
+              <div>
+                <p style="font-size:26px;">1577-4166</p>
+                <p style="font-weight:300; color:rgba(110, 108, 108, 0.752)">평일 09:00 ~ 18:00</p>
+              </div>
             </div>
 
-            <scroll-loading @load="loadMore" v-if="items.links.next" />
-        </div>
+            <div class="mt-8"></div>
+            <div class="img-button-container">
+              <nuxt-link to="/qnas/create" class="border-rounded">
+                <img src="/images/qna_post.png" alt="">
+                <div class="mt-8"></div>
+                <p style="font-size:20px;">온라인 문의</p>
+                <p style="font-weight:300; color:rgba(110, 108, 108, 0.752)">1:1 문의하기</p>
+              </nuxt-link>
+              <a class="border-rounded" href="tel:1577-4166">
+                  <img src="/images/qna_tell.png" alt="">
+                  <div class="mt-8"></div>
+                  <p style="font-size:20px;">고객센터</p>
+                  <p style="font-weight:300; color:rgba(110, 108, 108, 0.752)">상담원 전화 상담</p>
+              </a>
+            </div>
 
-        <div class="m-quicks type01">
-            <nuxt-link to="/qnas/create" class="m-quick">질문하기</nuxt-link>
-        </div>
+            <div class="mt-32"></div>
+            <p style="font-size:22px; padding-bottom:5px; border-bottom:1px solid black">자주 묻는 질문</p>
+            <accordion>
+              <accordion-item v-for="item in faqs">
+                <template slot="accordion-trigger">
+                  <div class="inner">
+                    <div style="margin-right:10px;">
+                      <span style="color:#0BAF00">Q</span>
+                    </div>
+                    <div>
+                      <p>{{ item.title }}</p>
+                    </div>
+                  </div>
 
-        <!-- 하단 네비게이션바 -->
-        <navigation />
-    </div>
+                </template>
+                <template slot="accordion-content">
+                  <div class="inner">
+                    <div style="margin-right:10px;">
+                      <span style="color:#0BAF00">A</span>
+                    </div>
+                    <div>
+                      <p>{{ item.content }}</p>
+                    </div>
+                  </div>
+                </template>
+              </accordion-item>
+            </accordion>
+          </div>
+      </div>
+      <!-- 하단 네비게이션바 -->
+      <navigation />
+  </div>
 </template>
 
 <script>
-import Form from "@/utils/Form";
 import Post from "@/components/mypage/post";
 import ScrollLoading from "../../components/scrollLoading";
 import Navigation from "../../components/navigation";
 import Qna from "../../components/qna";
 
+
+import KakaoHelper from '../../utils/KakaoHelper';
+
+import accordion from '@/components/accordion.vue';
+import accordionItem from '@/components/accordionItem.vue'
+
+
 export default {
-    components: {Qna, Navigation, ScrollLoading, Post},
-    auth: true,
-    data() {
-        return {
-            form: {
-                page: 1,
+  components: {Qna, Navigation, ScrollLoading, Post ,accordion, accordionItem},
+  auth: false,
+  data() {
+      return {
+          form: {
+              page: 1,
+              started_at: "",
+              finished_at: "",
+              orderBy: "created_at",
+              district_id: this.$store.state.district ? this.$store.state.district.id : "",
+          },
+
+          mockNoticeItem: {
+            data: [
+              {title: '자유마을 서비스 점검 일정 안내드려요. (4월 27일 목요일 새벽 3시~4시)'}
+            ]
+          },
+
+          noticeItems: {
+              data: [],
+              links: {
+
+              }
+          },
+          // example data
+          faqs: [
+            {
+              title:'우리동네가 자유마을 사이트에 없어요. ( __동이 없어요. 추가해주세요.)',
+              content:'현재 자유마을은 2022년 12월 기준 으로 행정복지센터가 있는 읍면동만 반영이 된 상태입니다. 읍면동 추가 건은 논의 중에 있어서 추후에 확정되면 공지드리겠습니다. 감사합니다.'
             },
+            {
+              title: '한참 전에 서명지를 냈는데 사 이트에는 반영되지 않았어요.',
+              content: '현재 자유마을은 2022년 12월 기준 으로 행정복지센터가 있는 읍면동만 반영이 된 상태입니다. 읍면동 추가 건은 논의 중에 있어서 추후에 확정되면 공지드리겠습니다. 감사합니다.'
+            },
+            {
+              title: '홈페이지에 마을임원이 다른 사람/다른 번호가 올라가 있어요.',
+              content: '현재 자유마을은 2022년 12월 기준 으로 행정복지센터가 있는 읍면동만 반영이 된 상태입니다. 읍면동 추가 건은 논의 중에 있어서 추후에 확정되면 공지드리겠습니다. 감사합니다.'
+            },
+            {
+              title:'우리동네가 자유마을 사이트에 없어요. ( __동이 없어요. 추가해주세요.)',
+              content:'현재 자유마을은 2022년 12월 기준 으로 행정복지센터가 있는 읍면동만 반영이 된 상태입니다. 읍면동 추가 건은 논의 중에 있어서 추후에 확정되면 공지드리겠습니다. 감사합니다.'
+            },
+            {
+              title: '한참 전에 서명지를 냈는데 사 이트에는 반영되지 않았어요.',
+              content: '현재 자유마을은 2022년 12월 기준 으로 행정복지센터가 있는 읍면동만 반영이 된 상태입니다. 읍면동 추가 건은 논의 중에 있어서 추후에 확정되면 공지드리겠습니다. 감사합니다.'
+            },
+            {
+              title: '홈페이지에 마을임원이 다른 사람/다른 번호가 올라가 있어요.',
+              content: '현재 자유마을은 2022년 12월 기준 으로 행정복지센터가 있는 읍면동만 반영이 된 상태입니다. 읍면동 추가 건은 논의 중에 있어서 추후에 확정되면 공지드리겠습니다. 감사합니다.'
+            },
+          ]
+      }
+  },
+  methods: {
+      getNoticeItems(){
+          this.form.page = 1;
 
-            items: {
-                data: [],
-                links: {
+          this.$axios.get("/api/notices", {
+              params: this.form
+          }).then(response => {
+              this.noticeItems = response.data;
+          });
+      },
+      getFaqs() {
+        this.$axios.get("/api/manager_qnas").then((response) => {
+          this.faqs = response.data.data;
+        });
+      },
 
-                }
-            }
 
+      share() {
+        let kakaoHelper = new KakaoHelper(Kakao);
+
+        const item = {
+          title: '자유마을 고객센터'
         }
-    },
-    methods: {
-        loadMore() {
-            if(this.items.meta.current_page <= this.items.meta.last_page){
-                this.form.page += 1;
 
-                this.$axios.get("/api/qnas", {
-                    params: this.form
-                }).then(response => {
-                    this.items = {
-                        ...response.data,
-                        data: [...this.items.data, ...response.data.data]
-                    };
-                });
-            }
-        },
+        kakaoHelper.shareQna(item);
+      }
+  },
 
-        getItems(){
-            this.form.page = 1;
-
-            this.$axios.get("/api/qnas")
-                .then(response => {
-                    this.items = response.data;
-                });
-        },
-
-        removed(){
-            this.getItems();
-            // this.items.data = this.items.data.filter(itemData => itemData.id != item.id);
-        }
-    },
-
-    mounted() {
-        this.getItems();
-    }
+  async mounted() {
+      this.getNoticeItems();
+      this.getFaqs();
+  },
 }
 </script>
 
 <style scoped>
+  .notice-container {
+    background-color: rgb(255, 239, 239);
+    padding: 15px;
 
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .notice-container .right img {
+    width: 10px;
+    height: 20px;
+  }
+  .notice-container .point {
+    color: red;
+  }
+  .title-container {
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .title-container .my-list {
+    background-color: #0BAF00;
+    color: white;
+    border-radius: 5px;
+    font-size: 22px;
+    padding: 10px 20px;
+  }
+  .gray-container {
+    border-radius: 5px;
+    background-color: #F5F5F5;
+    padding: 20px;
+    display:flex;
+    justify-content: space-between;
+    align-items: baseline;
+
+  }
+
+  .img-button-container {
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .border-rounded {
+    border-radius: 5px;
+    border: 1px solid rgba(212, 207, 207, 0.985);
+    width: 49%;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .inner {
+    display: flex;
+    justify-content: space-between;
+  }
 </style>
