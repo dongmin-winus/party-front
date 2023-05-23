@@ -39,6 +39,11 @@ export default {
       // Check if the day is a valid number for the given month and year
       const twenieMaxDay = new Date(year + 1900, month, 0).getDate();
       const twenieOneMaxDay = new Date(year + 2000, month, 0).getDate();
+
+      //윤년 패스
+      if (month == 2 && day == 29) {
+        return true;
+      }
       if (day < 1 || (day > twenieMaxDay || day > twenieOneMaxDay)) {
         return false;
       }
@@ -91,7 +96,6 @@ export default {
       }
       return acc;
     },
-
     convertObjByValueAsc(obj) {
       const arr = Object.entries(obj) // 객체를 [key, value] 배열의 배열로 변환
         .sort((a, b) => a[1] - b[1]) // value 값을 기준으로 내림차순 정렬
