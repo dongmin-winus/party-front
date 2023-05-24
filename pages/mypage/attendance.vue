@@ -120,6 +120,13 @@ export default {
   components: {
     AttendanceComments,
   },
+  computed: {
+    isLastDayOfMonth() {
+      const date = new Date();
+      const day = date.getDate();
+      return day == this.currentMonthLastDay;
+    }
+  },
   data() {
     return {
       // giftDays: [3, 7, 12, 19, 24, 28,], // 선물이 있는 날 (서버에서 받아옴)
@@ -132,7 +139,7 @@ export default {
       activateModal: false,
     }
   },
-  async asyncData({ $axios }) {
+  async asyncData({ $axios, redirect }) {
     // ### 도장확인
     // GET /api/stamps
     try {
@@ -146,10 +153,8 @@ export default {
         }
       }
     } catch (error) {
-      console.log(error);
-      //로드 중 문제가 발생했다 알리며 마이페이지로 라우팅
       alert('로드 중 문제가 발생했습니다.');
-      this.$router.push('/mypage');
+      redirect('/mypage');
     }
   },
   methods: {
@@ -200,7 +205,7 @@ export default {
         console.log(error);
       }
       this.makeStampInfo();
-      if(this.stampReward) {
+      if(this.stampReward && isLastDayOfMonth) {
         this.activateModal = true;
       }else {
         alert('출석도장을 찍었습니다.')
@@ -296,8 +301,6 @@ export default {
     // await this.getStamp();
     this.getCurrentMonthLastDay();
     this.makeStampInfo();
-    //TODO remove after showing
-    this.activateModal = true;
   },
 }
 </script>
