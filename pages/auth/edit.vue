@@ -40,6 +40,25 @@
 
                         <p class="m-input-error" v-if="errors.birth" v-text="errors.birth[0]"></p>
                     </div>
+                    <div class="mt-16"></div>
+                    <div class="m-input-wrap">
+                        <h3 class="m-input-title type01">비밀번호 변경</h3>
+
+                        <div class="m-input-text type01">
+                            <input type="password" v-model="form.new_password">
+                        </div>
+
+                    </div>
+                    <div class="mt-16"></div>
+                    <div class="m-input-wrap">
+                        <h3 class="m-input-title type01">비밀번호 확인</h3>
+
+                        <div class="m-input-text type01">
+                            <input type="password" v-model="passwordRepeat">
+                            <p :class="validPasswordClass">{{ validatePassword }}</p>
+                        </div>
+
+                    </div>
 
                     <div class="mt-16"></div>
 
@@ -126,12 +145,19 @@ export default {
                 // referrer: this.$auth.user.referrer,
                 district_id: this.$auth.user.district.id,
                 old_district_id: '',
+                new_password: null,
             },
+            passwordCheck: false,
+            passwordRepeat: '',
+            validPasswordClass: 'invalid',
             errors: {},
         }
     },
     methods: {
         update() {
+            if(this.form.new_password && !this.passwordCheck) {
+                return alert('비밀번호를 확인해주세요.')
+            }
             if(!this.validateDate(this.form.birth)) {
                 return alert('생년월일을 올바르게 입력해주세요.')
             }
@@ -157,15 +183,38 @@ export default {
     },
 
     computed: {
+        validatePassword() {
+            this.passwordCheck = false;
+            this.validPasswordClass = 'invalid';
+            if(this.form.new_password == null) return '';
+            if(!this.form.new_password && !this.passwordRepeat) return '';
+            if(this.form.new_password.length < 6) return '비밀번호는 6자 이상이어야 합니다.';
+            if(!this.passwordRepeat) return '비밀번호를 입력해주세요.';
+            if(this.form.new_password !== this.passwordRepeat) return '비밀번호가 일치하지 않습니다.';
 
+            this.passwordCheck = true;
+            this.validPasswordClass = 'valid';
+            return '비밀번호가 일치합니다.';
+        }
+    },
+    watch: {
+        "form.new_password"(value) {
+            if(value == "") this.form.new_password = null;
+        }
     },
 
     mounted() {
         this.form.old_district_id = this.$auth.user.district.id;
+
     }
 }
 </script>
 
 <style scoped>
-
+    .invalid {
+        color: red;
+    }
+    .valid {
+        color: #0BAF00;
+    }
 </style>
