@@ -57,7 +57,7 @@
                 <p>자유마을 고객센터</p>
               </div>
               <div>
-                <p style="font-size:26px;">1577-4166</p>
+                <p style="font-size:26px;">1544-7166</p>
                 <p style="font-weight:300; color:rgba(110, 108, 108, 0.752)">평일 09:00 ~ 18:00</p>
               </div>
             </div>
@@ -70,7 +70,7 @@
                 <p style="font-size:20px;">온라인 문의</p>
                 <p style="font-weight:300; color:rgba(110, 108, 108, 0.752)">1:1 문의하기</p>
               </nuxt-link>
-              <a class="border-rounded" href="tel:1577-4166">
+              <a class="border-rounded" href="tel:1544-7166">
                   <img src="/images/qna_tell.png" alt="">
                   <div class="mt-8"></div>
                   <p style="font-size:20px;">고객센터</p>
