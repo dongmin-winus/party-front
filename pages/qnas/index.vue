@@ -81,14 +81,14 @@
             <div class="mt-32"></div>
             <p style="font-size:22px; padding-bottom:5px; border-bottom:1px solid black">자주 묻는 질문</p>
             <accordion>
-              <accordion-item v-for="item in faqs">
+              <accordion-item v-for="(item,index) in faqs">
                 <template slot="accordion-trigger">
                   <div class="inner">
                     <div style="margin-right:10px;">
                       <span style="color:#0BAF00">Q</span>
                     </div>
                     <div>
-                      <p style="white-space: pre;">{{ item.title }}</p>
+                      <p>{{ item.title }}</p>
                     </div>
                   </div>
 
@@ -99,7 +99,7 @@
                       <span style="color:#0BAF00">A</span>
                     </div>
                     <div>
-                      <p style="white-space: pre;">{{ item.content }}</p>
+                      <p :id="`content_${index}`"></p>
                     </div>
                   </div>
                 </template>
@@ -192,7 +192,15 @@ export default {
       getFaqs() {
         this.$axios.get("/api/manager_qnas").then((response) => {
           this.faqs = response.data.data;
+          this.faqs.forEach((faq, index) => {
+            const content = this.handleContent(faq.content);
+            document.getElementById(`content_${index}`).innerHTML = content;
+          });
         });
+      },
+      handleContent(content) {
+        //개행문자 <br> 태그로 변환
+        return content.replace(/(?:\r\n|\r|\n)/g, '<br />');
       },
 
 
