@@ -24,7 +24,7 @@
       <!-- 내용 영역 -->
       <div class="container">
           <!-- <div class="notice-container" v-if="mockNoticeItem.data"> -->
-          <div class="notice-container" v-if="noticeItems.data.length > 0">
+          <nuxt-link :to="`/notices/${noticeItems.data[0].id}`" class="notice-container" v-if="noticeItems.data.length > 0">
             <div class="left">
               <span class="point">공지</span> &nbsp;
               <!-- <span> {{ mockNoticeItem.data[0].title }}</span> -->
@@ -33,7 +33,7 @@
             <div class="right">
               <img src="/images/arrowRight-gray.png" alt="">
             </div>
-          </div>
+          </nuxt-link>
 
           <div class="mt-32"></div>
           <div class="wrap">
