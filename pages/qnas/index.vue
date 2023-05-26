@@ -88,7 +88,7 @@
                       <span style="color:#0BAF00">Q</span>
                     </div>
                     <div>
-                      <p>{{ item.title }}</p>
+                      <p style="white-space: pre;">{{ item.title }}</p>
                     </div>
                   </div>
 
@@ -99,7 +99,7 @@
                       <span style="color:#0BAF00">A</span>
                     </div>
                     <div>
-                      <p>{{ item.content }}</p>
+                      <p style="white-space: pre;">{{ item.content }}</p>
                     </div>
                   </div>
                 </template>
