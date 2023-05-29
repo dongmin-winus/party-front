@@ -2,7 +2,7 @@ import colors from 'vuetify/es5/util/colors'
 
 export default {
     ssr: true,
-    dev: process.env.NODE_ENV === "production" ? "http://api.jayuvillages.com" : "http://localhost:8000",
+    dev: process.env.NODE_ENV === "production" ? "http://api.jayuvillage.com" : "http://localhost:8000",
     // Global page headers: https://go.nuxtjs.dev/config-head
     head: {
         titleTemplate: '%s - ' + process.env.APP_NAME,
@@ -33,7 +33,13 @@ export default {
             { src: '//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=75aa32499180f4887b38e7607514e26f&libraries=services' },
             { src: '//developers.kakao.com/sdk/js/kakao.min.js' },
             { src: '//ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js' },
+            {
+                src: "https://www.googletagmanager.com/gtag/js?id=" + process.env.GOOGLE_ANALYTICS_ID,
+                async: true,
+              },
+             { src: "~/js/analytics.js" },
         ]
+        
     },
 
     // Global CSS: https://go.nuxtjs.dev/config-css
@@ -56,16 +62,12 @@ export default {
         // https://go.nuxtjs.dev/vuetify
         //'@nuxtjs/vuetify',
     ],
-
     // Modules: https://go.nuxtjs.dev/config-modules
     modules: [
         '@nuxtjs/axios',
         '@nuxtjs/auth-next',
         '@nuxtjs/proxy',
     ],
-    env: {
-        googleAnalyticsId : process.env.GOOGLE_ANALYTICS_ID
-    },
     axios: {
         credentials: true,
         proxy: true,
