@@ -63,6 +63,9 @@ export default {
         '@nuxtjs/auth-next',
         '@nuxtjs/proxy',
     ],
+    env: {
+        googleAnalyticsId : process.env.GOOGLE_ANALYTICS_ID
+    },
     axios: {
         credentials: true,
         proxy: true,
