@@ -46,9 +46,11 @@
                         </div>
 
                         <button class="m-btn type02 width-100" @click="login">로그인</button>
-
+                        
+                        <div class="mt-12"></div>
                         <div class="links">
-                            <nuxt-link to="/auth/register" class="link">회원가입</nuxt-link>
+                            <nuxt-link to="/auth/password" class="link">비밀번호 찾기</nuxt-link> <span class="link"> | </span>
+                            <nuxt-link to="/auth/register" class="link focus">회원가입</nuxt-link>
                         </div>
                 </div>
             </div>
