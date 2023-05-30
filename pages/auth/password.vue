@@ -29,7 +29,7 @@
                           </div>
                       </div>
 
-                      <button class="m-btn type02 width-100" @click="certificate">인증번호 보내기</button>
+                      <button class="m-btn type02 width-100" @click.prevent="debounceCertificate">인증번호 보내기</button>
                       <div class="mt-32"></div>
 
                       <h3 class="title">
@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import * as Cookies from 'js-cookie';
+import {debounce} from "@/utils/debounce";
 export default {
   name: "password",
   auth: 'guest',
@@ -180,9 +180,11 @@ export default {
         }, 1000);
     },
   },
-  mounted() {
-
-  }
+  created () {
+        this.debounceCertificate = debounce(() => {
+            this.certificate()
+        },500);
+    },
 }
 </script>
 
