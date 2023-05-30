@@ -99,6 +99,9 @@ export default {
           return alert('연락처를 입력해주세요.');
         }
         try {
+            if(!this.isCertifyCalled) {
+              this.form.certify = '';
+            }
             const { data } = await this.$axios.get('/api/user-certify', {
                 params: {
                     ...this.form
@@ -133,9 +136,12 @@ export default {
                 this.numberCertificated = true;
             }
         } catch (e) {
-            console.log(e);
+            if(e.response.data.message) {
+              alert(e.response.data.message);
+            }
         }
     },
+
     async changePassword() {
       if(this.isCertifyCalled && !this.numberCertificated) {
         return alert('인증번호를 입력후 확인을 눌러주세요.');
