@@ -200,7 +200,6 @@ export default {
           hasStamped: this.hasStamped,
 
         });
-        console.log(response.data);
       } catch (error) {
         console.log(error);
       }
@@ -301,6 +300,10 @@ export default {
     // await this.getStamp();
     this.getCurrentMonthLastDay();
     this.makeStampInfo();
+
+    if(this.stampedDays == this.currentMonthLastDay) {
+      this.activateModal = true;
+    }
   },
 }
 </script>
