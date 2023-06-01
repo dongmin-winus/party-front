@@ -55,6 +55,9 @@ class KakaoHelper {
                     },
                 },
             ],
+            serverCallbackArgs: {
+                post_id: item.post.id,
+            }
         })
     }
 
@@ -80,6 +83,9 @@ class KakaoHelper {
                     },
                 },
             ],
+            serverCallbackArgs: {
+                post_id: item.post.id,
+            }
         })
     }
 
@@ -105,6 +111,9 @@ class KakaoHelper {
                     },
                 },
             ],
+            serverCallbackArgs: {
+                post_id: item.post.id,
+            }
         })
     }
 
@@ -130,6 +139,9 @@ class KakaoHelper {
                     },
                 },
             ],
+            serverCallbackArgs: {
+                post_id: item.post.id,
+            }
         })
     }
 
@@ -173,6 +185,9 @@ class KakaoHelper {
                     },
                 },
             ],*/
+            serverCallbackArgs: {
+                post_id: items[0].post.id,
+            }
         })
     }
 

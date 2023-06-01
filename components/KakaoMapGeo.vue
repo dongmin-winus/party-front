@@ -4,7 +4,7 @@
       <div class="m-loading type02" v-show="!hasLoaded">
           <div class="m-loading-inner"></div>
       </div>
-      <div ref="map" style="background-color:#e1e1e1;"></div>
+      <div ref="map" class="map-unit" style="background-color:#e1e1e1;"></div>
       <div>
     </div>
 
@@ -57,7 +57,7 @@ export default {
       const script = document.createElement("script");
       script.onload = () => kakao.maps.load(this.initMap);
       script.src =
-        `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=30a2981dfdc1e54770df725f0938b014`;
+        `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=0b676e15765c46418fa53c1333910c0a`;
       document.head.appendChild(script);
     }
     
@@ -91,8 +91,8 @@ export default {
      */
     getDefaultMap() {
       const defaultMapContainer = this.$refs.map;
-      defaultMapContainer.style.width = '400px';
-      defaultMapContainer.style.height = '250px';
+      // defaultMapContainer.style.width = '400px';
+      defaultMapContainer.style.height = '310px';
       let locPosition = new kakao.maps.LatLng(this.latLng[0], this.latLng[1]);
       const defaultPosition = {
         center: locPosition,
@@ -240,8 +240,8 @@ enableHighAccuracy: false,
     position: absolute;
     display:flex; align-items: center; justify-content: center;
     background-color:rgba(0,0,0,0.5);
-    width:400px;
-    height: 250px;
+    width:100%;
+    height: 310px;
     padding:40px;
     z-index: 9999;
 
@@ -255,5 +255,9 @@ enableHighAccuracy: false,
     border-top-color: #fff;
     animation: spin 1s ease-in-out infinite;
     -webkit-animation: spin 1s ease-in-out infinite;
+}
+
+.map-unit {
+
 }
 </style>
