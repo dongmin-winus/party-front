@@ -810,6 +810,14 @@ html {
     text-align: center;
 }
 
+.area-index .section-story {
+    margin-top:40px;
+}
+.area-index .section-story .m-title.type01 {
+    margin-bottom:10px;
+    text-align: center;
+}
+
 .area-index .section-ranking {
     margin-top:40px;
 }
@@ -887,10 +895,10 @@ html {
     background-color:rgb(236,188,153);
 
 } */
-/* .area-index .section-ranking .rankings .ranking-wrap:first-child .deco {
+.area-index .section-ranking .rankings .ranking-wrap:nth-child(2) .deco {
     position:absolute; left:50%; top:-25px; transform:translateX(-50%);
     z-index:1;
-} */
+}
 
 .area-index .section-ranking .rankings .ranking {
     text-align: center;
@@ -1194,6 +1202,9 @@ html {
 .m-title.type01 .point {
     font-size:30px; font-weight:bold; font-family: "GmarketSans"; color:#0BAF00;
 }
+.m-title.type01 .point.orange {
+    font-size:30px; font-weight:bold; font-family: "GmarketSans"; color:rgb(248,134,1);
+}
 .m-title.type01 .sub {
     display:block;
     margin-bottom:8px;
@@ -1310,6 +1321,24 @@ html {
 }
 .m-table.type01 td {
     padding:8px 8px; font-weight:500;
+}
+
+.m-table.type02 {
+    width:100%;
+}
+.m-table.type02 th {
+    padding:16px 8px;
+    font-weight:500; color:#777777;
+    border-bottom:1px solid #D4D4D4;
+    text-align: center;
+    white-space: nowrap;
+}
+.m-table.type02 tbody tr:first-of-type td {
+    padding-top:16px;
+}
+.m-table.type02 td {
+    padding:8px 8px; font-weight:500;
+    text-align: center;
 }
 .m-tabs.type01 {
     display:flex; flex-wrap:wrap;
