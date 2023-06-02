@@ -396,7 +396,7 @@ export default {
             .then(response => {
                 this.item = response.data.data;
 
-                kakaoHelper.initSharePost(this.item);
+                kakaoHelper.initSharePost(this.item, $auth.user.id);
             });
     },
     beforeDestroy() {

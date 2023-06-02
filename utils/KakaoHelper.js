@@ -32,7 +32,7 @@ class KakaoHelper {
         })
     }
 
-    initSharePost(item, container = "#kakao") {
+    initSharePost(item, userId = undefined, container = "#kakao") {
         this.kakao.Link.createDefaultButton({
             container: container,
             objectType: 'feed',
@@ -56,12 +56,13 @@ class KakaoHelper {
                 },
             ],
             serverCallbackArgs: {
-                post_id: 300,
+                user_id: userId,
+                post_id: item.id,
             }
         })
     }
 
-    sharePost(item) {
+    sharePost(item, userId = undefined) {
         this.kakao.Link.sendDefault({
             objectType: 'feed',
             content: {
@@ -84,12 +85,13 @@ class KakaoHelper {
                 },
             ],
             serverCallbackArgs: {
-                post_id: 300,
+                user_id: userId,
+                post_id: item.id,
             }
         })
     }
 
-    shareScrap(item) {
+    shareScrap(item, userId = undefined) {
         this.kakao.Link.sendDefault({
             objectType: 'feed',
             content: {
@@ -112,12 +114,13 @@ class KakaoHelper {
                 },
             ],
             serverCallbackArgs: {
-                post_id: 300,
+                user_id: userId,
+                post_id: item.post.id,
             }
         })
     }
 
-    shareScrapItem(item) {
+    shareScrapItem(item, userId = undefined) {
         this.kakao.Link.sendDefault({
             objectType: 'feed',
             content: {
@@ -140,17 +143,18 @@ class KakaoHelper {
                 },
             ],
             serverCallbackArgs: {
-                post_id: 300,
+                user_id: userId,
+                post_id: item.post.id,
             }
         })
     }
 
-    shareScrapItems(items, nickname) {
+    shareScrapItems(items, userId = undefined, nickname) {
         if (items.length === 0)
             return alert("최소 1개 이상의 게시글을 선택해주세요.");
 
         if (items.length === 1)
-            return this.shareScrapItem(items[0]);
+            return this.shareScrapItem(items[0], userId);
 
         if (items.length > 3)
             return alert("최대 3개의 게시글만 공유 가능합니다.");
@@ -186,7 +190,8 @@ class KakaoHelper {
                 },
             ],*/
             serverCallbackArgs: {
-                post_id: 300,
+                user_id: userId,
+                post_id: items[0].post.id,
             }
         })
     }

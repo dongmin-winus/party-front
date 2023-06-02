@@ -11,7 +11,7 @@
                     <div class="content">
                         <div class="m-title type01">
                             <p class="sub"><b>6월</b>의 <b style="font-weight:500;">공유왕</b>은 <b>누구?</b></p>
-                            공유랭킹 <span class="point orange">TOP 10</span>
+                            공유랭킹 <span class="point orange">TOP 100</span>
                         </div>
 
                         <!-- 1,2,3위 -->
@@ -20,7 +20,7 @@
                             <div class="ranking-wrap second" v-if="shareList.length >= 2">
                                 <div class="ranking" >
                                     <div class="img-wrap">
-                                        <img :src="getUserImgUrl(shareList[1])" width="100px" alt="" class="img-rect">
+                                        <img :src="getUserImgUrl(shareList[1])" onerror="this.src='images/default_profile.jpeg'" width="100px" alt="" class="img-rect">
                                         <div class="rounded">
                                                 <span style="color:#0BAF00;"> {{ shareList[1].share_count }} </span>
                                         </div>
@@ -43,7 +43,7 @@
                                 <div class="ranking" >
                                     <div class="img-wrap">
                                         <img src="https://dotmzh1fysixs.cloudfront.net/1016/crown.png" width="20px" alt="" class="deco">
-                                        <img :src="getUserImgUrl(shareList[0])" width="100px" alt="" class="img-rect">
+                                        <img :src="getUserImgUrl(shareList[0])" onerror="this.src='images/default_profile.jpeg'" width="100px" alt="" class="img-rect">
                                         <div class="rounded">
                                                 <span style="color:#0BAF00;"> {{ shareList[0].share_count }} </span>
                                         </div>
@@ -65,7 +65,7 @@
                             <div class="ranking-wrap second" v-if="shareList.length >= 3">
                                 <div class="ranking" >
                                     <div class="img-wrap">
-                                        <img :src="getUserImgUrl(shareList[2])" width="100px" alt="" class="img-rect">
+                                        <img :src="getUserImgUrl(shareList[2])" onerror="this.src='images/default_profile.jpeg'" width="100px" alt="" class="img-rect">
                                         <div class="rounded">
                                                 <span style="color:#0BAF00;"> {{ shareList[2].share_count }} </span>
                                         </div>
