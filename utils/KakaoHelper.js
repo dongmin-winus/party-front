@@ -56,7 +56,7 @@ class KakaoHelper {
                 },
             ],
             serverCallbackArgs: {
-                post_id: item.post.id,
+                post_id: item.id,
             }
         })
     }
@@ -84,7 +84,7 @@ class KakaoHelper {
                 },
             ],
             serverCallbackArgs: {
-                post_id: item.post.id,
+                post_id: item.id,
             }
         })
     }
