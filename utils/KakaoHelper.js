@@ -56,7 +56,7 @@ class KakaoHelper {
                 },
             ],
             serverCallbackArgs: {
-                post_id: item.id,
+                post_id: 300,
             }
         })
     }
@@ -84,7 +84,7 @@ class KakaoHelper {
                 },
             ],
             serverCallbackArgs: {
-                post_id: item.id,
+                post_id: 300,
             }
         })
     }
@@ -112,7 +112,7 @@ class KakaoHelper {
                 },
             ],
             serverCallbackArgs: {
-                post_id: item.post.id,
+                post_id: 300,
             }
         })
     }
@@ -140,7 +140,7 @@ class KakaoHelper {
                 },
             ],
             serverCallbackArgs: {
-                post_id: item.post.id,
+                post_id: 300,
             }
         })
     }
@@ -186,7 +186,7 @@ class KakaoHelper {
                 },
             ],*/
             serverCallbackArgs: {
-                post_id: items[0].post.id,
+                post_id: 300,
             }
         })
     }
