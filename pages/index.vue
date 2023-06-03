@@ -449,14 +449,17 @@
                     v-show="content.id === getCurrentId"
                 >
                     <div class="notice-modal">
+                        {{ content }}
                         <template v-if="content.image">
+                            <a :href="content.link_url" target="_blank">
                             <img :src="content.image.url" alt="" class="modal-content">
+                            </a>
                         </template>
-                        <template v-if="content.youtube_url">
+<!--                       <template v-if="content.youtube_url">
                             <div class="youtube-container">
                                 <iframe :src="getEmbedUrl(content.youtube_url)" allowfullscreen ></iframe>
                             </div>
-                        </template>
+                        </template>--> 
                     </div>
                     <div class="btn-container">
                         <button class="btn" @click="closeAllDay(content,index)">하루 동안 그만보기</button>
