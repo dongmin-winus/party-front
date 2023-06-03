@@ -3,7 +3,6 @@
         <header-type01
             @updatePosts="updatePosts"
         />
-
         <!-- 내용 영역 -->
         <div class="container">
             <!-- 지역이 본부 x & 로그인 -->
