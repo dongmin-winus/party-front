@@ -5,7 +5,9 @@
       
       <!-- 내용 영역 -->
       <div class="container">
+        
         <section class="section-ranking">
+            <img src="/images/bannertop.jpg" alt="" width="100%">
                 <div class="wrap">
                     <div class="mt-12"></div>
                     <div class="content">
@@ -20,7 +22,7 @@
                             <div class="ranking-wrap second" v-if="shareList.length >= 2">
                                 <div class="ranking" >
                                     <div class="img-wrap">
-                                        <img :src="getUserImgUrl(shareList[1])" onerror="this.src='images/default_profile.jpeg'" width="100px" alt="" class="img-rect">
+                                        <img :src="getUserImgUrl(shareList[1], 1)" onerror="this.src='images/default_profile.jpeg'" width="100px" alt="" class="img-rect">
                                         <div class="rounded">
                                                 <span style="color:#0BAF00;"> {{ shareList[1].share_count }} </span>
                                         </div>
@@ -29,7 +31,7 @@
 
                                     <div class="fragment">
                                         <h3 class="title">
-                                            2<span class="rank">위</span> <span class="name">{{ shareList[1].name }}</span>
+                                            2<span class="rank">위</span> <span class="name">{{ this.subText(shareList[1].name, 3) }}</span>
                                         </h3>
                                         <div class="subtitle-container">
                                             <p class="subtitle">{{ shareList[1].state }} {{ shareList[1].district }}</p>
@@ -43,7 +45,7 @@
                                 <div class="ranking" >
                                     <div class="img-wrap">
                                         <img src="https://dotmzh1fysixs.cloudfront.net/1016/crown.png" width="20px" alt="" class="deco">
-                                        <img :src="getUserImgUrl(shareList[0])" onerror="this.src='images/default_profile.jpeg'" width="100px" alt="" class="img-rect">
+                                        <img :src="getUserImgUrl(shareList[0], 2)" onerror="this.src='images/default_profile.jpeg'" width="100px" alt="" class="img-rect">
                                         <div class="rounded">
                                                 <span style="color:#0BAF00;"> {{ shareList[0].share_count }} </span>
                                         </div>
@@ -52,7 +54,7 @@
 
                                     <div class="fragment">
                                         <h3 class="title">
-                                            1<span class="rank">위</span> <span class="name">{{ shareList[0].name }}</span>
+                                            1<span class="rank">위</span> <span class="name">{{ subText(shareList[0].name, 3) }}</span>
                                         </h3>
                                         <div class="subtitle-container">
                                             <p class="subtitle">{{ shareList[0].state }} {{ shareList[0].district }}</p>
@@ -65,7 +67,7 @@
                             <div class="ranking-wrap second" v-if="shareList.length >= 3">
                                 <div class="ranking" >
                                     <div class="img-wrap">
-                                        <img :src="getUserImgUrl(shareList[2])" onerror="this.src='images/default_profile.jpeg'" width="100px" alt="" class="img-rect">
+                                        <img :src="getUserImgUrl(shareList[2], 3)" onerror="this.src='images/default_profile.jpeg'" width="100px" alt="" class="img-rect">
                                         <div class="rounded">
                                                 <span style="color:#0BAF00;"> {{ shareList[2].share_count }} </span>
                                         </div>
@@ -115,7 +117,7 @@
 >
                                     <template v-if="index >= 3 && share">
                                     <td>{{index + 1}}위</td>
-                                    <td>{{ share.name }}</td>
+                                    <td>{{ subText(share.name, 5) }}</td>
                                     <td>{{ share.district}}</td>
                                     <td>
                                         <div>
@@ -183,10 +185,15 @@ export default {
         return { shareList: data.data };
     },
     methods: {
-        getUserImgUrl(share) {
-            return share.profile ? share.profile.url : 'images/default_profile.jpeg';
-        }
-    },
+        getUserImgUrl(share, i) {
+
+                return share.profile.url ? share.profile.url : "images/rankings/" + i + ".png";
+        },
+        subText(i, n) {
+            if (i.length <= n) { return i; } 
+            else { return i.substring(0, n) + "..."; }
+        }   
+    }
 }
 </script>
 <style scoped>
@@ -293,15 +300,15 @@ export default {
     }
     .area-share .section-ranking .ranking .fragment .title {
         margin-bottom:4px;
-        font-size:24px; font-weight:700; font-family: GmarketSans; color:#000;
+        font-size:17px; font-weight:700; font-family: GmarketSans; color:#000;
     }
     .area-share .section-ranking .ranking .fragment .title .rank {
         margin-bottom:4px;
-        font-size:24px; font-weight:500; font-family: GmarketSans; color:#000;
+        font-size:17px; font-weight:500; font-family: GmarketSans; color:#000;
     }
     .area-share .section-ranking .ranking .fragment .title .name {
         margin-bottom:4px;
-        font-size:20px; font-weight:500; font-family: GmarketSans; color:#000;
+        font-size:17px; font-weight:500; font-family: GmarketSans; color:#000;
     }
     .area-share .section-ranking .ranking .fragment .title .point {
         font-size:32px; font-weight:bold; font-family: GmarketSans; color:#000;
