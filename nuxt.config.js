@@ -37,7 +37,7 @@ export default {
                 src: "https://www.googletagmanager.com/gtag/js?id=" + process.env.GOOGLE_ANALYTICS_ID,
                 async: true,
             },
-            { src: "~/js/analytics.js" },
+            { src: "/js/analytics.js" },
         ]
 
     },

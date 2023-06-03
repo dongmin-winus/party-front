@@ -273,4 +273,19 @@ export default {
         color: #888888;
         padding-right:10px;
     }
+
+
+    .area-index .section-ranking .rankings .ranking {
+    text-align: center;
+    width: 120px;
+}
+.area-index .section-ranking .ranking .fragment {
+    margin-top: 20px;
+}
+.area-index .section-ranking .ranking .fragment .subtitle {
+    margin-bottom: 0px;
+}
+.area-index .section-ranking .rankings .fragment .more {
+    top: 125%;
+}
 </style>

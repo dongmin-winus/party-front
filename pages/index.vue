@@ -10,9 +10,9 @@
             <div class="fragment" v-if="district && district.id != 0">
                 <section class="section-ad">
                     <div class="wrap">
-                        <nuxt-link to="/mypage/attendance" class="link">
-                            <img src="/images/attendance-banner.png" alt="">
-                        </nuxt-link>
+                        <a :href="homeBanner3.link_url" target="_blank" class="link">
+                        <img :src="homeBanner3.image.url" alt="">
+                        </a>
                     </div>
                 </section>
                 <div class="mt-8"></div>
@@ -95,9 +95,9 @@
             <div class="fragment" v-else>
                 <section class="section-ad">
                     <div class="wrap">
-                        <nuxt-link to="/mypage/attendance" class="link">
-                            <img src="/images/attendance-banner.png" alt="">
-                        </nuxt-link>
+                        <a :href="homeBanner3.link_url" target="_blank" class="link">
+                        <img :src="homeBanner3.image.url" alt="">
+                        </a>
                     </div>
                 </section>
                 <section class="section-banner">
@@ -161,7 +161,7 @@
                             <p class="sub">마을 소개</p>
                             지역별 <span class="point">홍보</span>
                         </div>
-                        <swiper :options="swiperOptions">
+                     <!--  <swiper :options="swiperOptions">
                             <swiper-slide v-for="(slide,index) in promotionList" :key="slide.id">
                                 <nuxt-link v-if="index + 1 != promotionList.length" :to="`/posts/${slide.id}`">
                                     <div class="content">
@@ -175,7 +175,7 @@
                                 <div class="mt-8"></div>
                                 <nuxt-link v-if="index + 1 != promotionList.length" :to="`/posts/${slide.id}`" class="m-btn type02 bg-revert-primary">자세히보기 +</nuxt-link>
                             </swiper-slide>
-                        </swiper>
+                        </swiper> --> 
                     </div>
                 </div>
             </div>
@@ -184,7 +184,7 @@
                     <div class="content">
                         <div class="m-title type01">
                             <p class="sub">순위 현황 한 눈에 보기</p>
-                            마을별 가입 <span class="point">TOP 10</span>
+                            마을별 가입 <span class="point">TOP 100</span>
                         </div>
                         <div class="m-input-checkboxes type01">
                             <div class="mt-8"></div>
@@ -235,12 +235,6 @@
                                     <div class="img-wrap">
                                         <img src="https://dotmzh1fysixs.cloudfront.net/1016/crown.png" width="20px" alt="" class="deco">
                                         <img :src="`images/rankings/${index+1}.png`" width="100px" alt="" class="img-rect">
-                                        <div class="more">
-                                            <span class="zero" v-if="rankingCount(districtRegisterCounts[index]) == 0">−</span>
-                                            <template  v-else>
-                                                <span class="tri">▲</span>&nbsp;<span style="color:#DC2626"> {{ rankingCount(districtRegisterCounts[index])}} </span>
-                                            </template>
-                                        </div>
                                     </div>
 
                                     <div class="fragment">
@@ -248,6 +242,13 @@
                                         <h3 class="title">
                                             <span class="point">{{ index+1 }}</span>위
                                         </h3>
+                                        <!-- <div class="more">
+                                            {{ districtRegisterCounts[index].count }}
+                                            <span class="zero" v-if="rankingCount(districtRegisterCounts[index].count) == 0">−</span>
+                                            <template  v-else>
+                                                <span class="tri">▲</span>&nbsp;<span style="color:#DC2626"> {{ rankingCount(districtRegisterCounts[index].count )}} </span>
+                                            </template>
+                                        </div> -->
                                     </div>
                                 </div>
                             </div>
@@ -262,6 +263,7 @@
                                     })"
                                 >
                                     <template v-if="index >= 3 && districtRegisterCount">
+                                    
                                         <div class="rank">
                                             <div class="left">
                                                 <div class="petit-image">
@@ -606,6 +608,11 @@ export default {
         homeBanner2() {
             return this.homeBanners.banners.find(banner => {
                 return banner.position === 'home2';
+            })
+        },
+        homeBanner3() {
+            return this.homeBanners.banners.find(banner => {
+                return banner.position === 'home3';
             })
         },
 
@@ -965,4 +972,18 @@ export default {
         margin-right: 15px;
         color:#bdbdbd;
     }
+
+    .area-index .section-ranking .rankings .ranking {
+    text-align: center;
+    width: 120px;
+}
+.area-index .section-ranking .ranking .fragment {
+    margin-top: 20px;
+}
+.area-index .section-ranking .ranking .fragment .subtitle {
+    margin-bottom: 0px;
+}
+.area-index .section-ranking .rankings .fragment .more {
+    top: 125%;
+}
 </style>
