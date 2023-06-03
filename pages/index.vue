@@ -449,7 +449,6 @@
                     v-show="content.id === getCurrentId"
                 >
                     <div class="notice-modal">
-                        {{ content }}
                         <template v-if="content.image">
                             <a :href="content.link_url" target="_blank">
                             <img :src="content.image.url" alt="" class="modal-content">
