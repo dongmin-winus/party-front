@@ -895,10 +895,14 @@ html {
     background-color:rgb(236,188,153);
 
 } */
-.area-index .section-ranking .rankings .ranking-wrap:nth-child(2) .deco {
+.area-index .section-ranking .rankings .ranking-wrap:first-child .deco {
     position:absolute; left:50%; top:-25px; transform:translateX(-50%);
     z-index:1;
 }
+/* .area-index .section-ranking .rankings .ranking-wrap:nth-child(2) .deco {
+    position:absolute; left:50%; top:-25px; transform:translateX(-50%);
+    z-index:1;
+} */
 
 .area-index .section-ranking .rankings .ranking {
     text-align: center;
@@ -953,19 +957,21 @@ html {
 .area-index .section-ranking .ranking .fragment .title .point {
     font-size:32px; font-weight:bold; font-family: GmarketSans; color:#000;
 }
-/* .area-index .section-ranking .rankings .ranking-wrap:first-child .title {
+.area-index .section-ranking .rankings .ranking-wrap:first-child .title {
     margin-bottom:4px;
     font-size:24px; font-weight:500; font-family: GmarketSans; color:#F88600;;
-} */
-/* .area-index .section-ranking .rankings .ranking-wrap:first-child .point {
+}
+.area-index .section-ranking .rankings .ranking-wrap:first-child .point {
     margin-bottom:4px;
     font-size:32; font-weight:bold; font-family: GmarketSans; color:#F88600;;
-} */
+}
 
 /* .area-index .section-ranking .ranking .fragment .more {
     display:flex; align-items: center; justify-content: center;
     font-size:14px; color:#A1A1AA;
 } */
+
+
 .area-index .section-ranking .ranking .tri {
     margin-left:4px;
     font-size:6px;
