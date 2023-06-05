@@ -9,9 +9,13 @@
             <div class="fragment" v-if="district && district.id != 0">
                 <section class="section-ad">
                     <div class="wrap">
-                        <a :href="homeBanner3.link_url" target="_blank" class="link">
-                        <img :src="homeBanner3.image.url" alt="">
-                        </a>
+                        <swiper :options="swiperOptions">
+                            <swiper-slide v-for="(slide,index) in homeBanner3" :key="slide.id">
+                                <a :href="slide.link_url" target="_blank" class="link">
+                                    <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
+                                </a>
+                            </swiper-slide>
+                        </swiper> 
                     </div>
                 </section>
                 <div class="mt-8"></div>
@@ -94,9 +98,13 @@
             <div class="fragment" v-else>
                 <section class="section-ad">
                     <div class="wrap">
-                        <a :href="homeBanner3.link_url" target="_blank" class="link">
-                        <img :src="homeBanner3.image.url" alt="">
-                        </a>
+                        <swiper :options="swiperOptions">
+                            <swiper-slide v-for="(slide,index) in homeBanner3" :key="slide.id">
+                                <a :href="slide.link_url" target="_blank" class="link">
+                                    <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
+                                </a>
+                            </swiper-slide>
+                        </swiper> 
                     </div>
                 </section>
                 <section class="section-banner">
@@ -494,7 +502,11 @@ export default {
             swiperOptions: {
                 slidesPerView: 'auto',
                 centeredSlides: false,
-                spaceBetween: 20,
+                loop: true,
+                autoplay: {
+                  delay: 5000,
+                  disableOnInteraction: false,
+              },
             },
             form: {
                 district_id: "",
@@ -542,12 +554,12 @@ export default {
     async asyncData({$axios}) {
         const homeBanners = await $axios.get('/api/banners/home');
 
-        const promotionList = await $axios.get('/api/promotion');
+        // const promotionList = await $axios.get('/api/promotion');
         return {
-            promotionList: [
-                ...promotionList.data.data,
-                {"id":176,"title":"","img":{}, user:{},content:null,},
-            ],
+            // promotionList: [
+            //     ...promotionList.promotion,
+                
+            // ],
             homeBanners: {
                 ...homeBanners.data,
             }
@@ -612,7 +624,7 @@ export default {
             })
         },
         homeBanner3() {
-            return this.homeBanners.banners.find(banner => {
+            return this.homeBanners.banners.filter(banner => {
                 return banner.position === 'home3';
             })
         },
@@ -938,11 +950,11 @@ export default {
         /* padding-left: 50px; */
     }
 
-    .swiper-slide {
+    /* .swiper-slide {
       width: 85%;
       opacity: 0.4;
       transition: opacity 0.3s;
-    }
+    } */
 
     .swiper-slide-active {
         opacity: 1;
