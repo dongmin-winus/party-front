@@ -12,7 +12,7 @@
                         <swiper :options="swiperOptions">
                             <swiper-slide v-for="(slide,index) in homeBanner3" :key="slide.id">
                                 <a :href="slide.link_url" target="_blank" class="link">
-                                    <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
+                                   <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
                                 </a>
                             </swiper-slide>
                         </swiper> 
@@ -98,10 +98,11 @@
             <div class="fragment" v-else>
                 <section class="section-ad">
                     <div class="wrap">
+
                         <swiper :options="swiperOptions">
                             <swiper-slide v-for="(slide,index) in homeBanner3" :key="slide.id">
                                 <a :href="slide.link_url" target="_blank" class="link">
-                                    <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
+                                     <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
                                 </a>
                             </swiper-slide>
                         </swiper> 
@@ -553,15 +554,14 @@ export default {
     },
     async asyncData({$axios}) {
         const homeBanners = await $axios.get('/api/banners/home');
-
         // const promotionList = await $axios.get('/api/promotion');
         return {
             // promotionList: [
-            //     ...promotionList.promotion,
-                
+            //     ...promotionList.promotion,        
             // ],
             homeBanners: {
                 ...homeBanners.data,
+                
             }
         };
     },
@@ -624,9 +624,9 @@ export default {
             })
         },
         homeBanner3() {
-            return this.homeBanners.banners.filter(banner => {
-                return banner.position === 'home3';
-            })
+            const sliderList = [];
+            console.log(this.homeBanners.banners[5], 'check')
+            return [this.homeBanners.banners[5], this.homeBanners.banners[6]]
         },
 
     },
@@ -667,7 +667,7 @@ export default {
             const lastIndex = this.noticePopupContents.length - 1;
             if(lastIndex === index) {
                 this.activateNoticePop = false;
-            }else {
+            } else {
                 this.nextNotice(index);
             }
         },
@@ -675,7 +675,7 @@ export default {
             const lastIndex = this.noticePopupContents.length - 1;
             if(lastIndex === index) {
                 this.activateNoticePop = false;
-            }else {
+            } else {
                 this.nextNotice(index);
             }
         },
