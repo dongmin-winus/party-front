@@ -245,15 +245,15 @@
                                     </div>
 
                                     <div class="fragment">
-                                        <p class="subtitle">{{ districtRegisterCounts[index].district }}</p>
+                                        <p class="subtitle">{{ rank.district }}</p>
                                         <h3 class="title">
                                             <span class="point">{{ index+1 }}</span>위
                                         </h3>
                                         <div class="more">
-                                            {{ districtRegisterCounts[index].count }}
+                                            <!-- {{ districtRegisterCounts[index].count }} -->
                                             <span class="zero" v-if="rankingCount(districtRegisterCounts[index].count) == 0">−</span>
                                             <template  v-else>
-                                                <span class="tri">▲</span>&nbsp;<span style="color:#DC2626"> {{ rankingCount(districtRegisterCounts[index].count )}} </span>
+                                                <span class="tri">▲</span>&nbsp;<span style="color:#DC2626"> {{ rankingCount(rank )}} </span>
                                             </template>
                                         </div>
                                     </div>
