@@ -60,6 +60,7 @@ export default {
     },
 
     replaceText(target, maskLength, mask = '...') {
+      if (target.length <= maskLength) return target;
       return target.substring(0, maskLength) + mask;
     },
 

@@ -1,0 +1,380 @@
+<template>
+  <div class="area-news-show">
+
+      <!-- 지갑 팝업 -->
+      <div class="m-pop type01" v-if="activeScrapPop">
+          <div class="m-pop-inner">
+              <button class="btn-close" @click="activeScrapPop = false">
+                  <img src="/images/x.png" alt="" style="width:21px;">
+              </button>
+
+              <div class="m-pop-title" style="margin-bottom:10px;">내 공유함에 추가되었습니다.</div>
+              <div class="m-pop-body" style="font-size:14px;">내 정보 > 내 공유함에서 확인하실 수 있습니다.</div>
+
+              <div class="mt-20">
+                  <nuxt-link to="/scraps" class="m-btn type03 width-100">내 공유함 바로가기</nuxt-link>
+              </div>
+          </div>
+      </div>
+      <!-- 신고 팝업 -->
+      <spam-pop :target_id="item.id" target_model="posts" v-if="activeSpamPop" @close="activeSpamPop = false" />
+
+      <!-- 헤더영역 -->
+      <div class="m-header type01">
+          <div class="wrap">
+              <div class="utils">
+                  <button class="btn-util" @click="back">
+                      <img src="/images/back.png" alt="" style="width:10px;">
+                  </button>
+
+                  <button class="btn-util" @click="$router.push('/')">
+                      <img src="/images/home2.png" alt="" style="width:21px;">
+                  </button>
+              </div>
+
+              <div class="utils">
+                  <!--<button class="btn-util">
+                      <img src="/images/search.png" alt="" style="width:18px;">
+                  </button>-->
+                  <nuxt-link to="/notices" class="btn-util">
+                      <img src="/images/bell.png" alt="" style="width:18px;">
+                  </nuxt-link>
+<!--                    <button class="btn-util">
+                      <img src="/images/dots.png" alt="" style="width:3px;">
+                  </button>-->
+              </div>
+          </div>
+      </div>
+
+      <!-- 내용 영역 -->
+      <div class="container">
+          <div class="mt-20"></div>
+
+          <div :class="`m-board-show type01 ${item.formatBoard}`">
+              <div class="wrap">
+                  <div class="m-board-top">
+                      <div class="fragment">
+                          <div class="left">
+                              <p class="category" style="height:27px;">{{ item.formatBoard }} ⏵ {{ item.user.district?.district }}</p>
+                          </div>
+                          <div class="right">
+                              <a href="#" class="btn-report" @click.prevent="activeSpamPop = true">
+                                  <img src="/images/report.png" alt="" style="width:18px;">
+                              </a>
+                          </div>
+                      </div>
+                      <div class="fragment">
+                          <div class="left">
+                              <div class="profile">
+                                  <div class="thumbnail-profile" :style="`background-image:url('${item.user.img.url}')`" v-if="item.user.img"></div>
+                                  <div class="thumbnail-profile" :style="`background-image:url('/images/taegeuk.png')`" v-else></div>
+                                  <div class="writer-container">
+                                    <div class="nickname">{{ item.user.nickname }}</div>
+                                    <div class="date-time">{{ item.created_at }}</div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="m-board-content">
+                      <h3 class="title">{{ item.title }}</h3>
+
+<!--                        <div class="m-thumbnail type01 mb-8" :style="`background-image:url(${item.img.url})`" v-if="item.img"></div>-->
+
+                      <!-- 마을모임용 상세 -->
+                      <div class="wrapper">
+                          <div class="infos">
+                              <div class="info">
+                                  <div class="title-meeting">
+                                      <img src="/images/talk-orange.png" alt="" class="icon">
+                                      <span style="color:#FF7C2E">자격요건</span>
+                                  </div>
+                                  <p class="body">
+                                      {{ item.participant_type }}
+                                  </p>
+                              </div>
+
+                              <div class="info">
+                                  <div class="title-meeting">
+                                      <img src="/images/calendar-orange.png" alt="" class="icon">
+                                      <span style="color:#FF7C2E">모임일정</span>
+                                  </div>
+                                  <p class="body">
+                                      {{ item.start_date }} ~ {{ item.end_date }}
+                                  </p>
+                              </div>
+
+                              <div class="info">
+                                  <div class="title-meeting">
+                                      <img src="/images/users-orange.png" alt="" class="icon">
+                                      <span style="color:#FF7C2E">모임인원</span>
+                                  </div>
+                                  <p class="body">
+                                      {{ item.participant_count }} / {{item.participant_available_count}} 명
+                                  </p>
+                              </div>
+
+                              <div class="info">
+                                  <div class="title-meeting">
+                                      <img src="/images/money-orange.png" alt="" class="icon">
+                                      <span style="color:#FF7C2E">참가비</span>
+                                  </div>
+                                  <p class="body">
+                                      {{ item.price }}
+                                  </p>
+                              </div>
+                          </div>
+
+                          <div class="mt-16"></div>
+
+                          <div class="m-tabs type02">
+                              <button :class="`m-tab-orange ${tabIndex === 0 ? 'active' : ''}`" @click="tabIndex = 0">상세내용</button>
+                              <button :class="`m-tab-orange ${tabIndex === 1 ? 'active' : ''}`" @click="() => {tabIndex = 1; initMap();}">장소</button>
+                          </div>
+
+                          <div class="mt-16"></div>
+
+                          <div class="m-tabs-contents">
+                              <div :class="`m-tabs-content ${tabIndex === 0 ? 'active' : ''}`">
+                                  <div class="editor-body" v-html="item.content"></div>
+                                  <div>
+                                      장소: {{item.address}} {{item.address_detail}}
+                                  </div>
+                              </div>
+
+                              <div :class="`m-tabs-content ${tabIndex === 1 ? 'active' : ''}`">
+                                  <div id="map" style="height:300px;"></div>
+                              </div>
+                          </div>
+
+                          <div class="mt-16"></div>
+
+                          <a href="#" class="m-btn type03 state03" v-if="!item.can_participate">{{item.meetingState}}</a>
+                          <a href="#" class="m-btn type03 state02" v-else-if="item.is_participate" @click="unparticipate">참여취소</a>
+                          <a href="#" class="m-btn-orange type03" v-else @click.prevent="participate">참여하기</a>
+                      </div>
+                      <div class="m-board-btns mt-20" v-if="$auth.user && $auth.user.id == item.user.id">
+                          <div class="m-btns type01">
+                              <div class="m-btn-wrap">
+                                  <a href="#" class="m-btn type01 bg-revert-red" @click.prevent="remove">삭제하기</a>
+                              </div>
+                              <div class="m-btn-wrap">
+                                  <nuxt-link :to="`/posts/create?id=${item.id}`" href="#" class="m-btn type01 bg-primary">수정하기</nuxt-link>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="m-board-bottom">
+                  <div class="wrap">
+                      <div class="utils">
+                          <button class="btn-util" @click="toggleLike">
+                              <img src="/images/heart-active.png" alt="" style="width:14px;" v-if="item.is_like == 1">
+                              <img src="/images/heart-inactive.png" alt="" style="width:14px;" v-else>
+                              좋아요 {{ item.like_count }}
+                          </button>
+
+                          <button class="btn-util">
+                              <img src="/images/comment-black.png" alt="" style="width:14px;">
+                              댓글 {{ item.comment_count }}
+                          </button>
+
+                          <button class="btn-util" @click="storeScrap">
+                              <img src="/images/cart.png" alt="" style="width:24px;">
+                              글 담기
+                          </button>
+
+                          <button class="btn-util" id="kakao">
+                              <img src="/images/share.png" alt="" style="width:11px;">
+                              공유
+                          </button>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="wrap">
+                  <trigger-observer @transparent="hideQuicks">
+                  <comments :commentable_id="item.id" commentable_type="post" @calculateCommentCount="calculateCommentCount" @removed="commentRemoved" v-if="item.id"/>
+
+                  </trigger-observer>
+              </div>
+          </div>
+
+          <quicks 
+              :create-url="`/posts/create?board=${item.board}`"
+              :btnName="'글쓰기'"
+              v-show="showQuicks"
+          />
+      </div>
+
+      <!-- 하단 네비게이션바 -->
+      <!-- <comment-navigation @created="(data) => {comments.data.push(data)}" /> -->
+          <navigation />
+  </div>
+</template>
+
+<script>
+import InputCamera from '../../components/form/posts/inputCamera';
+import InputLink from "../../components/form/posts/inputLink";
+import InputImg from "../../components/form/posts/inputImg";
+import InputThumbnail from "../../components/form/posts/inputThumbnail";
+import KakaoHelper from '../../utils/KakaoHelper';
+import comments from '~/components/somoim/comments';
+import TriggerObserver from '../../components/triggerObserver';
+import { mapActions } from 'vuex';
+export default {
+  components: {InputThumbnail, InputImg, InputLink, InputCamera, TriggerObserver, comments},
+  auth: false,
+  data() {
+      return {
+          item: {
+              user: {}
+          },
+
+          form: {
+              post_id: this.$route.params.id
+          },
+
+          errors: {},
+
+          activeScrapPop: false,
+
+          map: "",
+
+          tabIndex: 0,
+
+          activeSpamPop: false,
+
+          showQuicks: true,
+      }
+  },
+  methods: {
+      ...mapActions(['CLEAR_POST_STATE']),
+      hideQuicks() {
+          this.showQuicks = !this.showQuicks;
+      },
+      storeScrap() {
+          this.$axios.post(`/api/scrapItems`, this.form)
+              .then(response => {
+                  this.activeScrapPop = true;
+              });
+      },
+
+      remove(){
+          this.$axios.delete("/api/posts/" + this.item.id)
+              .then(response => {
+                  this.$router.push({name: 'posts', params: {deleted: true}});
+              });
+      },
+
+      toggleLike(e){
+          e.preventDefault();
+          e.stopPropagation();
+
+          if(!this.$auth.user)
+              return alert("로그인 후 이용 부탁드립니다.");
+
+          if(this.item.is_like){
+              this.item.is_like = 0;
+              this.item.like_count -= 1;
+          }else{
+              this.item.is_like = 1;
+              this.item.like_count += 1;
+          }
+
+          this.$axios.put("/api/likes/posts/" + this.item.id);
+      },
+      calculateCommentCount(type) {
+          if(type == 'add')
+              this.item.comment_count +=1;
+          if(type === 'remove')
+              this.item.comment_count -=1;
+      },
+
+      participate(){
+        if(!this.$auth.user)
+              return alert("로그인 후 이용 부탁드립니다.");
+          this.$axios.post("/api/participants", {
+              post_id: this.item.id
+          }).then(response => {
+              alert(response.data.message);
+
+              this.item = response.data.data;
+          })
+      },
+
+      unparticipate(){
+          this.$axios.delete("/api/participants", {
+              params: {
+                  post_id: this.item.id
+              }
+          }).then(response => {
+              this.item = response.data.data;
+          })
+      },
+
+      commentRemoved(){
+          this.item.comment_count -= 1;
+      },
+
+      initMap() {
+          let self = this;
+
+          setTimeout(function(){
+              const container = document.getElementById("map");
+
+              if(!self.map){
+                  const coords =  new kakao.maps.LatLng(self.item.y, self.item.x);
+
+                  const options = {
+                      center:coords,
+                      level: 5,
+                  };
+
+                  self.map = new kakao.maps.Map(container, options);
+
+                  // 결과값으로 받은 위치를 마커로 표시합니다
+                  new kakao.maps.Marker({
+                      map: self.map,
+                      position: coords
+                  });
+              }
+          }, 300);
+
+
+      },
+
+      back(){
+          if(document.referrer)
+              return this.$router.back();
+
+          return this.$router.push("/");
+      },
+  },
+
+  mounted() {
+      kakao.maps.load();
+
+      let kakaoHelper = new KakaoHelper(Kakao);
+
+      this.$axios.get("/api/posts/" + this.$route.params.id)
+          .then(response => {
+              this.item = response.data.data;
+
+              kakaoHelper.initSharePost(this.item, this.$auth.user.id);
+          });
+  },
+  beforeDestroy() {
+      if(this.$route.name !== 'posts')
+          this.CLEAR_POST_STATE();
+  }
+}
+</script>
+
+<style scoped>
+  .m-board-content .title {
+      padding-bottom:30px;
+  }
+</style>

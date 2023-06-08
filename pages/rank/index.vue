@@ -6,7 +6,6 @@
       <!-- 내용 영역 -->
       <div class="container">
         <section class="section-ranking">
-                <div class="wrap">
                     <div class="content">
                         <div class="m-title type01">
                             <p class="sub">순위 현황 한 눈에 보기</p>
@@ -47,7 +46,7 @@
                             </div>
                         </div>
                         <div class="mt-32"></div>
-                        <div class="rankings">
+                        <!-- <div class="rankings">
                             <div class="ranking-wrap" 
                                 v-if="districtRegisterCounts.length >= 1"
                                 v-for="(rank,index) in uptoThreeDistrictRegisterCounts" :key="rank.district_id"
@@ -77,9 +76,96 @@
                                     </div>
                                 </div>
                             </div>
+                        </div> -->
+                        <!-- 1,2,3위 -->
+                        <div class="rankings">
+                            <!-- 2등 -->
+                            <div class="ranking-wrap second" v-if="districtRegisterCounts.length >= 2">
+                                <div class="ranking" >
+                                    <div class="img-wrap">
+                                        <!-- <img src="https://dotmzh1fysixs.cloudfront.net/1016/crown.png" width="20px" alt="" class="deco"> -->
+                                        <img src="images/rankings/main_ranking_2nd.png" width="100px" alt="" class="img-rect">
+
+                                    </div>
+
+                                    <div class="fragment">
+                                        <h3 class="title">
+                                            <span class="point">2</span>위
+                                        </h3>
+                                        <div class="subtitle-container">
+                                            <p class="subtitle">{{ districtRegisterCounts[1].district }}</p>
+                                            <div class="badge">
+                                                <img :src="getBadgeSrc(rankingCount(districtRegisterCounts[1]))"/>
+                                            </div>
+                                        </div>
+                                        <div :class="getScaleClass(rankingCount(districtRegisterCounts[1]),'ranked')">
+                                            <span class="zero" v-if="rankingCount(districtRegisterCounts[1]) == 0">−</span>
+                                            <template  v-else>
+                                                <span class="tri">▲</span>&nbsp;<span style="color:#DC2626"> {{ rankingCount(districtRegisterCounts[1])}} </span>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 1등 -->
+                            <div class="ranking-wrap first" v-if="districtRegisterCounts.length >= 1">
+                                <div class="ranking">
+                                    <div class="img-wrap">
+                                        <!-- <img src="https://dotmzh1fysixs.cloudfront.net/1016/crown.png" width="20px" alt="" class="deco"> -->
+                                        <img src="images/rankings/main_ranking_1st.png" width="100px" alt="" class="img-rect">
+
+                                    </div>
+
+                                    <div class="fragment">
+                                        <h3 class="title">
+                                            <span class="point">1</span>위
+                                        </h3>
+                                        <div class="subtitle-container">
+                                            <p class="subtitle">{{ districtRegisterCounts[0].district }}</p>
+                                            <div class="badge">
+                                                <img :src="getBadgeSrc(rankingCount(districtRegisterCounts[0]))"/>
+                                            </div>
+                                        </div>
+                                        <div :class="getScaleClass(rankingCount(districtRegisterCounts[0]),'ranked')">
+                                            <span class="zero" v-if="rankingCount(districtRegisterCounts[0]) == 0">−</span>
+                                            <template  v-else>
+                                                <span class="tri">▲</span>&nbsp;<span style="color:#DC2626"> {{ rankingCount(districtRegisterCounts[0])}} </span>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 3등 -->
+                            <div class="ranking-wrap third" v-if="districtRegisterCounts.length >= 3">
+                                <div class="ranking" >
+                                    <div class="img-wrap">
+                                        <!-- <img src="https://dotmzh1fysixs.cloudfront.net/1016/crown.png" width="20px" alt="" class="deco"> -->
+                                        <img src="images/rankings/main_ranking_3rd.png" width="100px" alt="" class="img-rect">
+
+                                    </div>
+
+                                    <div class="fragment">
+                                        <h3 class="title">
+                                            <span class="point">3</span>위
+                                        </h3>
+                                        <div class="subtitle-container">
+                                            <p class="subtitle">{{ districtRegisterCounts[2].district }} </p>
+                                            <div class="badge">
+                                                <img :src="getBadgeSrc(rankingCount(districtRegisterCounts[2]))"/>
+                                            </div>
+                                        </div>
+                                        <div :class="getScaleClass(rankingCount(districtRegisterCounts[2]),'ranked')">
+                                            <span class="zero" v-if="rankingCount(districtRegisterCounts[2]) == 0">−</span>
+                                            <template  v-else>
+                                                <span class="tri">▲</span>&nbsp;<span style="color:#DC2626"> {{ rankingCount(districtRegisterCounts[2])}} </span>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="box-table">
+                        <div class="box-table" v-if="districtRegisterCounts.length>3">
                             <table class="m-table type01">
                                 <thead>
                                 <tr>
@@ -90,23 +176,27 @@
                                 </thead>
                                 <tbody>
 
-                                <tr v-for="(districtRegisterCount, index) in districtRegisterCounts" :key="index" @click="$store.commit('changeDistrict',  {
-                                id: districtRegisterCount.district_id,
-                                district: districtRegisterCount.district
-                                })">
+                                <tr v-for="(districtRegisterCount, index) in districtRegisterCounts" :key="index" 
+>
                                     <template v-if="index >= 3 && districtRegisterCount">
                                     <td>{{index + 1}}위</td>
                                     <td>{{ districtRegisterCount.city}} {{districtRegisterCount.district}}</td>
-                                        <td class="more" v-if="rankingCount(districtRegisterCount) == 0">{{rankingCount(districtRegisterCount)}} <span class="tri">−</span></td>
-                                   <!-- <td class="more down" v-else-if="districtRegisterCount.up_down === 'down'">{{rankingCount(districtRegisterCount)}} <span class="tri">▼</span></td> -->
-                                    <td class="more up" v-else>{{rankingCount(districtRegisterCount)}} <span class="tri">▲</span></td>
+                                    <td>
+                                        <div class="right">
+                                            <div class="badge">
+                                                <img :src="getBadgeSrc(rankingCount(districtRegisterCount))"/>
+                                            </div>
+                                            <div :class="getScaleClass(rankingCount(districtRegisterCount))">
+                                                <span class="tri">▲ </span>&nbsp;<span> {{ rankingCount(districtRegisterCount) }} </span>
+                                            </div>
+                                        </div>
+                                    </td>
                                     </template>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                </div>
             </section>
 
           <section class="section-ad2">
@@ -160,6 +250,21 @@ export default {
         }
     },
     methods: {
+        getBadgeSrc(rankingCount) {
+            if(rankingCount >= 1000 && rankingCount < 2000) return '/images/main_icon_badge_1k.png';
+            if(rankingCount >= 2000 && rankingCount < 3000) return '/images/main_icon_badge_2k.png';
+            if(rankingCount >= 3000 ) return '/images/main_icon_badge_3k.png';
+        },
+        getScaleClass(rankingCount, rankingType='unranked') {
+            if(rankingType === 'ranked') {
+                if(rankingCount == 0) return 'bg-grey-30 ';
+                if(rankingCount < 100) return 'bg-red-30 ';
+                if(rankingCount >= 100) return 'bg-orange ';
+            }
+            if(rankingCount == 0) return 'bg-grey-30 more';
+            if(rankingCount < 100) return 'bg-red-30 more up';
+            if(rankingCount >= 100 ) return 'bg-orange more';
+        },
 
         search() {
             if(this.form.district == "" || this.form.district ==  undefined) {
@@ -252,8 +357,20 @@ export default {
 }
 </script>
 <style scoped>
-    .fragment .subtitle {
-        font-size: 1.2em !important;
+    .fragment .subtitle-container {
+        display: flex;
+        justify-content:center;
+        align-items: center;
+        margin-bottom: 10px;
+        background-color: white;
+        border-radius: 5px;
+        width:100px;
+        padding-top: 5px;
+    }
+
+    .fragment .subtitle-container .subtitle {
+        font-size: 0.9rem !important;
+        margin-right:3px;
     }
     .time-container {
         display: flex;
@@ -273,19 +390,89 @@ export default {
         color: #888888;
         padding-right:10px;
     }
+    .right .icon-container {
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+    }
 
+    .rankings {
+        margin: 0px 10px 10px 10px !important;
+    }
 
-    .area-index .section-ranking .rankings .ranking {
-    text-align: center;
-    width: 120px;
-}
-.area-index .section-ranking .ranking .fragment {
-    margin-top: 20px;
-}
-.area-index .section-ranking .ranking .fragment .subtitle {
-    margin-bottom: 0px;
-}
-.area-index .section-ranking .rankings .fragment .more {
-    top: 125%;
-}
+    .area-index .section-ranking .rankings .fragment .more .tri {
+        margin-left:4px;
+        font-size:12px;
+        color:#DC2626;
+    }
+    .m-table .rank {
+        border: 1px solid #f5f2f2;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-right: 5px;
+        padding-left: 5px;
+        height: 50px;
+        margin-bottom: 2px;
+    }
+    
+    .rank .left {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .rank .left .petit-image img {
+        width:30px;
+        height:30px;
+        margin: 2px 5px 0px 0px;
+    }
+    .right {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-right:0.25rem;
+    }
+    .right .badge {
+        width: 30px;
+        height: 30px;
+        margin-right: 5px;
+    }
+    .bg-grey-30 {
+        width:100px;
+        height:34px;
+        background-color: #eeeeee;
+        border-radius: 5px;
+        padding: 5px 11px 5px 11px;
+        font-size: 14px;
+    }
+    .bg-red-30 {
+        width:100px;
+        height:34px;
+        background-color: #fff2f2;
+        border-radius: 5px;
+        padding: 5px 11px 5px 11px;
+        font-size: 14px;
+    }
+    .bg-red-30 .tri {
+        margin-left:4px;
+        font-size:12px !important;
+        color: red;
+    }
+    .bg-orange {
+        width:100px;
+        height:34px;
+        background-color: rgb(254, 124, 30);
+        border-radius: 5px;
+        padding: 5px 11px 5px 11px;
+        font-size: 14px;
+    }
+    .bg-orange .tri {
+        margin-left:4px;
+        font-size:12px !important;
+        color: white
+    }
+    .bg-orange span {
+        color:white !important;
+    }
 </style>

@@ -771,6 +771,69 @@ html {
     background-color:#D30000;
 }
 
+.area-index .section-parasole {
+    background-color:#F5F5F5;
+    padding: 30px 20px;
+}
+
+.area-index .section-parasole .m-title.type01 {
+    margin-bottom:10px;
+    text-align: left;
+}
+
+.area-index .section-parasole .m-title.type01 .highlighter-point {
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    background: linear-gradient(to top, #FF7C2E 50%, transparent 50%);
+}
+
+.area-index .section-parasole .m-table .meeting {
+    display:flex;
+    flex-direction: column;
+    
+    border-bottom:1px solid #ccc;
+    padding: 10px 0; 
+    min-height:50px;
+}
+.area-index .section-parasole .m-table li:first-child .meeting .image-container {
+    position:relative;
+    display:flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 10px; 
+    margin: 10px 0;
+    height: 150px;
+    border-radius: 10px;
+}
+.area-index .section-parasole .m-table li:first-child .meeting .image-container .new {
+    position: absolute;
+    width: 60px;
+    height: 25px;
+    right: 5%;
+    top: 10%;
+    background: #FF7C2E;
+    border-radius: 15px;
+    color: white;
+    text-align: center;
+}
+
+.area-index .section-parasole .m-table .meeting .image-container .meeting-date {
+    color: white;
+}
+.area-index .section-parasole .m-table .meeting .image-container .meeting-title {
+    color: white;
+}
+
+.area-index .section-parasole .m-table .meeting .meeting-title .board {
+    color: #FF630C
+}
+
+
+
+.area-index .section-parasole .m-table {
+    margin-bottom:16px;
+}
 
 .area-index .section-banner {
     margin-bottom:10px;
@@ -895,11 +958,7 @@ html {
     background-color:rgb(236,188,153);
 
 } */
-.area-index .section-ranking .rankings .ranking-wrap:first-child .deco {
-    position:absolute; left:50%; top:-25px; transform:translateX(-50%);
-    z-index:1;
-}
-/* .area-index .section-ranking .rankings .ranking-wrap:nth-child(2) .deco {
+/* .area-index .section-ranking .rankings .ranking-wrap:first-child .deco {
     position:absolute; left:50%; top:-25px; transform:translateX(-50%);
     z-index:1;
 } */
@@ -957,14 +1016,14 @@ html {
 .area-index .section-ranking .ranking .fragment .title .point {
     font-size:32px; font-weight:bold; font-family: GmarketSans; color:#000;
 }
-.area-index .section-ranking .rankings .ranking-wrap:first-child .title {
+/* .area-index .section-ranking .rankings .ranking-wrap:first-child .title {
     margin-bottom:4px;
     font-size:24px; font-weight:500; font-family: GmarketSans; color:#F88600;;
 }
 .area-index .section-ranking .rankings .ranking-wrap:first-child .point {
     margin-bottom:4px;
     font-size:32; font-weight:bold; font-family: GmarketSans; color:#F88600;;
-}
+} */
 
 /* .area-index .section-ranking .ranking .fragment .more {
     display:flex; align-items: center; justify-content: center;
@@ -1108,6 +1167,84 @@ html {
 .area-index .section-photo {
     padding:50px 0;
 }
+
+.area-index .section-popular {
+    margin-top:40px;
+}
+.area-index .section-popular .m-title.type01 {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.area-index .section-popular .m-table {
+    margin-bottom:16px;
+}
+
+.area-index .section-popular .m-table .rank {
+    border: 1px solid #f5f2f2;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    display: flex;
+    align-conent: center;
+    justify-content: space-between;
+    height: 80px;
+}
+.area-index .section-popular .m-table li:first-child .rank{
+    box-shadow: 0px 0px 11px 1px rgba(255,  102 ,  0 ,0.14),
+                0px 0px 19px 6px rgba(255,  102 ,  0 ,0.03),
+                0px 0px 26px 12px rgba(255,  102 ,  0 ,0.14),
+                0px 0px 29px 12px rgba(255,  102 ,  0 ,0.14);
+}
+.area-index .section-popular .m-table .rank .left .fixed-width {
+    width: 60px;
+    font-family:GmarketSans;
+    font-size: 20px;
+    text-align:center;
+}
+
+.area-index .section-popular .m-table li:first-child .rank .left .fixed-width {
+    color: #ff6600;
+}
+.area-index .section-popular .m-table .rank .left .point {
+    font-size: 28px;
+    font-weight: bold;
+    font-family:GmarketSans;
+    color: #000;
+}
+.area-index .section-popular .m-table li:first-child .rank .left .point {
+    color: #ff6600;
+}
+
+.area-index .section-popular .m-table .rank .right {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: inherit;
+    justify-content: center;
+    padding: 10px 0;
+}
+
+.area-index .section-popular .m-table .rank .right .texts {
+    display: flex;
+    justify-content: flex-start;
+    width: inherit;
+}
+
+.area-index .section-popular .m-table .rank .right .bar {
+    margin-top: 5px;
+    width: inherit;
+    border-radius: 5px;
+    background-color: #e1e1e1;
+}
+
+.area-index .section-popular .m-table .rank .right .bar .bar-inner {
+    height: 25px;
+    padding-right: 5px;
+    border-radius: 5px;
+    color: white;
+    text-align: right;
+}
+
 .area-index .section-ad2 img {
     display: block;
     width:100%;
@@ -1215,6 +1352,12 @@ html {
     display:block;
     margin-bottom:8px;
     color:#777; font-weight:500; font-size:12px;
+}
+
+.m-title.type01 .sub02 {
+    display:block;
+    margin-bottom:8px;
+    color:#777; font-weight:400; font-size:22px;
 }
 
 .m-title.type02 {
@@ -1376,7 +1519,16 @@ html {
 .m-tabs.type02 .m-tab.active {
     background-color:#0BAF00; color:#fff;
 }
+
 .m-tabs.type02 .m-tab {
+    flex:1; height:35px;
+    background-color:#EEEEEE; border-radius:5px;
+}
+
+.m-tabs.type02 .m-tab-orange.active {
+    background-color:#FF7E00; color:#fff;
+}
+.m-tabs.type02 .m-tab-orange {
     flex:1; height:35px;
     background-color:#EEEEEE; border-radius:5px;
 }
@@ -1570,6 +1722,16 @@ html {
 .m-boards.type01 .m-board.마을모임 .m-board-top .category {
     background-color:#FF7C2E;
 }
+
+.m-boards.type01 .m-board.마을모임 .m-board-top .category.closed {
+    background-color:#e1e1e1;
+}
+.m-boards.type01 .m-board.마을모임 .m-board-top .title {
+    font-size:18px;
+    font-weight:500;
+}
+
+
 .m-boards.type01 .m-board.마을모임 .m-board-content .body {
     -webkit-line-clamp:2;
 }
@@ -1637,6 +1799,30 @@ html {
     margin-top:10px;
 }
 
+.m-board-show.type01 .profile {
+    display: flex;
+    height: 40px;
+    width: 100%;
+}
+
+
+.m-board-show.type01 .profile .thumbnail-profile {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    background-size: cover;
+    background-position: center;
+    margin-right: 10px;
+}
+
+.m-board-show.type01 .profile .writer-container .nickname {
+    font-size: 20px;
+    font-weight: 500;
+}
+.m-board-show.type01 .profile .writer-container .date-time {
+    color: #777777;
+}
+
 .m-board-show.type01 .writer {
     display:flex; align-items: center;
     font-size:12px; font-weight:500;
@@ -1700,6 +1886,27 @@ html {
     display:flex;
     margin-top:8px;
 }
+
+.m-board-show.type01 .m-board-content .info .title-meeting {
+    display: flex;
+    align-content: center;
+    
+    width: 110px;
+    height: 30px;
+
+    background: #F5F5F5;
+    border-radius: 20px;
+    text-align: left;
+    padding-left: 10px;
+    margin-right: 20px;
+}
+.m-board-show.type01 .m-board-content .info .title-meeting .icon {
+    margin-top: 6px;
+    width: 14px;
+    height: 14px;
+    margin-right: 8px;
+}
+
 .m-board-show.type01 .m-board-content .info .title {
     width:90px; margin-right:20px;
     color:#0BAF00;
@@ -1903,6 +2110,8 @@ html {
 .red {
     color:red !important;
 }
+
+
 .filter-white {
     filter: invert(99%) sepia(13%) saturate(839%) hue-rotate(221deg) brightness(113%) contrast(100%);
 }
@@ -1930,6 +2139,9 @@ html {
 .bg-grey {
     background-color:#828282 !important;
 }
+.bg-orange {
+    background-color: #FF7C2E !important;
+}
 .m-btn.type03 {
     display:flex; align-items: center; justify-content: center;
     height:45px; padding:0 16px;
@@ -1937,11 +2149,26 @@ html {
     background-color:#0BAF00; color:#fff; border-radius:5px;
     border:1px solid transparent;
 }
+.m-btn-orange.type03 {
+    display:flex; align-items: center; justify-content: center;
+    height:45px; padding:0 16px;
+    font-weight:500; font-size:18px;
+    background-color:#FF7C2E; color:#fff; border-radius:5px;
+    border:1px solid transparent;
+}
 .m-btn.type03.state02 {
     color:red; border-color:red; background-color:#fff;
 }
 .m-btn.type03.state03 {
     color:gray; border-color:gray; background-color:#fff;
+}
+
+.m-btn.type04 {
+    height: 30px;
+    padding: 0 8px;
+    border-radius: 5px;
+    border:1px solid transparent;
+
 }
 
 .m-btn.type01.type-revert {
