@@ -408,7 +408,6 @@
                     <div class="mt-16"></div>
                     <ul class="m-table type01 rank-container" >
                         <li v-for="(item, index) in popularRankings" :key="index" 
-                            @click="true"
                             :style="getOpacity(index)"
                         >
                             <div class="rank">
@@ -422,7 +421,7 @@
                                         <div class="m-btn type04 bg-lightGray">
                                             {{ item.district }}
                                         </div>
-                                        <p style="margin-left:5px;">{{ item.nickname }}</p>
+                                        <p style="margin-left:5px;">{{ replaceText(item.nickname,10) }}</p>
                                     </div>
                                     <div class="bar">
                                         <div class="bar-inner" :style="`width:${item.activity_index}%; background-color:${getBarColor(item.activity_index)}`">
@@ -433,10 +432,11 @@
                             </div>
                         </li>
                     </ul>
+                    <nuxt-link to="/popular/rank" class="m-btn type02 bg-revert-primary">개인 랭킹 TOP 100 +</nuxt-link>
                 </div>
             </section>
 
-
+            <div class="mt-12"></div>
             <section class="section-ad2">
                 <a :href="homeBanner2.link_url" target="_blank" class="link">
                     <img :src="homeBanner2.image.url" alt="">
