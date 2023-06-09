@@ -44,52 +44,35 @@
                 </div>
 
 
-                <!-- TODO 230214 주석처리 -->
-                <!-- <div class="content">
+                <div class="content">
                     <div class="menus-wrap">
                         <div class="menus">
                             <div class="menu-wrap">
-                                <a href="/posts?board=notices" class="menu">
-                                    <img src="/images/news01.png" style="width:60px" alt="" class="">
+                                <a href="/contents/about" class="menu">
+                                    <img src="/images/icon-intro.png" style="width:60px" alt="" class="">
 
-                                    <h3 class="title">마을소식</h3>
+                                    <h3 class="title">자유마을 소개</h3>
                                 </a>
                             </div>
 
                             <div class="menu-wrap">
-                                <a href="/posts?board=clips" class="menu">
-                                    <img src="/images/news02.png" style="width:60px" alt="" class="">
+                                <a href="/contents/declares" class="menu">
+                                    <img src="/images/icon-creed.png" style="width:60px" alt="" class="">
 
-                                    <h3 class="title">마을영상</h3>
+                                    <h3 class="title">10대 강령</h3>
                                 </a>
                             </div>
 
-                            <div class="menu-wrap">
+                            <!-- <div class="menu-wrap">
                                 <a href="/posts?board=photos" class="menu">
                                     <img src="/images/news03.png" style="width:60px" alt="" class="">
 
-                                    <h3 class="title">마을포토</h3>
+                                    <h3 class="title">총재 인사말</h3>
                                 </a>
-                            </div>
-
-                            <div class="menu-wrap">
-                                <a href="/posts?board=asks" class="menu">
-                                    <img src="/images/news04.png" style="width:60px" alt="" class="">
-
-                                    <h3 class="title">마을질문</h3>
-                                </a>
-                            </div>
-
-                            <div class="menu-wrap">
-                                <a href="/posts?board=meetings" class="menu">
-                                    <img src="/images/news05.png" style="width:60px" alt="" class="">
-
-                                    <h3 class="title">마을모임</h3>
-                                </a>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
-                </div> -->
+                </div>
 
 
                 <div class="bottom">
