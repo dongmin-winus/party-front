@@ -55,7 +55,7 @@
             <div class="gray-container">
               <div>
                 <p>자유마을 고객센터</p>
-                <div v-if="$auth.user.role === 6">
+                <div v-if="$auth.user?.role === 6">
                   <div class="mt-8"></div>
                   <button type="button" class="m-btn type01" @click="activeStaff = true">임원진 검색하기</button>
                 </div>
