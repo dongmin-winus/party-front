@@ -127,7 +127,7 @@ export default {
     },
     async makeProxyPhoneCall(data) {
       console.log('makeProxyPhoneCall called',111111)
-      const response = await this.$axios.post(`https://api.050bizcall.co.kr/link/auto_expire_mapp.do`, {
+      const response = await this.$axios.post(`/bizcall/link/auto_expire_mapp.do`, {
           iid: data.IID,
           rn: data.rn,
           auth: data.auth,
