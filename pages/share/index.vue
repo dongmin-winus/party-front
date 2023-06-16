@@ -22,7 +22,7 @@
                             <div class="ranking-wrap second" v-if="shareList.length >= 2">
                                 <div class="ranking" >
                                     <div class="img-wrap">
-                                        <img :src="getUserImgUrl(shareList[1], 1)" onerror="this.src='images/default_profile.jpeg'" width="100px" alt="" class="img-rect">
+                                        <img :src="getUserImgUrl(shareList[1], 1)"  width="100px" alt="" class="img-rect">
                                         <div class="rounded">
                                                 <span style="color:#0BAF00;"> {{ shareList[1].share_count }} </span>
                                         </div>
@@ -45,7 +45,7 @@
                                 <div class="ranking" >
                                     <div class="img-wrap">
                                         <img src="https://dotmzh1fysixs.cloudfront.net/1016/crown.png" width="20px" alt="" class="deco">
-                                        <img :src="getUserImgUrl(shareList[0], 2)" onerror="this.src='images/default_profile.jpeg'" width="100px" alt="" class="img-rect">
+                                        <img :src="getUserImgUrl(shareList[0], 2)" width="100px" alt="" class="img-rect">
                                         <div class="rounded">
                                                 <span style="color:#0BAF00;"> {{ shareList[0].share_count }} </span>
                                         </div>
@@ -67,7 +67,7 @@
                             <div class="ranking-wrap second" v-if="shareList.length >= 3">
                                 <div class="ranking" >
                                     <div class="img-wrap">
-                                        <img :src="getUserImgUrl(shareList[2], 3)" onerror="this.src='images/default_profile.jpeg'" width="100px" alt="" class="img-rect">
+                                        <img :src="getUserImgUrl(shareList[2], 3)" width="100px" alt="" class="img-rect">
                                         <div class="rounded">
                                                 <span style="color:#0BAF00;"> {{ shareList[2].share_count }} </span>
                                         </div>
@@ -187,7 +187,7 @@ export default {
     methods: {
         getUserImgUrl(share, i) {
 
-                return share.profile.url ? share.profile.url : "images/rankings/" + i + ".png";
+                return share.profile?.url ? share.profile.url : "images/rankings/" + i + ".png";
         },
         subText(i, n) {
             if (i.length <= n) { return i; } 

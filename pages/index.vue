@@ -1,55 +1,39 @@
 <template>
     <div class="area-index">
         <header-type01
-            @updatePosts="updatePosts"
         />
         <!-- 내용 영역 -->
-        <div class="container">
+        <div style="padding-top:30px">
             <!-- 지역이 본부 x & 로그인 -->
             <div class="fragment" v-if="district && district.id != 0">
                 <section class="section-ad">
-                    <div class="wrap">
-                        <swiper :options="swiperOptions">
-                            <swiper-slide v-for="(slide,index) in homeBanner3" :key="slide.id">
-                                <a :href="slide.link_url" target="_blank" class="link">
-                                   <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
-                                </a>
-                            </swiper-slide>
-                        </swiper> 
-                    </div>
+                    <swiper :options="bannerOptions">
+                        <swiper-slide v-for="(slide,index) in homeBanner3" :key="slide.id">
+                            <a :href="slide.link_url" target="_blank" class="link">
+                                <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
+                            </a>
+                        </swiper-slide>
+                    </swiper> 
                 </section>
-                <div class="mt-8"></div>
-                <section class="section-banner">
-                    <div class="wrap">
-                        <div class="content">
-                            <h3 class="title">
-                                <span class="point">{{ district.district }}의 희망!</span>
-                                <br/>대한민국을 사랑하는
-                                <br/>당신이 자유마을의 얼굴입니다!
-                            </h3>
-                            <div class="m-btns type01">
-                                <div class="m-btn-wrap">
-                                    <nuxt-link to="/infos" class="m-btn type01">{{ district.district }}소개</nuxt-link>
-                                </div>
-                                <div class="m-btn-wrap">
-                                    <nuxt-link to="/staffs" class="m-btn type01">임원진</nuxt-link>
-                                </div>
-                                <div class="m-btn-wrap">
-                                    <nuxt-link to="/contacts" class="m-btn type01">내마을 국회의원</nuxt-link>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                <div class="mt-40"></div>
                 <section class="section-values">
                     <img src="https://dotmzh1fysixs.cloudfront.net/1018/base-town.png" alt="" class="base">
                     <div class="wrap">
                         <div class="content">
-                            <div class="m-title type01">
-                                <p class="sub">자유마을 가입현황</p>
-                                {{ district.district }}
+                            <div class="titles">
+                                <nuxt-link to="/infos" class="left m-title type01">
+                                    <p class="sub">자유마을 가입현황</p>
+                                    {{ district.district }} &gt;
+                                </nuxt-link>
+                                <nuxt-link to="/staffs" class="right">
+                                    <div>
+                                        <img src="/images/main_icon_staff.png" alt="" class="">
+                                    </div>
+                                    <div>
+                                        <span>섬기는<br />사람들</span>
+                                    </div>
+                                </nuxt-link>
                             </div>
+                            <div class="mt-8"></div>
 
                             <div class="boxes">
                                 <div class="box-wrap">
@@ -91,102 +75,79 @@
                         </div>
                     </div>
                     <div class="mt-40"></div>
+
+                    <!-- parasole -->
+                    <section class="section-parasole" >
+                        <div class="m-title type01">
+                            다양한 <span class="highlighter-point">파라솔 소식을</span><br/>
+                            빠르게 만나보세요
+                        </div>
+                        <div class="mt-8"></div>
+                        <ul class="m-table type01">
+                            <li v-for="(item, index) in meetingList" :key="index">
+                                <nuxt-link :to="`/somoim/${item.id}`">
+                                    <div class="meeting"  v-if="item.img && index == 0">
+                                        <div class="image-container" :style="getBackground(item.img)">
+                                            <div class="new">NEW</div>
+                                            <p class="meeting-date">{{ item.start_date }}</p>
+                                            <p class="meeting-title"><span class="board">&#91;{{ item.formatBoard }}&#93;</span>&nbsp;{{ replaceText(item.title,18) }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="meeting"  v-else>
+                                        <p class="meeting-date">{{ item.start_date }}</p>
+                                        <p class="meeting-title"><span class="board">&#91;{{ item.formatBoard }}&#93;</span>&nbsp;{{ replaceText(item.title,18) }}</p>
+                                    </div>
+                                </nuxt-link>
+                            </li>
+                        </ul>
+                        <div class="mt-8"></div>
+                        <nuxt-link to="/somoim" class="m-btn type02 bg-revert-primary">더보기 +</nuxt-link>
+                    </section>
                 </section>
             </div>
 
             <!-- 지역이 본부 | 비로그인 -->
             <div class="fragment" v-else>
                 <section class="section-ad">
+                    <swiper :options="bannerOptions">
+                        <swiper-slide v-for="(slide,index) in homeBanner3" :key="slide.id">
+                            <a :href="slide.link_url" target="_blank" class="link">
+                                <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
+                            </a>
+                        </swiper-slide>
+                    </swiper> 
+                </section>
+                <!-- 마을 홍보 영상들 -->
+                <section class="section-promotion" v-if="promotionList.length !== 0">
                     <div class="wrap">
-
+                        <div class="m-title type01">
+                            <p class="sub">생생한 지역 인터뷰</p>
+                            이달의 <span class="point">마을</span>
+                        </div>
                         <swiper :options="swiperOptions">
-                            <swiper-slide v-for="(slide,index) in homeBanner3" :key="slide.id">
-                                <a :href="slide.link_url" target="_blank" class="link">
-                                     <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
-                                </a>
-                            </swiper-slide>
-                        </swiper> 
-                    </div>
-                </section>
-                <section class="section-banner">
-                    <div class="wrap">
-                        <div class="content">
-                            <h3 class="title">
-                                <span class="point">대한민국의 희망!</span>
-                                <br/>자유마을에 오신 여러분을
-                                <br/>진심으로 환영합니다!
-                            </h3>
-
-                            <div class="m-btns type01">
-                                <div class="m-btn-wrap">
-                                    <nuxt-link to="/contents/about" href="#" class="m-btn type01">자유마을이란</nuxt-link>
-                                </div>
-                                <div class="m-btn-wrap">
-                                    <nuxt-link to="/contents/declares" class="m-btn type01">10대 강령</nuxt-link>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
-
-            <section class="section-town">
-                <div class="wrap">
-                    <div class="content">
-                        <div class="m-title type01">
-                            <p class="sub">소속 된 마을을 찾을 수 있어요.</p>
-                            나의 <span class="point">마을 찾기</span>
-                        </div>
-
-                        <input-region
-                            input-class="m-input-select type01"
-                            :districtContainer="container"
-                            :initiationCalled="activeFinder"
-                            @change="changeDistrict"
-                        />
-                        <button class="m-btn type02 width-100" v-touch:tap="search">검색하기</button>
-                        <div style="margin-top: 30px;">
-                            <span style="color: red">*</span>행정동을 모르실 경우 찾기 버튼을 누르세요.  <button style="color: #0f38bd;" @click.stop="active">찾기</button>
-                        </div>
-                    </div>
-                </div>
-
-                <Finder
-                    v-if="activeFinder"
-                    :title="'주소로 행정동 찾기'"
-                    :excecute="'변환하기'"
-                    :cancel="'검색하기'"
-                    @cancel="closeModal"
-                    @setContainer="setContainer"
-                />
-
-
-            </section>
-            <div class="section-promotion">
-                <div class="wrap">
-                    <div class="content">
-                        <div class="m-title type01">
-                            <p class="sub">마을 소개</p>
-                            지역별 <span class="point">홍보</span>
-                        </div>
-                     <!--  <swiper :options="swiperOptions">
                             <swiper-slide v-for="(slide,index) in promotionList" :key="slide.id">
-                                <nuxt-link v-if="index + 1 != promotionList.length" :to="`/posts/${slide.id}`">
+                                <nuxt-link :to="`/posts/${slide.id}`">
                                     <div class="content">
-                                        <img class="img" :src="slide.img.url" alt="-">
-                                        <p class="title" style="font-weight:500; font-size:20px">{{slide.title}}</p>
-                                        <div>
-                                            <p style="font-weight:300; font-size:16px;">{{ slide.content }}</p>
+                                        
+                                        <div style="border:1px solid #bdbdbd; border-radius:10px; height:inherit;">
+                                            <img class="img" :src="slide.video_thumbnail" alt="-" />
+                                            <div class="mt-8"></div>
+                                            <p style="font-weight:500; font-size:20px; color:#0BAF00" align="center">{{slide.title}}</p>
+                                            <p style="display:block; margin: 0 15px; font-weight:300; font-size:16px; overflow:hidden; white-space:nowrap" align="center" v-html="slide.content"></p>
                                         </div>
+   
                                     </div>
                                 </nuxt-link>
+
                                 <div class="mt-8"></div>
-                                <nuxt-link v-if="index + 1 != promotionList.length" :to="`/posts/${slide.id}`" class="m-btn type02 bg-revert-primary">자세히보기 +</nuxt-link>
+                                <nuxt-link :to="`/posts/${slide.id}`" class="m-btn type02 bg-revert-primary">자세히보기 +</nuxt-link>
                             </swiper-slide>
-                        </swiper> --> 
+                        </swiper>
                     </div>
-                </div>
+                </section>
             </div>
+
+
             <section class="section-ranking">
                 <div class="wrap">
                     <div class="content">
@@ -200,10 +161,6 @@
                                 <input type="radio" id="1" value="total-rankings" v-model="toggleList">
                                 <label for="1">전체</label>
                             </div>
-                            <!-- <div class="m-input-checkbox">
-                                <input type="radio" id="2" value="daily-rankings" v-model="toggleList">
-                                <label for="2">일간</label>
-                            </div> -->
                             <div class="m-input-checkbox">
                                 <input type="radio" id="3" value="rankings" v-model="toggleList">
                                 <label for="3">주간</label>
@@ -229,44 +186,118 @@
                             </div>
                         </div>
                         <div class="mt-32"></div>
+
+                        <!-- 1,2,3위 -->
                         <div class="rankings">
-                            <div class="ranking-wrap" 
-                                v-if="districtRegisterCounts.length >= 1"
-                                v-for="(rank,index) in uptoThreeDistrictRegisterCounts" :key="rank.district_id"
+                            <!-- 2등 -->
+                            <div class="ranking-wrap second" v-if="districtRegisterCounts.length >= 2"
+                                style="height:280px background-color:rgb(221,221,221)"
                             >
                                 <div class="ranking" 
                                     @click="changeDistrictInRanking({
-                                        id: districtRegisterCounts[index].district_id,
-                                        district: districtRegisterCounts[index].district
+                                        id: districtRegisterCounts[1].id,
+                                        district: districtRegisterCounts[1].district
                                     })"
                                 >
                                     <div class="img-wrap">
-                                        <img src="https://dotmzh1fysixs.cloudfront.net/1016/crown.png" width="20px" alt="" class="deco">
-                                        <img :src="`images/rankings/${index+1}.png`" width="100px" alt="" class="img-rect">
+                                        <!-- <img src="https://dotmzh1fysixs.cloudfront.net/1016/crown.png" width="20px" alt="" class="deco"> -->
+                                        <img src="images/rankings/main_ranking_2nd.png" width="100px" alt="" class="img-rect">
+
                                     </div>
 
                                     <div class="fragment">
-                                        <p class="subtitle">{{ rank.district }}</p>
                                         <h3 class="title">
-                                            <span class="point">{{ index+1 }}</span>위
+                                            <span class="point">2</span>위
                                         </h3>
-                                        <div class="more">
-                                            <!-- {{ districtRegisterCounts[index].count }} -->
-                                            <span class="zero" v-if="rankingCount(districtRegisterCounts[index].count) == 0">−</span>
+                                        <div class="subtitle-container">
+                                            <p class="subtitle">{{ districtRegisterCounts[1].district }}</p>
+                                            <div class="badge">
+                                                <img :src="getBadgeSrc(rankingCount(districtRegisterCounts[1]))"/>
+                                            </div>
+                                        </div>
+                                        <div :class="getScaleClass(rankingCount(districtRegisterCounts[1]),'ranked')">
+                                            <span class="zero" v-if="rankingCount(districtRegisterCounts[1]) == 0">−</span>
                                             <template  v-else>
-                                                <span class="tri">▲</span>&nbsp;<span style="color:#DC2626"> {{ rankingCount(rank )}} </span>
+                                                <span class="tri">▲</span>&nbsp;<span style="color:#DC2626"> {{ rankingCount(districtRegisterCounts[1])}} </span>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 1등 -->
+                            <div class="ranking-wrap first" v-if="districtRegisterCounts.length >= 1">
+                                <div class="ranking" 
+                                    @click="changeDistrictInRanking({
+                                        id: districtRegisterCounts[0].id,
+                                        district: districtRegisterCounts[0].district
+                                    })"
+                                >
+                                    <div class="img-wrap">
+                                        <!-- <img src="https://dotmzh1fysixs.cloudfront.net/1016/crown.png" width="20px" alt="" class="deco"> -->
+                                        <img src="images/rankings/main_ranking_1st.png" width="100px" alt="" class="img-rect">
+
+                                    </div>
+
+                                    <div class="fragment">
+                                        <h3 class="title">
+                                            <span class="point">1</span>위
+                                        </h3>
+                                        <div class="subtitle-container">
+                                            <p class="subtitle">{{ districtRegisterCounts[0].district }}</p>
+                                            <div class="badge">
+                                                <img :src="getBadgeSrc(rankingCount(districtRegisterCounts[0]))"/>
+                                            </div>
+                                        </div>
+                                        <div :class="getScaleClass(rankingCount(districtRegisterCounts[0]),'ranked')">
+                                            <span class="zero" v-if="rankingCount(districtRegisterCounts[0]) == 0">−</span>
+                                            <template  v-else>
+                                                <span class="tri">▲</span>&nbsp;<span style="color:#DC2626"> {{ rankingCount(districtRegisterCounts[0])}} </span>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 3등 -->
+                            <div class="ranking-wrap third" v-if="districtRegisterCounts.length >= 3">
+                                <div class="ranking" 
+                                    @click="changeDistrictInRanking({
+                                        id: districtRegisterCounts[2].id,
+                                        district: districtRegisterCounts[2].district
+                                    })"
+                                >
+                                    <div class="img-wrap">
+                                        <!-- <img src="https://dotmzh1fysixs.cloudfront.net/1016/crown.png" width="20px" alt="" class="deco"> -->
+                                        <img src="images/rankings/main_ranking_3rd.png" width="100px" alt="" class="img-rect">
+
+                                    </div>
+
+                                    <div class="fragment">
+                                        <h3 class="title">
+                                            <span class="point">3</span>위
+                                        </h3>
+                                        <div class="subtitle-container">
+                                            <p class="subtitle">{{ districtRegisterCounts[2].district }} </p>
+                                            <div class="badge">
+                                                <img :src="getBadgeSrc(rankingCount(districtRegisterCounts[2]))"/>
+                                            </div>
+                                        </div>
+                                        <div :class="getScaleClass(rankingCount(districtRegisterCounts[2]),'ranked')">
+                                            <span class="zero" v-if="rankingCount(districtRegisterCounts[2]) == 0">−</span>
+                                            <template  v-else>
+                                                <span class="tri">▲</span>&nbsp;<span style="color:#DC2626"> {{ rankingCount(districtRegisterCounts[2])}} </span>
                                             </template>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="wrapper">
+                        
+                        <!-- 4위 이상 -->
+                        <div class="wrapper" v-if="districtRegisterCounts.length > 3">
                             <ul class="m-table type01 rank-container">
                                 <li v-for="(districtRegisterCount, index) in districtRegisterCounts" :key="index" 
                                     @click="changeDistrictInRanking({
-                                        id: districtRegisterCount.district_id,
+                                        id: districtRegisterCount.id,
                                         district: districtRegisterCount.district
                                     })"
                                 >
@@ -284,13 +315,11 @@
                                                     {{ districtRegisterCount.city}} {{districtRegisterCount.district}}
                                                 </div>                                                
                                             </div>
-                                            <div class="light">
-                                                <div class="bg-grey-30 more"
-                                                    v-if="rankingCount(districtRegisterCount) == 0"
-                                                >
-                                                    <span class="tri">−</span>
+                                            <div class="right">
+                                                <div class="badge">
+                                                    <img :src="getBadgeSrc(rankingCount(districtRegisterCount))"/>
                                                 </div>
-                                                <div class="bg-red-30 more up" v-else>
+                                                <div :class="getScaleClass(rankingCount(districtRegisterCount))">
                                                     <span class="tri">▲ </span>&nbsp;<span> {{ rankingCount(districtRegisterCount) }} </span>
                                                 </div>
                                             </div>
@@ -313,103 +342,101 @@
                 </div>
             </section>
 
-            <section class="section-notice">
+            <!-- 우리마을 국회의원 -->
+            <section class="section-contact" v-if="district && district.id != 0">
                 <div class="wrap">
-                    <div class="m-title type02">
-                        <h3 class="title">소식</h3>
-
-                        <nuxt-link to="/posts?board=notices" class="btn-more">
-                            <img src="https://dotmzh1fysixs.cloudfront.net/1013/arrowRight-gray.png" style="width:9px;" alt="">
-                        </nuxt-link>
-                    </div>
-
-                    <div class="m-empty type01" v-if="notices.data.length === 0">
-                        데이터가 없습니다.
-                    </div>
-                    <div class="m-items type01">
-                        <nuxt-link :to="`/posts/${notice.id}`" class="m-item" v-for="notice in notices.data" :key="notice.id">
-                            <div class="m-ratioBox-wrap" v-if="notice.img">
-                                <div class="m-ratioBox" :style="`background-image:url('${notice.img.preview_url}');`"></div>
+                    <div class="content">
+                        <div class="m-title type01">
+                            <p class="sub">한눈에 확인하는 국회의원 평가</p>
+                            우리마을 <span class="point">국회의원</span>
+                        </div>
+                        <div :class="`card-${partyClass}`" v-if="partyClass">
+                            <div class="mt-32"></div>
+                            <div class="m-title type04" style="color:white; text-align:center;">
+                                {{ partyName }}
                             </div>
-                            <div class="m-ratioBox-wrap" v-else>
-                                <div class="m-ratioBox" :style="{backgroundImage: `url('/images/posts/${Math.floor(Math.random() * 8) + 1}.jpg'`}"></div>
+                            <div class="card-content-container">
+                                <div class="card">
+                                    <div class="card-image" :style="`background-image:url('${congressmanItem.img.url}')`"></div>
+                                </div>
+                                <p style="font-size:30px; font-weight:700;">{{ congressmanItem.korean_name }} 의원</p>
+                                <div class="activity-point">
+                                    <span>활동만족도</span> &nbsp;<img :src="makeAvgImg" style="width:25px; height:25px;" alt="">
+                                </div>
                             </div>
-
-
-                            <div class="content">
-                                <p class="subtitle" v-if="notice.district">{{ notice.district.city }} {{notice.district.district}}</p>
-                                <p class="subtitle" v-else>전체</p>
-                                <h3 class="title">{{notice.title}}</h3>
-                            </div>
-                        </nuxt-link>
+                        </div>
                     </div>
+                    <div class="mt-12"></div>
+                    <nuxt-link to="/contacts" class="m-btn type02 bg-revert-primary">평가하러가기 +</nuxt-link>
                 </div>
             </section>
-            <section class="section-video">
+
+            <!-- 자유마을 스토리 -->
+            <section class="section-story" v-if="district.id == 0">
                 <div class="wrap">
-                    <div class="m-title type02">
-                        <h3 class="title">영상</h3>
+                        <div class="m-title type01">
+                            <p class="sub">도란도란 따뜻함이 가득한</p>
+                            자유마을 <span class="point">스토리</span>
+                        </div>
+                        <swiper :options="storyOptions">
+                            <swiper-slide v-for="(slide,index) in storyList" :key="slide.id">
+                                <nuxt-link :to="`/posts/${slide.id}`">
+                                    <div class="story-container">
+                                        <img class="img" :src="slide.video_thumbnail" alt="-">
+                                        <div class="content-container">
+                                            <p style="font-size:20px; font-weight:500" v-html="slide.title"></p>
+                                            <!-- <p style=" white-space:nowrap;  overflow:hidden;" v-html="slide.content"></p> -->
+                                        </div>
+                                    </div>
+                                </nuxt-link>
+                            </swiper-slide>
+                            <div class="swiper-pagination" slot="pagination"></div>
+                        </swiper>
+                        <div class="mt-12"></div>
+                </div>
+            </section>
 
-                        <nuxt-link to="/posts?board=clips" class="btn-more">
-                            <img src="/images/arrowRight-gray.png" style="width:9px;" alt="">
-                        </nuxt-link>
+            <!-- 마을사랑 주인공 -->
+            <section class="section-popular">
+                <div class="wrap">
+                    <div class="content">
+                        <div class="m-title type01">
+                            <p class="sub">자유마을 활성화의 주인공은 누구?</p>
+                            마을사랑 <span class="point">주인공</span>
+                        </div>
                     </div>
-
-                    <div class="m-empty type01" v-if="clips.data.length === 0">
-                        데이터가 없습니다.
-                    </div>
-                    <div class="m-items type02">
-                        <div class="m-item-wrap" v-for="clip in clips.data" :key="clip.id">
-                            <nuxt-link :to="`/posts/${clip.id}`" class="m-item" >
-                                <div class="m-ratioBox-wrap" v-if="clip.img">
-                                    <div class="m-ratioBox">
-                                        <img :src="clip.img.preview_url" alt="">
+                    <div class="mt-16"></div>
+                    <ul class="m-table type01 rank-container" >
+                        <li v-for="(item, index) in popularRankings" :key="index" 
+                            :style="getOpacity(index)"
+                        >
+                            <div class="rank">
+                                <div class="left">
+                                    <div class=" fixed-width">
+                                        <span class="point">{{index + 1}}</span>위
                                     </div>
                                 </div>
-
-                                <div class="content">
-                                    <h3 class="title">
-                                        {{ clip.title }}
-                                    </h3>
+                                <div class="right">
+                                    <div class="texts">
+                                        <div class="m-btn type04 bg-lightGray">
+                                            {{ item.district }}
+                                        </div>
+                                        <p style="margin-left:5px;">{{ replaceText(item.nickname,10) }}</p>
+                                    </div>
+                                    <div class="bar">
+                                        <div class="bar-inner" :style="`width:${item.activity_index}%; background-color:${getBarColor(item.activity_index)}`">
+                                            {{ item['activity_index'] }}%
+                                        </div>
+                                    </div>
                                 </div>
-                            </nuxt-link>
-                        </div>
-                    </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <nuxt-link to="/popular/rank" class="m-btn type02 bg-revert-primary">개인 랭킹 TOP 100 +</nuxt-link>
                 </div>
             </section>
 
-            <section class="section-photo">
-                <div class="wrap">
-                    <div class="m-title type02">
-                        <h3 class="title">포토</h3>
-
-                        <nuxt-link to="/posts?board=photos" class="btn-more">
-                            <img src="/images/arrowRight-gray.png" style="width:9px;" alt="">
-                        </nuxt-link>
-                    </div>
-
-                    <div class="m-empty type01" v-if="photos.data.length === 0">
-                        데이터가 없습니다.
-                    </div>
-
-                    <div class="m-items type02">
-                        <div class="m-item-wrap" v-for="photo in photos.data" :key="photo.id">
-                            <nuxt-link :to="`/posts/${photo.id}`" class="m-item">
-                                <div class="m-ratioBox-wrap" v-if="photo.img">
-                                    <div class="m-ratioBox" :style="`background-image:url('${photo.img.preview_url}');`"></div>
-                                </div>
-
-                                <div class="content">
-                                    <h3 class="title">
-                                        {{ photo.title }}
-                                    </h3>
-                                </div>
-                            </nuxt-link>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
+            <div class="mt-12"></div>
             <section class="section-ad2">
                 <a :href="homeBanner2.link_url" target="_blank" class="link">
                     <img :src="homeBanner2.image.url" alt="">
@@ -423,28 +450,14 @@
         </div>
 
         <navigation />
-        <!-- TODO 230419 슬라이더 비활성화헸음 살릴지 말지 결정안됨 -->
-        <!-- <modal
-            v-if="activateNoticePop"
-            :noPaddingModal="true"
-            :paddingModal="false"
-            :cancelBtn="false"
-        >
-            <template #outter>
-                <vueper-slides autoplay fixed-height="300px">
-                    <vueper-slide
-                        v-for="(content, i) in noticePopupContents"
-                        :key="i"
-                        :image="content.image.url"
-                    >
-                    </vueper-slide>
-                </vueper-slides>
-                <div class="btn-container">
-                    <button class="btn" @click="closeNoticePopup">하루 동안 그만보기</button>
-                    <button class="btn" @click="justClosePopup(1)">닫기</button>
-                </div>
-            </template>
-        </modal> -->
+        <Finder
+            v-if="activeFinder"
+            :title="'주소로 행정동 찾기'"
+            :excecute="'변환하기'"
+            :cancel="'검색하기'"
+            @cancel="closeModal"
+            @setContainer="setContainer"
+        />
         <modal
             v-if="activateNoticePop"
             :noPaddingModal="true"
@@ -463,11 +476,11 @@
                             <img :src="content.image.url" alt="" class="modal-content">
                             </a>
                         </template>
-<!--                       <template v-if="content.youtube_url">
+                        <template v-if="content.youtube_url">
                             <div class="youtube-container">
                                 <iframe :src="getEmbedUrl(content.youtube_url)" allowfullscreen ></iframe>
                             </div>
-                        </template>--> 
+                        </template> 
                     </div>
                     <div class="btn-container">
                         <button class="btn" @click="closeAllDay(content,index)">하루 동안 그만보기</button>
@@ -484,12 +497,14 @@
 import * as Cookies from "js-cookie";
 import {VueperSlides, VueperSlide } from 'vueperslides'
 import 'vueperslides/dist/vueperslides.css';
+import common from '~/utils/common';
 export default {
     name: 'IndexPage',
     auth: false,
     components: {
         VueperSlides,VueperSlide
     },
+    mixins: [common],
     data() {
         return {
             toggleList: 'total-rankings',
@@ -500,14 +515,41 @@ export default {
             noticePopupContents:[],
             activeFinder:false,
             container:{},
-            swiperOptions: {
+
+            bannerOptions: {
                 slidesPerView: 'auto',
                 centeredSlides: false,
                 loop: true,
                 autoplay: {
-                  delay: 5000,
-                  disableOnInteraction: false,
-              },
+                    delay: 5000,
+                    disableOnInteraction: false,
+                },
+            },
+
+            swiperOptions: {
+                slidesPerView: 'auto',
+                centeredSlides: false,
+                spaceBetween: 20,
+                loop: true,
+                autoplay: {
+                    delay: 5000,
+                    disableOnInteraction: false,
+                },
+            },
+
+            storyOptions: {
+                slidesPerView: 'auto',
+                centeredSlides: true, 
+                spaceBetween: 15,
+                loop: true,
+                autoplay: {
+                    delay: 5000,
+                    disableOnInteraction: false,
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true
+                }
             },
             form: {
                 district_id: "",
@@ -548,21 +590,36 @@ export default {
             districtRegisterCounts: [
 
             ],
+            popularRankings: [],
             promotionList: [],
+            storyList: [],
+            meetingList: [],
             homeBanners:[],
+
+            congressmanItem: null,
+            temp: null,
+            partyName: '',
+            partyClass: undefined,
         }
     },
     async asyncData({$axios}) {
         const homeBanners = await $axios.get('/api/banners/home');
-        // const promotionList = await $axios.get('/api/promotion');
+        const promotionList = await $axios.get('/api/promotion');
+        const meetingList = await $axios.get('/api/meeting');
         return {
-            // promotionList: [
-            //     ...promotionList.promotion,        
-            // ],
+            promotionList: [
+                ...promotionList.data.promotion,
+            ],
+            storyList: [
+                ...promotionList.data.story,
+            ],
             homeBanners: {
                 ...homeBanners.data,
                 
-            }
+            },
+            meetingList: [
+                ...meetingList.data.data,
+            ]
         };
     },
     computed: {
@@ -628,21 +685,112 @@ export default {
             console.log(this.homeBanners.banners[5], 'check')
             return [this.homeBanners.banners[5], this.homeBanners.banners[6]]
         },
+        
+        aggregateReviews() {
+            let reviews = this.$store.state.contactReviews.data;
+            const countBy = this.countBy(reviews, 'grade', [1,2,3,4,5]);
+            const result = this.convertObjByKeyDesc(countBy);
+            return result;
+        },
+        options() {
+            return this.$store.getters.getOptions
+        },
+        evaluateAvg() {
+            const totalCount = this.totalCount;
+            const sum = this.options.reduce((acc, cur, index) => {
+                return acc + cur.value * this.aggregateReviews[index].value;
+            }, 0);
+            return Math.floor((sum / (totalCount * 5)) * 100);
+        },
+        makeAvgImg(){
+            let img = '/images/contacts/f_1.png';
+            if(this.evaluateAvg > 80) {
+                img = '/images/contacts/f_5.png';
+            }else if(this.evaluateAvg > 60) {
+                img = '/images/contacts/f_4.png';
+            }else if(this.evaluateAvg > 40) {
+                img = '/images/contacts/f_3.png';
+            }else if(this.evaluateAvg > 20) {
+                img = '/images/contacts/f_2.png';
+            }
+            return img;
+        },
+
 
     },
 
     methods: { 
-        // homeBanner1() {
-        //     this.homeBanner1 =  this.homeBanners.filter(banner => {
-        //         return banner.position === 'home1';
-        //     })
-        // },
-        // homeBanner2() {
-        //     this.homeBanner2 = this.homeBanners.filter(banner => {
+        computedPartyClass(partyName) {
+            partyName == '국민의힘' ? 'red' : 'blue';
+        },
+        async getCongressmanInfo(){
+            try {
+                const response = await this.$axios.get(`/api/districts/${this.$store.state.district.id}/contacts`)
+                if(response) {
+                    this.temp = response.data.data;
+                    this.review_check = this.temp.review_check;
+                    await this.nprlapfmaufmqytet(this.temp.korean_name); //의원 약력 등 정보
+                }
+                    
+            } catch (error) {
+                console.error(error);
+            }
+        },
+        /**
+         * 의원 약력 등 추가 정보
+         */
+         async nprlapfmaufmqytet(name) {
+            try {
+                const {data} = await this.$axios.get(`/portal/openapi/nprlapfmaufmqytet`, {
+                    params: {
+                        DAESU: '21',
+                        NAME: name,
+                        type: 'json',
+                        key: 'e2e2ddc84af3448a85e4205a03b1bf3a'
+                    }
+                })
 
-        //         return banner.position === 'home2';
-        //     })
-        // },
+                if(data) {
+                    // console.log(data.nprlapfmaufmqytet[1].row[0])
+                    this.congressmanItem = {
+                        ...this.temp,
+                        ...data.nprlapfmaufmqytet[1].row[0],
+                    }
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        },
+        getBackground(img) {
+            return `background-image: linear-gradient(to bottom, transparent 0%, black 150%), url(${img.url}); background-size: cover; background-position: 50% 25%; `;
+   
+        },
+        getBadgeSrc(rankingCount) {
+            if(rankingCount >= 1000 && rankingCount < 2000) return '/images/main_icon_badge_1k.png';
+            if(rankingCount >= 2000 && rankingCount < 3000) return '/images/main_icon_badge_2k.png';
+            if(rankingCount >= 3000 ) return '/images/main_icon_badge_3k.png';
+        },
+        getScaleClass(rankingCount, rankingType='unranked') {
+            if(rankingType === 'ranked') {
+                if(rankingCount == 0) return 'bg-grey-30 ';
+                if(rankingCount < 100) return 'bg-red-30 ';
+                if(rankingCount >= 100) return 'bg-orange ';
+            }
+            if(rankingCount == 0) return 'bg-grey-30 more';
+            if(rankingCount < 100) return 'bg-red-30 more up';
+            if(rankingCount >= 100 ) return 'bg-orange more';
+        },
+        getBarColor(activityIndex) {
+            if(activityIndex >= 90) return '#ff6600';
+            if(activityIndex >= 80) return '#ffb017';
+            if(activityIndex <= 79) return '#ffe607';
+        },
+        getOpacity(index) {
+            if(index <= 4) return 'opacity:1';
+            if(index <= 7) return 'opacity:0.5';
+            return 'opacity:0.3';
+        },
+
         async getNoticeContents() {
             try {
                 const {data} = await this.$axios.get('/api/banners/popups')
@@ -699,9 +847,9 @@ export default {
             return embedUrl;
         },
 
-        active() {
-            this.activeFinder = true;
-        },
+        // active() {
+        //     this.activeFinder = true;
+        // },
         closeModal() {
             this.activeFinder = false;
 
@@ -730,6 +878,21 @@ export default {
                 .then(response => {
                     this.districtRegisterCounts = response.data.districtRegisterCounts;
                 });
+        },
+        async getPopularRakings(count) {
+            const response = await this.$axios.get(`/api/popular-list?limitNumber=${count}`);
+            let maxPopularIdx;
+            let data = response.data.map((item,index) => {
+                if(index == 0) {
+                    maxPopularIdx = item.activity_index;
+                    item.activity_index = 100;
+                } else {
+                    item.activity_index = Math.round(item.activity_index / maxPopularIdx * 100);
+                }
+                
+                return item;
+            })
+            this.popularRankings = data;
         },
 
         //TODO daily-rankings 현재 처리되고 있지 않음
@@ -805,7 +968,7 @@ export default {
     },
     watch: {
         district (newCount, oldCount) {
-            this.updatePosts(this.district.id);
+            // this.updatePosts(this.district.id);
 
             this.getRankings(10);
 
@@ -824,30 +987,84 @@ export default {
             this.switchRankGuide(value);
             this.getRankings(10);
         },
+
+        congressmanItem: {
+            deep: true,
+            handler: function (value) {
+                let str = value.DAE.split(" ");
+                let partyName = str[str.length-1].trim();
+                if(partyName === '미래통합당') {
+                    this.partyClass = 'red'
+                    partyName = '국민의힘';
+                }else {
+                    this.partyClass = 'blue'
+                }
+                this.partyName = partyName;
+            }
+        }
     },
 
     async mounted() {
         this.switchRankGuide('total-rankings');
-        await this.updatePosts(this.district.id);
+        // await this.updatePosts(this.district.id);
         if(!Cookies.get('allPopClosedToday')) {
             await this.getNoticeContents();
         }
 
         this.getRankings(10);
+        this.getPopularRakings(10);
 
-        if(this.district.id != 0)
+        if(this.district.id != 0) {
+            await this.$store.dispatch('FETCH_CONTACT_REVIEW', this.district.id);
+            await this.getCongressmanInfo();
             this.$axios.get("/api/districts/" + this.district.id + "/register_rates")
                 .then(response => {
                     this.registerRates = response.data.registerRates;
                 });
+        }
+
 
     },
 
 }
 </script>
 <style scoped>
-    .fragment .subtitle {
-        font-size: 1.2em !important;
+    .titles {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .titles .right {
+        max-width: 143px;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        width: 30%;
+        height: 60px;
+        background: #ffffff;
+        border:solid 1px #e5e5e5;
+        border-radius:5px; 
+        box-shadow:0px 3px 6px rgba(0,0,0,0.16);
+        
+
+
+    }
+
+    .fragment .subtitle-container {
+        display: flex;
+        justify-content:center;
+        align-items: center;
+        margin-bottom: 10px;
+        background-color: white;
+        border-radius: 5px;
+        width:100px;
+        padding-top: 5px;
+    }
+
+    .fragment .subtitle-container .subtitle {
+        font-size: 0.9rem !important;
+        margin-right:3px;
     }
     .time-container {
         display: flex;
@@ -871,6 +1088,11 @@ export default {
         display: flex;
         flex-flow: column;
         align-items: center;
+    }
+    .area-index .section-ranking .rankings .fragment .more .tri {
+        margin-left:4px;
+        font-size:12px;
+        color:#DC2626;
     }
     .m-table .rank {
         border: 1px solid #f5f2f2;
@@ -897,22 +1119,55 @@ export default {
     .rank .fixed-width {
         width: 50px;
     }
-    .rank .bg-red-30 {
-        width:80px;
-        height:34px;
-        background-color: #fff2f2;
-        border-radius: 5px;
-        /* padding: 5px 11px 5px 11px; */
-        font-size: 14px;
+    .rank .right {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-right:0.25rem;
     }
-    .rank .bg-grey-30 {
-        width:80px;
+    .rank .badge {
+        width: 30px;
+        height: 30px;
+        margin-right: 5px;
+    }
+    .bg-grey-30 {
+        width:100px;
         height:34px;
         background-color: #eeeeee;
         border-radius: 5px;
         padding: 5px 11px 5px 11px;
         font-size: 14px;
     }
+    .bg-red-30 {
+        width:100px;
+        height:34px;
+        background-color: #fff2f2;
+        border-radius: 5px;
+        padding: 5px 11px 5px 11px;
+        font-size: 14px;
+    }
+    .bg-red-30 .tri {
+        margin-left:4px;
+        font-size:12px !important;
+        color: red;
+    }
+    .bg-orange {
+        width:100px;
+        height:34px;
+        background-color: rgb(254, 124, 30);
+        border-radius: 5px;
+        padding: 5px 11px 5px 11px;
+        font-size: 14px;
+    }
+    .bg-orange .tri {
+        margin-left:4px;
+        font-size:12px !important;
+        color: white
+    }
+    .bg-orange span {
+        color:white !important;
+    }
+
     .btn-container {
         display: flex;
         width:100%;
@@ -962,7 +1217,7 @@ export default {
 
     .swiper-slide .content {
       background-color: white;
-      height: 300px;
+      height: 250px;
       overflow:hidden;
       border-radius: 10px;
     }
@@ -986,17 +1241,36 @@ export default {
         color:#bdbdbd;
     }
 
-    .area-index .section-ranking .rankings .ranking {
-    text-align: center;
-    width: 120px;
-}
-.area-index .section-ranking .ranking .fragment {
-    margin-top: 20px;
-}
-.area-index .section-ranking .ranking .fragment .subtitle {
-    margin-bottom: 0px;
-}
-.area-index .section-ranking .rankings .fragment .more {
-    top: 125%;
-}
+    .swiper-slide .story-container {
+        position: relative;
+        background-color: white;
+        height: 250px;
+        overflow:hidden;
+    }
+
+    .swiper-slide .story-container .img {
+        border-radius: 10px;
+        width:100%;
+        height:65%;
+        object-fit: cover;
+    }
+
+    .swiper-slide .story-container .content-container {
+        position:absolute;
+        background-color:white;
+        border:1px solid #bdbdbd;
+        border-radius: 10px;
+        width: 90%;
+        height:80px;
+        bottom: 20%;
+        left: 5%;
+
+        display:flex;
+        flex-flow: column;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem;
+    }
+
+
 </style>

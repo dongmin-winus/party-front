@@ -90,6 +90,10 @@ export default {
             target: process.env.AI_BASE_URL,
             changeOrigin: true,
         },
+        '/bizcall/': {
+            target: process.env.BIZCALL_BASE_URL,
+            changeOrigin: true,
+        }
     },
     router: {
         middleware: ['auth']
