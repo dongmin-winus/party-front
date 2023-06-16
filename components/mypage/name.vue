@@ -9,8 +9,8 @@
                         </h3>
                     </div>
 
-                    <div class="right">
-                        <h3 class="title" style="color:green">{{replaceText(item.phone,7, '****')}}</h3>
+                    <div class="right" @click="$emit('makeProxyPhoneCall')">
+                        <img :src="everCalled(item)" alt="">
                     </div>
                 </div>
 
@@ -51,6 +51,13 @@ export default {
         },
     },
     methods: {
+        everCalled(item) {
+            if(item.call_count) {
+                return '/images/call_after.png'
+            } else {
+                return '/images/call_before.png'
+            }
+        }
     },
 
     mounted() {

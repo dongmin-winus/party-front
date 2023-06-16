@@ -35,7 +35,7 @@
       <div class="mt-12"></div>
       <div class="wrap">
         <div class="m-boards type02">
-            <name v-for="item in items.data" :key="item.id" :item="item"/>
+            <name v-for="item in items.data" :key="item.id" :item="item" @makeProxyPhoneCall="getProxyPhoneCall(item)"/>
         </div>
       </div>
       <scroll-loading @load="loadMore" v-if="items.links.next" />
@@ -116,6 +116,31 @@ export default {
                 this.items = response.data;
             });
     },
+    async getProxyPhoneCall(item) {
+      const { data } = await this.$axios.get(`/api/districts/${this.$auth.user.district.id}/members/proxy-number`, {
+        params: {id: item.id}
+      })
+      console.log(data,10000011)
+      if(data.data.IID == "qhdabpjnqzijra1076za") {
+        await this.makeProxyPhoneCall(data.data);
+      }
+    },
+    async makeProxyPhoneCall(data) {
+      console.log('makeProxyPhoneCall called',111111)
+      const response = await this.$axios.post(`https://api.050bizcall.co.kr/link/auto_expire_mapp.do`, {
+          iid: data.IID,
+          rn: data.rn,
+          auth: data.auth,
+          expire_hour:1
+        },{
+        headers: {
+          'Content-Type': 'x-www-form-urlencoded',
+          'Accept': 'application/json',
+        },
+      });
+      console.log(response,444555)
+      
+    }
 
   },
   mounted () {
