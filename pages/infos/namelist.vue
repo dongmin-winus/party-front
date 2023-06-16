@@ -93,7 +93,7 @@
 
                 <div class="m-input-dates type01">
                     <div class="m-input-text type01">
-                        <input type="text" v-model="computeDate" >
+                        <input type="text" v-model="computeDate" readonly>
                     </div>
                 </div>
               </div>
@@ -261,6 +261,15 @@ export default {
       )
       if(data.rs == 'SUCCESS') {
         window.location.href = `tel:${data.vn}`
+        this.items = {
+          ...this.items,
+          data: this.items.data.map((mapItem) => {
+            if(mapItem.id == item.id) {
+              mapItem.call_count = "1";
+            }
+            return mapItem;
+          })
+        }
         this.formerVn = data.vn;
       }
     },
