@@ -260,6 +260,16 @@ html {
 .m-map.type01 {
     height:300px;
 }
+
+.area-my-boards .section-ranking .box-table {
+    padding:30px 0px 30px 0px; padding-top:10px;
+    background-color:#F5F5F5; border-radius:5px;
+}
+
+.area-my-boards .section-ranking .m-table {
+    margin-bottom:16px;
+}
+
 .area-staff .item {
     margin-top:20px;
     padding:20px; border:1px solid #e1e1e1; border-radius:5px;
@@ -1482,6 +1492,13 @@ html {
     text-align: center;
     white-space: nowrap;
 }
+.m-table.type02.noborder th {
+    padding:16px 8px;
+    font-weight:500; color:#777777;
+    border: 0px !important;
+    text-align: center;
+    white-space: nowrap;
+}
 .m-table.type02 tbody tr:first-of-type td {
     padding-top:16px;
 }
@@ -2375,6 +2392,21 @@ input[type="radio"] {display:none;}
     background:url("../images/checkbox-active.png") no-repeat; background-size:100%;
 }
 
+.m-input-checkbox.type03 label {
+    display: flex; align-items: center; justify-content: space-between;
+    width: 100%;
+    font-size:18px; word-break: keep-all;
+}
+.m-input-checkbox.type03 label .link {
+    font-size:14px;
+}
+.m-input-checkbox.type03 label:before {
+    content:""; width:16px; height:16px;
+    background:url("../images/checkbox-inactive.png") no-repeat; background-size:100%;
+}
+.m-input-checkbox.type03 input:checked + label:before {
+    background:url("../images/checkbox-active.png") no-repeat; background-size:100%;
+}
 
 .editor-body img {
     max-width:100%;
@@ -2441,6 +2473,23 @@ label {
 .m-input-checkboxes.type02 .m-input-checkbox.create i {
     font-size:24px;
     color:black;
+}
+
+.m-input-checkboxes.type03 {
+    display:flex; width: 100%; overflow:hidden;
+}
+.m-input-checkboxes.type03 .m-input-checkbox {
+    flex:1;
+}
+.m-input-checkboxes.type03 label {
+    display: flex; align-items: center; justify-content: center;
+    height:45px;
+    font-size:18px;
+    color:#777777;
+}
+.m-input-checkboxes.type03 input:checked + label {
+    color:#0BAF00;
+    text-decration:underline;
 }
 .m-input-select.type01  {
     cursor:pointer;

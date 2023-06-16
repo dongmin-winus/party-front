@@ -15,6 +15,16 @@ export default {
         this.$emit('cancel');
       }
     },
+
+    formatDate(dateString) {
+      if (!dateString) return '';
+      const date = new Date(dateString);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+
+      return `${year}.${month}.${day}`;
+    },
     validateDate(dateString) {
       // Check if the input is a number with 6 digits
       if (!/^\d{6}$/.test(dateString)) {
@@ -132,5 +142,47 @@ export default {
     maxVal(arr, key) {
       return Math.max.apply(null, arr.map(item => item[key]));
     },
+
+    areObjectsEqual(obj1, obj2) {
+      // Check if the objects have the same number of properties
+      if (Object.keys(obj1).length !== Object.keys(obj2).length) {
+        return false;
+      }
+
+      // Iterate over the properties of obj1
+      for (let prop in obj1) {
+        // Check if the property exists in both objects
+        if (obj1.hasOwnProperty(prop) && obj2.hasOwnProperty(prop)) {
+          // Compare the property values
+          if (obj1[prop] !== obj2[prop]) {
+            return false;
+          }
+        } else {
+          // One of the objects is missing the property
+          return false;
+        }
+      }
+
+      // All properties have the same values
+      return true;
+    },
+
+
+    //객체배열에서 프로퍼티를 지정해 중복된 값들을 찾아 배열로 리턴
+    findDuplicatedValuesForProp(arr, propName) {
+      const propValues = {};
+      const result = [];
+      for (let obj of arr) {
+        const prop = obj[propName];
+        if (prop !== undefined) {
+          if (propValues[prop] && result.indexOf(prop) === -1) {
+            result.push(prop);
+          } else {
+            propValues[prop] = true;
+          }
+        }
+      }
+      return result;
+    }
   },
 }
