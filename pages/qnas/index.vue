@@ -55,6 +55,10 @@
             <div class="gray-container">
               <div>
                 <p>자유마을 고객센터</p>
+                <div v-if="$auth.user?.role === 6">
+                  <div class="mt-8"></div>
+                  <button type="button" class="m-btn type01" @click="activeStaff = true">임원진 검색하기</button>
+                </div>
               </div>
               <div>
                 <p style="font-size:26px;">1544-7166</p>
@@ -109,6 +113,26 @@
       </div>
       <!-- 하단 네비게이션바 -->
       <navigation />
+      <modal
+            v-if="activeStaff"
+            @cancel="activeStaff = false; staffInfo = undefined; staffNumber = undefined"
+        >
+            <template #inner>
+                <div class="m-pop-title">
+                    <p class="subtitle">입력하신 번호로 임원진인지 확인합니다.</p>
+                    <span class="point">임원진 검색</span>
+                </div>
+
+                <div class="m-input-text type01">
+                    <input type="text" placeholder="휴대폰 번호 11자리를 - 없이 입력" v-model="staffNumber"/>
+                    <div class="mt-8"></div>
+                    <span v-show="staffInfo">검색결과: {{ staffInfo }}</span>
+                </div>
+                <div class="mt-20"></div>
+
+                <button type="button" class="m-btn type03 width-100" @click="staffCheck">검색하기</button>
+            </template>
+        </modal>
   </div>
 </template>
 
@@ -176,10 +200,32 @@ export default {
               title: '홈페이지에 마을임원이 다른 사람/다른 번호가 올라가 있어요.',
               content: '현재 자유마을은 2022년 12월 기준 으로 행정복지센터가 있는 읍면동만 반영이 된 상태입니다. 읍면동 추가 건은 논의 중에 있어서 추후에 확정되면 공지드리겠습니다. 감사합니다.'
             },
-          ]
+          ],
+          activeStaff: false,
+          staffNumber: undefined,
+          staffInfo: undefined,
       }
   },
   methods: {
+    async staffCheck() {
+        this.staffInfo = undefined;
+          if(!this.staffNumber || this.staffNumber.length !== 11) {
+              alert('휴대폰 번호를 정확히 입력해주세요.');
+              return;
+          }
+          try {
+              const { data } = await this.$axios.get(`/api/staff-check?phone=${this.staffNumber}`);
+              
+              if(data.position) {
+                  this.staffInfo = `${data.district.state} ${data.district.city} ${data.district.district} ${data.position} ${data.name}`;
+              } else {
+                  alert(`${data}`);
+              }
+          } catch (error) {
+              alert(error.response.data.message);
+          }
+          
+      },
       getNoticeItems(){
           this.form.page = 1;
 
@@ -216,6 +262,7 @@ export default {
   },
 
   async mounted() {
+      this.staffInfo = undefined;
       this.getNoticeItems();
       this.getFaqs();
   },
@@ -257,7 +304,7 @@ export default {
     padding: 20px;
     display:flex;
     justify-content: space-between;
-    align-items: baseline;
+    align-items: center;
 
   }
 

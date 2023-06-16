@@ -649,6 +649,17 @@ html {
     flex:1; padding:4px;
 }
 
+.area-modal .m-pop.type01 .m-pop-title {
+    font-size:30px; font-family: GmarketSans; font-weight:bold;
+}
+.area-modal .m-pop.type01 .m-pop-title .point {
+    font-size:30px; font-family: GmarketSans; font-weight:bold; color:#0BAF00;
+}
+.area-modal .m-pop.type01 .m-pop-title .subtitle {
+    margin-bottom:8px;
+    font-size:12px; color:#777777;
+}
+
 .area-index .m-pop.type01 .m-pop-title {
     font-size:30px; font-family: GmarketSans; font-weight:bold;
 }

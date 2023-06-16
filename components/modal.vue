@@ -1,17 +1,20 @@
 <template>
-  <div class="m-pop type01" @click.stop="handleBackdropClick($event, 'm-pop type01')">
-    <div v-if="noPaddingModal" class="m-pop-outter">
-      <slot name="outter" />
-    </div>
-    <div v-if="paddingModal" class="m-pop-inner">
-      <button v-if="cancelBtn" class="btn-close" @click.prevent="emitEvent('cancel')">
-        <img src="/images/x.png" alt="x" style="width:21px;">
-      </button>
-      <div class="mt-8">
-      <slot name="inner" />
+  <div class="area-modal">
+    <div class="m-pop type01" @click.stop="handleBackdropClick($event, 'm-pop type01')">
+      <div v-if="noPaddingModal" class="m-pop-outter">
+        <slot name="outter" />
+      </div>
+      <div v-if="paddingModal" class="m-pop-inner">
+        <button v-if="cancelBtn" class="btn-close" @click.prevent="emitEvent('cancel')">
+          <img src="/images/x.png" alt="x" style="width:21px;">
+        </button>
+        <div class="mt-8">
+        <slot name="inner" />
+        </div>
       </div>
     </div>
   </div>
+  
 </template>
 
 <script>
