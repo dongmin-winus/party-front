@@ -90,7 +90,7 @@ export default {
             target: process.env.AI_BASE_URL,
             changeOrigin: true,
         },
-        '/bizcall/': {
+        '/link/': {
             target: process.env.BIZCALL_BASE_URL,
             changeOrigin: true,
         }
