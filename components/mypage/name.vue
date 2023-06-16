@@ -1,21 +1,24 @@
 <template>
-    <div class="m-board">
+    <div class="m-board" @click="$emit('click')">
         <div class="m-board-fragments">
             <div class="m-board-fragment">
                 <div class="m-board-top">
                     <div class="left">
                         <h3 class="title">
-                            {{ replaceText(item.name, 2, '**') }}
+                            <div style="margin-top=10px;">
+                                <img :src="getCheckImg(item)" alt="">
+                            </div>
+                            {{ item.name }}
                         </h3>
                     </div>
 
-                    <div class="right" @click="$emit('makeProxyPhoneCall')">
+                    <div class="right" @click.stop="$emit('makeProxyPhoneCall')">
                         <img :src="everCalled(item)" alt="">
                     </div>
                 </div>
 
                 <div class="m-board-bottom">
-                    <p class="date">{{ computeDate }}</p>
+                    <p class="date">{{ computeDate }} 가입</p>
                 </div>
             </div>
         </div>
@@ -45,9 +48,7 @@ export default {
     },
     computed: {
         computeDate() {
-            let date = new Date(this.item.created_at)
-            return date.toISOString().replace('T',' ').replace(/\.\d{3}Z/, '');
-
+            return this.formatDate(this.item.created_at)
         },
     },
     methods: {
@@ -57,7 +58,14 @@ export default {
             } else {
                 return '/images/call_before.png'
             }
-        }
+        },
+        getCheckImg(item) {
+            if( item.call_count) {
+                return '/images/ppl_checked.png'
+            } else {
+                return '/images/ppl_unchecked.png'
+            }
+        },
     },
 
     mounted() {
