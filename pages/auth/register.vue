@@ -65,8 +65,34 @@
                     <div class="mt-16"></div>
 
                     <div class="m-input-checkbox type01">
+                        <input type="checkbox" id="agree4" v-model="agree4">
+                        <label for="agree4">
+                            (필수) 제3자정보제공동의
+                            <a href="#" class="link">약관보기</a>
+                        </label>
+                    </div>
+
+                    <div class="mt-4"></div>
+
+                    <div class="m-input-textarea type01">
+                        <div class="fake" id="agreement4">
+                            {{ replaceBr(agreement4.content) }}
+                        </div>
+                    </div>
+
+                    <div class="mt-16"></div>
+
+                    <div class="m-input-checkbox type01">
                         <input type="checkbox" id="agree3" v-model="agree3">
-                        <label for="agree3">(필수) 만 14세 이상입니다.</label>
+                        <label for="agree3">(필수) 행사가입동의</label>
+                    </div>
+                    <div class="m-input-checkbox type01">
+                        <input type="checkbox" id="agree5" v-model="agree5">
+                        <label for="agree5">(필수) 영리성광고수신동의</label>
+                    </div>
+                    <div class="m-input-checkbox type01">
+                        <input type="checkbox" id="agree6" v-model="agree6">
+                        <label for="agree6">(필수) 만 14세 이상입니다.</label>
                     </div>
 
                     <div class="mt-16"></div>
@@ -242,6 +268,10 @@ export default {
             agree1: false,
             agree2: false,
             agree3: false,
+            agree4: false,
+            agree5: false,
+            agree6: false,
+
             errors: {},
         }
     },
@@ -254,7 +284,7 @@ export default {
 
     computed: {
         isAgreeAll() {
-            return this.agree1 && this.agree2 && this.agree3 && this.form.is_agree_push;
+            return this.agree1 && this.agree2 && this.agree3 && this.agree4 && this.agree5 && this.agree6 && this.form.is_agree_push;
         },
         agreement1() {
             return this.agreements.find(agreement => agreement.category === 'agreement1')
@@ -262,6 +292,9 @@ export default {
         agreement2() {
             return this.agreements.find(agreement => agreement.category === 'agreement2')
         },
+        agreement4() {
+            return this.agreements.find(agreement => agreement.category === 'agreement4')
+        }
     },
     methods: {
         openFinder() {
@@ -334,12 +367,15 @@ export default {
             this.agree1 = true;
             this.agree2 = true;
             this.agree3 = true;
+            this.agree4 = true;
+            this.agree5 = true;
+            this.agree6 = true;
             this.form.is_agree_push = true;
         },
 
         next() {
             if (this.step === 1) {
-                if (!this.agree1 || !this.agree2 || !this.agree3)
+                if (!this.agree1 || !this.agree2 || !this.agree3 ||!this.agree4 || !this.agree5 || !this.agree6)
                     return alert("필수약관에 동의해주세요.");
             }
 
