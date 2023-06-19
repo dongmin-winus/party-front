@@ -165,11 +165,11 @@ export default {
     Name, Dropdown
   },
   mixins: [common],
-  middleware({store, redirect}) {
-      if(!store.$auth.hasScope('manager')) {
-        redirect('/')
-      }
-  },
+  // middleware({store, redirect}) {
+  //     if(!store.$auth.hasScope('manager')) {
+  //       redirect('/')
+  //     }
+  // },
   data() {
     return {
       form: {
@@ -223,6 +223,14 @@ export default {
     }
   },
   methods: {
+    async userStaffCertify(item) {
+        const response = await this.$axios.get(`/api/staff/${item.district_id}/certify`, {
+            params: {
+                phone: item.phone,
+            }
+        });
+        response.data === true ? await this.getItems() : this.$router.push("/");
+    },
     loadMore(state) {
         if(this.items.meta.current_page <= this.items.meta.last_page){
             this.form.page += 1;
@@ -315,8 +323,12 @@ export default {
       }
     }
   },
-  mounted () {
-    this.getItems();
+  async created () {
+    await this.userStaffCertify({
+        district_id: this.$auth.user.district_id,
+        phone: this.$auth.user.phone,
+    });
+
   },
 }
 </script>
