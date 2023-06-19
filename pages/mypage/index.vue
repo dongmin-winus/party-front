@@ -106,7 +106,8 @@
                 </div>
             </div>
 
-            <div v-if="$auth.hasScope('manager')">
+            <!-- <div v-if="$auth.hasScope('manager')"> -->
+            <div v-if="staffCertificated">
                 <div class="menus-wrap">
                     <h3 class="title">마을 관리</h3>
                     <div class="menus">
@@ -275,6 +276,7 @@ export default {
         return {
             isProfilePopActive: false,
             changedUrl: "",
+            staffCertificated: false,
         }
     },
     methods: {
@@ -284,6 +286,14 @@ export default {
         closeModal(profileUrl) {
             this.isProfilePopActive = false;
             this.changedUrl = profileUrl;
+        },
+        async userStaffCertify(item) {
+            const {response} = await this.$axios.get(`/api/staff/${item.district_id}/certify`, {
+                params: {
+                    phone: item.phone,
+                }
+            });
+            response.data === true ? this.staffCertificated = true : this.staffCertificated = false;
         }
     },
 
@@ -327,6 +337,10 @@ export default {
     },
 
     mounted() {
+        this.userStaffCertify({
+            district_id: this.$auth.user.district_id,
+            phone: this.$auth.user.phone,
+        });
     },
 
 }
