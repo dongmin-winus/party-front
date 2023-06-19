@@ -33,11 +33,11 @@ export default {
             { src: '//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=0b676e15765c46418fa53c1333910c0a&libraries=services' },
             { src: '//developers.kakao.com/sdk/js/kakao.min.js' },
             { src: '//ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js' },
-            {
+            /*{
                 src: "https://www.googletagmanager.com/gtag/js?id=" + process.env.GOOGLE_ANALYTICS_ID,
                 async: true,
             },
-            { src: "/js/analytics.js" },
+            { src: "/js/analytics.js" }, */
         ]
 
     },
@@ -71,7 +71,7 @@ export default {
     axios: {
         credentials: true,
         proxy: true,
-        debug: process.env.NODE_ENV !== 'production',
+        //debug: process.env.NODE_ENV !== 'production',
     },
     proxy: {
         '/api/': {

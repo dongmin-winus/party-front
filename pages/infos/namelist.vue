@@ -8,7 +8,7 @@
           </button>
         </div>
         <div class="center">
-            <h3 class="title">{{$store.state.district.city}} {{$store.state.district.district }} 마을 명단</h3>
+            <h3 class="title">{{$store.state.district.district }} 마을 명단</h3>
         </div>
 
         <nuxt-link to="/contents/settings" class="btn-util">
@@ -30,23 +30,29 @@
         </button>
       </div>
       <div class="mt-24"></div>
-      <div style="text-align:center">
-        <h3>주민 전화 확인 현황 </h3>
-      </div>
+      <section class="section-promotion">
+                    <div class="wrap">
+                        <div class="m-title type01">
+                            <p class="sub" style="text-align: center; font-size: 17px; color: #9b9999;">서명 명단</p>
+                              <p class="point" style="text-align: center;"> {{$store.state.district.district }} 마을</p>
+                            <p class="sub" style="text-align: center; color: #626262; font-size: 19px; padding-bottom: 10px;">{{$store.state.district.state }} {{$store.state.district.city }}</p>
+                        </div>
+                    </div>
+      </section>
       <div class="mt-12"></div>
       <div class="m-input-checkboxes type04">
-        <div class="m-input-checkbox">
+        <div class="m-input-checkbox" style="border: 2px solid #d61a1a; box-shadow: 0 0 3px red">
           <input type="radio" id="waiting" value="waiting" v-model="toggleList">
           <label for="waiting">
             <p style="color:red">{{ total - items.meta.total_call_count }}</p>
-            <p style="color:red">미확인</p>
+            <p style="color:red">대기중</p>
           </label>
         </div>
         <div class="m-input-checkbox">
           <input type="radio" id="confirmed" value="confirmed" v-model="toggleList">
           <label for="confirmed">
             <p>{{ items.meta.total_call_count }}</p>
-            <p>확인</p>
+            <p>확인완료</p>
           </label>
         </div>
         <div class="m-input-checkbox" style="background-color:#E7F7E5">
@@ -57,9 +63,7 @@
           </label>
         </div>  
       </div>  
-      <div class="mt-8" style="margin-left:1rem">
-        <h5>전체 {{total}}명</h5>
-      </div>
+
       <div class="mt-12"></div>
       <div class="wrap">
         <div class="m-boards type02">
@@ -108,7 +112,9 @@
                   </div>
                   <div class="m-input-checkbox">
                       <input type="radio" id="13" value="store" v-model="selectedItem.status">
-                      <label for="13">보관</label>
+                      <label for="13" 
+                      :style="selectedItem.status ? '' : 'background-color: #0BAF00; color: #fff'"
+                     >보관</label>
                   </div>
                 </div>
               </div>
@@ -140,7 +146,7 @@
                   <button class="m-btn type01 bg-revert-grey  width-100" @click="activeInfoModal = false">취소</button>
                 </div>
                 <div class="m-btn-wrap">
-                  <button class="m-btn type01 bg-primary width-100" @click="confirm">완료</button>
+                  <button class="m-btn type01 bg-primary width-100" style="color: #fff" @click="confirm">완료</button>
                 </div>
               </div>
             </div>
@@ -180,7 +186,8 @@ export default {
 
           }
       },
-      selectedItem: {},
+      selectedItem: {
+      },
       toggleList: '',
       formerVn: null,
       word:"",
@@ -293,6 +300,7 @@ export default {
     },
 
     async confirm() {
+
       const response = await this.$axios.post(`/api/districts/${this.selectedItem.district_id}/members`, {
         district_id: this.selectedItem.district_id,
         id: this.selectedItem.id,
@@ -313,7 +321,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   .deca {
     width:100%;
     height:600px;
@@ -374,4 +382,115 @@ export default {
     text-align:center;
     
   }
+
+  .m-input-checkboxes.type01 {
+    display:flex; width: 100%;
+    border-radius:5px; overflow:hidden;
+}
+.m-input-checkboxes.type01 .m-input-checkbox {
+    flex:1;
+}
+.m-input-checkboxes.type01 label {
+    display: flex; align-items: center; justify-content: center;
+    height:45px;
+    font-size:18px;
+    background-color:#EEEEEE; color:#777777;
+}
+.m-input-checkboxes.type01 input:checked + label {
+    background-color:#0BAF00; color:#fff;
+}
+
+.m-input-checkboxes.type02 {
+    display:flex; flex-wrap:wrap;
+    margin:-4px;
+}
+.m-input-checkboxes.type02 .m-input-checkbox-wrap {
+    width:50%; padding:4px;
+}
+.m-input-checkboxes.type02 .m-input-checkbox {
+    display:flex; align-items: center; justify-content: space-between;
+    height:56px; padding:0 24px;
+    font-size:18px; font-weight:500;
+    background-color:#0BAF00; color:#fff; border-radius:5px; border:1px solid transparent;
+}
+.m-input-checkboxes.type02 .m-input-checkbox i {
+    font-size:20px;
+    color:#fff;
+}
+.m-input-checkboxes.type02 .m-input-checkbox.create {
+    display:flex; align-items: center; justify-content: center;
+    background-color:#fff; border-color:#DDDDDD;
+}
+.m-input-checkboxes.type02 .m-input-checkbox.create i {
+    font-size:24px;
+    color:black;
+}
+
+.m-input-checkboxes.type03 {
+    display:flex; width: 100%; overflow:hidden;
+}
+.m-input-checkboxes.type03 .m-input-checkbox {
+    flex:1;
+}
+.m-input-checkboxes.type03 label {
+    display: flex; align-items: center; justify-content: center;
+    height:45px;
+    font-size:18px;
+    color:#777777;
+}
+.m-input-checkboxes.type03 input:checked + label {
+    color:#0BAF00;
+    text-decration:underline;
+}
+
+.m-input-checkboxes.type04 {
+    display:flex; width: 100%;   overflow:hidden;
+}
+.m-input-checkboxes.type04 .m-input-checkbox {
+    flex:1;
+    height: 80px; border:1px solid #eee; border-radius:15px;
+    margin: 0 6px 24px 6px;
+}
+.m-input-checkboxes.type04 label {
+    display: flex; 
+    flex-direction: column;
+    align-items: center; justify-content: center;
+    height:inherit;
+    font-size:18px;
+    color:#777777;
+}
+.m-input-checkboxes.type04 input:checked + label {
+    color:#0BAF00;
+    text-decration:underline;
+}
+
+.m-btns.type01 {
+    display:flex; flex-wrap:wrap;
+    margin:-6px;
+    position:relative; z-index:1;
+    text-align: center;
+}
+.m-btns.type01 .m-btn-wrap {
+    flex:1;
+    padding:6px;
+}
+.m-btn.type01 {
+    display:flex; align-items: center; justify-content: center;
+    height:40px; padding:0 4px;
+    font-weight:bold; font-size:16px;
+    background-color: #fff; color:black; border-radius:5px;
+    border:1px solid #0BAF00;
+    white-space: nowrap;
+}
+.m-btn.type02 {
+    display:flex; align-items: center; justify-content: center;
+    height:45px; padding:0 16px;
+    font-weight:500; font-size:20px;
+    background-color:#0BAF00; color:#fff; border-radius:5px;
+    border:1px solid transparent;
+}
+.primary {
+    color:#0BAF00 !important;
+}
+
 </style>  
