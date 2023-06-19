@@ -29,7 +29,7 @@
                     <div class="m-thumbnail type03" :style="`background-image:url('${profileUrl}')`" v-if="this.$auth.user.img"></div>
                     <div class="mt-16 btn-wrap">
                         <div class="inner">
-                            <p class="btn-title">회원</p>
+                            <p class="btn-title">{{`${staffCertificated ? '마을 대표' : '회원'}`}}</p>
 
                         </div>
                     </div>

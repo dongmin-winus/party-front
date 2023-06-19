@@ -149,11 +149,11 @@
 import common from '@/utils/common.js'
 export default {
   mixins: [common],
-  middleware({store, redirect}) {
-      if(!store.$auth.hasScope('manager')) {
-        redirect('/')
-      }
-  },
+  // middleware({store, redirect}) {
+  //     if(!store.$auth.hasScope('manager')) {
+  //       redirect('/')
+  //     }
+  // },
   data() {
     return {
       page: 1,
@@ -202,6 +202,14 @@ export default {
 
   },
   methods: {
+    async userStaffCertify(item) {
+        const response = await this.$axios.get(`/api/staff/${item.district_id}/certify`, {
+            params: {
+                phone: item.phone,
+            }
+        });
+        response.data === true ? await this.getApprovalList() : this.$router.push("/");
+    },
     loadMore(state) {
         if(this.meta.current_page <= this.meta.last_page){
             this.page += 1;
@@ -357,8 +365,12 @@ export default {
     }
       
   },
-  mounted () {
-    this.getApprovalList();
+  async created () {
+    await this.userStaffCertify({
+        district_id: this.$auth.user.district_id,
+        phone: this.$auth.user.phone,
+    });
+
   },
 }
 </script>
