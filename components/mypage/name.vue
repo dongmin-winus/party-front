@@ -5,20 +5,13 @@
                 <div class="m-board-top">
                     <div class="left">
                         <h3 class="title">
-                            <div style="margin-top=10px;">
-                                <img :src="getCheckImg(item)" alt="">
-                            </div>
                             {{ item.name }}
                         </h3>
+                        <p class="m-board-bottom" style="color: #AAAAAA" >{{ computeDate }} 가입</p>
                     </div>
-
                     <div class="right" @click.stop="$emit('makeProxyPhoneCall')">
                         <img :src="everCalled(item)" alt="">
                     </div>
-                </div>
-
-                <div class="m-board-bottom">
-                    <p class="date">{{ computeDate }} 가입</p>
                 </div>
             </div>
         </div>
@@ -75,5 +68,5 @@ export default {
 </script>
 
 <style scoped>
-
+    
 </style>
