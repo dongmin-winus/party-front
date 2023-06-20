@@ -4,13 +4,24 @@
             <div class="m-board-fragment">
                 <div class="m-board-top">
                     <div class="left">
-                        <h3 class="title">
-                            {{ item.name }}
+                        <div class="left-container">
+                            <div class="left-items">
+                                {{ computeDate}}
+                                
+                            </div>
+                            <div class="left-items middle">
+                                {{item.name }}
+                                
+                            </div>
+                        </div>
+                        <!-- <h3 class="title">
+                            {{ computeDate}}
                         </h3>
-                        <p class="m-board-bottom" style="color: #AAAAAA" >{{ computeDate }} 가입</p>
+                        <p class="m-board-bottom" style="color: #AAAAAA" >{{ computeDate }} 가입</p> -->
                     </div>
                     <div class="right" @click.stop="$emit('makeProxyPhoneCall')">
                         <img :src="everCalled(item)" alt="">
+                        <div v-if="showWhiteround(item)" class="white-round">{{ `${item.call_count && item.call_count > 1 ? item.call_count : 0}` }}</div>
                     </div>
                 </div>
             </div>
@@ -41,13 +52,13 @@ export default {
     },
     computed: {
         computeDate() {
-            return this.formatDate(this.item.created_at)
+            return this.formatDate(this.item.created_at, '/')
         },
     },
     methods: {
         everCalled(item) {
             if(item.call_count) {
-                return '/images/call_after.png'
+                return '/images/call_after_improved.png'
             } else {
                 return '/images/call_before.png'
             }
@@ -59,6 +70,9 @@ export default {
                 return '/images/ppl_unchecked.png'
             }
         },
+        showWhiteround(item) {
+            return item.call_count && item.call_count > 1
+        }
     },
 
     mounted() {
@@ -68,5 +82,41 @@ export default {
 </script>
 
 <style scoped>
-    
+    .m-board-top .left {
+        width: 250px;
+        height: 55px;
+    }    
+    .m-board-top .left .left-container {
+        height:inherit;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    .m-board-top .left .left-items {
+        width: 50%;
+        font-size: 18px;
+    }
+    .m-board-top .left .left-items.middle {
+        text-align: center;
+    }
+    .m-board-top .right {
+        position: relative;
+    }
+    .m-board-top .right .white-round {
+        position: absolute;
+        bottom: -5px;
+        right: -5px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 1px solid #066500;
+        background-color: white;
+        color: #066500;
+        font-size: 12px;
+        font-weight: bold;
+        text-align: center;
+        line-height: 15px;
+        
+    }
 </style>
