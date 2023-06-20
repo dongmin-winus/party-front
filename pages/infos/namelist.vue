@@ -65,6 +65,7 @@
       </div>  
 
       <div class="mt-12"></div>
+      <div class="flex-w-full bg-lightGray"><div class="col-name">서명일</div> <div class="col-name">회원정보</div></div>
       <div class="wrap">
         <div class="m-boards type02">
             <name v-for="item in items.data" :key="item.id" :item="item" @click="openInfoModal(item)" @makeProxyPhoneCall="getProxyPhoneCall(item)"/>
@@ -230,7 +231,8 @@ export default {
             }
         });
         response.data === true ? await this.getItems() : this.$router.push("/");
-    },
+        // await this.getItems();
+      },
     loadMore(state) {
         if(this.items.meta.current_page <= this.items.meta.last_page){
             this.form.page += 1;
@@ -280,7 +282,7 @@ export default {
           ...this.items,
           data: this.items.data.map((mapItem) => {
             if(mapItem.id == item.id) {
-              mapItem.call_count = "1";
+              mapItem.call_count = item.call_count + 1;
             }
             return mapItem;
           })
@@ -334,6 +336,17 @@ export default {
 </script>
 
 <style scoped>
+  .flex-w-full {
+    width:100%;
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 40px;
+  }
+  .flex-w-full .col-name {
+    width: 40%;
+  }
   .deca {
     width:100%;
     height:600px;
@@ -416,6 +429,7 @@ export default {
     display:flex; flex-wrap:wrap;
     margin:-4px;
 }
+
 .m-input-checkboxes.type02 .m-input-checkbox-wrap {
     width:50%; padding:4px;
 }

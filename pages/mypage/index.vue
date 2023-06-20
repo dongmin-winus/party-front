@@ -74,7 +74,7 @@
 
                     <div :class="`gage-wrap ${activityClass}`">
                         <div class="gage">
-                            <div class="active" :style="`width:${this.$auth.user.activity_index }%;`"></div>
+                            <div class="active" :style="`width:${this.$auth.user.activity_index >= 100 ? 100 : this.$auth.user.activity_index}%;`"></div>
 
                             <div class="comment">
                                 자유마을 가입 시점 35
@@ -82,7 +82,7 @@
                             </div>
 
                             <span class="count">
-                                {{ this.$auth.user.activity_index }}
+                                {{ `${this.$auth.user.activity_index >= 100 ? 100 : this.$auth.user.activity_index}` }}
                             </span>
                         </div>
                     </div>
@@ -107,7 +107,8 @@
             </div>
 
             <!-- <div v-if="$auth.hasScope('manager')"> -->
-            <div v-if="staffCertificated">
+            <!-- <div v-if="staffCertificated"> -->
+            <div v-if="true">
                 <div class="menus-wrap">
                     <h3 class="title">마을 관리</h3>
                     <div class="menus">
