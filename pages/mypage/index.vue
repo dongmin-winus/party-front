@@ -123,7 +123,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="menus-wrap">
+                <!-- TODO 0621 내 마을 설정 비활성화 -->
+                <!-- <div class="menus-wrap" >
                     <h3 class="title">나의 마을설정</h3>
 
                     <div class="menus">
@@ -146,7 +147,7 @@
                             </nuxt-link>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 <div class="menus-wrap">
                     <h3 class="title">나의 마을활동</h3>
