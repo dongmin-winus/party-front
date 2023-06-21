@@ -202,13 +202,17 @@ export default {
 
   },
   methods: {
-    async userStaffCertify(item) {
-        const response = await this.$axios.get(`/api/staff/${item.district_id}/certify`, {
+    async checkManagerAuth(item) {
+        const response = await this.$axios.get(`/api/districts/1/members/check-manager`, {
             params: {
                 phone: item.phone,
             }
         });
-        response.data === true ? await this.getApprovalList() : this.$router.push("/");
+        if(response.data === false) {
+          this.$router.push("/");
+        }else {
+          await this.getApprovalList()
+        }
     },
     loadMore(state) {
         if(this.meta.current_page <= this.meta.last_page){
@@ -366,8 +370,7 @@ export default {
       
   },
   async created () {
-    await this.userStaffCertify({
-        district_id: this.$auth.user.district_id,
+    await this.checkManagerAuth({
         phone: this.$auth.user.phone,
     });
 
