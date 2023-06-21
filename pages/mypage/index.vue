@@ -278,6 +278,7 @@ export default {
             isProfilePopActive: false,
             changedUrl: "",
             staffCertificated: false,
+            represenateDistrict: null,
         }
     },
     methods: {
@@ -288,14 +289,18 @@ export default {
             this.isProfilePopActive = false;
             this.changedUrl = profileUrl;
         },
-        async userStaffCertify(item) {
-            const response = await this.$axios.get(`/api/staff/${item.district_id}/certify`, {
+        async checkManagerAuth(item) {
+            const response = await this.$axios.get(`/api/districts/1/members/check-manager`, {
                 params: {
                     phone: item.phone,
                 }
             });
-            response.data === true ? this.staffCertificated = true : this.staffCertificated = false;
-            console.log(this.staffCertificated)
+            if(response.data === false) {
+                this.staffCertificated = false;
+            }else {
+                this.staffCertificated = true;
+                this.represenateDistrict = response.data.district_id;
+            }
         }
     },
 
@@ -339,10 +344,9 @@ export default {
     },
 
     mounted() {
-        this.userStaffCertify({
-            district_id: this.$auth.user.district_id,
+        this.checkManagerAuth({
             phone: this.$auth.user.phone,
-        });
+        })
     },
 
 }
