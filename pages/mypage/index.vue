@@ -107,8 +107,7 @@
             </div>
 
             <!-- <div v-if="$auth.hasScope('manager')"> -->
-            <!-- <div v-if="staffCertificated"> -->
-            <div v-if="true">
+            <div v-if="staffCertificated">
                 <div class="menus-wrap">
                     <h3 class="title">마을 관리</h3>
                     <div class="menus">
