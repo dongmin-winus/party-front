@@ -2,7 +2,7 @@
   <div>
     <header-type02 />
     <div class="chat-b">
-      <div class="bell-off" v-if="true">
+      <div class="bell-off" v-if="false">
         <div class="sizebox"></div>
         <div class="bell-margin" >
           <p class="bell-text">메세지 알림이 꺼져있어요</p>
@@ -11,8 +11,7 @@
           <button class="bell-button">알림설정</button>
         </div>
       </div>
-
-      <div class="chat-list" v-for="data in list" :key="data">
+      <div class="chat-list" v-for="(data,index) in list" :key="index">
         <div class="chat-margin">
           <div class="chat-circle">
             <div class="chat-online-container">
