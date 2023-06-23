@@ -8,7 +8,7 @@
           </button>
         </div>
         <div class="center">
-            <h3 class="title">{{ $store.state.district.district}} 결재 요청 현황</h3>
+            <h3 class="title">{{ countyInfo.district}} 결재 요청 현황</h3>
         </div>
 
         <nuxt-link to="/contents/settings" class="btn-util">
@@ -169,7 +169,8 @@ export default {
 
       activeModal: false,
       activatedItem: null,
-      toggleModalApprovalState:''
+      toggleModalApprovalState:'',
+      countyInfo:{},
     }
   },
   watch: {
@@ -211,6 +212,12 @@ export default {
         if(response.data === false) {
           this.$router.push("/");
         }else {
+          this.countyInfo = Object.assign({}, {
+            state: response.data.state,
+            city: response.data.city,
+            district: response.data.district,
+            district_id: response.data.district_id,
+          });
           await this.getApprovalList()
         }
     },
@@ -218,7 +225,7 @@ export default {
         if(this.meta.current_page <= this.meta.last_page){
             this.page += 1;
 
-            this.$axios.get(`/api/districts/${this.$auth.user.district.id}/approval`, {
+            this.$axios.get(`/api/districts/${this.countyInfo.district_id}/approval`, {
                 params: {
                     page: this.page,
                     meta: this.meta,
@@ -237,14 +244,14 @@ export default {
     getItems(){
         this.form.page = 1;
 
-        this.$axios.get(`/api/districts/${this.$auth.user.district.id}/members`)
+        this.$axios.get(`/api/districts/${this.countyInfo.district_id}/members`)
             .then(response => {
                 this.items = response.data;
             });
     },
 
     async getApprovalList() {
-      const response = await this.$axios.get(`/api/districts/${this.$auth.user.district.id}/approval`)
+      const response = await this.$axios.get(`/api/districts/${this.countyInfo.district_id}/approval`)
         if(response.status === 200) {
           this.originalItems = [...response.data.data];
           this.toggledItems = [...this.originalItems];
@@ -282,7 +289,7 @@ export default {
       }
       if(this.activatedItem.memo !== targetItem.memo && this.activatedItem.status === targetItem.status) {
         //결재의견만 업데이트하고 단독저장
-        const response = await this.$axios.post(`/api/districts/${this.$auth.user.district.id}/approval/update`, {
+        const response = await this.$axios.post(`/api/districts/${this.countyInfo.district_id}/approval/update`, {
           data: [
             {
               id: targetId, 
@@ -300,7 +307,7 @@ export default {
 
       //반려,대기인 경우 단독저장
       if(this.activatedItem.status == '반려' || this.activatedItem.status == '대기') {
-        const response = await this.$axios.post(`/api/districts/${this.$auth.user.district.id}/approval/update`, {
+        const response = await this.$axios.post(`/api/districts/${this.countyInfo.district_id}/approval/update`, {
           data: [
             {
               id: targetId, 
@@ -332,7 +339,7 @@ export default {
             memo: this.activatedItem.memo
           }
         ]
-        const response = await this.$axios.post(`/api/districts/${this.$auth.user.district.id}/approval/update`, {data});
+        const response = await this.$axios.post(`/api/districts/${this.countyInfo.district_id}/approval/update`, {data});
         if(response.status === 200) {
           alert('승인 처리되었습니다.')
           this.activeModal = false;
@@ -349,7 +356,7 @@ export default {
         if(result.length > 0) return alert('같은 직책에 두 명 이상 인원을 승인할 수 없습니다.');
       }
       if(confirm(`${this.selectedItems.length}건을 ${status} 처리하시겠습니까?`)) {
-        const response = await this.$axios.post(`/api/districts/${this.$auth.user.district.id}/approval/update`, {
+        const response = await this.$axios.post(`/api/districts/${this.countyInfo.district_id}/approval/update`, {
           data: [
             ...this.selectedItems.map(item => {
               return {

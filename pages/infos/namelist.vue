@@ -8,7 +8,7 @@
           </button>
         </div>
         <div class="center">
-            <h3 class="title">{{$store.state.district.district }} 마을 명단</h3>
+            <h3 class="title">마을 명단</h3>
         </div>
 
         <nuxt-link to="/contents/settings" class="btn-util">
@@ -31,13 +31,13 @@
       </div>
       <div class="mt-24"></div>
       <section class="section-promotion">
-                    <div class="wrap">
-                        <div class="m-title type01">
-                            <p class="sub" style="text-align: center; font-size: 17px; color: #9b9999;">서명 명단</p>
-                              <p class="point" style="text-align: center;"> {{$store.state.district.district }} 마을</p>
-                            <p class="sub" style="text-align: center; color: #626262; font-size: 19px; padding-bottom: 10px;">{{$store.state.district.state }} {{$store.state.district.city }}</p>
-                        </div>
-                    </div>
+        <div class="wrap">
+          <div class="m-title type01">
+            <p class="sub" style="text-align: center; font-size: 17px; color: #9b9999;">서명 명단</p>
+              <p class="point" style="text-align: center;"> {{countyInfo.district }} 마을</p>
+            <p class="sub" style="text-align: center; color: #626262; font-size: 19px; padding-bottom: 10px;">{{countyInfo.state }} {{countyInfo.city }}</p>
+          </div>
+        </div>
       </section>
       <div class="mt-12"></div>
       <div class="m-input-checkboxes type04">
@@ -200,7 +200,8 @@ export default {
         '다른 지역 회원',
         '명단 삭제 요청',
         '회원 신청 이력 없음'
-      ]
+      ],
+      countyInfo:{},
     }
   },
   computed: {
@@ -233,6 +234,12 @@ export default {
         if(response.data === false) {
             this.$router.push("/")
         }else {
+            this.countyInfo = Object.assign({}, {
+              state: response.data.state,
+              city: response.data.city,
+              district: response.data.district,
+              district_id: response.data.district_id,
+            });
             await this.getItems()
         }
     },
@@ -240,7 +247,7 @@ export default {
         if(this.items.meta.current_page <= this.items.meta.last_page){
             this.form.page += 1;
 
-            this.$axios.get(`/api/districts/${this.$auth.user.district.id}/members`, {
+            this.$axios.get(`/api/districts/${this.countyInfo.district_id}/members`, {
                 params: this.form
             }).then(response => {
                 this.items = {
@@ -253,7 +260,7 @@ export default {
         }
     },
     search() {
-      this.$axios.get(`/api/districts/${this.$auth.user.district.id}/members`, {
+      this.$axios.get(`/api/districts/${this.countyInfo.district_id}/members`, {
         params: {
           search: {
             keyword: this.word
@@ -267,13 +274,13 @@ export default {
     getItems(){
         this.form.page = 1;
 
-        this.$axios.get(`/api/districts/${this.$auth.user.district.id}/members`)
+        this.$axios.get(`/api/districts/${this.countyInfo.district_id}/members`)
             .then(response => {
                 this.items = response.data;
             });
     },
     async getProxyPhoneCall(item) {
-      const { data } = await this.$axios.post(`/api/districts/${this.$auth.user.district.id}/members/proxy-number`, 
+      const { data } = await this.$axios.post(`/api/districts/${this.countyInfo.district_id}/members/proxy-number`, 
         {
           id: item.id,
           pvn: this.formerVn,
