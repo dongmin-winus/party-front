@@ -9,8 +9,15 @@
           <img src="/images/Xbtn.png" alt="" style='width:25px;  margin-right: 20px' @click="optionShow">
         </div>
         <div class="chat-input-div">
-          <input v-model="message" class="chat-input" placeholder="메시지 보내기" @keydown.enter="send" @focus="focusOn = true"
-            @blur="handleBlur" />
+          <!-- <input v-model="message" class="chat-input" placeholder="메시지 보내기" @keyup.enter="send" @input="change" @focus="focusOn = true"
+            @blur="handleBlur" /> -->
+            <textarea placeholder="메세지 보내기"
+              v-model="message"
+              class="chat-input" 
+              @keydown.enter.prevent="handleKeyDown"
+              @input="change" 
+              @focus="focusOn = true"
+              @blur="handleBlur"/>
           <div v-if="focusOn">
             <button class="button1"><img class="img" src="/images/emojiOn.png" alt=""></button>
             <button @click="send" class="button2"><img class="img" src="/images/sendOn.png" alt=""></button>
@@ -21,43 +28,44 @@
           </div>
         </div>
       </div>
-
     </div>
-    <div v-if="option == true" class="chat-option">
-      <div>
-        <label for="file-input">
-          <input id="file-input" type="file" accept="image/*" />
-          <div class="gallery">
-            <img src="/images/gallery.png" alt="">
+    <Transition name="fade">
+      <div v-if="option == true" class="chat-option">
+        <div>
+          <label for="file-input">
+            <input id="file-input" type="file" accept="image/*" />
+            <div class="gallery">
+              <img src="/images/gallery.png" alt="">
+            </div>
+          </label>
+          <div class="option-name2">
+            사진
           </div>
-        </label>
-        <div class="option-name2">
-          사진
+        </div>
+        <div>
+          <label for="file-input">
+            <input id="file-input" type="file" accept="image/*" capture="camera" />
+            <div class="camera">
+              <img src="/images/chatCamera.png" alt="">
+            </div>
+          </label>
+          <div class="option-name2">
+            카메라
+          </div>
+        </div>
+        <div>
+          <label for="file-input">
+            <input id="file-input" type="file" />
+            <div class="location">
+              <img src="/images/location.png" alt="">
+            </div>
+          </label>
+          <div class="option-name2">
+            위치
+          </div>
         </div>
       </div>
-      <div>
-        <label for="file-input">
-          <input id="file-input" type="file" accept="image/*" capture="camera" />
-          <div class="camera">
-            <img src="/images/chatCamera.png" alt="">
-          </div>
-        </label>
-        <div class="option-name2">
-          카메라
-        </div>
-      </div>
-      <div>
-        <label for="file-input">
-          <input id="file-input" type="file" />
-          <div class="location">
-            <img src="/images/location.png" alt="">
-          </div>
-        </label>
-        <div class="option-name2">
-          위치
-        </div>
-      </div>
-    </div>
+    </Transition>
   </div>
 </template>
 <script>
@@ -73,7 +81,8 @@ export default {
       username: "123",
       message: "",
       focusOn: false,
-      option: false
+      option: false,
+
     }
   },
   methods: {
@@ -84,12 +93,30 @@ export default {
       this.option = !this.option;
       this.$emit("optionSubmit", this.option)
     },
+    // 한글 칠때 한글자씩 빠는거
+    change(e) {
+      this.message = e.target.value
+    },
+    handleKeyDown(event) {
+      if (event.key === 'Enter') {
+        if (event.shiftKey) {
+          // Shift+Enter 조합일 경우
+          this.message += '\n';
+          return;
+        } else {
+          this.send();
+          this.message ='';
+        }
+      }
+    },
+
 
     async send() {
       if (!this.sending) {
         const data = {
-          username: this.username,
-          message: this.message,
+          username: this.$auth.user.name,
+          message: this.content,
+          user_id: this.$auth.user.id,
         };
         if (!this.validate(data)) {
           alert("입력을 확인해주세요!");
@@ -111,6 +138,7 @@ export default {
     onChatSent(event) {
       this.chats.push(event);
       this.$emit("messageSubmit", this.chats)
+      this.chats = []
     },
     connect() {
       if (!window.Pusher)
@@ -131,6 +159,18 @@ export default {
       this.echo.leaveChannel("chat");
     },
   },
+  computed: {
+    content() { 
+      this.message = this.message.replace(/(?:\r\n|\r|\n)/g, '<br>')
+      // this.message = this.message.replace(/(http[s]?:\/\/[^\s]+)/g, '<a href="$&" style="color:#10FF00; text-decoration: underline;">$&</a>')
+      const urls = this.message.match(/(http[s]?:\/\/[\s\S]+)/g)
+      if(urls) {
+        const cleanedUrls = urls.map(url => url.replace(/<br>/g, ' <br>'));
+        this.message = cleanedUrls[0].replace(/(http[s]?:\/\/[^\s]+)/g, '<a href="$&" style="color:#10FF00; text-decoration: underline;">$&</a>')
+      }
+      return this.message;
+    }
+  }, 
 
   mounted() {
     this.connect();
@@ -170,15 +210,19 @@ export default {
   width: 100%;
   display: flex;
   position: relative;
+  text-align: center;
 }
 
 .chat-input {
   background-color: #F7F7F7;
-  height: 50px;
+  height: 60px;
+  /* overflow: auto; */
   padding: 15px;
+  padding-right: 35%;
   border: 1px solid #EEEEEE;
   border-radius: 15px;
   width: 100%;
+  resize: none;
 
 }
 
@@ -238,4 +282,12 @@ export default {
   font-weight: 350;
   color: #000000;
 }
+.fade-enter-active {
+  transition: opacity 0.7s;
+}
+
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+
 </style>
