@@ -31,11 +31,18 @@
             <div class="mt-32"></div>
 
             <section class="area-staff">
-                <div class="m-empty type01" v-if="items.length === 0">준비중입니다.</div>
+                <div class="m-empty type01" v-if="positions.length === 0">준비중입니다.</div>
 
                 <div class="wrap">
+                    <div class="m-tabs type01" v-if="computedCountySections.length > 1">
+                        <div class="m-tab-wrap" v-for="(item) in computedCountySections">
+                            <div class="m-tab" :class="`${activeCounty === item ? 'active' : ''}`" @click="getCounty(item)">
+                                <span class="text">{{ $store.state.district.district }}&nbsp;{{ item }}</span>
+                            </div>
+                        </div>
+                    </div>
                     <ul class="items custom-ul">
-                        <li v-for="item in items" :key="item.id">
+                        <li v-for="item in county" :key="item.id">
                             <div class="wrapper">
                                 <div class="w-100 bg-orange" v-if="item.available">
                                     <span style="color:white">담당자 모집중</span>
@@ -99,26 +106,28 @@ export default {
     auth: false,
     data() {
         return {
-            items: [],
+            rawValues: [],
+            positions: [],
+            countyLists: [],
+            county: [],
             registerStatus: undefined,
-
+            activeCounty: undefined,
             errors: {},
 
         }
     },
 
     computed: {
-        rep() {
-            return this.items.find(item => item.position === '대표');
+        computedCountySections() {
+            const set = [...new Set(this.rawValues.map(item => item.group))];
+            // set.splice(set.indexOf(null), 1);
+            return set;
         },
-        restItems() {
-            return this.items.filter(item => item.position !== '대표');
-        }
     },
 
     watch: {
         '$store.state.district.id'() {
-            this.init()
+            this.setCountyLists()
         }
     },
     methods: {
@@ -134,14 +143,54 @@ export default {
         nameReplace(name) {
             return name.slice(0,-1) + '*';
         },
-        init() {
-            this.$axios.get(`/api/districts/${this.$store.state.district.id}/staff`)
-                .then(response => {
-                    this.items = [
-                        ...response.data.data,
-                    ];
-                    this.registerStatus = response.data.register;
+        async setCountyLists() {
+            this.rawValues = [];
+            this.countyLists = [];
+            const response = await this.$axios.get(`/api/districts/${this.$store.state.district.id}/staff`);
+            this.rawValues = response.data.data;
+            this.computedCountySections.forEach(group => {
+                const county = this.rawValues.filter(rawValue => rawValue.group === group);
+                this.countyLists.push(
+                    this.positions.map(position => {
+                        const positionData = county.find(value => value.position === position.position);
+                        return {
+                            ...position,
+                            group: group, //computedCountySections 의 각 원소는 그룹명(1,2,3, ...)이다.
+                            district_id: this.$store.state.district.id,
+                            id: positionData ? positionData.id : null,
+                            available: positionData ? false : true,
+                            name: positionData ? positionData.name : "",
+                            phone: positionData ? positionData.phone : "",
+                            created_at: positionData ? positionData.created_at : "",
+                            updated_at: positionData ? positionData.updated_at : "",
+                        }
+                    })
+                )
+            })
+            this.county = [...this.countyLists[0]];
+            this.activeCounty = 1;
+            this.registerStatus = response.data.register;
+        },
+        async getPositions() {
+            const response = await this.$axios.get(`/api/districts/${this.$store.state.district.id}/position`);
+            this.positions = [
+                ...response.data.map(item => {
+                    return {
+                        ...item,
+                        available: true,
+                        img: "",
+                        name: "",
+                        phone: "",
+                    }
                 })
+            ];
+            await this.setCountyLists();
+        },
+        getCounty(item) {
+            this.activeCounty = item;
+            this.county = [
+                ...this.countyLists[item-1]
+            ]
         },
         getRegisterClass() {
             const colorClass = this.registerStatus ? 'm-btn type01 height-full bg-revert-primary' : 'm-btn type01 height-full bg-grey'
@@ -151,7 +200,8 @@ export default {
             if(this.$auth.user?.district.id !== this.$store.state.district.id) return alert('회원가입하신 지역만 신청 가능합니다.');
             if(!this.registerStatus) return alert('1개의 직분만 신청 가능합니다.');
             const response = await this.$axios.post(`/api/staff/${this.$store.state.district.id}/register`, {
-                after: item.position
+                after: item.position,
+                group: item.group,
             });
             if(response) {
                 alert('신청이 완료되었습니다.');
@@ -161,7 +211,7 @@ export default {
     },
 
     mounted() {
-        this.init();
+        this.getPositions();
     },
     created() {
         this.debounceRegister = debounce((item) => {
@@ -207,7 +257,7 @@ export default {
         flex-direction: row;
         justify-content: flex-start;
         align-content:center;
-        width: 200px;
+        width: 300px;
     }
     
     .item-container .right {
@@ -227,7 +277,7 @@ export default {
         margin: 0;
     }
     .text-container .content {
-        font-size: 20px;
+        font-size: 16px;
         font-weight: 500;
         color: #0BAF00;
         margin: 0;

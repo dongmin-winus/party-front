@@ -116,15 +116,14 @@
                                 <img src="/images/board.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">내 마을 명단</p>
                             </nuxt-link>
-                           <!--<nuxt-link to="/infos/approvals" class="menu">
+                           <nuxt-link to="/infos/approvals" class="menu">
                                 <img src="/images/board.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">결재 요청 현황</p>
-                            </nuxt-link> --> 
+                            </nuxt-link> 
                         </div>
                     </div>
                 </div>
-                <!-- TODO 0621 내 마을 설정 비활성화 -->
-                <!-- <div class="menus-wrap" >
+                <div class="menus-wrap" >
                     <h3 class="title">나의 마을설정</h3>
 
                     <div class="menus">
@@ -147,7 +146,7 @@
                             </nuxt-link>
                         </div>
                     </div>
-                </div> -->
+                </div>
 
                 <div class="menus-wrap">
                     <h3 class="title">나의 마을활동</h3>
