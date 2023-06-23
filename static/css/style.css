@@ -2125,6 +2125,7 @@ html {
 .m-btn.type02 {
     display:flex; align-items: center; justify-content: center;
     height:45px; padding:0 16px;
+    min-width:71px;
     font-weight:500; font-size:20px;
     background-color:#0BAF00; color:#fff; border-radius:5px;
     border:1px solid transparent;

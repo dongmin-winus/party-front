@@ -211,7 +211,7 @@
                                         </h3>
                                         <div class="subtitle-container">
                                             <p class="subtitle">{{ districtRegisterCounts[1].district }}</p>
-                                            <div class="badge">
+                                            <div class="badge" v-if="getBadgeSrc(rankingCount(districtRegisterCounts[1]))">
                                                 <img :src="getBadgeSrc(rankingCount(districtRegisterCounts[1]))"/>
                                             </div>
                                         </div>
@@ -244,7 +244,7 @@
                                         </h3>
                                         <div class="subtitle-container">
                                             <p class="subtitle">{{ districtRegisterCounts[0].district }}</p>
-                                            <div class="badge">
+                                            <div class="badge" v-if="getBadgeSrc(rankingCount(districtRegisterCounts[0]))">
                                                 <img :src="getBadgeSrc(rankingCount(districtRegisterCounts[0]))"/>
                                             </div>
                                         </div>
@@ -277,7 +277,7 @@
                                         </h3>
                                         <div class="subtitle-container">
                                             <p class="subtitle">{{ districtRegisterCounts[2].district }} </p>
-                                            <div class="badge">
+                                            <div class="badge" v-if="getBadgeSrc(rankingCount(districtRegisterCounts[2]))">
                                                 <img :src="getBadgeSrc(rankingCount(districtRegisterCounts[2]))"/>
                                             </div>
                                         </div>
@@ -316,7 +316,7 @@
                                                 </div>                                                
                                             </div>
                                             <div class="right">
-                                                <div class="badge">
+                                                <div class="badge" v-if="getBadgeSrc(rankingCount(districtRegisterCount))">
                                                     <img :src="getBadgeSrc(rankingCount(districtRegisterCount))"/>
                                                 </div>
                                                 <div :class="getScaleClass(rankingCount(districtRegisterCount))">
@@ -770,6 +770,7 @@ export default {
             if(rankingCount >= 1000 && rankingCount < 2000) return '/images/main_icon_badge_1k.png';
             if(rankingCount >= 2000 && rankingCount < 3000) return '/images/main_icon_badge_2k.png';
             if(rankingCount >= 3000 ) return '/images/main_icon_badge_3k.png';
+            if(rankingCount < 1000) return false;
         },
         getScaleClass(rankingCount, rankingType='unranked') {
             if(rankingType === 'ranked') {
@@ -1252,7 +1253,7 @@ export default {
     .swiper-slide .story-container .img {
         border-radius: 10px;
         width:100%;
-        height:65%;
+        height:70%;
         object-fit: cover;
     }
 
@@ -1263,7 +1264,7 @@ export default {
         border-radius: 10px;
         width: 90%;
         height:80px;
-        bottom: 20%;
+        bottom: 3%;
         left: 5%;
 
         display:flex;
