@@ -148,14 +148,14 @@ export default {
             this.countyLists = [];
             const response = await this.$axios.get(`/api/districts/${this.$store.state.district.id}/staff`);
             this.rawValues = response.data.data;
-            this.computedCountySections.forEach(item => {
-                const county = this.rawValues.filter(rawValue => rawValue.group === item);
+            this.computedCountySections.forEach(group => {
+                const county = this.rawValues.filter(rawValue => rawValue.group === group);
                 this.countyLists.push(
                     this.positions.map(position => {
                         const positionData = county.find(value => value.position === position.position);
                         return {
                             ...position,
-                            group: positionData ? positionData.group : null,
+                            group: group, //computedCountySections 의 각 원소는 그룹명(1,2,3, ...)이다.
                             district_id: this.$store.state.district.id,
                             id: positionData ? positionData.id : null,
                             available: positionData ? false : true,
