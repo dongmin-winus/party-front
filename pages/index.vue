@@ -396,8 +396,9 @@
                 </div>
             </section>
 
+            <!-- TODO 마을사랑 주인공 가림 230623 -->
             <!-- 마을사랑 주인공 -->
-            <section class="section-popular">
+            <!-- <section class="section-popular">
                 <div class="wrap">
                     <div class="content">
                         <div class="m-title type01">
@@ -434,7 +435,7 @@
                     </ul>
                     <nuxt-link to="/popular/rank" class="m-btn type02 bg-revert-primary">개인 랭킹 TOP 100 +</nuxt-link>
                 </div>
-            </section>
+            </section> -->
 
             <div class="mt-12"></div>
             <section class="section-ad2">
