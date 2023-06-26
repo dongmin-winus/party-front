@@ -113,6 +113,9 @@
             <div class="m-btn-wrap" @click="activeModal = false;">
                 <a class="m-btn type01" style="background-color:white; color:black; border:1px solid #eee; font-weight:300;">취소</a>
             </div>
+            <div class="m-btn-wrap" @click="deleteActivated">
+                <a class="m-btn type01" style="background-color:white; color:red; border:1px solid red; font-weight:300;">삭제</a>
+            </div> 
             <div class="m-btn-wrap" @click="settle">
                 <a class="m-btn type01 bg-lightGray" style="color:black; font-weight:300;">완료</a>
             </div>
@@ -276,6 +279,24 @@ export default {
     openApprovalModal(item) {
       this.activatedItem = {...item};
       this.activeModal = true;
+    },
+
+    async deleteActivated() {
+      const targetId = this.activatedItem.id;
+      if(confirm('삭제하시겠습니까?')) {
+        const response = await this.$axios.delete(`/api/districts/${this.countyInfo.district_id}/approval`, {
+          data: 
+            {
+              id: targetId, 
+            }
+          
+        });
+        if(response.status === 200) {
+          this.originalItems = [...this.originalItems.filter(item => item.id !== targetId)];
+          this.toggledItems = [...this.toggledItems.filter(item => item.id !== targetId)];
+          this.activeModal = false;
+        }
+      }
     },
 
     async settle() {
