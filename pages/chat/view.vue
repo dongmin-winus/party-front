@@ -26,7 +26,7 @@
           </button>
           <div class="dropdown" ref="dropdown">
             <button @click="toggleDropdown">
-              <img src="/images/ㅇ.png" alt="" style='width:25px;'>
+              <img src="/images/ㅇ.svg" alt="" style='width:25px;'>
             </button>
             <Transition name="fade">
               <ul v-show="isDropdownOpen" class="dropdown-menu">
@@ -56,8 +56,8 @@
       <div class="chatbox">
         <!-- 자신이 보낸 채팅 -->
         <TransitionGroup name="fade">
-          <div v-for="(chat, index) in chatList" :key="index" :ref="`searchRef${index}`" >
-            <div v-if="chat.user_id == $auth.user.id" class="chatbox-flex2">
+          <div v-for="(chat, index) in chatList" :key="index" :ref="`searchRef${index}`"  @focus="isFocused = true" @blur="isFocused = false"  >
+            <div v-if="chat.user_id == $auth.user.id" class="chatbox-flex2" >
               <!-- <div v-if="isDifferentDate(index)" class="date-divider">{{ chat.sentAt }}</div> -->
               <div class="chatbox-date2">{{ ChatRoomsTime(chats[index].created_at) }}</div>
               <div class="box" >
@@ -90,6 +90,7 @@
 import footerTpye02 from '../../components/footerTpye02.vue';
 export default {
   components: { footerTpye02 },
+  
   data() {
     return {
       token: "",
@@ -98,6 +99,9 @@ export default {
       isDropdownOpen: false, // 채팅 드랍버튼
       searchOpen: false, // 채팅 검색 버튼
       search: "",
+      isFocused : false,
+      count: 0,
+      searchData: "",
     };
   },
   methods: {
@@ -136,19 +140,35 @@ export default {
 
     searchFocus(event){
       if(event.key === 'Enter') {
-        const foundItem = this.chats.find(item => item.message === this.search);
+        // let foundItem = '';
+        if(this.count == 0){
+          this.searchData = this.search; //카운트 늘린다.
+          this.count++;
+          
+        } else {
+          if(this.searchData != this.search){
+            this.count = 0;
+            this.searchData = this.search;
+            
+          }
+        }
+        
+
+
+
+        // const foundItem = this.chats.find(item => item.message === this.search);
+        const foundItem = this.chats.filter(item => item.message.includes(this.search));
         console.log(foundItem)
         if(foundItem){
-          console.log(foundItem)
           let searchRef = `searchRef3`
+          let messageDisplay = this.$refs[searchRef][0]
           this.$nextTick(() => {
-              let messageDisplay = this.$refs[searchRef][0]
-              // messageDisplay.focus();
               messageDisplay.scrollIntoView({ behavior: 'smooth' });
             })
         }
       }
     },
+ 
     
     // // 시간 변환
     // dateFormate(i) {

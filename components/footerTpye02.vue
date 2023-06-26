@@ -19,12 +19,12 @@
               @focus="focusOn = true"
               @blur="handleBlur"/>
           <div v-if="focusOn">
-            <button class="button1"><img class="img" src="/images/emojiOn.png" alt=""></button>
-            <button @click="send" class="button2"><img class="img" src="/images/sendOn.png" alt=""></button>
+            <button class="button1"><img class="img" src="/images/emojiOn.svg" alt=""></button>
+            <button @click="send" class="button2"><img class="img" src="/images/sendOn.svg" alt=""></button>
           </div>
           <div v-else>
-            <button class="button1"><img class="img" src="/images/emoji.png" alt=""></button>
-            <button @click="send" class="button2"><img class="img" src="/images/send.png" alt=""></button>
+            <button class="button1"><img class="img" src="/images/emoji.svg" alt=""></button>
+            <button @click="send" class="button2"><img class="img" src="/images/send.svg" alt=""></button>
           </div>
         </div>
       </div>
