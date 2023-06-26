@@ -35,7 +35,7 @@
                     </div>
                     <div class="mt-8"></div>
                     <div class="nick-wrap">
-                        <span class="nick" @click="isProfilePopActive = true">{{ this.$auth.user.nickname }}</span>
+                        <span class="nick" @click="isProfilePopActive = true">{{ replaceText(this.$auth.user.nickname,8,"...") }}</span>
                         <button @click="isProfilePopActive = true">
                             <img src="/images/edit.png" alt="" class="edit">
                         </button>
@@ -268,7 +268,9 @@
 <script>
 import Form from "@/utils/Form";
 import ProfilePop from '../../components/profilePop.vue'
+import common from '@/utils/common'
 export default {
+    mixins: [common],
     components: {
         ProfilePop,
     },
