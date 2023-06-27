@@ -14,10 +14,14 @@
             <div class="msger-header-name">
               {{userName}}
             </div>
-            <div class="msger-header-flex2">
+            <div v-if="userOnline" class="msger-header-flex2">
               <div class="msger-header-online-circle"></div>
               <div class="msger-header-online-text">온라인</div>
             </div>
+             <div v-else class="msger-header-flex2">
+                <div class="msger-header-off-circle"></div>
+                <div class="msger-header-online-text">오프라인</div>
+              </div>
           </div>
         </div>
         <div class="msger-header-icon">
@@ -86,7 +90,7 @@
         </TransitionGroup>
       </div>
     </section>
-    <imageModal v-if="imageShow" :imageUrl="imageUrl" />
+    <imageModal class="modal" v-if="imageShow" :imageUrl="imageUrl" @closeModal="closeModal" />
     <!-- footer-->
     <footerTpye02 class="footer"  @messageSubmit="messageSubmit" />
   </div>
@@ -111,6 +115,7 @@ export default {
       imageUrl: null, // 이미지 클릭시 url값
       userName: "",
       userProfile: null,
+      userOnline: true,
       groupId: "",
     };
   },
@@ -125,6 +130,10 @@ export default {
     modalOpen(url) {
       this.imageShow = true
       this.imageUrl = url
+    },
+
+    closeModal(value) {
+      this.imageShow = value
     },
     // 드랍버튼
     toggleDropdown() {
@@ -342,8 +351,8 @@ export default {
   created() {
    this.userName = this.$route.query.userName;
    this.userProfile = this.$route.query.userProfile;
-   this.groupId = this.$route.query.groupId
-
+   this.groupId = this.$route.query.groupId;
+   this.userOnline = this.$route.query.online;
     this.$axios.get(`/api/chat/${this.groupId}`)
       .then(response => {
         this.chats = response.data
@@ -405,6 +414,13 @@ export default {
   width: 10px;
   height: 10px;
   background-color: #10FF00;
+  border-radius: 50%;
+}
+
+.msger-header-off-circle {
+  width: 10px;
+  height: 10px;
+  background-color: #CCCCCC;
   border-radius: 50%;
 }
 
