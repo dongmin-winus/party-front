@@ -1,7 +1,7 @@
 <template>
   <div>
-    <header-type02 />
-    <div class="chat-b">
+    <headerType02 @headerSearch="headerSearch" />
+    <div :class="searchOption == false ? 'chat-b' : 'chat-c'">
       <div class="bell-off" v-if="false">
         <div class="sizebox"></div>
         <div class="bell-margin" >
@@ -11,23 +11,29 @@
           <button class="bell-button">알림설정</button>
         </div>
       </div>
-      <div class="chat-list" v-for="(data,index) in list" :key="index">
+      <div class="chat-list" v-for="(data,index) in list" :key="index" @click="listClick(data.message_group_id, data.user.name, data.user.img.url, data.online)">
         <div class="chat-margin">
           <div class="chat-circle">
             <div class="chat-online-container">
-              <div class="chat-online-sub">
+              <img class="profile-img" v-if="data.user.img" :src="data.user.img.url" />
+              <img class="profile-img" v-else src="/images/profile.svg" />
+              <div v-if="data.online" class="chat-online-sub">
                 <div class="chat-online"></div>
               </div>
+               <div v-else class="chat-online-sub">
+                  <div class="chat-off"></div>
+                </div>
             </div>
           </div>
           <div class="chat-body">
             <div class="chat-body-1">
-              <span class="chat-name">{{ data.name }} </span>
-              <span class="chat-date">{{ data.date }}</span>
+              <span class="chat-name">{{ data.user ? data.user.name : '이름이 null' }} </span>
+              <span class="chat-date">{{data.created_at}}</span>
             </div>
             <div class="chat-body-1">
-              <div class="chat-content">{{ data.content.length > 15 ? data.content.substring(0,15) + '...' : data.content  }}</div>
-              <div class="chat-green-circle">25</div>
+              <!-- <div class="chat-content">{{ data.content.length > 15 ? data.content.substring(0,15) + '...' : data.content  }}</div> -->
+              <div class="chat-content">{{ data.message }}</div>
+              <div v-if="data.count !=0 " class="chat-green-circle">{{ data.count }}</div>
             </div>
           </div>
         </div>
@@ -37,25 +43,54 @@
   </div>
 </template>
 <script>
+import headerType02 from '../../components/chat/headerType02.vue';
 export default {
+  components:{headerType02},
   data() {
     return {
-      list: [
-        { name: "나라사랑", content: "메시지 입니다.", date: "오후 15:10", push: true, online: true },
-        { name: "마을사랑", content: "메시지12 입니다.", date: "오후 15:10", push: false, online: false },
-        { name: "자유사랑", content: "안녕", date: "오후 15:10", push: true, online: false },
-        { name: "jayu사랑", content: "메시지 입니다dsdsdsdsdsddsdsdsds.", date: "오후 15:10", push: false, online: true },
-
-      ],
-
+      list: [],
+      searchOption: false,
     };
   },
+  methods:{
+    listClick(id, name, profile, online){
+      if(profile == null){
+        profile = "/images/profile.svg"
+      }
+      this.$router.push({
+        // name: 'chat-view',
+        path: '/chat/view',
+        query: { 
+          groupId: id, 
+          userName: name,
+          userProfile: profile,
+          online: online
+        },
+      })
+    },
+    headerSearch(value) {
+      this.searchOption = value;
+    
+    }
+  },
+  created() {
+    this.$axios.get('/api/chat/list')
+      .then((response)=> {
+        console.log(response.data.data)
+        this.list = response.data.data;
+      })
+    
+  },
 }
-
 </script>
 <style scoped>
+
+
 .chat-b {
   margin-top: 59px;
+}
+.chat-c {
+  margin-top: 104px;
 }
 
 .bell-off{
@@ -115,7 +150,6 @@ export default {
   width: 55px;
   height: 55px;
   border-radius: 50%;
-  background-color: gray;
 }
 .chat-online-container{
   display: flex;
@@ -124,7 +158,9 @@ export default {
 
 .chat-online-sub{
   display: flex;
-   margin: auto 0 0 auto;
+  position:absolute;
+  margin-top: 35px;
+  margin-left: 37px;
   width:20px;
   height: 20px;
   background-color: #ffffff;
@@ -137,6 +173,16 @@ export default {
   height: 16px;
   margin: auto;
   background-color: #0Baf00;
+  border-radius: 50%;
+
+}
+
+.chat-off{
+  display: flex;
+  width:16px;
+  height: 16px;
+  margin: auto;
+  background-color: #CCCCCC;
   border-radius: 50%;
 
 }
@@ -184,5 +230,10 @@ export default {
   color: #ffffff;
 }
 
+.profile-img {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+}
 
 </style>

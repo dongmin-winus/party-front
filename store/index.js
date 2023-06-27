@@ -32,6 +32,11 @@ export const state = () => ({
     coords: [],
     currentAddr: '',
     currentStoreList: [],
+
+    // 채팅 옵션
+    option: false,
+    chatSearch: false,
+    
 });
 
 export const getters = {
@@ -149,4 +154,14 @@ export const mutations = {
     setCoords(state, coords) {
         state.coords = [...coords];
     },
+
+
+    // 채팅 option변경
+    setOption(state, data) {
+        state.option = data;
+    },
+    setSearchOption(state, data) {
+        state.chatSearch = data;
+    }
+
 }
