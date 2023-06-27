@@ -81,7 +81,7 @@
                                             <img src="/images/taegeuk.png" alt="">
                                         </div>
                                         <div class="text-container" >
-                                            <p class="title">{{item.name == '' ? '담당자 미정' : nameReplace(item.name)}}</p>
+                                            <p class="title">{{item.name == '' ? '담당자 미정' : item.name}}</p>
                                             <p class="content">{{item.position}}</p>
                                         </div>
                                     </div>
@@ -169,9 +169,6 @@ export default {
                 return;
              }
 
-        },
-        nameReplace(name) {
-            return name.slice(0,-1) + '*';
         },
         async setCountyLists() {
             this.rawValues = [];
