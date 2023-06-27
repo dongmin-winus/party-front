@@ -1,12 +1,15 @@
 <template>
   <div class="chat-footer">
+    <div v-if="imageFiles" class="img-box">
+      <img v-if="imageUrl" class="postImg" :src="imageUrl" />
+    </div>
     <div class="chat-bottom">
       <div style=" margin-left: 20px; margin-right: 20px;  display: flex; align-items: center; width: 100%;">
-        <div v-if="option == false">
-          <img src="/images/Vector.png" alt="" style='width:25px;  margin-right: 20px' @click="optionShow">
+        <div v-if="$store.state.option == false">
+          <img src="/images/Vector.svg" alt="" style='width:25px;  margin-right: 20px' @click="optionShow">
         </div>
         <div v-else>
-          <img src="/images/Xbtn.png" alt="" style='width:25px;  margin-right: 20px' @click="optionShow">
+          <img src="/images/Xbtn.svg" alt="" style='width:25px;  margin-right: 20px' @click="optionShow">
         </div>
         <div class="chat-input-div">
           <!-- <input v-model="message" class="chat-input" placeholder="메시지 보내기" @keyup.enter="send" @input="change" @focus="focusOn = true"
@@ -30,12 +33,12 @@
       </div>
     </div>
     <Transition name="fade">
-      <div v-if="option == true" class="chat-option">
+      <div v-if="$store.state.option == true" class="chat-option">
         <div>
           <label for="file-input">
-            <input id="file-input" type="file" accept="image/*" />
+            <input id="file-input" type="file" @change="handleImageChange" accept="image/*" />
             <div class="gallery">
-              <img src="/images/gallery.png" alt="">
+              <img src="/images/gallery.svg" alt="">
             </div>
           </label>
           <div class="option-name2">
@@ -46,7 +49,7 @@
           <label for="file-input">
             <input id="file-input" type="file" accept="image/*" capture="camera" />
             <div class="camera">
-              <img src="/images/chatCamera.png" alt="">
+              <img src="/images/chatCamera.svg" alt="">
             </div>
           </label>
           <div class="option-name2">
@@ -57,7 +60,7 @@
           <label for="file-input">
             <input id="file-input" type="file" />
             <div class="location">
-              <img src="/images/location.png" alt="">
+              <img src="/images/location.svg" alt="">
             </div>
           </label>
           <div class="option-name2">
@@ -81,7 +84,8 @@ export default {
       username: "123",
       message: "",
       focusOn: false,
-      option: false,
+      imageUrl: null,
+      imageFiles: null,
 
     }
   },
@@ -90,8 +94,13 @@ export default {
       this.focusOn = false;
     },
     optionShow() {
-      this.option = !this.option;
-      this.$emit("optionSubmit", this.option)
+       if (this.$store.state.option == false) {
+        this.$store.commit('setSearchOption', false)
+      }
+      this.$store.commit('setOption', !(this.$store.state.option))
+    },
+    optionFalse(value) {
+      console.log(value)
     },
     // 한글 칠때 한글자씩 빠는거
     change(e) {
@@ -110,13 +119,14 @@ export default {
       }
     },
 
-
     async send() {
       if (!this.sending) {
         const data = {
           username: this.$auth.user.name,
           message: this.content,
           user_id: this.$auth.user.id,
+          image: this.imageFiles,
+          message_group_id: this.$route.query.groupId
         };
         if (!this.validate(data)) {
           alert("입력을 확인해주세요!");
@@ -124,6 +134,8 @@ export default {
         }
         this.sending = true;
         this.message = "";
+        this.imageUrl = null;
+        this.imageFiles = null;
         await this.$axios.post("/api/chat/broadcast", data);
         this.sending = false;
       }
@@ -131,7 +143,7 @@ export default {
     validate(data) {
       if (data.username === "")
         return false;
-      if (data.message === "")
+      if (data.message === "" && data.image === null)
         return false;
       return true;
     },
@@ -152,26 +164,40 @@ export default {
       }
       this.echo.channel("chat").listen("MessageSent", (e) => {
         this.onChatSent(e);
-
       });
     },
     disconnect() {
       this.echo.leaveChannel("chat");
     },
+     handleImageChange(event) {
+      this.imageFiles = event.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(this.imageFiles);
+      reader.onload = (e) => {
+       this.imageUrl = e.target.result;
+      };
+      let form = new FormData();
+      form.append("image", this.imageFiles);
+      this.$axios.post('/api/posts/images', form)
+      .then((response) => {
+          console.log(response.data.data.original_url)
+          this.imageFiles = response.data.data.original_url;
+        });
+     }
+
   },
-  computed: {
-    content() { 
+  computed :{
+    content() {
       this.message = this.message.replace(/(?:\r\n|\r|\n)/g, '<br>')
       // this.message = this.message.replace(/(http[s]?:\/\/[^\s]+)/g, '<a href="$&" style="color:#10FF00; text-decoration: underline;">$&</a>')
       const urls = this.message.match(/(http[s]?:\/\/[\s\S]+)/g)
-      if(urls) {
+      if (urls) {
         const cleanedUrls = urls.map(url => url.replace(/<br>/g, ' <br>'));
         this.message = cleanedUrls[0].replace(/(http[s]?:\/\/[^\s]+)/g, '<a href="$&" style="color:#10FF00; text-decoration: underline;">$&</a>')
       }
       return this.message;
-    }
-  }, 
-
+    },
+  },
   mounted() {
     this.connect();
 
@@ -195,6 +221,16 @@ export default {
   margin-top: 10px;
   align-items: start;
 
+}
+.img-box{
+  display: flex;
+  height: 100px;
+  align-items: center;
+  margin: 0px 20px;
+}
+.postImg{
+  width: 80px;
+  height: 80px;
 }
 
 .chat-bottom {
