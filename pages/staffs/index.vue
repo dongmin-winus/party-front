@@ -34,7 +34,33 @@
                 <div class="m-empty type01" v-if="positions.length === 0">준비중입니다.</div>
 
                 <div class="wrap">
-                    <div class="m-tabs type01" v-if="computedCountySections.length > 1">
+                    <div v-show="registerInfo.length > 0">
+                        <p style="font-size:18px; font-weight:500; color:#777;">내가 신청한 직분</p>
+                        <div class="mt-8"></div>
+                        <ul class="items custom-ul">
+                            <li v-for="(item, index) in registerInfo" :key="index" style="padding:10px 10px;">
+                                <div class="item-container">
+                                    <div class="left">
+                                        <div>
+                                            {{ $store.state.district.district }}{{ item.group }}&nbsp;{{ item.after }}{{ `(${formatDate(item.created_at)})` }}
+                                        </div>
+                                    </div>
+                                    <div class="right">
+                                        <div class="m-board-btns">
+                                            <div class="m-btns type01" >
+                                                <div class="m-btn-wrap ">
+                                                    <button type="button" style="height:30px;" class="m-btn type01 bg-grey" @click.prevent="debounceCancelRegister(item.id)">
+                                                        취소
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mt-12 m-tabs type01" v-if="computedCountySections.length > 1">
                         <div class="m-tab-wrap" v-for="(item) in computedCountySections">
                             <div class="m-tab" :class="`${activeCounty === item ? 'active' : ''}`" @click="getCounty(item)">
                                 <span class="text">{{ $store.state.district.district }}&nbsp;{{ item }}</span>
@@ -100,9 +126,12 @@ import InputImg from "../../components/form/posts/inputImg";
 import InputThumbnail from "../../components/form/posts/inputThumbnail";
 import InputAddress from "../../components/form/inputAddress";
 import Form from "@/utils/Form";
+
+import common from "@/utils/common"
 import {debounce} from "@/utils/debounce";
 export default {
     components: {InputAddress, InputThumbnail, InputImg, InputLink, InputCamera},
+    mixins: [common],
     auth: false,
     data() {
         return {
@@ -111,6 +140,7 @@ export default {
             countyLists: [],
             county: [],
             registerStatus: undefined,
+            registerInfo:[],
             activeCounty: undefined,
             errors: {},
 
@@ -196,6 +226,13 @@ export default {
             const colorClass = this.registerStatus ? 'm-btn type01 height-full bg-revert-primary' : 'm-btn type01 height-full bg-grey'
             return colorClass;
         },
+        async getRegisterInfo() {
+            const {data} = await this.$axios.get(`/api/staff/1/show-register`);
+            if(data) {
+                this.registerInfo = [...data];
+                this.registerInfo.length === 0 ? this.registerStatus = true : this.registerStatus = false;
+            }
+        },
         async register(item) {
             if(this.$auth.user?.district.id !== this.$store.state.district.id) return alert('회원가입하신 지역만 신청 가능합니다.');
             if(!this.registerStatus) return alert('1개의 직분만 신청 가능합니다.');
@@ -205,17 +242,36 @@ export default {
             });
             if(response) {
                 alert('신청이 완료되었습니다.');
-                this.registerStatus = false;
+                await this.getRegisterInfo();
             }
-        }
+        },
+        async cancelRegister(id) {
+            if(confirm('신청을 취소하시겠습니까?')) {
+                try {
+                    const response = await this.$axios.delete(`/api/staff/1/delete-register/${id}`);
+                    if(response) {
+                        alert('신청이 취소되었습니다.');
+                        await this.getRegisterInfo();
+                    }
+                } catch (error) {
+                    console.error(error.response.data.message)
+                }
+                
+            }
+            
+        },
     },
 
     mounted() {
         this.getPositions();
+        this.getRegisterInfo();
     },
     created() {
         this.debounceRegister = debounce((item) => {
             this.register(item)
+        },500);
+        this.debounceCancelRegister = debounce((id) => {
+            this.cancelRegister(id)
         },500);
     }
 }
