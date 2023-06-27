@@ -217,7 +217,7 @@ export default {
               const { data } = await this.$axios.get(`/api/staff-check?phone=${this.staffNumber}`);
               
               if(data.position) {
-                  this.staffInfo = `${data.district.state} ${data.district.city} ${data.district.district} ${data.position} ${data.name}`;
+                  this.staffInfo = `${data.district.state} ${data.district.city} ${data.district.district} ${data.group} ${data.position} ${data.name}`;
               } else {
                   alert(`${data}`);
               }
