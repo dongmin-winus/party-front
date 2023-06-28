@@ -1,49 +1,93 @@
 <template>
   <div>
-    <createHeader />
-    <div class="chat-b">
-      <div class="chat-list" v-for="(data, index) in list" :key="index">
+    <createHeader @searchData="searchData" />
+    <Loding v-if="loding" />
+    <div v-else class="chat-b">
+      <template v-if="foundItem != ''">
+      <div class="chat-list" v-for="(data, index) in  memberList" :key="index">
         <div class="chat-margin">
           <div class="chat-circle">
-            <div class="chat-online-container">
-              <div class="chat-online-sub">
-                <div class="chat-online"></div>
-              </div>
-            </div>
+            <img class="chat-circle" :src="data.gender == '남' ? '/images/남성.png': '/images/여성.png'" />
           </div>
           <div class="chat-body">
             <div class="chat-body-1">
               <span class="chat-name">{{ data.name }} </span>
             </div>
             <div class="chat-body-1">
-              <div class="chat-content">{{ data.nickname}}</div>
+              <div class="chat-content">{{ data.nickname }}</div>
             </div>
           </div>
-          <div class="chat-body-img">
+          <div class="chat-body-img" @click="chatCreate(data.id,data.name)">
             <img src="/images/chat-alt-2.svg">
           </div>
         </div>
       </div>
+      </template>
+      <template v-else>
+        <div class="chat-empty">
+          <span class="chat-name">검색하신 이름이 없습니다.</span>
+        </div>
+      </template>
     </div>
+
     <navigation />
   </div>
 </template>
 <script>
 import createHeader from '../../components/chat/createHeader.vue';
+import Loding from '../../components/chat/loding.vue';
 export default {
-  components: { createHeader },
+  components: { createHeader, Loding },
   data() {
     return {
-      list: [
-        { name: "나라사랑",nickname: "메시지 입니다.", date: "오후 15:10", push: true, online: true },
-        { name: "마을사랑",nickname: "메시지12 입니다.", date: "오후 15:10", push: false, online: false },
-        { name: "자유사랑",nickname: "안녕", date: "오후 15:10", push: true, online: false },
-        { name: "jayu사랑",nickname: "닉네임4630s.", date: "오후 15:10", push: false, online: true },
-
-      ],
-
+      list: [],
+      search: "",
+      foundItem: [],
+      loding: false,
+      roomId: null,
     };
   },
+  methods: {
+    searchData(value) {
+      this.foundItem = this.list.filter(item => item.name && item.name.includes(value));
+    },
+    chatCreate(id,name) {
+      this.$axios.post(`/api/chat/build-channel`, {
+        receiver_id: id
+      })
+      .then((response) => {
+        this.roomId = response.data
+      })
+      .then(()=>{
+        this.$router.push({
+          path: '/chat/view',
+          query: {
+            groupId: this.roomId,
+            userName: name,
+            userProfile: '/images/profile.svg',
+            online: true
+          },
+        })
+      })
+    },
+  },
+  computed: {
+    memberList() {
+      return this.foundItem
+    },
+  },
+
+  created() {
+    this.loding = true;
+    this.$axios.get(`api/districts/${this.$auth.user.district.id}/members/chat-list`)
+      .then((response) => {
+        this.list = response.data
+        this.foundItem = response.data
+      })
+      .then(()=>{
+        this.loding = false;
+      })
+  }
 }
 
 </script>
@@ -51,7 +95,12 @@ export default {
 .chat-b {
   margin-top: 104px;
 }
-
+.chat-empty {
+  display: flex;
+  height: 100px;
+  justify-content: center;
+  align-items: center;
+}
 .bell-off {
   border-bottom: 1px solid #EEEEEE;
   height: 180px;
@@ -61,6 +110,7 @@ export default {
 .bell-margin {
   margin-left: 30px;
   margin-right: 30px;
+  color: #0BAF00;
 }
 
 .sizebox {
@@ -109,7 +159,6 @@ export default {
   width: 55px;
   height: 55px;
   border-radius: 50%;
-  background-color: gray;
 }
 
 .chat-online-container {
