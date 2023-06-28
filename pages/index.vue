@@ -426,7 +426,7 @@
                                     </div>
                                     <div class="bar">
                                         <div class="bar-inner" :style="`width:${getPopularPercentage(item)}%; background:${getBarColor(item)}`">
-                                            {{ getPopularTotalCount(item) }}
+                                            {{ getPopularTotalCount(item) + tokenCount }}
                                         </div>
                                     </div>
                                 </div>
