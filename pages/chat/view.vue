@@ -4,24 +4,28 @@
     <header class="header-box">
       <div class="msger-header">
         <div class="msger-header-flex msger-header-center">
-          <div class="">
+          <div class="" @click="$router.push('/chat')">
             <img src="/images/chevron-left.png" style="width:10px;">
           </div>
           <div>
-            <div class="msger-header-circle"></div>
+            <img class="msger-header-circle" :src="userProfile" />
           </div>
           <div class="msger-hedaer-title">
             <div class="msger-header-name">
-              나라사랑
+              {{userName}}
             </div>
-            <div class="msger-header-flex2">
+            <div v-if="userOnline" class="msger-header-flex2">
               <div class="msger-header-online-circle"></div>
               <div class="msger-header-online-text">온라인</div>
             </div>
+             <div v-else class="msger-header-flex2">
+                <div class="msger-header-off-circle"></div>
+                <div class="msger-header-online-text">오프라인</div>
+              </div>
           </div>
         </div>
         <div class="msger-header-icon">
-          <button class="msger-header-searchicon" @click="searchOpen = !searchOpen">
+          <button class="msger-header-searchicon" @click="searchBtn">
             <img src="https://dotmzh1fysixs.cloudfront.net/1033/search.png" style="width:25px;">
           </button>
           <div class="dropdown" ref="dropdown">
@@ -31,7 +35,7 @@
             <Transition name="fade">
               <ul v-show="isDropdownOpen" class="dropdown-menu">
                 <li>알림끄기</li>
-                <li>나가기</li>
+                <li @click="$router.back()">채팅 채널 이동</li>
                 <li>채팅방 나가기</li>
               </ul>
             </Transition>
@@ -40,68 +44,79 @@
 
       </div>
 
-          <Transition name="fade">
-            <div v-if="searchOpen" class="searchbox">
-              <input v-model="search" @keydown.enter.prevent="searchFocus" @input="changeSearch" class="search-input" placeholder="대화내용 검색" />
-              <div class="search-img"><img src="/images/search-gray.png" style="width: 20px;" alt=""></div>
-              <button @click="searchOpen = false" class="search-button">취소</button>
-            </div>
-          </Transition>
+      <Transition name="fade">
+        <div v-if="searchOpen" class="searchbox">
+          <input v-model="search" @keydown.enter.prevent="searchFocus" @input="changeSearch" class="search-input"
+            placeholder="대화내용 검색" />
+          <div class="search-img"><img src="/images/search-gray.png" style="width: 20px;" alt=""></div>
+          <button @click="searchBtn" class="search-button">취소</button>
+        </div>
+      </Transition>
     </header>
 
     <!-- section-->
-
-    <div :class="searchOpen == true ? 'sizebox2T' : 'sizebox2F'" >&nbsp;</div>
-    <section ref="chatSection" :class="option == true ? 'sectionT' : 'sectionF'">
+    <div :class="searchOpen == true ? 'sizebox2T' : 'sizebox2F'">&nbsp;</div>
+    <!-- <section ref="chatSection" :class="[option == true ? 'sectionT' : 'sectionF', ]"> -->
+      <section ref="chatSection" :class="[{'sectionTT': searchOpen ,'sectionT':$store.state.option}, 'sectionF']">
+        <!-- <section ref="chatSection" :class="{ 'sectionT': $store.state.option, 'sectionTT': $store.state.chatSearch}"> -->
       <div class="chatbox">
         <!-- 자신이 보낸 채팅 -->
         <TransitionGroup name="fade">
-          <div v-for="(chat, index) in chatList" :key="index" :ref="`searchRef${index}`"  @focus="isFocused = true" @blur="isFocused = false"  >
-            <div v-if="chat.user_id == $auth.user.id" class="chatbox-flex2" >
+          <div v-for="(chat, index) in chatList" :key="index" :ref="`searchRef${chat.id}`" >
+            <div v-if="chat.user_id == $auth.user.id" class="chatbox-flex2">
               <!-- <div v-if="isDifferentDate(index)" class="date-divider">{{ chat.sentAt }}</div> -->
               <div class="chatbox-date2">{{ ChatRoomsTime(chats[index].created_at) }}</div>
-              <div class="box" >
-                <p class="chatbox-text2" v-html="chat.message"></p>
+              <div class="box1">
+                <img @click="modalOpen(chat.image)" v-if="chat.image != null" class="img-size" :src="chat.image" />
+                <p v-if="chat.message != null" class="chatbox-text2" v-html="chat.message"></p>
+               
               </div>
-  
+
             </div>
             <!-- 남이 보낸 채팅 -->
             <div v-else class="chatbox-flex">
-              <div v-if="chat.first" class="chat-avarta"></div>
+              <div v-if="chat.first" class="chat-avarta">
+                <img class="chat-avarta" :src="userProfile" />
+              </div>
               <div v-else class="chat-avarta2"></div>
-              <div class="box" >
-                <p class="chatbox-text" v-html="chat.message"></p>
+              <div class="box2">
+                <img @click="modalOpen(chat.image)" v-if="chat.image != null" class="img-size" :src="chat.image" />
+                <p v-if="chat.message != null" class="chatbox-text" v-html="chat.message"></p>
               </div>
               <div class="chatbox-date">{{ ChatRoomsTime(chats[index].created_at) }}</div>
             </div>
-    
+
           </div>
         </TransitionGroup>
       </div>
-
     </section>
-
+    <imageModal class="modal" v-if="imageShow" :imageUrl="imageUrl" @closeModal="closeModal" />
     <!-- footer-->
-    <FooterTpye02 class="footer" @messageSubmit="messageSubmit" @optionSubmit="optionSubmit" />
+    <footerTpye02 class="footer"  @messageSubmit="messageSubmit" />
   </div>
 </template>
 <script>
 
-import footerTpye02 from '../../components/footerTpye02.vue';
+import footerTpye02 from '../../components/chat/footerTpye02.vue';
+import imageModal from '../../components/chat/imageModal.vue';
 export default {
-  components: { footerTpye02 },
-  
+  components: { footerTpye02, imageModal },
+
   data() {
     return {
       token: "",
       chats: [],
-      option: false,
       isDropdownOpen: false, // 채팅 드랍버튼
-      searchOpen: false, // 채팅 검색 버튼
       search: "",
-      isFocused : false,
+      isFocused: false,
       count: 0,
       searchData: "",
+      imageShow: false,
+      imageUrl: null, // 이미지 클릭시 url값
+      userName: "",
+      userProfile: null,
+      userOnline: true,
+      groupId: "",
     };
   },
   methods: {
@@ -111,9 +126,14 @@ export default {
       this.chats.push(value[0])
       this.timeProfile();
     },
-    // 채팅 플러스버튼 눌렀을때
-    optionSubmit(value) {
-      this.option = value
+    // 이미지 클륵시 모달 오픈
+    modalOpen(url) {
+      this.imageShow = true
+      this.imageUrl = url
+    },
+
+    closeModal(value) {
+      this.imageShow = value
     },
     // 드랍버튼
     toggleDropdown() {
@@ -134,54 +154,74 @@ export default {
       }
     },
 
+    searchBtn() {
+      if(this.searchOpen == false){
+        this.$store.commit('setOption', false)
+      }
+      this.$store.commit('setSearchOption', !(this.$store.state.chatSearch))
+      
+    },
     changeSearch(e) {
       this.search = e.target.value;
     },
 
-    searchFocus(event){
-      if(event.key === 'Enter') {
+    searchFocus(event) {
+      if (event.key === 'Enter') {
         // let foundItem = '';
-        if(this.count == 0){
-          this.searchData = this.search; //카운트 늘린다.
-          this.count++;
-          
-        } else {
-          if(this.searchData != this.search){
-            this.count = 0;
-            this.searchData = this.search;
-            
-          }
-        }
-        
-
-
-
         // const foundItem = this.chats.find(item => item.message === this.search);
-        const foundItem = this.chats.filter(item => item.message.includes(this.search));
-        console.log(foundItem)
-        if(foundItem){
-          let searchRef = `searchRef3`
-          let messageDisplay = this.$refs[searchRef][0]
-          this.$nextTick(() => {
-              messageDisplay.scrollIntoView({ behavior: 'smooth' });
-            })
+        let foundItem = this.chats.filter(item => item.message.includes(this.search));
+        if(this.search == ''){
+          alert("대화내용을 입력해주세요.");
+          return;
+        }
+        if (foundItem != '') { //찾는 값이 존재할때
+          if( this.search != this.searchData){
+            this.count = 0;
+  
+              try {
+                let searchRef = `searchRef${foundItem[this.count].id}`
+                let messageDisplay = this.$refs[searchRef][0]
+                this.$nextTick(() => {
+
+                  messageDisplay.scrollIntoView({ behavior: 'smooth' });
+                })
+              }
+              catch (e) {
+                console.log(e)
+              }
+              finally {
+                this.searchData = this.search; //카운트 늘린다.
+              }
+              return;
+         } else if(this.search == this.searchData) {
+             if(this.count >= foundItem.length) {
+              alert('대화내용이 끝입니다.')
+              this.count = 0;
+              return;
+            } else {
+              this.count++;
+              try {
+                let searchRef = `searchRef${foundItem[this.count].id}`
+                let messageDisplay = this.$refs[searchRef][0]
+                this.$nextTick(() => {
+                  messageDisplay.scrollIntoView({ behavior: 'smooth' });
+                })
+              }
+              catch (e) {
+                console.log(e)
+              }
+              finally {
+                this.search = this.searchData;
+      
+              }
+            }
+         }
+        } else {
+          alert('해당 검색 내용이 없습니다.');
+          return;
         }
       }
     },
- 
-    
-    // // 시간 변환
-    // dateFormate(i) {
-    //   const date = new Date(this.chatList[i].sentAt);
-    //   const hours = date.getHours();
-    //   const isPM = hours >= 1;
-    //   const hour = isPM ? hours - 12 : hours;
-    //   const formattedHours = hour < 10 ? "0" + hour : hour;
-    //   const minutes = date.getMinutes();
-    //   const formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
-    //   return `${isPM ? '오후' : '오전'} ${isPM == true && hour == 0 ? "12" : formattedHours }:${formattedMinutes}`;
-    // },
-
 
     // 시간 변환
     ChatRoomsTime(time) {
@@ -275,8 +315,11 @@ export default {
     chatList() {
       return this.chats
     },
-    optionValue() {
-      return this.option
+    option() {
+      return this.$store.state.option;
+    },
+    searchOpen() {
+      return this.$store.state.chatSearch;
     }
   },
   watch: {
@@ -298,23 +341,27 @@ export default {
   mounted() {
     // 외부 클릭시 닫기
     document.addEventListener('click', this.documentClick)
-    
+
   },
-  
+
   beforeDestroy() {
     // 외부 클릭시 닫기 삭제
     document.removeEventListener('click', this.documentClick)
   },
-  created(){
-    this.$axios.get("/api/chat")
+  created() {
+   this.userName = this.$route.query.userName;
+   this.userProfile = this.$route.query.userProfile;
+   this.groupId = this.$route.query.groupId;
+   this.userOnline = this.$route.query.online;
+    this.$axios.get(`/api/chat/${this.groupId}`)
       .then(response => {
-        console.log(response.data)
         this.chats = response.data
         this.timeProfile();
       })
       .catch(e => {
         console.log(e)
       })
+
   }
 };
 </script>
@@ -346,7 +393,7 @@ export default {
 
 .msger-header-circle {
   margin-left: 20px;
-  background-color: blue;
+
   border-radius: 50%;
   width: 45px;
   height: 45px;
@@ -367,6 +414,13 @@ export default {
   width: 10px;
   height: 10px;
   background-color: #10FF00;
+  border-radius: 50%;
+}
+
+.msger-header-off-circle {
+  width: 10px;
+  height: 10px;
+  background-color: #CCCCCC;
   border-radius: 50%;
 }
 
@@ -391,7 +445,8 @@ export default {
   display: flex;
   flex-direction: column;
 }
-.header-box{
+
+.header-box {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -418,8 +473,18 @@ export default {
   align-items: center;
 }
 
-.box {
+.box1 {
   max-width: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+}
+
+.box2 {
+  max-width: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
 }
 
 .chatbox-text {
@@ -449,20 +514,20 @@ export default {
   background-color: #065b00;
   border-radius: 15px;
   white-space: normal;
+  width: auto;
 }
 
 .chat-avarta {
   width: 40px;
   height: 40px;
-  background-color: blue;
   border-radius: 50%;
   margin-right: 15px;
+  margin-bottom: auto;
 }
 
 .chat-avarta2 {
   width: 40px;
   height: 40px;
-  background-color: #ffffff;
   border-radius: 50%;
   margin-right: 15px;
 }
@@ -491,25 +556,36 @@ export default {
   max-width: 500px;
 }
 
+
 .sectionF {
   overflow: auto;
-  height: calc(100vh - 190px);
+  height: calc(100vh - 160px);
 }
 
+/* 밑에채팅옵션 */
 .sectionT {
   overflow: auto;
   /* height: calc(100vh - 160px); */
-  height: calc(100vh - 350px);
+  height: calc(100vh - 320px);
 
 }
+
+/* 서치바  */
+.sectionTT {
+  overflow: auto;
+  height: calc(100vh - 196px);
+}
+
+/* 12px */
+.sizebox2T {
+  margin-bottom: 73px; 
+} 
 
 .sizebox2F {
-  margin-bottom: 37px;
-}
+  margin-bottom: 37px; 
+} 
 
-.sizebox2T {
-  margin-bottom: 72px;
-}
+
 
 /* 드랍다운 메뉴 */
 
@@ -541,7 +617,8 @@ export default {
   transition: opacity 0.3s;
 }
 
-.fade-enter, .fade-leave-to {
+.fade-enter,
+.fade-leave-to {
   opacity: 0;
 }
 
@@ -577,4 +654,13 @@ export default {
   position: absolute;
   top: 69px;
   left: 30px;
-}</style>
+}
+
+.img-size {
+  width: 150px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+</style>
