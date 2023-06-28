@@ -398,12 +398,12 @@
 
             <!-- TODO 마을사랑 주인공 가림 230623 -->
             <!-- 마을사랑 주인공 -->
-            <!-- <section class="section-popular">
+            <section class="section-popular">
                 <div class="wrap">
                     <div class="content">
                         <div class="m-title type01">
                             <p class="sub">자유마을 활성화의 주인공은 누구?</p>
-                            마을사랑 <span class="point">주인공</span>
+                            마을사랑 개인랭킹 <span class="point orange">TOP10</span>
                         </div>
                     </div>
                     <div class="mt-16"></div>
@@ -420,13 +420,13 @@
                                 <div class="right">
                                     <div class="texts">
                                         <div class="m-btn type04 bg-lightGray">
-                                            {{ item.district }}
+                                            {{ item.district_name }}
                                         </div>
-                                        <p style="margin-left:5px;">{{ replaceText(item.nickname,10) }}</p>
+                                        <p style="margin-left:5px;">{{ replaceText(item.name,10) }}</p>
                                     </div>
                                     <div class="bar">
-                                        <div class="bar-inner" :style="`width:${item.activity_index}%; background-color:${getBarColor(item.activity_index)}`">
-                                            {{ item['activity_index'] }}%
+                                        <div class="bar-inner" :style="`width:${getPopularPercentage(item)}%; background:${getBarColor(item)}`">
+                                            {{ getPopularTotalCount(item) }}
                                         </div>
                                     </div>
                                 </div>
@@ -435,7 +435,7 @@
                     </ul>
                     <nuxt-link to="/popular/rank" class="m-btn type02 bg-revert-primary">개인 랭킹 TOP 100 +</nuxt-link>
                 </div>
-            </section> -->
+            </section>
 
             <div class="mt-12"></div>
             <section class="section-ad2">
@@ -601,6 +601,7 @@ export default {
             temp: null,
             partyName: '',
             partyClass: undefined,
+            tokenCount: 30000,
         }
     },
     async asyncData({$axios}) {
@@ -782,10 +783,29 @@ export default {
             if(rankingCount < 100) return 'bg-red-30 more up';
             if(rankingCount >= 100 ) return 'bg-orange more';
         },
-        getBarColor(activityIndex) {
-            if(activityIndex >= 90) return '#ff6600';
-            if(activityIndex >= 80) return '#ffb017';
-            if(activityIndex <= 79) return '#ffe607';
+        getPopularTotalCount(item) {
+            return item.like_count + item.post_count + item.share_count + item.register_count;
+        },
+        getPopularPercentage(item) {
+            const total = this.getPopularTotalCount(item) + this.tokenCount;
+            const percent = Math.floor((total / 100000) * 100);
+            if(percent < 30) return 30;
+            if(percent > 100) return 100;
+            return percent;
+        },
+        // getBarColor(activityIndex, index = -1) {
+        //     if(index == 0) return 'linear-gradient(0.25turn, #7b5d1e, #f9de8c, #7b5d1e);'
+        //     if(activityIndex >= 90) return '#ff6600';
+        //     if(activityIndex >= 80) return '#ffb017';
+        //     if(activityIndex <= 79) return '#ffe607';
+        // },
+        getBarColor(item) {
+            const total = this.getPopularTotalCount(item) + this.tokenCount;
+            if(total >= 100000) return 'linear-gradient(0.25turn, #7b5d1e, #f9de8c, #7b5d1e);'
+            if(total >= 70000) return '#ff0000';
+            if(total >= 50000) return '#f88601';
+            if(total >= 30000) return '#ffd800';
+            return '#0baf00';
         },
         getOpacity(index) {
             if(index <= 4) return 'opacity:1';
@@ -883,16 +903,12 @@ export default {
         },
         async getPopularRakings(count) {
             const response = await this.$axios.get(`/api/popular-list?limitNumber=${count}`);
-            let maxPopularIdx;
-            let data = response.data.map((item,index) => {
-                if(index == 0) {
-                    maxPopularIdx = item.activity_index;
-                    item.activity_index = 100;
-                } else {
-                    item.activity_index = Math.round(item.activity_index / maxPopularIdx * 100);
-                }
-                
+            let data = response.data.map((item) => {
+                item.totalCount = this.getPopularTotalCount(item);
                 return item;
+            })
+            data = data.sort((a,b) => {
+                return b.totalCount - a.totalCount;
             })
             this.popularRankings = data;
         },

@@ -1211,10 +1211,15 @@ html {
     height: 80px;
 }
 .area-index .section-popular .m-table li:first-child .rank{
-    box-shadow: 0px 0px 11px 1px rgba(255,  102 ,  0 ,0.14),
+    /* box-shadow: 0px 0px 11px 1px rgba(255,  102 ,  0 ,0.14),
                 0px 0px 19px 6px rgba(255,  102 ,  0 ,0.03),
                 0px 0px 26px 12px rgba(255,  102 ,  0 ,0.14),
-                0px 0px 29px 12px rgba(255,  102 ,  0 ,0.14);
+                0px 0px 29px 12px rgba(255,  102 ,  0 ,0.14); */
+    box-shadow: 0px 0px 11px 1px rgba(182, 154, 83 ,0.24),
+                0px 0px 19px 6px rgba(182, 154, 83 ,0.03),
+                0px 0px 26px 12px rgba(182, 154, 83 ,0.24),
+                0px 0px 29px 12px rgba(182, 154, 83 ,0.24);
+                
 }
 .area-index .section-popular .m-table .rank .left .fixed-width {
     width: 60px;
@@ -1224,7 +1229,7 @@ html {
 }
 
 .area-index .section-popular .m-table li:first-child .rank .left .fixed-width {
-    color: #ff6600;
+    color: rgb(182, 154, 83);
 }
 .area-index .section-popular .m-table .rank .left .point {
     font-size: 28px;
@@ -1233,7 +1238,7 @@ html {
     color: #000;
 }
 .area-index .section-popular .m-table li:first-child .rank .left .point {
-    color: #ff6600;
+    color: rgb(182, 154, 83);
 }
 
 .area-index .section-popular .m-table .rank .right {
