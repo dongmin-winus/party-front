@@ -1,7 +1,15 @@
 <template>
   <div class="chat-footer">
-    <div v-if="imageFiles" class="img-box">
-      <img v-if="imageUrl" class="postImg" :src="imageUrl" />
+    <div v-if="$store.state.option && imageFiles" class="img-box-border">
+      <div class="img-box">
+
+        <img v-if="imageUrl" class="postImg" :src="imageUrl" />
+        <div class="imgCancel">
+          <button :disabled="imageLoding" @click="imageCancel"><img src='/images/Xbtn.svg'
+              style="width: 15px;" /></button>
+        </div>
+        <Loding v-if="imageLoding == true" class="loding" />
+      </div>
     </div>
     <div class="chat-bottom">
       <div style=" margin-left: 20px; margin-right: 20px;  display: flex; align-items: center; width: 100%;">
@@ -14,20 +22,17 @@
         <div class="chat-input-div">
           <!-- <input v-model="message" class="chat-input" placeholder="메시지 보내기" @keyup.enter="send" @input="change" @focus="focusOn = true"
             @blur="handleBlur" /> -->
-            <textarea placeholder="메세지 보내기"
-              v-model="message"
-              class="chat-input" 
-              @keydown.enter.prevent="handleKeyDown"
-              @input="change" 
-              @focus="focusOn = true"
-              @blur="handleBlur"/>
+          <textarea placeholder="메세지 보내기" v-model="message" class="chat-input" @keydown.enter.prevent="handleKeyDown"
+            @input="change" @focus="focusOn = true" @blur="handleBlur" />
           <div v-if="focusOn">
             <button class="button1"><img class="img" src="/images/emojiOn.svg" alt=""></button>
-            <button @click="send" class="button2"><img class="img" src="/images/sendOn.svg" alt=""></button>
+            <button :disabled="imageLoding" @click="send" class="button2"><img class="img" src="/images/sendOn.svg"
+                alt=""></button>
           </div>
           <div v-else>
             <button class="button1"><img class="img" src="/images/emoji.svg" alt=""></button>
-            <button @click="send" class="button2"><img class="img" src="/images/send.svg" alt=""></button>
+            <button :disabled="imageLoding" @click="send" class="button2"><img class="img" src="/images/send.svg"
+                alt=""></button>
           </div>
         </div>
       </div>
@@ -46,8 +51,8 @@
           </div>
         </div>
         <div>
-          <label for="file-input">
-            <input id="file-input" type="file" accept="image/*" capture="camera" />
+          <label for="file-inpu2">
+            <input id="file-input2" type="file" @change="handleImageChange" accept="image/*" capture="camera" />
             <div class="camera">
               <img src="/images/chatCamera.svg" alt="">
             </div>
@@ -56,13 +61,12 @@
             카메라
           </div>
         </div>
-        <div>
-          <label for="file-input">
-            <input id="file-input" type="file" />
-            <div class="location">
-              <img src="/images/location.svg" alt="">
-            </div>
-          </label>
+        <div class="option-btn">
+          <button @click="locationClick" id="file-input3">
+          <div class="location">
+            <img src="/images/location.svg" alt="">
+          </div>
+          </button>
           <div class="option-name2">
             위치
           </div>
@@ -74,7 +78,9 @@
 <script>
 import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
+import Loding from './loding.vue'
 export default {
+  components: { Loding },
   data() {
     return {
       token: "",
@@ -86,6 +92,7 @@ export default {
       focusOn: false,
       imageUrl: null,
       imageFiles: null,
+      imageLoding: false,
 
     }
   },
@@ -94,7 +101,7 @@ export default {
       this.focusOn = false;
     },
     optionShow() {
-       if (this.$store.state.option == false) {
+      if (this.$store.state.option == false) {
         this.$store.commit('setSearchOption', false)
       }
       this.$store.commit('setOption', !(this.$store.state.option))
@@ -106,6 +113,17 @@ export default {
     change(e) {
       this.message = e.target.value
     },
+
+    // 이미지 취소 버튼
+    imageCancel() {
+      this.imageUrl = null
+      this.imageFiles = null
+    },
+    locationClick() {
+      alert('업데이트 예정입니다.');
+      return;
+    },
+
     handleKeyDown(event) {
       if (event.key === 'Enter') {
         if (event.shiftKey) {
@@ -114,7 +132,7 @@ export default {
           return;
         } else {
           this.send();
-          this.message ='';
+          this.message = '';
         }
       }
     },
@@ -136,6 +154,7 @@ export default {
         this.message = "";
         this.imageUrl = null;
         this.imageFiles = null;
+        this.$store.commit('setOption', false)
         await this.$axios.post("/api/chat/broadcast", data);
         this.sending = false;
       }
@@ -169,24 +188,34 @@ export default {
     disconnect() {
       this.echo.leaveChannel("chat");
     },
-     handleImageChange(event) {
+    handleImageChange(event) {
       this.imageFiles = event.target.files[0];
       const reader = new FileReader();
       reader.readAsDataURL(this.imageFiles);
       reader.onload = (e) => {
-       this.imageUrl = e.target.result;
-      };
+        this.imageUrl = e.target.result;
+      }
+      this.uploadImage();
+
+    },
+    uploadImage() {
+      this.imageLoding = true
       let form = new FormData();
       form.append("image", this.imageFiles);
       this.$axios.post('/api/posts/images', form)
-      .then((response) => {
+        .then((response) => {
           console.log(response.data.data.original_url)
           this.imageFiles = response.data.data.original_url;
+        })
+        .then(() => {
+          this.imageLoding = false
+          console.log(this.imageLoding)
         });
-     }
 
+
+    }
   },
-  computed :{
+  computed: {
     content() {
       this.message = this.message.replace(/(?:\r\n|\r|\n)/g, '<br>')
       // this.message = this.message.replace(/(http[s]?:\/\/[^\s]+)/g, '<a href="$&" style="color:#10FF00; text-decoration: underline;">$&</a>')
@@ -201,7 +230,6 @@ export default {
   mounted() {
     this.connect();
 
-    //window.addEventListener('beforeunload', this.disconnect)
   },
 }
 </script>
@@ -210,6 +238,7 @@ export default {
 .chat-footer {
   width: 100%;
   background-color: #fff;
+  border-top: 1px solid #EEEEEE;
 }
 
 .chat-option {
@@ -222,13 +251,17 @@ export default {
   align-items: start;
 
 }
-.img-box{
+
+.img-box {
   display: flex;
   height: 100px;
   align-items: center;
   margin: 0px 20px;
 }
-.postImg{
+
+
+
+.postImg {
   width: 80px;
   height: 80px;
 }
@@ -318,12 +351,31 @@ export default {
   font-weight: 350;
   color: #000000;
 }
+
 .fade-enter-active {
   transition: opacity 0.7s;
 }
 
-.fade-enter, .fade-leave-to {
+.fade-enter,
+.fade-leave-to {
   opacity: 0;
 }
 
-</style>
+.imgCancel {
+  display: flex;
+  margin-bottom: auto;
+  margin-top: 7px;
+  margin-left: 5px;
+}
+
+.loding {
+  display: flex;
+  width: 70%;
+  align-items: center;
+}
+
+.option-btn {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 50px;
+}</style>
