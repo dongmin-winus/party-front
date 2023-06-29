@@ -109,16 +109,20 @@
             <!-- <div v-if="$auth.hasScope('manager')"> -->
             <div v-if="staffCertificated">
                 <div class="menus-wrap">
-                    <h3 class="title">마을 관리</h3>
+                    <h3 class="title">나의 조직활동</h3>
                     <div class="menus">
                         <div class="wrap">
                             <nuxt-link to="/infos/namelist" class="menu">
                                 <img src="/images/board.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">내 마을 명단</p>
                             </nuxt-link>
+                            <nuxt-link to="/staffs" class="menu">
+                                <img src="/images/board.png" alt="" class="icon" style="width:14px;">
+                                <p class="text">마을임원확인</p>
+                            </nuxt-link> 
                            <nuxt-link to="/infos/approvals" class="menu">
                                 <img src="/images/board.png" alt="" class="icon" style="width:14px;">
-                                <p class="text">결재 요청 현황</p>
+                                <p class="text">임원신청현황</p>
                             </nuxt-link> 
                         </div>
                     </div>
