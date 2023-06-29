@@ -368,7 +368,11 @@ export default {
           {
             id: targetId, 
             status: this.activatedItem.status, 
-            memo: this.activatedItem.memo
+            memo: this.activatedItem.memo,
+            user_id: this.activatedItem.user.id,
+            before: this.activatedItem.before,
+            after: this.activatedItem.after,
+            group: this.activatedItem.group,
           }
         ]
         const response = await this.$axios.post(`/api/districts/${this.countyInfo.district_id}/approval/update`, {data});
