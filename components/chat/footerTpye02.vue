@@ -2,13 +2,15 @@
   <div class="chat-footer">
     <div v-if="$store.state.option && imageFiles" class="img-box-border">
       <div class="img-box">
-
-        <img v-if="imageUrl" class="postImg" :src="imageUrl" />
-        <div class="imgCancel">
-          <button :disabled="imageLoding" @click="imageCancel"><img src='/images/Xbtn.svg'
-              style="width: 15px;" /></button>
-        </div>
         <Loding v-if="imageLoding == true" class="loding" />
+        <div v-else style="display: flex;">
+          <img v-if="imageUrl " class="postImg" :src="imageUrl" />
+          <div class="imgCancel">
+            <button :disabled="imageLoding" @click="imageCancel"><img src='/images/Xbtn.svg'
+                style="width: 15px;" /></button>
+          </div>
+        </div>
+        
       </div>
     </div>
     <div class="chat-bottom">
@@ -389,7 +391,7 @@ export default {
 
 .loding {
   display: flex;
-  width: 70%;
+  width: 100%;
   align-items: center;
 }
 
