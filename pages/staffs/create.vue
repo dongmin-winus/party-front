@@ -36,16 +36,27 @@
         <!-- 내용 영역 -->
         <div class="container">
             <div class="wrap">
-                <!-- <div class="edit-btns" v-if="isEditMode">
-                    <button class="btn-text black " @click="reset()">취소</button>
-                    <button class="btn-text primary " @click="updateItem()">저장</button>
-                </div> -->
+
                 <div class="m-input-wrap">
                     <h3 class="m-input-title">직분</h3>
-                    <div class="m-input-text type01">
+                    <Dropdown
+                        :menuTitle="'직분'"
+                        :activate="activeDropdown"
+                        :items="computedPositions"
+                        :selected="positionSelected"
+                        @toggle="togglePosition"
+                        @change="changePosition"
+                        v-model="selectedItem.position"
+                    />
+                    <!-- <div class="m-input-text type01">
                         <input type="text" placeholder="직분명" v-model="form.position">
                     </div>
-                    <div class="m-input-error" v-if="errors.position">{{errors.position[0]}}</div>
+                    <div class="m-input-error" v-if="errors.position">{{errors.position[0]}}</div> -->
+                    <h3 class="m-input-title">그룹(수정불가)</h3>
+                    <div class="m-input-text type01">
+                        <input type="text" placeholder="그룹" v-model="form.group" readonly>
+                    </div>
+                    <div class="m-input-error" v-if="errors.group">{{errors.group[0]}}</div>
                     <h3 class="m-input-title">이름</h3>
                     <div class="m-input-text type01">
                         <input type="text" placeholder="이름" v-model="form.name">
@@ -56,6 +67,7 @@
                         <input type="text" placeholder="연락처" v-model="form.phone">
                     </div>
                     <div class="m-input-error" v-if="errors.phone">{{errors.phone[0]}}</div>
+
                     <div class="item-top mt-20">
                         <h3 class="title">임원진 사진</h3>
                         <div>
@@ -72,40 +84,12 @@
                 </div> -->
 
                 <p class="m-comment type02" v-if="!form.info">* 하단 임원진 사진 버튼을 눌러 이미지를 등록해주세요.</p>
-                <ul class="rep" v-if="rep">
-                    <li class="item">
-                        <div class="item-top">
-                            <h3 class="title custom-title">{{rep.position}}</h3>
-                            <div>
-                                <button class="btn-remove " @click.stop="setForm(rep)">수정</button> &nbsp;
-                                <button class="btn-remove red" @click="openReminder(rep,'삭제','취소')">삭제</button>
-                            </div>
-                        </div>
-
-
-                        <div class="img-wrap" >
-                            <img :src="rep.img.url" alt="임원이미지" v-show="rep.img.url">
-                            <img src="/images/default_profile.jpeg" alt="대체이미지" v-show="!rep.img.url">
-                            <div class="m-board-btns mt-20">
-                                <div class="m-btns type01" >
-                                    <div class="m-btn-wrap">
-                                        <button type="button" class="m-btn type01 bg-primary height-full">
-                                            {{rep.name}}<br/>
-                                            {{rep.phone}}
-                                        </button>
-                                    </div>
-                                    
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
                 <ul class="items custom-ul">
                     
-                    <li class="item" v-for="item in restItems" :key="item.id">
+                    <li class="item" v-for="item in items" :key="item.id">
                         <div class="item-top">
                             <h3 class="title custom-title">{{item.position}}</h3>
-                            <div>
+                            <div v-if="notRep(item)">
                                 <button class="btn-remove " @click.stop="setForm(item)">수정</button> &nbsp;
                                 <button class="btn-remove red" @click="openReminder(item,'삭제','취소')">삭제</button>
                             </div>
@@ -117,9 +101,9 @@
                             <img src="/images/default_profile.jpeg" alt="대체이미지" v-show="!item.img.url">
                             <div class="m-board-btns mt-20">
                                 <div class="m-btns type01" >
-                                    <div class="m-btn-wrap">
-                                        <button type="button" class="m-btn type01 bg-primary height-full">
-                                            {{item.name}}<br/>
+                                    <div class="m-btn-wrap" style="display:flex; justify-content:center;">
+                                        <button type="button" style="width:100%; max-width:120px;" class="m-btn type01 bg-primary height-full">
+                                            {{replaceText(item.name,8)}}<br/>
                                             {{item.phone}}
                                         </button>
                                     </div>
@@ -152,21 +136,30 @@ import InputImg from "../../components/form/posts/inputImg";
 import InputThumbnail from "../../components/form/posts/inputThumbnail";
 import InputAddress from "../../components/form/inputAddress";
 import Form from "@/utils/Form";
-import Reminder from "../../components/reminder.vue"
+import Reminder from "../../components/reminder.vue";
+import Dropdown from "@/components/dropdown";
+
+import common from "@/utils/common";
 
 export default {
-    components: {InputAddress, InputThumbnail, InputImg, InputLink, InputCamera, Reminder},
+    components: {InputAddress, InputThumbnail, InputImg, InputLink, InputCamera, Reminder, Dropdown},
+    mixins: [common],
     auth: true,
     computed: {
-        rep() {
-            return this.items.find(item => item.position === '대표');
-        },
-        restItems() {
-            return this.items.filter(item => item.position !== '대표');
+        computedPositions() {
+            return this.positions.map((item) => {
+                return item.position
+            })
         }
+    },
+    async asyncData({$axios}) {
+        const {data} = await $axios.get('/api/districts/1/position');
+        return {positions: data}
     },
     data() {
         return {
+            positions:[],
+
             items: [],
 
             item: {},
@@ -196,6 +189,11 @@ export default {
             cancelName: '',
 
             activeReminder: false,
+
+
+            activeDropdown: false,
+            positionSelected: false,
+            selectedItem: {},
         }
     },
     methods: {
@@ -207,11 +205,14 @@ export default {
             this.form = Object.assign({},{
                 ...item,
             })
+            this.changePosition(item.position);
             this.imgUrl = item.img.url;
             this.isEditMode = true;
             window.scrollTo(0,0);
         }, 
-
+        notRep(item) {
+            return !(item.position == '대표' || item.position == '부대표')
+        },
         async updateItem() {
             try {
                 let form = (new Form(this.form).data());
@@ -227,14 +228,15 @@ export default {
             }
             this.reset();
             this.isEditMode = false;
+            await this.getStaffItem();
         },
 
-        store() {
-
+        async store() {
+            this.form.position = this.selectedItem.position;
             let form = (new Form(this.form)).data();
-
-            this.$axios.post("/api/districts/" + this.form.district_id + "/staff", form)
-                .then((response) => {
+            try {
+                const response = await this.$axios.post("/api/districts/" + this.form.district_id + "/staff", form);
+                if(response.status === 200) {
                     let {data} = response.data;
                     if(data.img === "") {
                         data.img = {
@@ -245,11 +247,31 @@ export default {
                     this.items.push(data);
 
                     this.reset();
-                })
-                .catch((error) => {
-                    if (error.response && error.response.data)
+                    await this.getStaffItem();
+                }
+            } catch (error) {
+                console.error(error);
+                if (error.response && error.response.data)
                         this.errors = error.response.data.errors;
-                });
+            }
+
+            // this.$axios.post("/api/districts/" + this.form.district_id + "/staff", form)
+            //     .then((response) => {
+            //         let {data} = response.data;
+            //         if(data.img === "") {
+            //             data.img = {
+            //                 name:'',
+            //                 url:'',
+            //             }
+            //         }
+            //         this.items.push(data);
+
+            //         this.reset();
+            //     })
+            //     .catch((error) => {
+            //         if (error.response && error.response.data)
+            //             this.errors = error.response.data.errors;
+            //     });
         },
 
         remove(item){
@@ -278,6 +300,15 @@ export default {
             this.cancelName = "";
             this.item = {};
         },
+
+        togglePosition() {
+            this.activeDropdown = !this.activeDropdown;
+        },
+        changePosition(position) {
+            this.selectedItem.position = position;
+            this.positionSelected = true;
+        },
+
         reset(){
             this.form = {
                 ...this.form,
@@ -285,18 +316,25 @@ export default {
                 name: "",
                 position: "",
                 photo: "",
+                group: "",
             }
 
             this.imgUrl = "";
             this.isEditMode = false;
-        }
+        },
+
+        getStaffItem() {
+            this.$axios.get("/api/districts/" + this.form.district_id + "/staff")
+                .then(response => {
+                    this.items = [...response.data.data];
+                });
+        },
     },
 
     mounted() {
-        this.$axios.get("/api/districts/" + this.form.district_id + "/staff")
-            .then(response => {
-                this.items = [...response.data.data];
-            });
+        this.getStaffItem();
+        this.group = this.$route.query.group;
+        this.form.group = this.group;
     }
 }
 </script>
@@ -323,13 +361,5 @@ export default {
     }
     .height-full {
         height:100%;
-    }
-    .rep {
-        text-align: center;
-    }
-    .rep li {
-        display: inline-block;
-        text-align: left;
-        width: 48%;
     }
 </style>

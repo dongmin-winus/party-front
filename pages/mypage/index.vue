@@ -136,7 +136,7 @@
                                 <img src="/images/building.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">내 마을 소개</p>
                             </nuxt-link>
-                            <nuxt-link to="/staffs/create" class="menu">
+                            <nuxt-link :to="{path:'/staffs/create', query:{group}}" class="menu">
                                 <img src="/images/users.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">내 마을 임원진</p>
                             </nuxt-link>
@@ -284,6 +284,7 @@ export default {
             changedUrl: "",
             staffCertificated: false,
             represenateDistrict: null,
+            group: null,
         }
     },
     methods: {
@@ -305,6 +306,7 @@ export default {
             }else {
                 this.staffCertificated = true;
                 this.represenateDistrict = response.data.district_id;
+                this.group = response.data.group;
             }
         }
     },
