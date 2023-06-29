@@ -8,7 +8,7 @@
           </button>
         </div>
         <div class="center">
-            <h3 class="title">{{ countyInfo.district}} 결재 요청 현황</h3>
+            <h3 class="title">{{ countyInfo.district}} 임원신청현황</h3>
         </div>
 
         <nuxt-link to="/contents/settings" class="btn-util">
@@ -315,7 +315,10 @@ export default {
             {
               id: targetId, 
               status: this.activatedItem.status, 
-              memo: this.activatedItem.memo
+              memo: this.activatedItem.memo,
+              user_id: this.activatedItem.user.id,
+              before: this.activatedItem.before,
+              after: this.activatedItem.after,
             }
           ]
         });
@@ -383,7 +386,10 @@ export default {
               return {
                 id: item.id, 
                 status, 
-                memo: item.memo
+                memo: item.memo,
+                user_id: item.user.id,
+                before: item.before,
+                after: item.after,
               }
             })
           ]
