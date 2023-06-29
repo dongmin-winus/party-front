@@ -36,7 +36,7 @@
               <ul v-show="isDropdownOpen" class="dropdown-menu">
                 <li>알림끄기</li>
                 <li @click="$router.back()">채팅 채널 이동</li>
-                <li>채팅방 나가기</li>
+                <li @click="modalShow = true">채팅방 나가기</li>
               </ul>
             </Transition>
           </div>
@@ -93,7 +93,9 @@
     <Transition name="fade">
       <imageModal v-if="imageShow" :imageUrl="imageUrl" @closeModal="closeModal" />
     </Transition>
-    <chatDelete v-if="false" />
+    <Transition name="fade">
+    <chatDelete v-if="modalShow" :groupId="groupId" @cancelModal="cancelModal" />
+    </Transition>
 
     <!-- footer-->
     <footerTpye02   class="footer"  @messageSubmit="messageSubmit" />
@@ -121,6 +123,7 @@ export default {
       userProfile: null,
       userOnline: true,
       groupId: "",
+      modalShow: false,
     };
   },
   methods: {
@@ -134,9 +137,14 @@ export default {
       this.imageShow = true
       this.imageUrl = url
     },
-
+    // 이미지 모달 끄기
     closeModal(value) {
       this.imageShow = value
+    },
+
+    // 채팅방 나가기 모달 취소
+    cancelModal(value) {
+      this.modalShow = value
     },
     // 드랍버튼
     toggleDropdown() {

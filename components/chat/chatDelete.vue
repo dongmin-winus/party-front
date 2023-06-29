@@ -1,5 +1,5 @@
 <template>
-  <Transition name="modal">
+
     <div class="modal-mask">
       <div class="modal-container">
         <div class="modal-header">
@@ -10,21 +10,42 @@
           채팅목록에서도 삭제됩니다.
         </div>
         <div class="modal-bottom">
-          <button class="delete">나가기</button>
-          <button class="cancel">취소</button>
+          <button @click="chatDelete" class="delete">나가기</button>
+          <button @click="cancelBtn" class="cancel">취소</button>
         </div>
       </div>
     </div>
-  </Transition>
+
 </template>
 
 <script>
 
 export default {
-  data() {
-    return {
+  props:{
+    groupId:{
+      type: String,
     }
   },
+  data() {
+    return {
+      modalShow: false,
+    }
+  },
+
+  methods:{
+    chatDelete() {
+      this.$axios.delete(`/api/chat/${this.groupId}`)
+      .then(()=>{
+      alert("채팅방을 나갔습니다.")
+      })
+      .then(()=>{
+        this.$router.push('/chat');
+      })
+    },
+    cancelBtn() {
+      this.$emit('cancelModal', this.modalShow)
+    }
+  }
 }
 </script>
 
@@ -77,17 +98,4 @@ export default {
   padding: 10px 20px;
 }
 
-.modal-enter {
-  opacity: 0;
-}
-
-.modal-leave-active {
-  opacity: 0;
-}
-
-.modal-enter .modal-container,
-.modal-leave-active .modal-container {
-  -webkit-transform: scale(1.1);
-  transform: scale(1.1);
-}
 </style>
