@@ -83,7 +83,7 @@ export default {
             },
 
             popularRankings: [],
-            tokenCount : 30000,
+            tokenCount : 10000,
         }
     },
     async asyncData({ $axios }) {
