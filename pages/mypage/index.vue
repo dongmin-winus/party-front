@@ -136,7 +136,7 @@
                                 <img src="/images/building.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">내 마을 소개</p>
                             </nuxt-link>
-                            <nuxt-link :to="{path:'/staffs/create', query:{group}}" class="menu">
+                            <nuxt-link :to="{path:'/staffs/create', query:{group:group,rep_district_id:represenateDistrict}}" class="menu">
                                 <img src="/images/users.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">내 마을 임원진</p>
                             </nuxt-link>
