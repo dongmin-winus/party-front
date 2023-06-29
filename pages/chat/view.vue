@@ -3,7 +3,7 @@
     <!-- header-->
     <header class="header-box">
       <div class="msger-header">
-        <div class="msger-header-flex msger-header-center">
+        <div class="msger-header-flex">
           <div class="" @click="$router.push('/chat')">
             <img src="/images/chevron-left.png" style="width:10px;">
           </div>
@@ -391,6 +391,8 @@ export default {
 .msger-header-flex {
   display: flex;
   margin-left: 25px;
+  align-items: center;
+  text-align: center;
 }
 
 .msger-hedaer-title {
@@ -410,11 +412,6 @@ export default {
   height: 45px;
 }
 
-.msger-header-center {
-  display: flex;
-  align-items: center;
-  text-align: center;
-}
 
 .msger-header-name {
   font-size: 18px;
@@ -452,14 +449,8 @@ export default {
   margin-right: 15px;
 }
 
-.msger-header-box {
-  display: flex;
-  flex-direction: column;
-}
 
 .header-box {
-  display: flex;
-  flex-direction: column;
   width: 100%;
   max-width: 500px;
   position: fixed;
