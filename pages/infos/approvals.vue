@@ -319,6 +319,7 @@ export default {
               user_id: this.activatedItem.user.id,
               before: this.activatedItem.before,
               after: this.activatedItem.after,
+              group: this.activatedItem.group,
             }
           ]
         });
@@ -390,6 +391,7 @@ export default {
                 user_id: item.user.id,
                 before: item.before,
                 after: item.after,
+                group: item.group,
               }
             })
           ]
