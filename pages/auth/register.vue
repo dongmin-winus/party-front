@@ -88,7 +88,7 @@
                     </div>
                     <div class="m-input-checkbox type01">
                         <input type="checkbox" id="agree5" v-model="agree5">
-                        <label for="agree5">(필수) 영리성광고수신동의</label>
+                        <label for="agree5">(선택) 영리성광고수신동의</label>
                     </div>
                     <div class="m-input-checkbox type01">
                         <input type="checkbox" id="agree6" v-model="agree6">
@@ -97,10 +97,10 @@
 
                     <div class="mt-16"></div>
 
-                    <div class="m-input-checkbox type01">
+                    <!-- <div class="m-input-checkbox type01">
                         <input type="checkbox" id="is_agree_push" v-model="form.is_agree_push">
                         <label for="is_agree_push">(선택) 푸시(알람서비스) 수신 동의</label>
-                    </div>
+                    </div> -->
 
                     <div class="mt-16"></div>
 
@@ -284,7 +284,7 @@ export default {
 
     computed: {
         isAgreeAll() {
-            return this.agree1 && this.agree2 && this.agree3 && this.agree4 && this.agree5 && this.agree6 && this.form.is_agree_push;
+            return this.agree1 && this.agree2 && this.agree3 && this.agree4  && this.agree6 && this.form.is_agree_push;
         },
         agreement1() {
             return this.agreements.find(agreement => agreement.category === 'agreement1')
@@ -375,7 +375,7 @@ export default {
 
         next() {
             if (this.step === 1) {
-                if (!this.agree1 || !this.agree2 || !this.agree3 ||!this.agree4 || !this.agree5 || !this.agree6)
+                if (!this.agree1 || !this.agree2 || !this.agree3 ||!this.agree4 || !this.agree6)
                     return alert("필수약관에 동의해주세요.");
             }
 
