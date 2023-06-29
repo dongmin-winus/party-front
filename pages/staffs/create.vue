@@ -147,7 +147,7 @@ export default {
     auth: true,
     computed: {
         computedPositions() {
-            return this.positions.map((item) => {
+            return this.positions.filter(item => !(item.position == '대표' || item.position == '부대표')).map((item) => {
                 return item.position
             })
         }
@@ -215,6 +215,9 @@ export default {
         },
         async updateItem() {
             try {
+                this.form.position = this.selectedItem.position;
+                this.form.district_id = this.rep_district_id;
+                this.form.group = this.group;
                 let form = (new Form(this.form).data());
                 const {data} = await this.$axios.post(`/api/districts/${this.form.district_id}/staff/update/${this.form.id}`, form);
                 const targetIdx = await this.items.findIndex(item => item.id === this.form.id);
@@ -223,6 +226,8 @@ export default {
                     this.items[targetIdx].img.url = this.imgUrl;
                 }
             } catch (error) {
+                alert(error.response.data.message)
+
                 if (error.response && error.response.data)
                     this.errors = error.response.data.errors;
             }
@@ -233,6 +238,8 @@ export default {
 
         async store() {
             this.form.position = this.selectedItem.position;
+            this.form.district_id = this.rep_district_id;
+            this.form.group = this.group;
             let form = (new Form(this.form)).data();
             try {
                 const response = await this.$axios.post("/api/districts/" + this.form.district_id + "/staff", form);
@@ -250,33 +257,15 @@ export default {
                     await this.getStaffItem();
                 }
             } catch (error) {
-                console.error(error);
+                alert(error.response.data.message)
                 if (error.response && error.response.data)
                         this.errors = error.response.data.errors;
             }
-
-            // this.$axios.post("/api/districts/" + this.form.district_id + "/staff", form)
-            //     .then((response) => {
-            //         let {data} = response.data;
-            //         if(data.img === "") {
-            //             data.img = {
-            //                 name:'',
-            //                 url:'',
-            //             }
-            //         }
-            //         this.items.push(data);
-
-            //         this.reset();
-            //     })
-            //     .catch((error) => {
-            //         if (error.response && error.response.data)
-            //             this.errors = error.response.data.errors;
-            //     });
         },
 
         remove(item){
             if(Object.keys(item).length !== 0) {
-                this.$axios.delete("/api/districts/" + this.form.district_id + "/staff/" + item.id)
+                this.$axios.delete("/api/districts/" + this.rep_district_id + "/staff/" + item.id)
                     .then(response => {
                         this.items = this.items.filter(itemData => itemData.id != item.id);
                     });
@@ -324,7 +313,7 @@ export default {
         },
 
         getStaffItem() {
-            this.$axios.get("/api/districts/" + this.form.district_id + "/staff")
+            this.$axios.get("/api/districts/" + this.$route.query.rep_district_id + "/staff")
                 .then(response => {
                     this.items = [...response.data.data];
                 });
@@ -334,6 +323,7 @@ export default {
     mounted() {
         this.getStaffItem();
         this.group = this.$route.query.group;
+        this.rep_district_id = this.$route.query.rep_district_id;
         this.form.group = this.group;
     }
 }
