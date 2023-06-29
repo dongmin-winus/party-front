@@ -1,7 +1,8 @@
 <template>
   <div>
-    <headerType02 @headerSearch="headerSearch" />
-    <div :class="searchOption == false ? 'chat-b' : 'chat-c'">
+    <headerType02 @headerSearch="headerSearch" @searchData="searchData"  />
+     <Loding v-if="loding" />
+    <div v-else :class="searchOption == false ? 'chat-b' : 'chat-c'">
       <div class="bell-off" v-if="false">
         <div class="sizebox"></div>
         <div class="bell-margin" >
@@ -11,7 +12,8 @@
           <button class="bell-button">알림설정</button>
         </div>
       </div>
-      <div class="chat-list" v-for="(data,index) in list" :key="index" @click="listClick(data.message_group_id, data.user.name, data.user.img.url, data.online)">
+       <template v-if="foundItem != ''">
+      <div class="chat-list" v-for="(data,index) in memberList" :key="index" @click="listClick(data.message_group_id, data.user.name, data.user.img.url, data.online)">
         <div class="chat-margin">
           <div class="chat-circle">
             <div class="chat-online-container">
@@ -38,18 +40,27 @@
           </div>
         </div>
       </div>
+      </template>
+      <template v-else>
+          <div class="chat-empty">
+            <span class="chat-name">채팅방이 없습니다.</span>
+          </div>
+        </template>
     </div>
     <navigation />
   </div>
 </template>
 <script>
 import headerType02 from '../../components/chat/headerType02.vue';
+import Loding from '../../components/chat/loding.vue';
 export default {
-  components:{headerType02},
+  components:{headerType02, Loding},
   data() {
     return {
       list: [],
       searchOption: false,
+      foundItem: [],
+       loding: false,
     };
   },
   methods:{
@@ -70,16 +81,29 @@ export default {
     },
     headerSearch(value) {
       this.searchOption = value;
-    
+    },
+    searchData(value) {
+      this.foundItem = this.list.filter(item => item.user.name && item.user.name.includes(value));
     }
   },
+  computed: {
+    memberList() {
+      return this.foundItem
+    },
+  },
   created() {
+    this.loding = true;
     this.$axios.get('/api/chat/list')
       .then((response)=> {
-        console.log(response.data.data)
         this.list = response.data.data;
+        this.foundItem = response.data.data;
+        this.$store.commit('setSearchOption', false)
+        this.$store.commit('setOption', false)
       })
-    
+      .then(()=>{
+        this.loding = false;
+      })
+
   },
 }
 </script>
@@ -234,6 +258,19 @@ export default {
   width: 55px;
   height: 55px;
   border-radius: 50%;
+}
+
+.chat-empty {
+  display: flex;
+  height: 100px;
+  justify-content: center;
+  align-items: center;
+}
+
+.chat-name {
+  font-size: 18px;
+  font-weight: 500;
+  justify-content: space-between;
 }
 
 </style>

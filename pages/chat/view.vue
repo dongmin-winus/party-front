@@ -57,7 +57,7 @@
     <!-- section-->
     <div :class="searchOpen == true ? 'sizebox2T' : 'sizebox2F'">&nbsp;</div>
     <!-- <section ref="chatSection" :class="[option == true ? 'sectionT' : 'sectionF', ]"> -->
-      <section ref="chatSection" :class="[{'sectionTT': searchOpen ,'sectionT':$store.state.option}, 'sectionF']">
+      <div ref="chatSection" :class="[{'sectionTT': searchOpen ,'sectionT':$store.state.option}, 'sectionF']">
         <!-- <section ref="chatSection" :class="{ 'sectionT': $store.state.option, 'sectionTT': $store.state.chatSearch}"> -->
       <div class="chatbox">
         <!-- 자신이 보낸 채팅 -->
@@ -89,10 +89,10 @@
           </div>
         </TransitionGroup>
       </div>
-    </section>
-    <imageModal class="modal" v-if="imageShow" :imageUrl="imageUrl" @closeModal="closeModal" />
+    </div>
+    <imageModal v-if="imageShow" :imageUrl="imageUrl" @closeModal="closeModal" />
     <!-- footer-->
-    <footerTpye02 class="footer"  @messageSubmit="messageSubmit" />
+    <footerTpye02   class="footer"  @messageSubmit="messageSubmit" />
   </div>
 </template>
 <script>
@@ -122,7 +122,6 @@ export default {
   methods: {
     //메시지 보냈을때 값
     messageSubmit(value) {
-      console.log(value)
       this.chats.push(value[0])
       this.timeProfile();
     },
@@ -169,7 +168,7 @@ export default {
       if (event.key === 'Enter') {
         // let foundItem = '';
         // const foundItem = this.chats.find(item => item.message === this.search);
-        let foundItem = this.chats.filter(item => item.message.includes(this.search));
+        let foundItem = this.chats.filter(item => item.message && item.message.includes(this.search));
         if(this.search == ''){
           alert("대화내용을 입력해주세요.");
           return;
@@ -183,7 +182,7 @@ export default {
                 let messageDisplay = this.$refs[searchRef][0]
                 this.$nextTick(() => {
 
-                  messageDisplay.scrollIntoView({ behavior: 'smooth' });
+                  messageDisplay.scrollIntoView('center');
                 })
               }
               catch (e) {
@@ -204,7 +203,7 @@ export default {
                 let searchRef = `searchRef${foundItem[this.count].id}`
                 let messageDisplay = this.$refs[searchRef][0]
                 this.$nextTick(() => {
-                  messageDisplay.scrollIntoView({ behavior: 'smooth' });
+                  messageDisplay.scrollIntoView('center');
                 })
               }
               catch (e) {
@@ -326,14 +325,14 @@ export default {
     chats() {
       this.$nextTick(() => {
         let messageDisplay = this.$refs.chatSection
-        messageDisplay.scrollTo({ top: messageDisplay.scrollHeight, behavior: 'smooth' });
+        messageDisplay.scrollTo({ top: messageDisplay.scrollHeight, behavior: 'instant' });
       })
 
     },
     option() {
       this.$nextTick(() => {
         let messageDisplay = this.$refs.chatSection
-        messageDisplay.scrollTo({ top: messageDisplay.scrollHeight, behavior: 'smooth' });
+        messageDisplay.scrollTo({ top: messageDisplay.scrollHeight, behavior: 'instant' });
       })
     }
   },
@@ -663,4 +662,5 @@ export default {
   justify-content: center;
   margin-bottom: 10px;
 }
+
 </style>

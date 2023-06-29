@@ -12,8 +12,8 @@
                             @click="searchClick">
                             <div class="m-input-text-wrap" v-if="activeSearch">
                                 <div class="m-input-text type01">
-                                    <input type="text" placeholder="이름을 입력해주세요." v-model="form.word">
-                                    <i class="xi-search m-input-text-deco" @click="search"></i>
+                                    <input type="text" placeholder="이름을 입력해주세요." @input="change" v-model="search">
+                                    <i class="xi-search m-input-text-deco"></i>
                                 </div>
                             </div>
                     </button>
@@ -37,35 +37,26 @@ export default {
     mixins: [common],
     data() {
         return {
-            active: false,
-            activeSidebar: false,
+            search:"",
             activeSearch: false,
-            activeDisSearch: false,
-            container: {},
-            searchingDistrict: {},
-            form: {
-                district: "",
-                word: "",
-            },
         }
     },
 
     methods: {
-        setContainer(container) {
-            this.container = container;
-        },
-        scrollTop() {
-            window.scrollTo(0, 0);
-        },
-        search() {
-        },
         searchClick(){
             this.$emit('headerSearch', !this.activeSearch)
             this.activeSearch = !this.activeSearch
-        }
+        },
+        change(e) {
+            this.search = e.target.value
+        },
 
     },
-
+    watch: {
+        search() {
+            this.$emit('searchData', this.search)
+        }
+    },
     computed: {
     },
 
