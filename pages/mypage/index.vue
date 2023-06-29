@@ -116,11 +116,10 @@
                                 <img src="/images/board.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">내 마을 명단</p>
                             </nuxt-link>
-                            <!-- TODO 230626 감춤 -->
-                           <!-- <nuxt-link to="/infos/approvals" class="menu">
+                           <nuxt-link to="/infos/approvals" class="menu">
                                 <img src="/images/board.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">결재 요청 현황</p>
-                            </nuxt-link>  -->
+                            </nuxt-link> 
                         </div>
                     </div>
                 </div>
