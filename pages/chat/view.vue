@@ -90,17 +90,21 @@
         </TransitionGroup>
       </div>
     </div>
-    <imageModal v-if="imageShow" :imageUrl="imageUrl" @closeModal="closeModal" />
+    <Transition name="fade">
+      <imageModal v-if="imageShow" :imageUrl="imageUrl" @closeModal="closeModal" />
+    </Transition>
+    <chatDelete v-if="false" />
+
     <!-- footer-->
     <footerTpye02   class="footer"  @messageSubmit="messageSubmit" />
   </div>
 </template>
 <script>
-
+import chatDelete from '../../components/chat/chatDelete.vue';
 import footerTpye02 from '../../components/chat/footerTpye02.vue';
 import imageModal from '../../components/chat/imageModal.vue';
 export default {
-  components: { footerTpye02, imageModal },
+  components: { footerTpye02, imageModal, chatDelete },
 
   data() {
     return {
@@ -346,6 +350,7 @@ export default {
   beforeDestroy() {
     // 외부 클릭시 닫기 삭제
     document.removeEventListener('click', this.documentClick)
+    console.log("나감")
   },
   created() {
    this.userName = this.$route.query.userName;
@@ -360,8 +365,7 @@ export default {
       .catch(e => {
         console.log(e)
       })
-
-  }
+  },
 };
 </script>
 <style scoped>

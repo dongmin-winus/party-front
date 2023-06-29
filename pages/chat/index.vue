@@ -30,7 +30,7 @@
           <div class="chat-body">
             <div class="chat-body-1">
               <span class="chat-name">{{ data.user ? data.user.name : '이름이 null' }} </span>
-              <span class="chat-date">{{data.created_at}}</span>
+              <span class="chat-date">{{  ChatRoomsTime(data.created_at) }}</span>
             </div>
             <div class="chat-body-1">
               <!-- <div class="chat-content">{{ data.content.length > 15 ? data.content.substring(0,15) + '...' : data.content  }}</div> -->
@@ -84,7 +84,49 @@ export default {
     },
     searchData(value) {
       this.foundItem = this.list.filter(item => item.user.name && item.user.name.includes(value));
-    }
+    },
+
+     // 시간 변환
+    ChatRoomsTime(time) {
+      const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
+      if (time == null) {
+        return;
+      }
+      // 오늘 날짜
+      const date = new Date();
+      const today = new Date(date.getTime() + KR_TIME_DIFF).toISOString().slice(0, 10);
+
+      // 채팅 시간
+      const date2 = new Date(time);
+      const times = new Date(date2.getTime() + KR_TIME_DIFF).toISOString()
+      // 채팅 내용 날짜
+      const todayFromCreatedAt = new Date(date2.getTime() + KR_TIME_DIFF).toISOString().slice(0, 10);
+
+      let hour = Number(times.slice(11, 13))
+      let minuate = times.slice(14, 16)
+
+
+      if (hour == 0) {
+        hour = '오전 12'
+      } else if (hour == 12) {
+        hour = '오후 12'
+      } else if (hour > 12) {
+        hour = `오후 ${hour - 12}`
+      } else {
+        hour = `오전 ${hour}`
+      }
+      let year = todayFromCreatedAt.slice(0, 4)
+      let month = todayFromCreatedAt.slice(5, 7);
+      if (month[0] == '0') {
+        month = month[1]
+      }
+      const day = todayFromCreatedAt.slice(8, 10);
+      if (today != todayFromCreatedAt) {
+        return `${year}년 ${month}월 ${day}일`
+      }
+      return `${hour}:${minuate}`
+
+    },
   },
   computed: {
     memberList() {
