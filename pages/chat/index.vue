@@ -3,14 +3,21 @@
     <headerType02 @headerSearch="headerSearch" @searchData="searchData"  />
      <Loding v-if="loding" />
     <div v-else :class="searchOption == false ? 'chat-b' : 'chat-c'">
-      <div class="bell-off" v-if="false">
+      <!-- <div class="bell-off" v-if="false">
         <div class="sizebox"></div>
         <div class="bell-margin" >
           <p class="bell-text">메세지 알림이 꺼져있어요</p>
           <p class="bell-text2">알림이 꺼져 있으면 중요한 메세지를 놓칠 수 있어요.</p>
           <p class="bell-text2">메시지 알림을 켜주세요.</p>
           <button class="bell-button">알림설정</button>
-        </div>
+        </div> -->
+        <div class="bell-off" v-if="true">
+          <div class="sizebox"></div>
+          <div class="bell-margin" >
+            <p class="bell-text">자유마을 채팅방 입니다.</p>
+            <p class="bell-text2">동대표랑 채팅을 원하시면 +버튼을 눌러주세요.</p>
+            <p class="bell-text2">채팅방이 있다면 클릭하면 방으로 이동합니다.</p>
+          </div>
       </div>
        <template v-if="foundItem != ''">
       <div class="chat-list" v-for="(data,index) in memberList" :key="index" @click="listClick(data.message_group_id, data.user.name, data.user.img.url, data.online)">

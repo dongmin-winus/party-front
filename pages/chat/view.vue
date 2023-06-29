@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="chat-full">
     <!-- header-->
     <header class="header-box">
       <div class="msger-header">
@@ -12,16 +12,16 @@
           </div>
           <div class="msger-hedaer-title">
             <div class="msger-header-name">
-              {{userName}}
+              {{ userName }}
             </div>
             <div v-if="userOnline" class="msger-header-flex2">
               <div class="msger-header-online-circle"></div>
               <div class="msger-header-online-text">온라인</div>
             </div>
-             <div v-else class="msger-header-flex2">
-                <div class="msger-header-off-circle"></div>
-                <div class="msger-header-online-text">오프라인</div>
-              </div>
+            <div v-else class="msger-header-flex2">
+              <div class="msger-header-off-circle"></div>
+              <div class="msger-header-online-text">오프라인</div>
+            </div>
           </div>
         </div>
         <div class="msger-header-icon">
@@ -56,20 +56,18 @@
 
     <!-- section-->
     <div :class="searchOpen == true ? 'sizebox2T' : 'sizebox2F'">&nbsp;</div>
-    <!-- <section ref="chatSection" :class="[option == true ? 'sectionT' : 'sectionF', ]"> -->
-      <div ref="chatSection" :class="[{'sectionTT': searchOpen ,'sectionT':$store.state.option}, 'sectionF']">
-        <!-- <section ref="chatSection" :class="{ 'sectionT': $store.state.option, 'sectionTT': $store.state.chatSearch}"> -->
+    <div ref="chatSection" :class="[{ 'sectionTT': searchOpen, 'sectionT': $store.state.option }, 'sectionF']">
+
       <div class="chatbox">
         <!-- 자신이 보낸 채팅 -->
         <TransitionGroup name="fade">
-          <div v-for="(chat, index) in chatList" :key="index" :ref="`searchRef${chat.id}`" >
+          <div v-for="(chat, index) in chatList" :key="index" :ref="`searchRef${chat.id}`">
             <div v-if="chat.user_id == $auth.user.id" class="chatbox-flex2">
-              <!-- <div v-if="isDifferentDate(index)" class="date-divider">{{ chat.sentAt }}</div> -->
               <div class="chatbox-date2">{{ ChatRoomsTime(chats[index].created_at) }}</div>
               <div class="box1">
                 <img @click="modalOpen(chat.image)" v-if="chat.image != null" class="img-size" :src="chat.image" />
                 <p v-if="chat.message != null" class="chatbox-text2" v-html="chat.message"></p>
-               
+
               </div>
 
             </div>
@@ -94,11 +92,11 @@
       <imageModal v-if="imageShow" :imageUrl="imageUrl" @closeModal="closeModal" />
     </Transition>
     <Transition name="fade">
-    <chatDelete v-if="modalShow" :groupId="groupId" @cancelModal="cancelModal" />
+      <chatDelete v-if="modalShow" :groupId="groupId" @cancelModal="cancelModal" />
     </Transition>
 
     <!-- footer-->
-    <footerTpye02   class="footer"  @messageSubmit="messageSubmit" />
+    <footerTpye02 class="footer" @messageSubmit="messageSubmit" />
   </div>
 </template>
 <script>
@@ -166,11 +164,11 @@ export default {
     },
 
     searchBtn() {
-      if(this.searchOpen == false){
+      if (this.searchOpen == false) {
         this.$store.commit('setOption', false)
       }
       this.$store.commit('setSearchOption', !(this.$store.state.chatSearch))
-      
+
     },
     changeSearch(e) {
       this.search = e.target.value;
@@ -181,31 +179,31 @@ export default {
         // let foundItem = '';
         // const foundItem = this.chats.find(item => item.message === this.search);
         let foundItem = this.chats.filter(item => item.message && item.message.includes(this.search));
-        if(this.search == ''){
+        if (this.search == '') {
           alert("대화내용을 입력해주세요.");
           return;
         }
         if (foundItem != '') { //찾는 값이 존재할때
-          if( this.search != this.searchData){
+          if (this.search != this.searchData) {
             this.count = 0;
-  
-              try {
-                let searchRef = `searchRef${foundItem[this.count].id}`
-                let messageDisplay = this.$refs[searchRef][0]
-                this.$nextTick(() => {
 
-                  messageDisplay.scrollIntoView('center');
-                })
-              }
-              catch (e) {
-                console.log(e)
-              }
-              finally {
-                this.searchData = this.search; //카운트 늘린다.
-              }
-              return;
-         } else if(this.search == this.searchData) {
-             if(this.count >= foundItem.length) {
+            try {
+              let searchRef = `searchRef${foundItem[this.count].id}`
+              let messageDisplay = this.$refs[searchRef][0]
+              this.$nextTick(() => {
+
+                messageDisplay.scrollIntoView('center');
+              })
+            }
+            catch (e) {
+              console.log(e)
+            }
+            finally {
+              this.searchData = this.search; //카운트 늘린다.
+            }
+            return;
+          } else if (this.search == this.searchData) {
+            if (this.count >= foundItem.length) {
               alert('대화내용이 끝입니다.')
               this.count = 0;
               return;
@@ -223,10 +221,10 @@ export default {
               }
               finally {
                 this.search = this.searchData;
-      
+
               }
             }
-         }
+          }
         } else {
           alert('해당 검색 내용이 없습니다.');
           return;
@@ -358,13 +356,12 @@ export default {
   beforeDestroy() {
     // 외부 클릭시 닫기 삭제
     document.removeEventListener('click', this.documentClick)
-    console.log("나감")
   },
   created() {
-   this.userName = this.$route.query.userName;
-   this.userProfile = this.$route.query.userProfile;
-   this.groupId = this.$route.query.groupId;
-   this.userOnline = this.$route.query.online;
+    this.userName = this.$route.query.userName;
+    this.userProfile = this.$route.query.userProfile;
+    this.groupId = this.$route.query.groupId;
+    this.userOnline = this.$route.query.online;
     this.$axios.get(`/api/chat/${this.groupId}`)
       .then(response => {
         this.chats = response.data
@@ -376,7 +373,10 @@ export default {
   },
 };
 </script>
-<style scoped>
+<style scoped >
+.chat-full {
+  background-color: #bacee0;
+}
 .msger-header {
   width: 100%;
   max-width: 500px;
@@ -386,7 +386,6 @@ export default {
   border-bottom: 1px solid #DDDDDD;
   background-color: #ffffff;
 }
-
 
 .msger-header-flex {
   display: flex;
@@ -471,7 +470,7 @@ export default {
 .chatbox-flex2 {
   display: flex;
   margin-bottom: 10px;
-  justify-content: end;
+  justify-content: flex-end;
   align-items: center;
 }
 
@@ -479,14 +478,14 @@ export default {
   max-width: 60%;
   display: flex;
   flex-direction: column;
-  align-items: end;
+  align-items: flex-end;
 }
 
 .box2 {
   max-width: 60%;
   display: flex;
   flex-direction: column;
-  align-items: start;
+  align-items: flex-start;
 }
 
 .chatbox-text {
@@ -562,6 +561,8 @@ export default {
 .sectionF {
   overflow: auto;
   height: calc(100vh - 160px);
+  background-color: #bacee0;
+
 }
 
 /* 밑에채팅옵션 */
@@ -580,12 +581,12 @@ export default {
 
 /* 12px */
 .sizebox2T {
-  margin-bottom: 73px; 
-} 
+  margin-bottom: 73px;
+}
 
 .sizebox2F {
-  margin-bottom: 37px; 
-} 
+  margin-bottom: 37px;
+}
 
 
 
@@ -659,11 +660,12 @@ export default {
 }
 
 .img-size {
-  width: 150px;
-  height: 150px;
+  max-width: 150px;
+  max-height: 150px;
   display: flex;
+  object-fit: scale-down;
   justify-content: center;
   margin-bottom: 10px;
+  
 }
-
 </style>
