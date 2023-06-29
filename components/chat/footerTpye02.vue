@@ -41,7 +41,8 @@
       <div v-if="$store.state.option == true" class="chat-option">
         <div>
           <label for="file-input">
-            <input id="file-input" type="file" @change="handleImageChange" accept="image/*" />
+            <!-- user -->
+            <input id="file-input" type="file" @change="handleImageChange" accept="image/*" capture="filesystem" >  
             <div class="gallery">
               <img src="/images/gallery.svg" alt="">
             </div>
@@ -51,8 +52,9 @@
           </div>
         </div>
         <div>
-          <label for="file-inpu2">
-            <input id="file-input2" type="file" @change="handleImageChange" accept="image/*" capture="camera" />
+          <label for="file-input2">
+            <!-- environment -->
+            <input id="file-input2" type="file" @change="handleImageChange" accept="image/*" capture="camera" >
             <div class="camera">
               <img src="/images/chatCamera.svg" alt="">
             </div>
@@ -93,6 +95,7 @@ export default {
       imageUrl: null,
       imageFiles: null,
       imageLoding: false,
+      user:[]
 
     }
   },
@@ -181,12 +184,29 @@ export default {
           cluster: "ap3",
         });
       }
-      this.echo.channel("chat").listen("MessageSent", (e) => {
-        this.onChatSent(e);
-      });
+       this.echo.join(`chat`)
+       .here((users) => {
+          console.log("asd",users)
+        })
+        .joining((user) => {
+          console.log(user);
+        })
+        .listen("MessageSent", (e) => {
+          this.onChatSent(e);
+       });
+  
+      // this.echo('chat')
+      //   .here((users)=>{
+      //     console.log(users)
+      //   })
+      //   .joining((user) => {
+      //     console.log(user); // doesnt get logged
+      //   })
     },
     disconnect() {
-      this.echo.leaveChannel("chat");
+      this.echo.leaveChannel("chat")
+
+      ;
     },
     handleImageChange(event) {
       this.imageFiles = event.target.files[0];
@@ -229,7 +249,6 @@ export default {
   },
   mounted() {
     this.connect();
-
   },
 }
 </script>

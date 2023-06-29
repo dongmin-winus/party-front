@@ -1,12 +1,14 @@
 <template>
-  <div class="modal">
-    <div class="modal-body">
-        <img class="modal-img" :src="imageUrl">
+  <Transition name="fade">
+    <div class="modal">
+      <div class="modal-body">
+          <img class="modal-img" :src="imageUrl">
+      </div>
+      <div class="modal-bottom">
+        <button @click="closeBtn"  class="modal-btn">닫기</button>
+      </div>
     </div>
-    <div class="modal-bottom">
-      <button @click="closeBtn"  class="modal-btn">닫기</button>
-    </div>
-  </div>
+  </Transition>
 </template>
 <script>
 export default {
@@ -76,5 +78,13 @@ export default {
   font-weight: 500;
   width: 100%;
    background-color: #EEEEEE;
+}
+
+.fade-enter-active,.fade-leave-active {
+  transition: opacity .4s ease;
+}
+
+.fade-enter,.fade-leave-to {
+  opacity: 0;
 }
 </style>
