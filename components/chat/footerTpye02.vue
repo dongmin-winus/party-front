@@ -186,24 +186,21 @@ export default {
           cluster: "ap3",
         });
       }
-       this.echo.join(`chat`)
-       .here((users) => {
-          console.log("asd",users)
-        })
-        .joining((user) => {
-          console.log(user);
-        })
-        .listen("MessageSent", (e) => {
-          this.onChatSent(e);
-       });
-  
-      // this.echo('chat')
-      //   .here((users)=>{
-      //     console.log(users)
+      //  this.echo.join(`chat`)
+      //  .here((users) => {
+      //     console.log("asd",users)
       //   })
       //   .joining((user) => {
-      //     console.log(user); // doesnt get logged
+      //     console.log(user);
       //   })
+      //   .listen("MessageSent", (e) => {
+      //     this.onChatSent(e);
+      //  });
+  
+      this.echo.channel(`chat`)
+        .listen("MessageSent", (e) => {
+          this.onChatSent(e);
+        });
     },
     disconnect() {
       this.echo.leaveChannel("chat")
