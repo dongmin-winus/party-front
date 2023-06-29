@@ -337,7 +337,11 @@ export default {
             {
               id: targetId, 
               status: this.activatedItem.status, 
-              memo: this.activatedItem.memo
+              memo: this.activatedItem.memo,
+              user_id: this.activatedItem.user.id,
+              before: this.activatedItem.before,
+              after: this.activatedItem.after,
+              group: this.activatedItem.group,
             }
           ]
         });
@@ -355,7 +359,10 @@ export default {
             return {
               id: item.id, 
               status: '반려', 
-              memo: item.memo
+              user_id: item.user.id,
+              before: item.before,
+              after: item.after,
+              group: item.group,
             }
           }),
           {
