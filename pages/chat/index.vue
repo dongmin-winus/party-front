@@ -14,9 +14,10 @@
         <div class="bell-off" v-if="true">
           <div class="sizebox"></div>
           <div class="bell-margin" >
-            <p class="bell-text">자유마을 채팅방 입니다.</p>
-            <p class="bell-text2">동대표랑 채팅을 원하시면 +버튼을 눌러주세요.</p>
-            <p class="bell-text2">채팅방이 있다면 클릭하면 방으로 이동합니다.</p>
+            <p class="bell-text">자유마을 채팅방이 새롭게 개설되었습니다! </p>
+            <p class="bell-text2">동대표와의 원활한 소통을 위해 채팅방이 마련되었습니다. 채팅을 원하시면 +버튼을 눌러주세요.</p>
+            <p class="bell-text2">채팅방이 있을시 클릭하시면 방으로 이동합니다.</p>
+            <p class="bell-text2"> 앞으로 더 많은 기능과 업데이트가 예정되니 많은 기대 부탁드립니다.</p>
           </div>
       </div>
        <template v-if="foundItem != ''">
@@ -208,7 +209,8 @@ export default {
 
 .bell-off{
   border-bottom: 1px solid #EEEEEE;
-  height: 140px;
+  padding-bottom: 25px;
+
 
 }
 

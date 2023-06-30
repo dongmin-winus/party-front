@@ -66,7 +66,7 @@
           </div>
         </div>
         <div class="option-btn">
-          <button @click="locationClick" id="file-input3">
+          <button @click="locationClick()" id="file-input3">
           <div class="location">
             <img src="/images/location.svg" alt="">
           </div>
@@ -202,7 +202,6 @@ export default {
       this.echo.channel(`chats` + this.$route.query.groupId)
        .listen("MessageSent", (e) => {
          this.onChatSent(e);
-         console.log(e)
        });
     },
     disconnect() {
@@ -224,12 +223,10 @@ export default {
       form.append("image", this.imageFiles);
       this.$axios.post('/api/posts/images', form)
         .then((response) => {
-          console.log(response.data.data.original_url)
           this.imageFiles = response.data.data.original_url;
         })
         .then(() => {
           this.imageLoding = false
-          console.log(this.imageLoding)
         });
 
 

@@ -30,17 +30,18 @@
                     <h3 class="title">내 공유함</h3>
                 </nuxt-link>
             </div>
-<!--
 
-            <div class="nav-wrap">
-                <a href="#" class="nav">
+            <div :class="`nav-wrap ${$route.path === '/chat' ? 'active' : ''}`">
+                <nuxt-link to="/chat" class="nav">
                     <div class="img-wrap">
-                        <img src="/images/chat-alt-2.png" alt="" style="width:19px;">
+                        <img v-if="$route.path === '/chat'" src="/images/chatActive.svg" alt="" style="width: 19px;"/>
+                        <img v-else src="/images/chat.svg" alt="" style="width:19px;">
+                        <!-- <img src="/images/chat-alt-2.png" alt="" style="width:19px;"> -->
                     </div>
 
                     <h3 class="title">채팅</h3>
-                </a>
-            </div>-->
+                </nuxt-link>
+            </div>
 
             <div :class="`nav-wrap ${$route.path.includes('/mypage') ? 'active' : ''}`">
                 <nuxt-link to="/mypage" class="nav">

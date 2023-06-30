@@ -14,19 +14,12 @@ export default {
     }
   },
   created() {
-    if (!("geolocation" in navigator)) {
-      return;
-    }
-
-    // get position
-    navigator.geolocation.getCurrentPosition(pos => {
-      this.latitude = pos.coords.latitude;
-      this.longitude = pos.coords.longitude;
-
+    // if (!("geolocation" in navigator)) {
+    //   return;
+    // }
+    kakao.maps.load();
       if (window.kakao && window.kakao.maps) {
-
         this.initMap();
-
       } else {
         const script = document.createElement("script");
         /* global kakao */
@@ -35,46 +28,34 @@ export default {
         document.head.appendChild(script);
       }
 
-    }, err => {
-      alert(err.message);
-    })
   },
   methods: {
     initMap() {
-      const container = document.getElementById("map");
-      const options = {
-        center: new kakao.maps.LatLng(33.450701, 126.570667),
+      const mapContainer = document.getElementById("map");
+      const mapOption = {
+        center: new kakao.maps.LatLng(37.564343, 126.947613),
         level: 5,
       };
-      this.map = new kakao.maps.Map(container, options);
-      this.displayMarker([[this.latitude, this.longitude]]);
+      var map = new kakao.maps.Map(mapContainer, mapOption);
+      var positions = [
+        {
+          latlng: new kakao.maps.LatLng(37.562632898194835, 126.9454282268269),
+        },
+        {
+          latlng: new kakao.maps.LatLng(37.562195884514403, 126.94922601468826),
+        },
+      ];
+
+      //마커 생성
+      positions.forEach(function(pos){
+        var marker = new kakao.maps.Marker({
+          position: pos.latlng, // 마커위치
+        });
+        // 마커가 지도 위에 표시 되도록 설정
+        marker.setMap(map);
+
+      })
     },
-    displayMarker(markerPositions) {
-      if (this.markers.length > 0) {
-        this.markers.forEach((marker) => marker.setMap(null));
-      }
-
-      const positions = markerPositions.map(
-        (position) => new kakao.maps.LatLng(...position)
-      );
-
-      if (positions.length > 0) {
-        this.markers = positions.map(
-          (position) =>
-            new kakao.maps.Marker({
-              map: this.map,
-              position,
-            })
-        );
-
-        const bounds = positions.reduce(
-          (bounds, latlng) => bounds.extend(latlng),
-          new kakao.maps.LatLngBounds()
-        );
-
-        this.map.setBounds(bounds);
-      }
-    }
   }
 }
 </script>

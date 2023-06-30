@@ -34,7 +34,7 @@
             </button>
             <Transition name="fade">
               <ul v-show="isDropdownOpen" class="dropdown-menu">
-                <li>알림끄기</li>
+                <!-- <li>알림끄기</li> -->
                 <li @click="$router.back()">채팅 채널 이동</li>
                 <li @click="modalShow = true">채팅방 나가기</li>
               </ul>
@@ -376,7 +376,7 @@ export default {
 </script>
 <style scoped >
 .chat-full {
-  background-color: #bacee0;
+  /* background-color: #bacee0; */
 }
 .msger-header {
   width: 100%;
@@ -562,7 +562,7 @@ export default {
 .sectionF {
   overflow: auto;
   height: calc(100vh - 160px);
-  background-color: #bacee0;
+  /* background-color: #bacee0; */
 
 }
 
