@@ -1,6 +1,8 @@
 <template>
   <div>
+
     <createHeader @searchData="searchData" />
+    <div v-if="result == 1">
     <Loding v-if="loding" />
     <div v-else class="chat-b">
       <template v-if="foundItem != ''">
@@ -29,7 +31,18 @@
         </div>
       </template>
     </div>
+    </div>
+    <div v-else-if="result == 2">
+      <div class="chat-b">
+         <div class="chat-empty" style="padding: 0px 15px;">
+            <p class="chat-name">대표가 없거나, 회원이 아닙니다.<br>
+              고객센터로 문의 바랍니다.
+              1544-7166
+            </p>
 
+          </div>
+          </div>
+    </div>
     <navigation />
   </div>
 </template>
@@ -45,6 +58,7 @@ export default {
       foundItem: [],
       loding: false,
       roomId: null,
+      result: null,
     };
   },
   methods: {
@@ -81,8 +95,10 @@ export default {
     this.loding = true;
     this.$axios.get(`api/districts/${this.$auth.user.district.id}/members/chat-list`)
       .then((response) => {
-        this.list = response.data
-        this.foundItem = response.data
+        console.log(response)
+        this.result = response.data.result
+        this.list = response.data.data
+        this.foundItem = response.data.data
       })
       .then(()=>{
         this.loding = false;
