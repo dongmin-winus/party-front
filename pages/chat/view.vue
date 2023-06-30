@@ -94,7 +94,6 @@
     <Transition name="fade">
       <chatDelete v-if="modalShow" :groupId="groupId" @cancelModal="cancelModal" />
     </Transition>
-
     <!-- footer-->
     <footerTpye02 class="footer" @messageSubmit="messageSubmit" />
   </div>
@@ -151,10 +150,12 @@ export default {
         this.$refs.dropdown.focus();
       })
     },
+    // 드랍버튼 닫기
     closeDropdown() {
       this.isDropdownOpen = false;
     },
 
+      // 드랍버튼 외 다른곳 눌렀을때 닫기
     documentClick(e) {
       let el = this.$refs.dropdown
       let target = e.target

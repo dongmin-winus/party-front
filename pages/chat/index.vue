@@ -41,8 +41,8 @@
             </div>
             <div class="chat-body-1">
               <!-- <div class="chat-content">{{ data.content.length > 15 ? data.content.substring(0,15) + '...' : data.content  }}</div> -->
-              <div class="chat-content">{{ data.message }}</div>
-              <div v-if="data.count !=0 " class="chat-green-circle">{{ data.count }}</div>
+              <div class="chat-content">{{ data.message.length > 20 ? data.message.substring(0,20) + '...' : data.message }}</div>
+              <!-- <div v-if="data.count !=0 " class="chat-green-circle">{{ data.count }}</div> -->
             </div>
           </div>
         </div>
@@ -60,6 +60,8 @@
 <script>
 import headerType02 from '../../components/chat/headerType02.vue';
 import Loding from '../../components/chat/loding.vue';
+import Echo from 'laravel-echo';
+import Pusher from 'pusher-js';
 export default {
   components:{headerType02, Loding},
   data() {
@@ -68,6 +70,7 @@ export default {
       searchOption: false,
       foundItem: [],
        loding: false,
+        echo: null,
     };
   },
   methods:{
@@ -134,6 +137,40 @@ export default {
       return `${hour}:${minuate}`
 
     },
+
+    connect(id) {
+      if (!window.Pusher)
+        window.Pusher = Pusher;
+      if (!this.echo) {
+        this.echo = new Echo({
+          broadcaster: "pusher",
+          key: "668bac10cc6db3a1338c",
+          cluster: "ap3",
+          authEndpoint: '/api/broadcasting/auth',
+          encrypted: true,
+
+        });
+      }
+      // this.echo.join(`chats` + this.$route.query.groupId)
+      // .here((users) => {
+      //    console.log("asd",users)
+      //  })
+      //  .joining((user) => {
+      //    console.log(user);
+      //  })
+      //  .listen("MessageSent", (e) => {
+      //    this.onChatSent(e);
+      // });
+      this.echo.channel(`chats`+ id)
+        .listen("MessageSent", (e) => {
+          for(let i = 0; i < this.list.length; i++){
+            if(this.list[i].message_group_id == e.message_group_id){
+              this.list[i].message = e.message;
+              this.list[i].created_at = e.created_at
+            }
+          }
+        });
+    },
   },
   computed: {
     memberList() {
@@ -151,8 +188,11 @@ export default {
       })
       .then(()=>{
         this.loding = false;
+        for (let i = 0; i < this.list.length; i++) {
+          this.connect(this.list[i].message_group_id);
+          
+        }
       })
-
   },
 }
 </script>
@@ -168,7 +208,7 @@ export default {
 
 .bell-off{
   border-bottom: 1px solid #EEEEEE;
-  height: 180px;
+  height: 140px;
 
 }
 
