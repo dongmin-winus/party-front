@@ -235,6 +235,7 @@ export default {
         },
 
         async store() {
+            if(!this.selectedItem.position) return alert("직책을 선택해주세요.");
             this.form.position = this.selectedItem.position;
             this.form.district_id = this.rep_district_id;
             this.form.group = this.group;
@@ -256,9 +257,8 @@ export default {
                     await this.getStaffItem();
                 }
             } catch (error) {
-                alert(error.response.data.message)
-                if (error.response && error.response.data)
-                        this.errors = error.response.data.errors;
+                // console.log(error.response,333)
+                if(error.response.status === 500) return alert("등록 중 오류가 발생했습니다. 입력된 정보를 확인해주세요.");
             }
         },
 
