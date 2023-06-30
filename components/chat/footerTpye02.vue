@@ -197,13 +197,13 @@ export default {
       //     this.onChatSent(e);
       //  });
   
-      this.echo.channel(`chat`)
+      this.echo.channel(`chats` + this.$route.query.groupId)
         .listen("MessageSent", (e) => {
           this.onChatSent(e);
         });
     },
     disconnect() {
-      this.echo.leaveChannel("chat")
+      this.echo.leaveChannel("chats")
 
       ;
     },
