@@ -184,23 +184,23 @@ export default {
           broadcaster: "pusher",
           key: "668bac10cc6db3a1338c",
           cluster: "ap3",
+          authEndpoint : '/api/broadcasting/auth',
         });
       }
-      //  this.echo.join(`chat`)
-      //  .here((users) => {
-      //     console.log("asd",users)
-      //   })
-      //   .joining((user) => {
-      //     console.log(user);
-      //   })
-      //   .listen("MessageSent", (e) => {
-      //     this.onChatSent(e);
-      //  });
-  
-      this.echo.channel(`chats` + this.$route.query.groupId)
-        .listen("MessageSent", (e) => {
-          this.onChatSent(e);
+        this.echo.join(`chats` + this.$route.query.groupId)
+        .here((users) => {
+           console.log("asd",users)
+         })
+         .joining((user) => {
+           console.log(user);
+         })
+         .listen("MessageSent", (e) => {
+           this.onChatSent(e);
         });
+      //this.echo.channel(`chats` + this.$route.query.groupId)
+      //  .listen("MessageSent", (e) => {
+      //    this.onChatSent(e);
+      //  });
     },
     disconnect() {
       this.echo.leaveChannel("chats")
