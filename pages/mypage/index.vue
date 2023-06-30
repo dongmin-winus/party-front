@@ -116,7 +116,7 @@
                                 <img src="/images/board.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">내 마을 명단</p>
                             </nuxt-link>
-                            <nuxt-link to="/staffs" class="menu">
+                            <nuxt-link :to="{path:'/staffs', query:{rep_district_id:represenateDistrict['id'], rep_district_name:represenateDistrict['name']}}" class="menu">
                                 <img src="/images/board.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">마을임원확인</p>
                             </nuxt-link> 
@@ -136,7 +136,7 @@
                                 <img src="/images/building.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">내 마을 소개</p>
                             </nuxt-link>
-                            <nuxt-link :to="{path:'/staffs/create', query:{group:group,rep_district_id:represenateDistrict}}" class="menu">
+                            <nuxt-link :to="{path:'/staffs/create', query:{group:group,rep_district_id:represenateDistrict['id']}}" class="menu">
                                 <img src="/images/users.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">내 마을 임원진</p>
                             </nuxt-link>
@@ -305,7 +305,10 @@ export default {
                 this.staffCertificated = false;
             }else {
                 this.staffCertificated = true;
-                this.represenateDistrict = response.data.district_id;
+                this.represenateDistrict = {
+                    id:response.data.district_id,
+                    name:response.data.district,
+                };
                 this.group = response.data.group;
             }
         }

@@ -18,7 +18,7 @@
                 </div>
                 <div class="m-tab-wrap">
                     <nuxt-link to="/staffs" class="m-tab">
-                        <span class="text">임원진</span>
+                        <span class="text">섬기는 사람들</span>
                     </nuxt-link>
                 </div>
                 <div class="m-tab-wrap">

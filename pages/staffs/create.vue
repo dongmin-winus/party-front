@@ -222,14 +222,12 @@ export default {
                 const {data} = await this.$axios.post(`/api/districts/${this.form.district_id}/staff/update/${this.form.id}`, form);
                 const targetIdx = await this.items.findIndex(item => item.id === this.form.id);
                 if(data.result) {
+                    alert("성공적으로 수정되었습니다.")
                     this.items.splice(targetIdx,1,this.form);
-                    this.items[targetIdx].img.url = this.imgUrl;
+                    if(this.items[targetIdx].img)  itemImg.url = this.imgUrl
                 }
             } catch (error) {
-                alert(error.response.data.message)
-
-                if (error.response && error.response.data)
-                    this.errors = error.response.data.errors;
+                console.error(error);
             }
             this.reset();
             this.isEditMode = false;
@@ -243,7 +241,8 @@ export default {
             let form = (new Form(this.form)).data();
             try {
                 const response = await this.$axios.post("/api/districts/" + this.form.district_id + "/staff", form);
-                if(response.status === 200) {
+                if(response.status === 200 || response.status === 201) {
+                    alert("성공적으로 등록되었습니다.")
                     let {data} = response.data;
                     if(data.img === "") {
                         data.img = {
@@ -313,7 +312,11 @@ export default {
         },
 
         getStaffItem() {
-            this.$axios.get("/api/districts/" + this.$route.query.rep_district_id + "/staff")
+            this.$axios.get("/api/districts/" + this.$route.query.rep_district_id + "/staff/list",{
+                params: {
+                    group: this.$route.query.group
+                }
+            })
                 .then(response => {
                     this.items = [...response.data.data];
                 });
