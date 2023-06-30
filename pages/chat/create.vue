@@ -16,7 +16,7 @@
               <span class="chat-name">{{ data.name }} </span>
             </div>
             <div class="chat-body-1">
-              <div class="chat-content">{{ data.nickname }}</div>
+              <div class="chat-content">{{ data.nickname }} {{ data.group ? data.group + '조직 대표' : '' }}</div>
             </div>
           </div>
           <div class="chat-body-img" @click="chatCreate(data.id,data.name)">
