@@ -7,13 +7,12 @@
         <div class="container">
             <div class="m-visual type01">
                 <p class="subtitle">마을 소개</p>
-                <h3 class="title">{{this.$store.state.district.district}} 섬기는 사람들</h3>
+                <h3 class="title">{{rep_district['name'] ? rep_district['name'] : this.$store.state.district.district}} 섬기는 사람들</h3>
             </div>
-
-            <div class="m-tabs type01">
+            <div class="m-tabs type01" v-if="!this.rep_district">
                 <div class="m-tab-wrap">
                     <nuxt-link to="/infos" class="m-tab">
-                        <span class="text">{{this.$store.state.district.district}} 소개</span>
+                        <span class="text">{{rep_district['name'] ? rep_district['name'] : this.$store.state.district.district}} 소개</span>
                     </nuxt-link>
                 </div>
                 <div class="m-tab-wrap">
@@ -22,7 +21,7 @@
                     </nuxt-link>
                 </div>
                 <div class="m-tab-wrap">
-                    <nuxt-link to="/contacts" class="m-tab">
+                    <nuxt-link to="/contacts" class="m-tab ">
                         <span class="text">내마을 국회의원</span>
                     </nuxt-link>
                 </div>
@@ -143,6 +142,7 @@ export default {
             registerInfo:[],
             activeCounty: undefined,
             errors: {},
+            rep_district: {},
 
         }
     },
@@ -170,10 +170,10 @@ export default {
              }
 
         },
-        async setCountyLists() {
+        async setCountyLists(rep_district_id = undefined) {
             this.rawValues = [];
             this.countyLists = [];
-            const response = await this.$axios.get(`/api/districts/${this.$store.state.district.id}/staff`);
+            const response = await this.$axios.get(`/api/districts/${rep_district_id ? rep_district_id : this.$store.state.district.id}/staff`);
             this.rawValues = response.data.data;
             this.computedCountySections.forEach(group => {
                 const county = this.rawValues.filter(rawValue => rawValue.group === group);
@@ -198,7 +198,7 @@ export default {
             this.activeCounty = 1;
             this.registerStatus = response.data.register;
         },
-        async getPositions() {
+        async getPositions(rep_district_id = undefined) {
             const response = await this.$axios.get(`/api/districts/${this.$store.state.district.id}/position`);
             this.positions = [
                 ...response.data.map(item => {
@@ -211,7 +211,7 @@ export default {
                     }
                 })
             ];
-            await this.setCountyLists();
+            await this.setCountyLists(rep_district_id);
         },
         getCounty(item) {
             this.activeCounty = item;
@@ -260,8 +260,18 @@ export default {
     },
 
     mounted() {
-        this.getPositions();
-        this.getRegisterInfo();
+        this.rep_district = {
+            id:this.$route.query.rep_district_id,
+            name:this.$route.query.rep_district_name,
+        }
+
+        if(this.rep_district.id ) {
+            this.getPositions(this.rep_district.id)
+        }else {
+            this.getPositions();
+            this.getRegisterInfo();
+        }
+        
     },
     created() {
         this.debounceRegister = debounce((item) => {
