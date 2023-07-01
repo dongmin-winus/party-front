@@ -342,35 +342,6 @@
                 </div>
             </section>
 
-            <!-- 우리마을 국회의원 -->
-            <section class="section-contact" v-if="district && district.id != 0">
-                <div class="wrap">
-                    <div class="content">
-                        <div class="m-title type01">
-                            <p class="sub">한눈에 확인하는 국회의원 평가</p>
-                            우리마을 <span class="point">국회의원</span>
-                        </div>
-                        <div :class="`card-${partyClass}`" v-if="partyClass">
-                            <div class="mt-32"></div>
-                            <div class="m-title type04" style="color:white; text-align:center;">
-                                {{ partyName }}
-                            </div>
-                            <div class="card-content-container">
-                                <div class="card">
-                                    <div class="card-image" :style="`background-image:url('${congressmanItem.img.url}')`"></div>
-                                </div>
-                                <p style="font-size:30px; font-weight:700;">{{ congressmanItem.korean_name }} 의원</p>
-                                <div class="activity-point">
-                                    <span>활동만족도</span> &nbsp;<img :src="makeAvgImg" style="width:25px; height:25px;" alt="">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mt-12"></div>
-                    <nuxt-link to="/contacts" class="m-btn type02 bg-revert-primary">평가하러가기 +</nuxt-link>
-                </div>
-            </section>
-
             <!-- 자유마을 스토리 -->
             <section class="section-story" v-if="district.id == 0">
                 <div class="wrap">
@@ -403,7 +374,7 @@
                     <div class="content">
                         <div class="m-title type01">
                             <p class="sub">자유마을 활성화의 주인공은 누구?</p>
-                            마을사랑 개인랭킹 <span class="point orange">TOP10</span>
+                            개인랭킹 <span class="point orange">TOP10</span>
                         </div>
                     </div>
                     <div class="mt-16"></div>
@@ -434,6 +405,35 @@
                         </li>
                     </ul>
                     <nuxt-link to="/popular/rank" class="m-btn type02 bg-revert-primary">개인 랭킹 TOP 100 +</nuxt-link>
+                </div>
+            </section>
+
+            <!-- 우리마을 국회의원 -->
+            <section class="section-contact" v-if="district && district.id != 0">
+                <div class="wrap">
+                    <div class="content">
+                        <div class="m-title type01">
+                            <p class="sub">한눈에 확인하는 국회의원 평가</p>
+                            우리마을 <span class="point">국회의원</span>
+                        </div>
+                        <div :class="`card-${partyClass}`" v-if="partyClass">
+                            <div class="mt-32"></div>
+                            <div class="m-title type04" style="color:white; text-align:center;">
+                                {{ partyName }}
+                            </div>
+                            <div class="card-content-container">
+                                <div class="card">
+                                    <div class="card-image" :style="`background-image:url('${congressmanItem.img.url}')`"></div>
+                                </div>
+                                <p style="font-size:30px; font-weight:700;">{{ congressmanItem.korean_name }} 의원</p>
+                                <div class="activity-point">
+                                    <span>활동만족도</span> &nbsp;<img :src="makeAvgImg" style="width:25px; height:25px;" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-12"></div>
+                    <nuxt-link to="/contacts" class="m-btn type02 bg-revert-primary">평가하러가기 +</nuxt-link>
                 </div>
             </section>
 
@@ -1047,6 +1047,12 @@ export default {
 }
 </script>
 <style scoped>
+    .area-index .section-popular .m-table li:first-child .rank{
+
+                box-shadow: 5px 3px 33px 2px rgba(30,212,37,0.49);
+-webkit-box-shadow: 5px 3px 33px 2px rgba(30,212,37,0.49);
+-moz-box-shadow: 5px 3px 33px 2px rgba(30,212,37,0.49);
+}
     .titles {
         display: flex;
         justify-content: space-between;
