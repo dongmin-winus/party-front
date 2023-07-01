@@ -6,7 +6,6 @@
       <!-- 내용 영역 -->
       <div class="container">
         <section class="section-popular">
-            <img src="/images/bannertop.jpg" alt="" width="100%" />
             <div class="wrap">
                 <div class="mt-12 content">
                     <div class="m-title type01">

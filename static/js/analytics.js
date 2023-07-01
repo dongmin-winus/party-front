@@ -4,4 +4,4 @@ function gtag() {
 }
 gtag("js", new Date());
 
-gtag("config", process.env.GOOGLE_ANALYTICS_ID);
+gtag("config", 'G-V3S8X6G5GD');
