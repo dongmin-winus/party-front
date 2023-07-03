@@ -106,7 +106,7 @@ export default {
         getPopularPercentage(item) {
             const total = this.getPopularTotalCount(item) + this.tokenCount;
             const percent = Math.floor((total / 100000) * 100);
-            if(percent < 30) return 30;
+            // if(percent < 30) return 30;
             if(percent > 100) return 100;
             return percent;
         },

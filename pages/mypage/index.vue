@@ -29,7 +29,7 @@
                     <div class="m-thumbnail type03" :style="`background-image:url('${profileUrl}')`" v-if="this.$auth.user.img"></div>
                     <div class="mt-16 btn-wrap">
                         <div class="inner">
-                            <p class="btn-title">{{`${staffCertificated ? '마을 대표' : '회원'}`}}</p>
+                            <p class="btn-title">{{`${staffCertificated ? staffCertificated : '회원'}`}}</p>
 
                         </div>
                     </div>
@@ -106,8 +106,23 @@
                 </div>
             </div>
 
+            <!-- 253 위원장(지부장)메뉴 -->
+            <div class="menus-wrap" v-if="staffCertificated == '위원장'">
+                <h3 class="title">지부장 활동</h3>
+                <div class="mt-12"></div>
+                <div class="menus">
+                    <div class="wrap">
+                        <nuxt-link to="/infos/commissioner_namelist" class="menu">
+                            <img src="/images/board.png" alt="" class="icon" style="width:14px;">
+                            <p class="text">지부 회원명단</p>
+                        </nuxt-link>
+                    </div>
+                </div>
+            </div>
+
             <!-- <div v-if="$auth.hasScope('manager')"> -->
-            <div v-if="staffCertificated">
+            <!-- 마을대표 메뉴 -->
+            <div v-if="staffCertificated == '대표'">
                 <div class="menus-wrap">
                     <h3 class="title">나의 조직활동</h3>
                     <div class="menus">
@@ -303,13 +318,15 @@ export default {
             });
             if(response.data === false) {
                 this.staffCertificated = false;
-            }else {
-                this.staffCertificated = true;
+            }else if(response.data.position === '대표') {
+                this.staffCertificated = '대표';
                 this.represenateDistrict = {
                     id:response.data.district_id,
                     name:response.data.district,
                 };
                 this.group = response.data.group;
+            }else if(response.data.position === '위원장') {
+                this.staffCertificated = '위원장';
             }
         }
     },

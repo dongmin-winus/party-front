@@ -403,7 +403,7 @@
                     <div class="content">
                         <div class="m-title type01">
                             <p class="sub">자유마을 활성화의 주인공은 누구?</p>
-                            마을사랑 개인랭킹 <span class="point orange">TOP10</span>
+                            개인랭킹 <span class="point orange">TOP10</span>
                         </div>
                     </div>
                     <div class="mt-16"></div>
@@ -789,7 +789,7 @@ export default {
         getPopularPercentage(item) {
             const total = this.getPopularTotalCount(item) + this.tokenCount;
             const percent = Math.floor((total / 100000) * 100);
-            if(percent < 30) return 30;
+            // if(percent < 30) return 30;
             if(percent > 100) return 100;
             return percent;
         },
