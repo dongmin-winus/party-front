@@ -784,7 +784,12 @@ export default {
             if(rankingCount >= 100 ) return 'bg-orange more';
         },
         getPopularTotalCount(item) {
-            return item.like_count + item.post_count + item.share_count + item.register_count;
+            const likeCount = parseInt(item.like_count);
+            const postCount = parseInt(item.post_count);
+            const shareCount = parseInt(item.share_count);
+            const registerCount = parseInt(item.register_count);
+            const total = likeCount + postCount + shareCount + registerCount;
+            return total;
         },
         getPopularPercentage(item) {
             const total = this.getPopularTotalCount(item) + this.tokenCount;
