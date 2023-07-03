@@ -9,7 +9,7 @@
                 <p class="subtitle">마을 소개</p>
                 <h3 class="title">{{rep_district['name'] ? rep_district['name'] : this.$store.state.district.district}} 섬기는 사람들</h3>
             </div>
-            <div class="m-tabs type01" v-if="!this.rep_district">
+            <div class="m-tabs type01" v-if="!this.rep_district.id">
                 <div class="m-tab-wrap">
                     <nuxt-link to="/infos" class="m-tab">
                         <span class="text">{{rep_district['name'] ? rep_district['name'] : this.$store.state.district.district}} 소개</span>
