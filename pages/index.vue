@@ -403,7 +403,7 @@
                     <div class="content">
                         <div class="m-title type01">
                             <p class="sub">자유마을 활성화의 주인공은 누구?</p>
-                            개인랭킹 <span class="point orange">TOP10</span>
+                            마을사랑 개인랭킹 <span class="point orange">TOP10</span>
                         </div>
                     </div>
                     <div class="mt-16"></div>
