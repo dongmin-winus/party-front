@@ -4,15 +4,28 @@
       <div class="img-box">
         <Loding v-if="imageLoding == true" class="loding" />
         <div v-else style="display: flex;">
-          <img v-if="imageUrl " class="postImg" :src="imageUrl" />
+          <img v-if="imageUrl" class="postImg" :src="imageUrl" />
           <div class="imgCancel">
             <button :disabled="imageLoding" @click="imageCancel"><img src='/images/Xbtn.svg'
                 style="width: 15px;" /></button>
           </div>
         </div>
-        
+
       </div>
     </div>
+    <div v-if="$store.state.emoticonOption&& imageFiles" class="img-box-border">
+        <div class="img-box">
+          <Loding v-if="imageLoding == true" class="loding" />
+          <div v-else style="display: flex;">
+            <img v-if="imageUrl" class="postImg" :src="imageUrl" />
+            <div class="imgCancel">
+              <button :disabled="imageLoding" @click="imageCancel"><img src='/images/Xbtn.svg'
+                  style="width: 15px;" /></button>
+            </div>
+          </div>
+
+        </div>
+      </div>
     <div class="chat-bottom">
       <div style=" margin-left: 20px; margin-right: 20px;  display: flex; align-items: center; width: 100%;">
         <div v-if="$store.state.option == false">
@@ -22,19 +35,18 @@
           <img src="/images/Xbtn.svg" alt="" style='width:25px;  margin-right: 20px' @click="optionShow">
         </div>
         <div class="chat-input-div">
-          <!-- <input v-model="message" class="chat-input" placeholder="메시지 보내기" @keyup.enter="send" @input="change" @focus="focusOn = true"
-            @blur="handleBlur" /> -->
           <textarea placeholder="메세지 보내기" v-model="message" class="chat-input" @keydown.enter.prevent="handleKeyDown"
             @input="change" @focus="focusOn = true" @blur="handleBlur" />
-          <div v-if="focusOn">
-            <button class="button1"><img class="img" src="/images/emojiOn.svg" alt=""></button>
-            <button :disabled="imageLoding" @click="send" class="button2"><img class="img" src="/images/sendOn.svg"
+
+          <div>
+            <button @click="emoticonClick" v-if="$store.state.emoticonOption == false" class="button1"><img class="img"
+                src="/images/emoji.svg" alt=""></button>
+            <button @click="emoticonClick" v-else class="button1"><img class="img" src="/images/emojiOn.svg"
                 alt=""></button>
-          </div>
-          <div v-else>
-            <button class="button1"><img class="img" src="/images/emoji.svg" alt=""></button>
-            <button :disabled="imageLoding" @click="send" class="button2"><img class="img" src="/images/send.svg"
-                alt=""></button>
+            <button v-if="focusOn" :disabled="imageLoding" @click="send" class="button2"><img class="img"
+                src="/images/sendOn.svg"></button>
+            <button v-else :disabled="imageLoding" @click="send" class="button2"><img class="img"
+                src="/images/send.svg"></button>
           </div>
         </div>
       </div>
@@ -44,7 +56,7 @@
         <div>
           <label for="file-input">
             <!-- user -->
-            <input id="file-input" type="file" @change="handleImageChange" accept="image/*" capture="filesystem" >  
+            <input id="file-input" type="file" @change="handleImageChange" accept="image/*">
             <div class="gallery">
               <img src="/images/gallery.svg" alt="">
             </div>
@@ -56,7 +68,7 @@
         <div>
           <label for="file-input2">
             <!-- environment -->
-            <input id="file-input2" type="file" @change="handleImageChange" accept="image/*" capture="camera" >
+            <input id="file-input2" type="file" @change="handleImageChange" accept="image/*" capture="camera">
             <div class="camera">
               <img src="/images/chatCamera.svg" alt="">
             </div>
@@ -67,9 +79,9 @@
         </div>
         <div class="option-btn">
           <button @click="locationClick()" id="file-input3">
-          <div class="location">
-            <img src="/images/location.svg" alt="">
-          </div>
+            <div class="location">
+              <img src="/images/location.svg" alt="">
+            </div>
           </button>
           <div class="option-name2">
             위치
@@ -77,12 +89,26 @@
         </div>
       </div>
     </Transition>
+    <Transition name="fade">
+      <div v-if="$store.state.emoticonOption" class="emoticon-option">
+
+        <!-- 한슬라이드 묶음 6개  -->
+        <swiper class="swiper-container" :options="swiperOptions" :spaceBetween="50" >
+         <div class="swiper-pagination" slot="pagination"></div>
+          <swiper-slide  class="swiper-slide" v-for="(slide, index) in emoticonList" :key="index">
+            <img v-for="(img, index) in slide" :key="index" @click="emoticonSelect(img)" class="emoticon" :src="img" alt="">
+          </swiper-slide>
+        </swiper>
+
+      </div>
+    </Transition>
   </div>
 </template>
 <script>
 import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
-import Loding from './loding.vue'
+import Loding from './loding.vue';
+
 export default {
   components: { Loding },
   data() {
@@ -97,8 +123,16 @@ export default {
       imageUrl: null,
       imageFiles: null,
       imageLoding: false,
-      user:[]
+      user: [],
+      emoticon: [],
+      emoticonList: [],
+      swiperOptions: {
+        slidesPerView: 1,
+        pagination: {
+          el: '.swiper-pagination',
+        }
 
+      },
     }
   },
   methods: {
@@ -106,14 +140,16 @@ export default {
       this.focusOn = false;
     },
     optionShow() {
-      if (this.$store.state.option == false) {
-        this.$store.commit('setSearchOption', false)
-      }
-      this.$store.commit('setOption', !(this.$store.state.option))
+      this.$store.commit('setEmoticonOption', false)
+      setTimeout(() => {
+        if (this.$store.state.option == false) {
+          this.$store.commit('setSearchOption', false)
+        }
+        this.$store.commit('setOption', !(this.$store.state.option))
+      }, 200)
+
     },
-    optionFalse(value) {
-      console.log(value)
-    },
+
     // 한글 칠때 한글자씩 빠는거
     change(e) {
       this.message = e.target.value
@@ -124,11 +160,39 @@ export default {
       this.imageUrl = null
       this.imageFiles = null
     },
+    // 이모티콘 클릭하기
+    emoticonClick() {
+      this.$store.commit('setSearchOption', false)
+      this.$store.commit('setOption', false)
+      setTimeout(() => {
+        this.$store.commit('setEmoticonOption', !(this.$store.state.emoticonOption))
+      }, 200)
+    },
+
+    // 이모티콘  6개씩 재배열
+    splitArray(array, size) {
+      const result = [];
+      for (let i = 0; i < array.length; i += size) {
+        result.push(array.slice(i, i + size));
+      }
+      return result;
+    },
+
+    // 이모티콘 선택
+      emoticonSelect(url){
+        this.imageUrl = url
+        this.imageFiles = url
+      },
+
+
+
     locationClick() {
-      alert('업데이트 예정입니다.');
+      // alert('업데이트 예정입니다.');
+      this.$router.push('/chat/location')
       return;
     },
 
+    // 쉬프트 엔터누르면 한줄 밑으로 가기
     handleKeyDown(event) {
       if (event.key === 'Enter') {
         if (event.shiftKey) {
@@ -160,6 +224,7 @@ export default {
         this.imageUrl = null;
         this.imageFiles = null;
         this.$store.commit('setOption', false)
+        this.$store.commit('setEmoticonOption', false)
         await this.$axios.post("/api/chat/broadcast", data);
         this.sending = false;
       }
@@ -184,25 +249,25 @@ export default {
           broadcaster: "pusher",
           key: "668bac10cc6db3a1338c",
           cluster: "ap3",
-          authEndpoint : '/api/broadcasting/auth',
+          authEndpoint: '/api/broadcasting/auth',
 
 
         });
       }
-        // this.echo.join(`chats` + this.$route.query.groupId)
-        // .here((users) => {
-        //    console.log("asd",users)
-        //  })
-        //  .joining((user) => {
-        //    console.log(user);
-        //  })
-        //  .listen("MessageSent", (e) => {
-        //    this.onChatSent(e);
-        // });
+      // this.echo.join(`chats` + this.$route.query.groupId)
+      // .here((users) => {
+      //    console.log("asd",users)
+      //  })
+      //  .joining((user) => {
+      //    console.log(user);
+      //  })
+      //  .listen("MessageSent", (e) => {
+      //    this.onChatSent(e);
+      // });
       this.echo.channel(`chats` + this.$route.query.groupId)
-       .listen("MessageSent", (e) => {
-         this.onChatSent(e);
-       });
+        .listen("MessageSent", (e) => {
+          this.onChatSent(e);
+        });
     },
     disconnect() {
       this.echo.leaveChannel("chats");
@@ -228,8 +293,6 @@ export default {
         .then(() => {
           this.imageLoding = false
         });
-
-
     }
   },
   computed: {
@@ -246,6 +309,17 @@ export default {
   },
   mounted() {
     this.connect();
+    // 이모티콘 이미지 불러오기
+    for (let i = 1; i < 33; i++) {
+      // 10보다 작으면 앞에숫자에 0붙이기
+      if (i < 10) {
+        this.emoticon.push(`/images/emoticon/애고미_이모티콘-0${i}.png`)
+      } else {
+        this.emoticon.push(`/images/emoticon/애고미_이모티콘-${i}.png`)
+      }
+    };
+    this.emoticonList = this.splitArray(this.emoticon, 9);
+
   },
 }
 </script>
@@ -258,7 +332,7 @@ export default {
 }
 
 .chat-option {
-  height: 150px;
+  height: 37vh;
   display: flex;
   justify-content: space-around;
   margin-left: 20px;
@@ -268,6 +342,28 @@ export default {
 
 }
 
+.emoticon-option {
+  height: 37vh;
+  display: flex;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 10px;
+  align-items: flex-start;
+}
+
+.swiper-container {
+  height: 100%;
+}
+
+.swiper-slide {
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr); 
+}
+
+
 .img-box {
   display: flex;
   height: 100px;
@@ -275,7 +371,10 @@ export default {
   margin: 0px 20px;
 }
 
-
+.emoticon {
+  width: 60px;
+  height: 60px;
+}
 
 .postImg {
   width: 80px;
@@ -394,4 +493,5 @@ export default {
   display: flex;
   flex-direction: column;
   margin-bottom: 50px;
-}</style>
+}
+</style>

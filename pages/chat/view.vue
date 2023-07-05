@@ -56,7 +56,7 @@
 
     <!-- section-->
     <div :class="searchOpen == true ? 'sizebox2T' : 'sizebox2F'">&nbsp;</div>
-    <div ref="chatSection" :class="[{ 'sectionTT': searchOpen, 'sectionT': $store.state.option }, 'sectionF']">
+    <div ref="chatSection" :class="[{ 'sectionTT': searchOpen, 'sectionT': $store.state.option, 'sectionTTT': $store.state.emoticonOption }, 'sectionF']">
 
       <div class="chatbox">
         <!-- 자신이 보낸 채팅 -->
@@ -163,8 +163,10 @@ export default {
         this.isDropdownOpen = false
       }
     },
-
+  
+    // 서치바 클릭
     searchBtn() {
+      this.$store.commit('setEmoticonOption', false)
       if (this.searchOpen == false) {
         this.$store.commit('setOption', false)
       }
@@ -328,6 +330,9 @@ export default {
     option() {
       return this.$store.state.option;
     },
+    emoticonOption() {
+      return this.$store.state.emoticonOption;
+    },
     searchOpen() {
       return this.$store.state.chatSearch;
     }
@@ -345,7 +350,14 @@ export default {
         let messageDisplay = this.$refs.chatSection
         messageDisplay.scrollTo({ top: messageDisplay.scrollHeight, behavior: 'instant' });
       })
+    },
+    emoticonOption() {
+       this.$nextTick(() => {
+        let messageDisplay = this.$refs.chatSection
+        messageDisplay.scrollTo({ top: messageDisplay.scrollHeight, behavior: 'instant' });
+      })
     }
+    
   },
 
   mounted() {
@@ -375,9 +387,7 @@ export default {
 };
 </script>
 <style scoped >
-.chat-full {
-  /* background-color: #bacee0; */
-}
+
 .msger-header {
   width: 100%;
   max-width: 500px;
@@ -570,8 +580,7 @@ export default {
 .sectionT {
   overflow: auto;
   /* height: calc(100vh - 160px); */
-  height: calc(100vh - 320px);
-
+  height: calc(100vh - 37vh - 170px );
 }
 
 /* 서치바  */
@@ -580,6 +589,12 @@ export default {
   height: calc(100vh - 196px);
 }
 
+/* 이모티콘 옵션 */
+.sectionTTT {
+  overflow: auto;
+  /* height: calc(100vh - 160px); */
+  height: calc(100vh - 37vh - 170px );
+}
 /* 12px */
 .sizebox2T {
   margin-bottom: 73px;

@@ -36,6 +36,7 @@ export const state = () => ({
     // 채팅 옵션
     option: false,
     chatSearch: false,
+    emoticonOption: false,
     
 });
 
@@ -162,6 +163,9 @@ export const mutations = {
     },
     setSearchOption(state, data) {
         state.chatSearch = data;
+    },
+    setEmoticonOption(state, data) {
+        state.emoticonOption = data
     }
 
 }
