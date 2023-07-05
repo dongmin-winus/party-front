@@ -187,8 +187,8 @@ export default {
 
 
     locationClick() {
-      // alert('업데이트 예정입니다.');
-      this.$router.push('/chat/location')
+      alert('업데이트 예정입니다.');
+      // this.$router.push('/chat/location')
       return;
     },
 
