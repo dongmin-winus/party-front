@@ -30,7 +30,7 @@ export default {
         ],
         script: [
             { src: '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js' },
-            { src: '//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=0b676e15765c46418fa53c1333910c0a&libraries=services' },
+            { src: '//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=0b676e15765c46418fa53c1333910c0a&libraries=services,clusterer' },
             { src: '//developers.kakao.com/sdk/js/kakao.min.js' },
             { src: '//ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js' },
             /*{

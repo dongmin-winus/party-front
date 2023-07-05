@@ -3,45 +3,45 @@
 
     <createHeader @searchData="searchData" />
     <div v-if="result == 1">
-    <Loding v-if="loding" />
-    <div v-else class="chat-b">
-      <template v-if="foundItem != ''">
-      <div class="chat-list" v-for="(data, index) in  memberList" :key="index">
-        <div class="chat-margin">
-          <div class="chat-circle">
-            <img class="chat-circle" :src="data.gender == '남' ? '/images/남성.png': '/images/여성.png'" />
-          </div>
-          <div class="chat-body">
-            <div class="chat-body-1">
-              <span class="chat-name">{{ data.name }} </span>
+      <Loding v-if="loding" />
+      <div v-else class="chat-b">
+        <template v-if="foundItem != ''">
+          <div class="chat-list" v-for="(data, index) in  memberList" :key="index">
+            <div class="chat-margin">
+              <div class="chat-circle">
+                <img class="chat-circle" :src="data.gender == '남' ? '/images/남성.png' : '/images/여성.png'" />
+              </div>
+              <div class="chat-body">
+                <div class="chat-body-1">
+                  <span class="chat-name">{{ data.name }} </span>
+                </div>
+                <div class="chat-body-1">
+                  <div class="chat-content">{{ data.group ? data.group + '조직 대표' : '' }}</div>
+                </div>
+              </div>
+              <div class="chat-body-img" @click="chatCreate(data.id, data.name)">
+                <img src="/images/chat-alt-2.svg">
+              </div>
             </div>
-            <div class="chat-body-1">
-              <div class="chat-content">{{ data.nickname }} {{ data.group ? data.group + '조직 대표' : '' }}</div>
-            </div>
           </div>
-          <div class="chat-body-img" @click="chatCreate(data.id,data.name)">
-            <img src="/images/chat-alt-2.svg">
+        </template>
+        <template v-else>
+          <div class="chat-empty">
+            <span class="chat-name">검색하신 이름이 없습니다.</span>
           </div>
-        </div>
+        </template>
       </div>
-      </template>
-      <template v-else>
-        <div class="chat-empty">
-          <span class="chat-name">검색하신 이름이 없습니다.</span>
-        </div>
-      </template>
-    </div>
     </div>
     <div v-else-if="result == 2">
       <div class="chat-b">
-         <div class="chat-empty" style="padding: 0px 15px;">
-            <p class="chat-name">대표가 없거나, 회원이 아닙니다.<br>
-              고객센터로 문의 바랍니다.
-              1544-7166
-            </p>
+        <div class="chat-empty" style="padding: 0px 15px;">
+          <p class="chat-name">대표가 없거나, 회원이 아닙니다.<br>
+            고객센터로 문의 바랍니다.
+            1544-7166
+          </p>
 
-          </div>
-          </div>
+        </div>
+      </div>
     </div>
     <navigation />
   </div>
@@ -65,24 +65,24 @@ export default {
     searchData(value) {
       this.foundItem = this.list.filter(item => item.name && item.name.includes(value));
     },
-    chatCreate(id,name) {
+    chatCreate(id, name) {
       this.$axios.post(`/api/chat/build-channel`, {
         receiver_id: id
       })
-      .then((response) => {
-        this.roomId = response.data
-      })
-      .then(()=>{
-        this.$router.push({
-          path: '/chat/view',
-          query: {
-            groupId: this.roomId,
-            userName: name,
-            userProfile: '/images/profile.svg',
-            online: true
-          },
+        .then((response) => {
+          this.roomId = response.data
         })
-      })
+        .then(() => {
+          this.$router.push({
+            path: '/chat/view',
+            query: {
+              groupId: this.roomId,
+              userName: name,
+              userProfile: '/images/profile.svg',
+              online: true
+            },
+          })
+        })
     },
   },
   computed: {
@@ -95,12 +95,11 @@ export default {
     this.loding = true;
     this.$axios.get(`api/districts/${this.$auth.user.district.id}/members/chat-list`)
       .then((response) => {
-        console.log(response)
         this.result = response.data.result
         this.list = response.data.data
         this.foundItem = response.data.data
       })
-      .then(()=>{
+      .then(() => {
         this.loding = false;
       })
   }
@@ -111,12 +110,14 @@ export default {
 .chat-b {
   margin-top: 104px;
 }
+
 .chat-empty {
   display: flex;
   height: 100px;
   justify-content: center;
   align-items: center;
 }
+
 .bell-off {
   border-bottom: 1px solid #EEEEEE;
   height: 180px;

@@ -41,8 +41,8 @@
               <span class="chat-date">{{  ChatRoomsTime(data.created_at) }}</span>
             </div>
             <div class="chat-body-1">
-              <!-- <div class="chat-content">{{ data.content.length > 15 ? data.content.substring(0,15) + '...' : data.content  }}</div> -->
-              <div class="chat-content">{{ data.message.length > 20 ? data.message.substring(0,20) + '...' : data.message }}</div>
+              <div v-if="data.message == null " class="chat-content">{{'...' }}</div>
+              <div v-else class="chat-content">{{ data.message.length > 20 ? data.message.substring(0,20) + '...' : data.message }}</div>
               <!-- <div v-if="data.count !=0 " class="chat-green-circle">{{ data.count }}</div> -->
             </div>
           </div>
@@ -186,6 +186,7 @@ export default {
         this.foundItem = response.data.data;
         this.$store.commit('setSearchOption', false)
         this.$store.commit('setOption', false)
+        this.$store.commit('setEmoticonOption', false)
       })
       .then(()=>{
         this.loding = false;
