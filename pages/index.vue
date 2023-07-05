@@ -335,7 +335,7 @@
             </section>
 
             <section class="section-ad">
-                <swiper :options="bannerOptions">
+                <swiper :options="middleBannerOptions">
                     <swiper-slide v-for="(slide,index) in homeBanner2" :key="slide.id">
                         <a :href="slide.link_url" target="_blank" class="link">
                             <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
@@ -563,6 +563,15 @@ export default {
                 loop: true,
                 autoplay: {
                     delay: 5000,
+                    disableOnInteraction: false,
+                },
+            },
+            middleBannerOptions: {
+                slidesPerView: 'auto',
+                centeredSlides: false,
+                loop: true,
+                autoplay: {
+                    delay: 2000,
                     disableOnInteraction: false,
                 },
             },
