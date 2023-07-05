@@ -102,6 +102,10 @@
                             <img src="/images/heart-active.png" alt="" class="icon" style="width:14px;">
                             <p class="text">출석체크</p>
                         </nuxt-link>
+                        <nuxt-link to="/share" class="menu">
+                            <img src="/images/heart-active.png" alt="" class="icon" style="width:14px;">
+                            <p class="text">공유랭킹</p>
+                        </nuxt-link>
                     </div>
                 </div>
             </div>

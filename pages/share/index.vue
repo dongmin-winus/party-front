@@ -7,12 +7,10 @@
       <div class="container">
         
         <section class="section-ranking">
-            <img src="/images/bannertop.jpg" alt="" width="100%">
                 <div class="wrap">
                     <div class="mt-12"></div>
                     <div class="content">
                         <div class="m-title type01">
-                            <p class="sub"><b>6월</b>의 <b style="font-weight:500;">공유왕</b>은 <b>누구?</b></p>
                             공유랭킹 <span class="point orange">TOP 100</span>
                         </div>
 
