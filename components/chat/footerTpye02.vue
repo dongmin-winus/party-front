@@ -141,6 +141,8 @@ export default {
     },
     optionShow() {
       this.$store.commit('setEmoticonOption', false)
+      this.imageUrl = null;
+      this.imageFiles = null;
       setTimeout(() => {
         if (this.$store.state.option == false) {
           this.$store.commit('setSearchOption', false)
@@ -164,6 +166,8 @@ export default {
     emoticonClick() {
       this.$store.commit('setSearchOption', false)
       this.$store.commit('setOption', false)
+      this.imageUrl = null;
+      this.imageFiles = null;
       setTimeout(() => {
         this.$store.commit('setEmoticonOption', !(this.$store.state.emoticonOption))
       }, 200)
