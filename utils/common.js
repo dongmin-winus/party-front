@@ -183,6 +183,14 @@ export default {
         }
       }
       return result;
+    },
+    transGroup(groupNumber) {
+      if (groupNumber < 1 || groupNumber > 26) {
+        return "Invalid number";
+      }
+      return String.fromCharCode(parseInt(groupNumber) + 64);
     }
   },
+
+
 }
