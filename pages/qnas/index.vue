@@ -148,9 +148,12 @@ import KakaoHelper from '../../utils/KakaoHelper';
 import accordion from '@/components/accordion.vue';
 import accordionItem from '@/components/accordionItem.vue'
 
+import common from '@/utils/common.js'
+
 
 export default {
   components: {Qna, Navigation, ScrollLoading, Post ,accordion, accordionItem},
+  mixins: [common],
   auth: false,
   data() {
       return {
@@ -217,7 +220,7 @@ export default {
               const { data } = await this.$axios.get(`/api/staff-check?phone=${this.staffNumber}`);
               
               if(data.position) {
-                  this.staffInfo = `${data.district.state} ${data.district.city} ${data.district.district} ${data.group} ${data.position} ${data.name}`;
+                  this.staffInfo = `${data.district.state} ${data.district.city} ${data.district.district} ${transGroup(data.group)} ${data.position} ${data.name}`;
               } else {
                   alert(`${data}`);
               }

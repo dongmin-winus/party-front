@@ -41,7 +41,7 @@
                                 <div class="item-container">
                                     <div class="left">
                                         <div>
-                                            {{ $store.state.district.district }}{{ item.group }}&nbsp;{{ item.after }}{{ `(${formatDate(item.created_at)})` }}
+                                            {{ $store.state.district.district }}{{ transGroup(item.group) }}&nbsp;{{ item.after }}{{ `(${formatDate(item.created_at)})` }}
                                         </div>
                                     </div>
                                     <div class="right">

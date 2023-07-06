@@ -16,7 +16,7 @@
                   <span class="chat-name">{{ data.name }} </span>
                 </div>
                 <div class="chat-body-1">
-                  <div class="chat-content">{{ data.group ? data.group + '조직 대표' : '' }}</div>
+                  <div class="chat-content">{{ data.group ? transGroup(data.group) + '조직 대표' : '' }}</div>
                 </div>
               </div>
               <div class="chat-body-img" @click="chatCreate(data.id, data.name)">
@@ -49,8 +49,10 @@
 <script>
 import createHeader from '../../components/chat/createHeader.vue';
 import Loding from '../../components/chat/loding.vue';
+import common from '@/utils/common.js'
 export default {
   components: { createHeader, Loding },
+  mixins: [common],
   data() {
     return {
       list: [],
