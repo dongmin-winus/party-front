@@ -95,6 +95,7 @@
       <chatDelete v-if="modalShow" :groupId="groupId" @cancelModal="cancelModal" />
     </Transition>
     <!-- footer-->
+    <div class="bottom">&nbsp;</div>
     <footerTpye02 class="footer" @messageSubmit="messageSubmit" />
   </div>
 </template>
@@ -121,6 +122,7 @@ export default {
       userOnline: true,
       groupId: "",
       modalShow: false,
+      vh:0 // 높이
     };
   },
   methods: {
@@ -161,6 +163,14 @@ export default {
       let target = e.target
       if ((el !== target) && !el.contains(target)) {
         this.isDropdownOpen = false
+      }
+    },
+    documentOption(e) {
+      let el = this.$refs.chatSection
+      let target = e.target
+      if(el == target) {
+        this.$store.commit('setOption', false)
+        this.$store.commit('setEmoticonOption', false)
       }
     },
   
@@ -361,14 +371,18 @@ export default {
   },
 
   mounted() {
+    this.vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${this.vh}px`);
     // 외부 클릭시 닫기
     document.addEventListener('click', this.documentClick)
+    document.addEventListener('click', this.documentOption)
 
   },
 
   beforeDestroy() {
     // 외부 클릭시 닫기 삭제
     document.removeEventListener('click', this.documentClick)
+    document.removeEventListener('click', this.documentOption)
   },
   created() {
     this.userName = this.$route.query.userName;
@@ -387,7 +401,9 @@ export default {
 };
 </script>
 <style scoped >
-
+  :root {
+       --vh: 100%;
+   }
 .msger-header {
   width: 100%;
   max-width: 500px;
@@ -568,10 +584,12 @@ export default {
   max-width: 500px;
 }
 
-
+/* .bottom {
+  height: 100px;
+} */
 .sectionF {
   overflow: auto;
-  height: calc(100vh - 160px);
+  height: calc(var(--vh, 1vh) * 100  - 160px);
   /* background-color: #bacee0; */
 
 }
@@ -580,20 +598,20 @@ export default {
 .sectionT {
   overflow: auto;
   /* height: calc(100vh - 160px); */
-  height: calc(100vh - 37vh - 170px );
+  height: calc(var(--vh, 1vh) * 100 - var(--vh, 1vh) * 37- 170px );
 }
 
 /* 서치바  */
 .sectionTT {
   overflow: auto;
-  height: calc(100vh - 196px);
+  height: calc(var(--vh, 1vh) * 100 - 196px);
 }
 
 /* 이모티콘 옵션 */
 .sectionTTT {
   overflow: auto;
   /* height: calc(100vh - 160px); */
-  height: calc(100vh - 37vh - 170px );
+  height: calc(var(--vh, 1vh) * 100 - var(--vh, 1vh) * 37 - 170px );
 }
 /* 12px */
 .sizebox2T {
