@@ -54,7 +54,7 @@
                     <div class="m-input-error" v-if="errors.position">{{errors.position[0]}}</div> -->
                     <h3 class="m-input-title">그룹(수정불가)</h3>
                     <div class="m-input-text type01">
-                        <input type="text" placeholder="그룹" v-model="form.group" readonly>
+                        <input type="text" placeholder="그룹" v-model="form.groupName"  readonly>
                     </div>
                     <div class="m-input-error" v-if="errors.group">{{errors.group[0]}}</div>
                     <h3 class="m-input-title">이름</h3>
@@ -139,7 +139,7 @@ import Form from "@/utils/Form";
 import Reminder from "../../components/reminder.vue";
 import Dropdown from "@/components/dropdown";
 
-import common from "@/utils/common";
+import common from "@/utils/common.js";
 
 export default {
     components: {InputAddress, InputThumbnail, InputImg, InputLink, InputCamera, Reminder, Dropdown},
@@ -204,6 +204,7 @@ export default {
         setForm(item) {
             this.form = Object.assign({},{
                 ...item,
+                groupName: this.transGroup(item.group),
             })
             this.changePosition(item.position);
             this.imgUrl = item.img.url;
@@ -328,6 +329,7 @@ export default {
         this.group = this.$route.query.group;
         this.rep_district_id = this.$route.query.rep_district_id;
         this.form.group = this.group;
+        this.form.groupName = this.transGroup(this.group);
     }
 }
 </script>
