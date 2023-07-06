@@ -1,6 +1,7 @@
 <template>
   <div class="chat-full">
     <!-- header-->
+    
     <header class="header-box">
       <div class="msger-header">
         <div class="msger-header-flex">
