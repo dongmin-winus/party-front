@@ -62,7 +62,7 @@
                     <div class="mt-12 m-tabs type01" v-if="computedCountySections.length > 1">
                         <div class="m-tab-wrap" v-for="(item) in computedCountySections">
                             <div class="m-tab" :class="`${activeCounty === item ? 'active' : ''}`" @click="getCounty(item)">
-                                <span class="text">{{ $store.state.district.district }}&nbsp;{{ item }}</span>
+                                <span class="text">{{ $store.state.district.district }}&nbsp; {{ transGroup(item) }}</span>
                             </div>
                         </div>
                     </div>
