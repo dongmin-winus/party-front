@@ -111,8 +111,22 @@
             </div>
 
             <!-- 253 위원장(지부장)메뉴 -->
+            <div class="menus-wrap" v-if="staffCertificated == '총괄지역팀장'">
+                <h3 class="title">충괄지역팀장 활동</h3>
+                <div class="mt-12"></div>
+                <div class="menus">
+                    <div class="wrap">
+                        <div class="menu" @click="activeModal=true">
+                            <img src="/images/board.png" alt="" class="icon" style="width:14px;">
+                            <p class="text">관리지역 선택</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 253 위원장(지부장)메뉴 -->
             <div class="menus-wrap" v-if="staffCertificated == '위원장'">
-                <h3 class="title">지부장 활동</h3>
+                <h3 class="title">위원장 활동</h3>
                 <div class="mt-12"></div>
                 <div class="menus">
                     <div class="wrap">
@@ -256,30 +270,45 @@
                         </div>
                     </div>
                 </div>
-                <!--
-                <div class="menus-wrap">
-                    <h3 class="title">나의 마을설정</h3>
-
-                    <div class="menus">
-                        <div class="wrap">
-                            <a href="#" class="menu">
-                                <img src="/images/location-marker.png" alt="" class="icon" style="width:14px;">
-                                <p class="text">내 동네 설정</p>
-                            </a>
-                            <a href="#" class="menu">
-                                <img src="/images/circleCheck.png" alt="" class="icon" style="width:14px;">
-                                <p class="text">동네 인증하기</p>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                -->
             </div>
             <quicks 
                 :createUrl="'/qnas'"
                 :btnName="'고객센터'"
             />
+            <modal
+                v-if="activeModal"
+                @cancel="activeModal = false"
+            >
+                <template #inner>
+                    <div class="m-pop-title">
+                        <p class="subtitle">검색하신 마을에 방문합니다.</p>
+                        <span class="point">관리지역 선택</span>
+                    </div>
+                    <Dropdown
+                        :menuTitle="'선거구 선택'"
+                        :activate="activeElection"
+                        :items="computedElections"
+                        :selected="electionSelected"
+                        @toggle="toggleElection"
+                        @change="changeElection"
+                        v-model="selectedItem.election"
+                    />
+                    <Dropdown
+                        :menuTitle="'읍/면/동 선택'"
+                        :activate="activeDistrict"
+                        :items="computedDistricts"
+                        :selected="districtSelected"
+                        @toggle="toggleDistrict"
+                        @change="changeDistrict"
+                        v-model="selectedItem.District"
+                    />
 
+
+                    <div class="mt-20"></div>
+
+                    <button type="button" class="m-btn type03 width-100" @click="toDistrict">검색하기</button>
+                </template>
+            </modal>
         </div>
 
         <!-- 하단 네비게이션바 -->
@@ -304,6 +333,20 @@ export default {
             staffCertificated: false,
             represenateDistrict: null,
             group: null,
+
+            activeModal: false,
+
+            //dropdown
+            activeElection: false,
+            activeDistrict: false,
+            electionSelected: false,
+            districtSelected: false,
+            selectedItem: {
+                election: null,
+                district: null,
+            },
+            elections: [],
+            districts: [],
         }
     },
     methods: {
@@ -331,11 +374,61 @@ export default {
                 this.group = response.data.group;
             }else if(response.data.position === '위원장') {
                 this.staffCertificated = '위원장';
+            }else if(response.data.position === '총괄지역팀장') {
+                this.staffCertificated = '총괄지역팀장';
+                this.high_id = response.data.id;
+                await this.getElections();
+            }
+        },
+        
+        async getElections() {
+            const response = await this.$axios.get(`/api/category/high-show/${this.high_id}`);
+            this.elections = response.data;
+        },
+        async getDistricts(election) {
+            const response = await this.$axios.get(`/api/category/high-district`, {params: { election:election }});
+            this.districts = response.data;
+        },
+        toggleElection() {
+            this.activeElection = !this.activeElection;
+        },
+        toggleDistrict() {
+            this.activeDistrict = !this.activeDistrict;
+        },
+        async changeElection(item) {
+            const target = this.elections.find(e => e.election === item);
+            this.selectedItem.election = item;
+            this.electionSelected = true;
+            await this.getDistricts(target.election);
+        },
+        changeDistrict(item) {
+            const target = this.districts.find(e => e.district === item);
+            this.selectedItem.district = target;
+            this.districtSelected = true;
+        },
+        toDistrict() {
+            if(this.selectedItem.election && this.selectedItem.district) {
+                this.activeModal = false;
+                this.$store.commit("changeDistrict", this.selectedItem.district);
+                this.$router.push("/");
+            }else {
+                alert("선거구와 읍/면/동을 선택해주세요.")
             }
         }
     },
 
     computed: {
+        computedElections() {
+            return this.elections.map(item => {
+                return item.election
+            })
+        },
+        computedDistricts() {
+            return this.districts.map(item => {
+                return item.district
+            })
+        },
+
         profileUrl() {
             return this.changedUrl ? this.changedUrl :this.$auth.user.img.url;
         },
