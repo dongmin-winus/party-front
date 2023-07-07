@@ -78,6 +78,14 @@ export default {
   async mounted() {
     // if (!("geolocation" in navigator)) {
     //   return;
+
+    this.vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${this.vh}px`);
+    window.addEventListener('resize', () => {
+      console.log('resize')
+      this.vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${this.vh}px`);
+    })
     // }
     await this.getApi()
     kakao.maps.load(() => {
@@ -265,12 +273,13 @@ export default {
 
 
 <style scoped>
+
 .map-body {
   position: relative;
 }
 
 .map {
-  height: calc(100vh - 130px);
+  height: calc(var(--vh, 1vh) * 100 - 130px);
 }
 
 .sizebox {

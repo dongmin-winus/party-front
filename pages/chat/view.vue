@@ -56,7 +56,7 @@
     </header>
 
     <!-- section-->
-    <div :class="searchOpen == true ? 'sizebox2T' : 'sizebox2F'">&nbsp;</div>
+    <div :class="searchOpen == true ? 'sizebox2T' : 'sizebox2F'" ref="chatTop">&nbsp;</div>
     <div ref="chatSection" :class="[{ 'sectionTT': searchOpen, 'sectionT': $store.state.option, 'sectionTTT': $store.state.emoticonOption }, 'sectionF']">
 
       <div class="chatbox">
@@ -96,8 +96,8 @@
       <chatDelete v-if="modalShow" :groupId="groupId" @cancelModal="cancelModal" />
     </Transition>
     <!-- footer-->
-    <div class="bottom">&nbsp;</div>
-    <footerTpye02 class="footer" @messageSubmit="messageSubmit" />
+    <div class="bottom" ref="chatRef">&nbsp;</div>
+    <footerTpye02 class="footer" @messageSubmit="messageSubmit"  />
   </div>
 </template>
 <script>
@@ -166,15 +166,7 @@ export default {
         this.isDropdownOpen = false
       }
     },
-    documentOption(e) {
-      let el = this.$refs.chatSection
-      let target = e.target
-      if(el == target) {
-        this.$store.commit('setOption', false)
-        this.$store.commit('setEmoticonOption', false)
-      }
-    },
-  
+
     // 서치바 클릭
     searchBtn() {
       this.$store.commit('setEmoticonOption', false)
@@ -372,18 +364,31 @@ export default {
   },
 
   mounted() {
+ 
     this.vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--vh', `${this.vh}px`);
+    window.addEventListener('resize', () => {
+      console.log('resize')
+      this.vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${this.vh}px`);
+    })
+
+    this.$nextTick(() => {
+
+      this.$refs.chatSection.click(this.$nextTick(() => {
+        let messageDisplay = this.$refs.chatTop
+        messageDisplay.scrollTo({ top: 0, behavior: 'instant' });
+      }));
+    })
+
     // 외부 클릭시 닫기
     document.addEventListener('click', this.documentClick)
-    document.addEventListener('click', this.documentOption)
 
   },
 
   beforeDestroy() {
     // 외부 클릭시 닫기 삭제
     document.removeEventListener('click', this.documentClick)
-    document.removeEventListener('click', this.documentOption)
   },
   created() {
     this.userName = this.$route.query.userName;
@@ -402,10 +407,8 @@ export default {
 };
 </script>
 <style scoped >
-  :root {
-       --vh: 100%;
-   }
-.msger-header {
+
+   .msger-header {
   width: 100%;
   max-width: 500px;
   display: flex;
@@ -599,7 +602,7 @@ export default {
 .sectionT {
   overflow: auto;
   /* height: calc(100vh - 160px); */
-  height: calc(var(--vh, 1vh) * 100 - var(--vh, 1vh) * 37- 170px );
+  height: calc(var(--vh, 1vh) * 100 - var(--vh, 1vh) * 37 - 170px );
 }
 
 /* 서치바  */
