@@ -1,5 +1,5 @@
 <template>
-  <div class="chat-footer">
+  <div class="chat-footer" ref="chatRef">
     <div v-if="$store.state.option && imageFiles" class="img-box-border">
       <div class="img-box">
         <Loding v-if="imageLoding == true" class="loding" />
@@ -297,7 +297,18 @@ export default {
         .then(() => {
           this.imageLoding = false
         });
-    }
+    },
+      documentOption(e) {
+      let el2 = this.$refs.chatRef
+      let target = e.target
+      if (!el2.contains(target)) {
+        this.$store.commit('setOption', false)
+        this.$store.commit('setEmoticonOption', false)
+      }
+    },
+    oneClick(){
+      console.log("클릭함")
+    },
   },
   computed: {
     content() {
@@ -313,6 +324,8 @@ export default {
   },
   mounted() {
     this.connect();
+    
+    document.addEventListener('click', this.documentOption)
     // 이모티콘 이미지 불러오기
     for (let i = 1; i < 33; i++) {
       // 10보다 작으면 앞에숫자에 0붙이기
@@ -324,6 +337,9 @@ export default {
     };
     this.emoticonList = this.splitArray(this.emoticon, 9);
 
+  },
+  beforeDestroy() {
+    document.removeEventListener('click', this.documentOption)
   },
 }
 </script>
