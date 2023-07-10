@@ -89,7 +89,7 @@
                         <thead>
                             <tr>
                                 <th>순위</th>
-                                <th>아이디</th>
+                                <th>이름</th>
                                 <th>토탈점수</th>
                                 <th>가입</th>
                                 <th>게시글</th>
@@ -190,7 +190,7 @@ export default {
         },
 
         getUserImgUrl(share, i) {
-            return share.profile?.url ? share.profile.url : "images/rankings/" + i + ".png";
+            return share.profile?.url ? share.profile.url : "../images/rankings/" + i + ".png";
         },
         subText(i, n) {
             if (i.length <= n) { return i; } 
