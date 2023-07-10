@@ -792,6 +792,113 @@ html {
     background-color:#D30000;
 }
 
+.area-index .section-stuff {
+    background-color:#FFF;
+}
+
+.area-index .section-stuff .frame {
+    padding: 30px 20px;
+}
+
+.area-index .section-stuff .m-title.type01 {
+    margin-bottom:10px;
+    text-align: left;
+}
+
+.area-index .section-stuff .m-title.type01 .highlighter-point {
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    background: linear-gradient(to top, #AEE2AC 50%, transparent 50%);
+}
+
+.area-index .section-stuff .banner01 {
+    height:170px; 
+    background-size:cover;
+    border-radius:10px;
+}
+
+.area-index .section-stuff .d-day {
+    width: 60px;
+    height: 25px;
+    background: white;
+    border-radius: 15px;
+    border: 1px solid #FF7C2E;
+    display:flex; align-items: center; justify-content: center;
+}
+.area-index .section-stuff .d-day .d-day-text {
+    color: #FF7C2E;
+    font-weight:500;
+}
+
+.area-index .section-stuff .info-container {
+    display:flex;
+    flex-direction: column;
+    align-content: 1;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.area-index .section-stuff .info-container .main-info {
+    font-size: 28px;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+.area-index .section-stuff .info-container .sub-info {
+    font-size: 20px;
+    font-weight: 300;
+    color: #555;
+}
+
+.area-index .section-stuff .meeting.fragment {
+    background-color:#F5F5F5;
+}
+
+.area-index .section-stuff .content-header {
+    display:flex; align-items: center; justify-content: space-between;
+    padding: 10px 0;
+}
+
+.area-index .section-stuff .content-header .title {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.area-index .section-stuff .meeting.contents {
+    position:relative;
+    display:flex; align-items: space-around; justify-content: start;
+    flex-direction: column;
+
+    padding: 10px 50px 10px 10px;
+    margin-bottom: 10px;
+
+    border: 1px solid #F5F5F5;
+    border-radius: 10px;
+    background-color:#FFF;
+
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+
+}
+.area-index .section-stuff .meeting.contents .title {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.area-index .section-stuff .meeting.contents .content {
+    font-size: 16px;
+    font-weight: 300;
+    margin-bottom: 10px;
+    color: #777;
+
+}
+
+.area-index .section-stuff .meeting.contents .tags {
+    display:flex; align-items: center; justify-content: flex-start;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
 .area-index .section-parasole {
     background-color:#F5F5F5;
     padding: 30px 20px;
@@ -1508,6 +1615,13 @@ html {
     text-align: center;
     white-space: nowrap;
 }
+.m-table.type02.popular th {
+    padding:12px 4px;
+    background-color:#0baf00;
+    font-weight:500; color:#fff;
+    text-align: center;
+    white-space: nowrap;
+}
 .m-table.type02.noborder th {
     padding:16px 8px;
     font-weight:500; color:#777777;
@@ -2143,6 +2257,9 @@ html {
 }
 .red {
     color:red !important;
+}
+.orangee {
+    color: #F88600 !important;
 }
 
 
