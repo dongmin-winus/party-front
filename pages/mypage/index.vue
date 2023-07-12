@@ -165,18 +165,18 @@
 
                     <div class="menus">
                         <div class="wrap">
-                            <nuxt-link to="/infos/create" class="menu">
+                            <!-- <nuxt-link to="/infos/create" class="menu">
                                 <img src="/images/building.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">내 마을 소개</p>
-                            </nuxt-link>
+                            </nuxt-link> -->
                             <nuxt-link :to="{path:'/staffs/create', query:{group:group,rep_district_id:represenateDistrict['id']}}" class="menu">
                                 <img src="/images/users.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">내 마을 임원진</p>
                             </nuxt-link>
-                            <nuxt-link to="/contacts/create" class="menu">
+                            <!-- <nuxt-link to="/contacts/create" class="menu">
                                 <img src="/images/chart.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">내마을 국회의원</p>
-                            </nuxt-link>
+                            </nuxt-link> -->
                             <nuxt-link to="/notices/create" class="menu">
                                 <img src="/images/board.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">내 마을 공지</p>
