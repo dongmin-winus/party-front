@@ -5,7 +5,7 @@
           <div class="wrap">
               <div class="left">
                   <button class="btn-util" @click="$router.back()">
-                      <img src="/images/back.png" alt="" style="width:10px;">
+                      <img src="/images/back.png" alt="" style="width:10px; height:20px;">
                   </button>
               </div>
 
@@ -39,8 +39,8 @@
           <div class="wrap">
             <div class="title-container">
               <div class="left">
-                <p style="font-size:26px" v-if="$auth.user">{{ $auth.user.name }}님,</p>
-                <p style="font-size:20px; font-weight:300; color:rgba(110, 108, 108, 0.752)">
+                <p style="font-size:30px" v-if="$auth.user">{{ $auth.user.name }}님,</p>
+                <p style="font-size:26px; font-weight:300; color:rgba(110, 108, 108, 0.752)">
                   궁금한 점이 있으시다면
                   <br/>언제든지 문의주세요
                 </p>
@@ -54,15 +54,15 @@
             <div class="mt-32"></div>
             <div class="gray-container">
               <div>
-                <p>자유마을 고객센터</p>
+                <p style="font-size:20px;">자유마을 고객센터</p>
                 <div v-if="$auth.user?.role === 6">
                   <div class="mt-8"></div>
                   <button type="button" class="m-btn type01" @click="activeStaff = true">임원진 검색하기</button>
                 </div>
               </div>
               <div>
-                <p style="font-size:26px;">1544-7166</p>
-                <p style="font-weight:300; color:rgba(110, 108, 108, 0.752)">평일 09:00 ~ 18:00</p>
+                <p style="font-size:30px;">1544-7166</p>
+                <p style="font-size:18px;font-weight:300; color:rgba(110, 108, 108, 0.752)">평일 09:00 ~ 18:00</p>
               </div>
             </div>
 
@@ -71,28 +71,28 @@
               <nuxt-link to="/qnas/create" class="border-rounded">
                 <img src="/images/qna_post.png" alt="">
                 <div class="mt-8"></div>
-                <p style="font-size:20px;">온라인 문의</p>
-                <p style="font-weight:300; color:rgba(110, 108, 108, 0.752)">1:1 문의하기</p>
+                <p style="font-size:22px;">온라인 문의</p>
+                <p style="font-size:18px;font-weight:300; color:rgba(110, 108, 108, 0.752)">1:1 문의하기</p>
               </nuxt-link>
               <a class="border-rounded" href="tel:1544-7166">
                   <img src="/images/qna_tell.png" alt="">
                   <div class="mt-8"></div>
-                  <p style="font-size:20px;">고객센터</p>
-                  <p style="font-weight:300; color:rgba(110, 108, 108, 0.752)">상담원 전화 상담</p>
+                  <p style="font-size:22px;">고객센터</p>
+                  <p style="font-size:18px;font-weight:300; color:rgba(110, 108, 108, 0.752)">상담원 전화 상담</p>
               </a>
             </div>
 
             <div class="mt-32"></div>
             <p style="font-size:22px; padding-bottom:5px; border-bottom:1px solid black">자주 묻는 질문</p>
             <accordion>
-              <accordion-item v-for="(item,index) in faqs">
+              <accordion-item v-for="(item,index) in faqs" @active="getActiveQuestionIdx">
                 <template slot="accordion-trigger">
                   <div class="inner">
                     <div style="margin-right:10px;">
-                      <span style="color:#0BAF00">Q</span>
+                      <span style="color:#0BAF00; font-weight:600; font-family:GmarketSans;">Q</span>
                     </div>
                     <div>
-                      <p>{{ item.title }}</p>
+                      <p class="content" :class="activeQuestionIdx == index ? 'active' : ''">{{ item.title }}</p>
                     </div>
                   </div>
 
@@ -100,10 +100,10 @@
                 <template slot="accordion-content">
                   <div class="inner">
                     <div style="margin-right:10px;">
-                      <span style="color:#0BAF00">A</span>
+                      <span style="color:#0BAF00; font-weight:600; font-family:GmarketSans;">A</span>
                     </div>
                     <div>
-                      <p :id="`content_${index}`"></p>
+                      <p class="content" :id="`content_${index}`"></p>
                     </div>
                   </div>
                 </template>
@@ -204,12 +204,16 @@ export default {
               content: '현재 자유마을은 2022년 12월 기준 으로 행정복지센터가 있는 읍면동만 반영이 된 상태입니다. 읍면동 추가 건은 논의 중에 있어서 추후에 확정되면 공지드리겠습니다. 감사합니다.'
             },
           ],
+          activeQuestionIdx: -1,
           activeStaff: false,
           staffNumber: undefined,
           staffInfo: undefined,
       }
   },
   methods: {
+  getActiveQuestionIdx(idx) {
+      this.activeQuestionIdx = idx;
+    },
     async staffCheck() {
         this.staffInfo = undefined;
           if(!this.staffNumber || this.staffNumber.length !== 11) {
@@ -294,7 +298,11 @@ export default {
     justify-content: space-between;
     align-items: center;
   }
-  .title-container .my-list {
+
+  .title-container .right {
+    min-width:106px;
+  }
+  .title-container .right .my-list {
     background-color: #0BAF00;
     color: white;
     border-radius: 5px;
@@ -331,5 +339,13 @@ export default {
   .inner {
     display: flex;
     justify-content: space-between;
+  }
+
+  .inner .content {
+    font-size: 22px;
+
+  }
+  .inner .content.active {
+    color: #0BAF00;
   }
 </style>

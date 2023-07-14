@@ -124,38 +124,41 @@
                             <p class="sub">생생한 지역 인터뷰</p>
                             이달의 <span class="point">마을</span>
                         </div>
-                        <swiper :options="swiperOptions">
+                        <swiper ref="promotionSwiper" :options="swiperOptions" @slideChange="runOnChange">
                             <swiper-slide v-for="(slide,index) in promotionList" :key="slide.id">
                                 <nuxt-link :to="`/posts/${slide.id}`">
                                     <div class="content">
-                                        
-                                        <div style="border:1px solid #bdbdbd; border-radius:10px; height:inherit;">
+                                        <div style="position:relative; border:1px solid #bdbdbd; border-radius:10px; height:inherit;">
+                                            <div class="recommend">
+                                                <span style="color:white;">{{new Date().getMonth()+1}}월추천</span>
+                                            </div>
                                             <img class="img" :src="slide.video_thumbnail" alt="-" />
                                             <div class="mt-8"></div>
-                                            <p style="font-weight:500; font-size:20px; color:#0BAF00" align="center">{{slide.title}}</p>
-                                            <p style="display:block; margin: 0 15px; font-weight:300; font-size:16px; overflow:hidden; white-space:nowrap" align="center" v-html="slide.content"></p>
+                                            <p style="font-weight:500; font-size:20px; color:#0BAF00" align="center">{{seperateString(slide.title,'/')[0]}}</p>
+                                            <p style="display:block; margin: 0 15px; font-weight:300; font-size:16px; overflow:hidden; white-space:nowrap" align="center" v-html="seperateString(slide.title,'/')[1]"></p>
                                         </div>
    
                                     </div>
                                 </nuxt-link>
 
-                                <div class="mt-8"></div>
-                                <nuxt-link :to="`/posts/${slide.id}`" class="m-btn type02 bg-revert-primary">자세히보기 +</nuxt-link>
+
                             </swiper-slide>
                         </swiper>
+                        <div class="mt-8"></div>
+                        <nuxt-link :to="`/posts/${activePromotionId}`" class="m-btn type02 bg-revert-primary">자세히보기 +</nuxt-link>
                     </div>
                 </section>
             </div>
 
 
-            <section class="section-ranking">
+            <section class="section-ranking" :style="`${$auth.user ? ($store.state.district.id !== 0 ?  '' : 'background-color:#F7F7F7; padding:24px 0;') : 'background-color:#F7F7F7; padding:24px 0;'}`">
                 <div class="wrap">
                     <div class="content">
                         <div class="m-title type01">
                             <p class="sub">순위 현황 한 눈에 보기</p>
                             마을별 가입 <span class="point">TOP 100</span>
                         </div>
-                        <div class="m-input-checkboxes type01">
+                        <div class="m-input-checkboxes" :class="`${$auth.user ? ($store.state.district.id !== 0 ?  'type01' : 'type05') : 'type05'}`">
                             <div class="mt-8"></div>
                             <div class="m-input-checkbox">
                                 <input type="radio" id="1" value="total-rankings" v-model="toggleList">
@@ -353,12 +356,16 @@
                         </div>
                         <swiper :options="storyOptions">
                             <swiper-slide v-for="(slide,index) in storyList" :key="slide.id">
-                                <nuxt-link :to="`/posts/${slide.id}`">
+                                <nuxt-link :to="`/posts/${slide.id}`" style="padding-bottom:32px;">
                                     <div class="story-container">
+                                        <div class="ribbon">
+                                            <p class="year">{{ new Date().getFullYear() }}</p>
+                                            <p class="month">{{ new Date().getMonth() + 1 }}월</p>
+                                        </div>
                                         <img class="img" :src="slide.video_thumbnail" alt="-">
                                         <div class="content-container">
-                                            <p style="font-size:20px; font-weight:500" v-html="slide.title"></p>
-                                            <!-- <p style=" white-space:nowrap;  overflow:hidden;" v-html="slide.content"></p> -->
+                                            <p style="font-size:20px; font-weight:500" v-html="replaceText(slide.title,10)"></p>
+                                            <p style="color:#777; overflow:hidden;" v-html="replaceText(slide.content,10)"></p>
                                         </div>
                                     </div>
                                 </nuxt-link>
@@ -611,7 +618,7 @@ export default {
                 spaceBetween: 15,
                 loop: true,
                 autoplay: {
-                    delay: 5000,
+                    delay: 500000,
                     disableOnInteraction: false,
                 },
                 pagination: {
@@ -661,6 +668,7 @@ export default {
             ],
             popularRankings: [],
             promotionList: [],
+            activePromotionId: 0,
             storyList: [],
             meetingList: [],
             homeBanners:[],
@@ -680,10 +688,20 @@ export default {
         const meetingList = await $axios.get('/api/meeting');
         return {
             promotionList: [
-                ...promotionList.data.promotion,
+                ...promotionList.data.promotion.map((item) => {
+                    return {
+                        ...item,
+                        video_thumbnail: item.video_thumbnail.replace(/0\.jpg/g, 'mqdefault.jpg')
+                    }
+                })
             ],
             storyList: [
-                ...promotionList.data.story,
+                ...promotionList.data.story.map((item) => {
+                    return {
+                        ...item,
+                        video_thumbnail: item.video_thumbnail.replace(/0\.jpg/g, 'mqdefault.jpg')
+                    }
+                })
             ],
             homeBanners: {
                 ...homeBanners.data,
@@ -792,6 +810,14 @@ export default {
     },
 
     methods: { 
+        getActiveIndex(swiper) {
+            return swiper.activeIndex;
+        },
+        runOnChange() {
+            // console.log(this.$refs.promotionSwiper.swiper.realIndex,44444)
+            this.activePromotionId = this.promotionList[this.$refs.promotionSwiper.swiper.realIndex].id;
+        },
+
         computedPartyClass(partyName) {
             partyName == '국민의힘' ? 'red' : 'blue';
         },
@@ -1097,7 +1123,6 @@ export default {
             this.getRankings(10);
         },
         togglePopularList(value) {
-            console.log(value,33333)
             if(value !== 'statistics') {
                 this.form.popularRankUrl = value;
                 this.switchPopularRankGuide(value);
@@ -1149,6 +1174,28 @@ export default {
 }
 </script>
 <style scoped>
+    .section-story {
+        background: linear-gradient(180deg, #FFFFFF 0%, #F8F8F8 100%);
+        margin-bottom: 40px;
+    }
+    .section-story .wrap {
+        background: linear-gradient(180deg, #FFFFFF 0%, #F8F8F8 100%);
+    }
+    .recommend {
+        position:absolute;
+        display: flex;
+        top: 7px;
+        left: 5%;
+        min-width:60px;
+        min-height:32px;
+        border-radius: 10px;
+        background: #f50000;
+        align-items: center; justify-content: center;
+
+    }
+    .recommend span {
+        color: white;
+    }
     .area-index .section-popular .m-table li:first-child .rank{
 
                 box-shadow: 5px 3px 33px 2px rgba(30,212,37,0.49);
@@ -1369,15 +1416,38 @@ export default {
 
     .swiper-slide .story-container {
         position: relative;
-        background-color: white;
-        height: 250px;
+        background-color: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #FFFFFF 100%);
+        height: 270px;
         overflow:hidden;
+    }
+
+    .swiper-slide .story-container .ribbon {
+        position: absolute;
+        flex-direction: column;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding-top: 10px;
+        top: -5px;
+        right: 3%;
+        min-width: 12%;
+        min-height: 80px;
+        background:url('/images/ribbon.png') no-repeat center center;
+        background-size:cover;
+    }
+
+    .swiper-slide .story-container .ribbon .year {
+        font-size: 10px;
+    }
+    .swiper-slide .story-container .ribbon .month {
+        font-size: 14px;
+        font-weight: 500;
     }
 
     .swiper-slide .story-container .img {
         border-radius: 10px;
         width:100%;
-        height:70%;
+        height:65%;
         object-fit: cover;
     }
 
@@ -1388,14 +1458,13 @@ export default {
         border-radius: 10px;
         width: 90%;
         height:80px;
-        bottom: 3%;
+        bottom: 13%;
         left: 5%;
 
         display:flex;
         flex-flow: column;
         justify-content: center;
         align-items: center;
-        padding: 1rem;
     }
 
     .accordion-enter-active,
