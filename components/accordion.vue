@@ -6,12 +6,22 @@
 
 <script>
 export default {
-  props: {},
+  props: {
+    initialActive: {
+      type: Number,
+      default: null
+    },
+    isQuestion: {
+      type: Boolean,
+      default: true
+    }
+  },
   data() {
     return {
       Accordion: {
         count: 0,
-        active: null
+        active: this.initialActive || this.initialActive == 0 ? this.initialActive : null,
+        isQuestion: this.isQuestion
       }
     };
   },
