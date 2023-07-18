@@ -1,6 +1,7 @@
 <template>
   <li class="accordion__item">
     <div 
+      v-if="isQuestion"
       class="accordion__trigger"
       :class="{'accordion__trigger_active': visible}"
       @click="open">
@@ -17,6 +18,7 @@
       @after-leave="end">
 
       <div class="accordion__content"
+        @click="close"
         v-show="visible">
         <ul>
           <!-- This slot will handle all the content that is passed to the accordion -->
@@ -30,7 +32,6 @@
 
 <script>
 export default {
-  props: {},
   inject: ["Accordion"],
   data() {
     return {
@@ -40,15 +41,25 @@ export default {
   computed: {
     visible() {
       return this.index == this.Accordion.active;
-    }
+    },
+    isQuestion(){
+      return  this.Accordion.isQuestion || !this.visible
+    },
   },
   methods: {
-    open() {
+
+    open(event) {
       if (this.visible) {
         this.Accordion.active = null;
+        this.$emit('active', -1)
       } else {
         this.Accordion.active = this.index;
+        this.$emit('active', this.index)
       }
+    },
+    close() {
+      this.Accordion.active = null;
+      this.$emit('active', -1)
     },
     start(el) {
       el.style.height = el.scrollHeight + "px";
@@ -59,6 +70,10 @@ export default {
   },
   created() {
     this.index = this.Accordion.count++;
+    // window.addEventListener('click', this.open)
+  },
+  beforeDestroy() {
+    window.removeEventListener('click', this.open)
   }
 };
 </script>

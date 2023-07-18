@@ -5,7 +5,7 @@
             <div :class="`nav-wrap ${$route.path === '/' ? 'active' : ''}`">
                 <nuxt-link to="/" class="nav">
                     <div class="img-wrap">
-                        <img src="https://dotmzh1fysixs.cloudfront.net/1029/home.png" alt="" style="width:21px;">
+                        <img :src="`${$route.path === '/' ? '/images/home_solid.png' : '/images/home.png'}`" alt="" style="width:21px;">
                     </div>
 
                     <h3 class="title">홈</h3>
@@ -15,16 +15,16 @@
             <div :class="`nav-wrap ${$route.path === '/posts' ? 'active' : ''}`">
                 <a href="/posts" class="nav">
                     <div class="img-wrap">
-                        <img src="https://dotmzh1fysixs.cloudfront.net/1028/newspaper.png" alt="" style="width:19px;">
+                        <img :src="`${$route.path === '/posts' ? '/images/newspaper_solid.png' : '/images/newspaper.png'}`" alt="" style="width:21px;">
                     </div>
-
-                    <h3 class="title">마을소식</h3>
+                    <h3 class="title">마을소식</h3> 
                 </a>
             </div>
             <div class="nav-wrap">
                 <nuxt-link to="/scraps" class="nav">
                     <div class="img-wrap">
-                        <img src="https://dotmzh1fysixs.cloudfront.net/1027/cart.png" alt="" style="width:30px">
+                        <img :src="`${$route.path === '/scraps' ? '/images/scrap_solid.png' : '/images/scrap.png'}`" alt="" style="width:21px;">
+
                     </div>
 
                     <h3 class="title">내 공유함</h3>
@@ -46,7 +46,7 @@
             <div :class="`nav-wrap ${$route.path.includes('/mypage') ? 'active' : ''}`">
                 <nuxt-link to="/mypage" class="nav">
                     <div class="img-wrap">
-                        <img src="https://dotmzh1fysixs.cloudfront.net/1026/user.png" alt="" style="width:16px;">
+                        <img :src="`${$route.path === '/mypage' ? '/images/user_solid.png' : '/images/user.png'}`" alt="" style="width:21px;">
                     </div>
 
                     <h3 class="title">내 정보</h3>

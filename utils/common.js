@@ -70,6 +70,7 @@ export default {
     },
 
     replaceText(target, maskLength, mask = '...') {
+      if (target === null || target === undefined) return;
       if (target.length <= maskLength) return target;
       return target.substring(0, maskLength) + mask;
     },
@@ -189,6 +190,25 @@ export default {
         return "Invalid number";
       }
       return String.fromCharCode(parseInt(groupNumber) + 64);
+    },
+    calculateDdays(startDate, endDate = startDate) {
+      //오늘 날짜와 파라미터 날짜를 비교하여 파라미터보다 이전이면 d-day를 계산하고, 이후면 '종료'를 리턴
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const start = new Date(startDate);
+      start.setHours(0, 0, 0, 0);
+      const end = new Date(endDate);
+      end.setHours(0, 0, 0, 0);
+      if (today < start) {
+        const diff = start.getTime() - today.getTime();
+        const dday = Math.ceil(diff / (1000 * 3600 * 24));
+        return `D-${dday}`;
+      }
+      if (today >= start && today <= end) return '진행중';
+      if (today > end) return '종료';
+    },
+    seperateString(str, seperator = ',') {
+      return str.split(seperator).map(item => item.trim());
     }
   },
 
