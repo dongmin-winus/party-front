@@ -37,7 +37,7 @@ export default {
                 src: "https://www.googletagmanager.com/gtag/js?id=" + process.env.GOOGLE_ANALYTICS_ID,
                 async: true,
             },
-            { src: "/js/analytics.js" }, 
+            { src: "/js/analytics.js" },
         ]
 
     },
@@ -51,7 +51,8 @@ export default {
         { src: '~/plugins/vue-infinite-loading.js' },
         { src: '~/plugins/axios.js' },
         { src: '~/plugins/vue2-touch-events.js' },
-        { src: '~/plugins/swiper.js', mode: 'client' }
+        // { src: '~/plugins/swiper.js', mode: 'client' }
+        { src: '~/plugins/swiper.js', ssr: false }
     ],
 
     // Auto import components: https://go.nuxtjs.dev/config-components

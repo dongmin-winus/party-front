@@ -7,7 +7,7 @@
             <!-- 지역이 본부 x & 로그인 -->
             <div class="fragment" v-if="district && district.id != 0">
                 <section class="section-ad">
-                    <swiper :options="bannerOptions">
+                    <swiper id="banner1" :options="bannerOptions">
                         <swiper-slide v-for="(slide,index) in homeBanner1" :key="slide.id">
                             <a :href="slide.link_url" target="_blank" class="link">
                                 <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
@@ -109,7 +109,7 @@
             <!-- 지역이 본부 | 비로그인 -->
             <div class="fragment" v-else>
                 <section class="section-ad">
-                    <swiper :options="bannerOptions">
+                    <swiper id="banner2" :options="bannerOptions">
                         <swiper-slide v-for="(slide,index) in homeBanner1" :key="slide.id">
                             <a :href="slide.link_url" target="_blank" class="link">
                                 <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
@@ -124,7 +124,7 @@
                             <p class="sub">생생한 지역 인터뷰</p>
                             이달의 <span class="point">마을</span>
                         </div>
-                        <swiper ref="promotionSwiper" :options="swiperOptions" @slideChange="runOnChange">
+                        <swiper id="promotionSwiper" ref="promotionSwiper" :options="swiperOptions" @slideChange="runOnChange">
                             <swiper-slide v-for="(slide,index) in promotionList" :key="slide.id">
                                 <nuxt-link :to="`/posts/${slide.id}`">
                                     <div class="content">
@@ -338,7 +338,7 @@
             </section>
 
             <section class="section-ad">
-                <swiper :options="middleBannerOptions">
+                <swiper id="banner3" :options="middleBannerOptions">
                     <swiper-slide v-for="(slide,index) in homeBanner2" :key="slide.id">
                         <a :href="slide.link_url" target="_blank" class="link">
                             <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
@@ -354,7 +354,7 @@
                             <p class="sub">도란도란 따뜻함이 가득한</p>
                             자유마을 <span class="point">스토리</span>
                         </div>
-                        <swiper :options="storyOptions">
+                        <swiper id="storySwiper" :options="storyOptions">
                             <swiper-slide v-for="(slide,index) in storyList" :key="slide.id">
                                 <nuxt-link :to="`/posts/${slide.id}`" style="padding-bottom:32px;">
                                     <div class="story-container">
@@ -498,7 +498,7 @@
 
             <div class="mt-12"></div>
             <section class="section-ad">
-                <swiper :options="bannerOptions">
+                <swiper id="banner4" :options="bannerOptions">
                     <swiper-slide v-for="(slide,index) in homeBanner3" :key="slide.id">
                         <a :href="slide.link_url" target="_blank" class="link">
                             <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
@@ -618,7 +618,7 @@ export default {
                 spaceBetween: 15,
                 loop: true,
                 autoplay: {
-                    delay: 500000,
+                    delay: 5000,
                     disableOnInteraction: false,
                 },
                 pagination: {
