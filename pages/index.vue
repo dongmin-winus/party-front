@@ -1128,7 +1128,7 @@ export default {
                 this.switchPopularRankGuide(value);
                 this.getPopularRakings(10);
             }else if(value === 'statistics') {
-                this.$router.push('/popular/rank')
+                this.$router.push('/popular/statistics')
             }
 
         },
