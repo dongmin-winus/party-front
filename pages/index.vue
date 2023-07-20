@@ -866,7 +866,7 @@ export default {
                 if(response) {
                     this.temp = response.data.data;
                     this.review_check = this.temp.review_check;
-                    await this.nprlapfmaufmqytet(this.temp.korean_name); //의원 약력 등 정보
+                    await this.nprlapfmaufmqytet(this.temp.korean_name, this.district?.city); //의원 약력 등 정보
                 }
                     
             } catch (error) {
@@ -876,7 +876,7 @@ export default {
         /**
          * 의원 약력 등 추가 정보
          */
-         async nprlapfmaufmqytet(name) {
+         async nprlapfmaufmqytet(name, city = undefined) {
             try {
                 const {data} = await this.$axios.get(`/portal/openapi/nprlapfmaufmqytet`, {
                     params: {
@@ -889,10 +889,23 @@ export default {
 
                 if(data) {
                     // console.log(data.nprlapfmaufmqytet[1].row[0])
-                    this.congressmanItem = {
-                        ...this.temp,
-                        ...data.nprlapfmaufmqytet[1].row[0],
-                    }
+                    let info;
+                    let infoArr = data.nprlapfmaufmqytet[1].row;
+                    if(infoArr.length > 1) {
+                        info = infoArr.filter(item => {
+                            return item.DAE.includes(city);
+                        })
+                        this.congressmanItem = {
+                            ...this.temp,
+                            ...info[0],
+                        }
+                    }else {
+                        this.congressmanItem = {
+                            ...this.temp,
+                            ...data.nprlapfmaufmqytet[1].row[0],
+                        }                       
+                    }             
+
                 }
             } catch (error) {
                 console.error(error);
@@ -1177,7 +1190,7 @@ export default {
             handler: function (value) {
                 let str = value.DAE.split(" ");
                 let partyName = str[str.length-1].trim();
-                if(partyName === '미래통합당') {
+                if(partyName.includes('미래통합당')) {
                     this.partyClass = 'red'
                     partyName = '국민의힘';
                 }else {
