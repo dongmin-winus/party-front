@@ -98,7 +98,7 @@
 
                         <div class="img-wrap" >
                             <img :src="item.img.url" alt="임원이미지" v-show="item.img.url">
-                            <img src="/images/default_profile.jpeg" alt="대체이미지" v-show="!item.img.url">
+                            <img src="@/assets/images/default_profile1.jpeg" alt="대체이미지" v-show="!item.img.url">
                             <div class="m-board-btns mt-20">
                                 <div class="m-btns type01" >
                                     <div class="m-btn-wrap" style="display:flex; justify-content:center;">

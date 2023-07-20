@@ -5,7 +5,7 @@
         <div :class="`img-wrap ${file || imgUrl ? 'active' : ''}`">
             <img :src="fileImgUrl" alt="" v-if="file">
             <img :src="imgUrl" alt="" v-else-if="imgUrl">
-            <img src="/images/picturePlus.png" alt="" style="width:17px;" v-else>
+            <img src="@/assets/images/picturePlus.png" alt="" style="width:17px;" v-else>
         </div>
 
         <h3 class="title">대표이미지</h3>

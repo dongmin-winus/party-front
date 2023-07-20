@@ -16,8 +16,8 @@
 
                 
                     <div class="right" v-if="isManager">
-                        <img src="/images/dots.png" alt="" style="width:3px;" @click.prevent.stop="active = true" v-if="!active">
-                        <img src="/images/x.png" alt="" style="width:12px;" @click.prevent.stop="active = false" v-else>
+                        <img src="@/assets/images/dots.png" alt="" style="width:3px;" @click.prevent.stop="active = true" v-if="!active">
+                        <img src="@/assets/images/x.png" alt="" style="width:12px;" @click.prevent.stop="active = false" v-else>
                     </div> 
                 </div>
 

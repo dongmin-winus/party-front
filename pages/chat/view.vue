@@ -6,7 +6,7 @@
       <div class="msger-header">
         <div class="msger-header-flex">
           <div class="" @click="$router.push('/chat')">
-            <img src="/images/chevron-left.png" style="width:10px;">
+            <img src="@/assets/images/chevron-left.png" style="width:10px;">
           </div>
           <div>
             <img class="msger-header-circle" :src="userProfile" />
@@ -31,7 +31,7 @@
           </button>
           <div class="dropdown" ref="dropdown">
             <button @click="toggleDropdown">
-              <img src="/images/ㅇ.svg" alt="" style='width:25px;'>
+              <img src="@/assets/images/ㅇ.svg" alt="" style='width:25px;'>
             </button>
             <Transition name="fade">
               <ul v-show="isDropdownOpen" class="dropdown-menu">
@@ -49,7 +49,7 @@
         <div v-if="searchOpen" class="searchbox">
           <input v-model="search" @keydown.enter.prevent="searchFocus" @input="changeSearch" class="search-input"
             placeholder="대화내용 검색" />
-          <div class="search-img"><img src="/images/search-gray.png" style="width: 20px;" alt=""></div>
+          <div class="search-img"><img src="@/assets/images/search-gray.png" style="width: 20px;" alt=""></div>
           <button @click="searchBtn" class="search-button">취소</button>
         </div>
       </Transition>

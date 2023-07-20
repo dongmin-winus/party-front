@@ -194,7 +194,7 @@
                 </div>
             </section>
 
-            <img src="/images/base-greeting.png" alt="" class="base">
+            <img src="@/assets/images/base-greeting.png" alt="" class="base">
 
         </div>
 

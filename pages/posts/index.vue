@@ -81,28 +81,28 @@
                                 <p class="body" v-if="item.content">{{replaceContent(item.content)}}</p>
                                 <div class="m-thumbnail type01 mt-8" :style="`background-image:url(${item.img.url})`" v-if="item.img">
                                     <div class="m-thumbnail-base" v-if="item.board === 'clips'">
-                                        <img src="/images/circlePlay-white.png" alt="" class="deco" style="width:40px;">
+                                        <img src="@/assets/images/circlePlay-white.png" alt="" class="deco" style="width:40px;">
                                     </div>
                                 </div>
 
                                 <div class="infos" v-if="item.board === 'meetings'">
                                     <div class="info">
                                         <div class="icon-wrap">
-                                            <img src="/images/talk.png" alt="" class="icon" style="width:14px;">
+                                            <img src="@/assets/images/talk.png" alt="" class="icon" style="width:14px;">
                                         </div>
 
                                         {{ item.participant_type }}
                                     </div>
                                     <div class="info">
                                         <div class="icon-wrap">
-                                            <img src="/images/calendar.png" alt="" class="icon" style="width:12px;">
+                                            <img src="@/assets/images/calendar.png" alt="" class="icon" style="width:12px;">
                                         </div>
 
                                         {{ item.start_date }} ~ {{ item.end_date }}
                                     </div>
                                     <div class="info">
                                         <div class="icon-wrap">
-                                            <img src="/images/users.png" alt="" class="icon" style="width:12px;">
+                                            <img src="@/assets/images/users.png" alt="" class="icon" style="width:12px;">
                                         </div>
 
                                         {{item.participant_count}} / {{item.participant_available_count}}명 참여

@@ -134,7 +134,7 @@ export default {
         },
 
         getUserImgUrl(share, i) {
-            return share.profile?.url ? share.profile.url : "../images/rankings/" + i + ".png";
+            return share.profile?.url ? share.profile.url : "..@/assets/images/rankings/" + i + ".png";
         },
         subText(i, n) {
             if (i.length <= n) { return i; } 

@@ -5,7 +5,7 @@
             <div class="wrap">
                 <div class="left">
                     <button class="btn-util">
-                        <img src="/images/back.png" alt="" style="width:10px; height:20px;" @click="$router.back()">
+                        <img src="@/assets/images/back.png" alt="" style="width:10px; height:20px;" @click="$router.back()">
                     </button>
                 </div>
 
@@ -14,7 +14,7 @@
                 </div>
 
                 <nuxt-link to="/contents/settings" class="btn-util">
-                    <img src="/images/setting.png" alt="" style="width:20px;">
+                    <img src="@/assets/images/setting.png" alt="" style="width:20px;">
                 </nuxt-link>
             </div>
         </div>

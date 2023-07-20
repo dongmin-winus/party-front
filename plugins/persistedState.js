@@ -5,11 +5,11 @@ import cookie from "cookie";
 export default ({ store, req }) => {
     createPersistedState({
         paths: ["district"],
-        key:'vuex',
+        key: 'vuex',
         storage: {
             getItem: (key) => {
                 if (process.server) {
-                    const parsedCookies = cookie.parse(req.headers.cookie ?? "");
+                    const parsedCookies = cookie.parse(req?.headers?.cookie ?? "");
                     return parsedCookies[key];
                 } else {
                     return Cookies.get(key);

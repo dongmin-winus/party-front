@@ -20,7 +20,7 @@
                         <p class="m-board-bottom" style="color: #AAAAAA" >{{ computeDate }} 가입</p> -->
                     </div>
                     <div class="right" @click.stop="$emit('makeProxyPhoneCall')">
-                        <img :src="everCalled(item)" alt="">
+                        <img :src="require(`@/assets/images/${everCalled(item)}`)" alt="">
                         <div v-if="showWhiteround(item)" class="white-round">{{ `${item.call_count && item.call_count > 1 ? item.call_count : 0}` }}</div>
                     </div>
                 </div>
@@ -58,19 +58,12 @@ export default {
     methods: {
         everCalled(item) {
             if(item.call_count) {
-                return '/images/call_after_improved.png'
+                return 'call_after_improved.png'
             } else {
-                return '/images/call_before.png'
+                return 'call_before.png'
             }
         },
-        getCheckImg(item) {
-            if( item.call_count) {
-                return '/images/ppl_checked.png'
-            } else {
-                return '/images/ppl_unchecked.png'
-            }
-        },
-        showWhiteround(item) {
+        wWhiteround(item) {
             return item.call_count && item.call_count > 1
         }
     },

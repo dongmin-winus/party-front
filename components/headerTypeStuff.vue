@@ -5,7 +5,7 @@
       <div class="wrap">
         <div class="left">
             <button class="btn-util">
-                <img src="/images/back.png" alt="" style="width:10px;" @click="$router.back()">
+                <img src="@/assets/images/back.png" alt="" style="width:10px;" @click="$router.back()">
             </button>
         </div>
 
@@ -20,7 +20,7 @@
       <div class="menu-container">
         <div class="left">
           <nuxt-link to="/">
-            <img style="padding-top:7px;" src="/images/home_stuffed.png" alt="홈버튼 자리">
+            <img style="padding-top:7px;" src="@/assets/images/home_stuffed.png" alt="홈버튼 자리">
           </nuxt-link>
           <span style="color:#999">|</span>
           <nuxt-link to="/stuff" style="color:#0A8803; font-size:20px;">행사교육</nuxt-link>
@@ -34,7 +34,7 @@
               <nuxt-link :class="`link ${current.code == 'education' ? 'active' : ''}`"  to="/stuff/education">마을교육</nuxt-link>
             </div>
           </button>
-          <div class="chevron" :style="`background-image:url('../images/chevron-down-outline.png');`"></div>
+          <div class="chevron" :style="`background-image:url('..@/assets/images/chevron-down-outline.png');`"></div>
         </div>
        
       </div>

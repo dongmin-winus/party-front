@@ -14,8 +14,8 @@
 
                 <div class="utils">
                     <button class="btn-like" @click="toggleLike">
-                        <img src="/images/heart-active.png" alt="" style="width:14px;" v-if="item.is_like">
-                        <img src="/images/heart-inactive.png" alt="" style="width:14px;" v-else>
+                        <img src="@/assets/images/heart-active.png" alt="" style="width:14px;" v-if="item.is_like">
+                        <img src="@/assets/images/heart-inactive.png" alt="" style="width:14px;" v-else>
                         {{item.like_count}}
                     </button>
                     <button class="btn-text" @click="active = !active" v-if="!item.is_reply && !item.deleted_at">답글쓰기</button>
@@ -34,7 +34,7 @@
             </div>
 
             <button class="btn-more" @click="activeBtns = !activeBtns">
-                <img src="/images/dots.png" alt="" style="width:3px;" v-if="$auth.user && !item.deleted_at">
+                <img src="@/assets/images/dots.png" alt="" style="width:3px;" v-if="$auth.user && !item.deleted_at">
             </button>
         </div>
 

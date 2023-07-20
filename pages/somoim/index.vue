@@ -6,7 +6,7 @@
         <div class="left">
           <button class="btn-util">
             <nuxt-link to="/">
-                <img src="/images/back.png" alt="" style="width:10px;">
+                <img src="@/assets/images/back.png" alt="" style="width:10px;">
             </nuxt-link>
           </button>
         </div>
@@ -51,20 +51,20 @@
                   <div class="infos" v-if="item.board === 'meetings'">
                       <div class="info">
                           <div class="icon-wrap">
-                              <img src="/images/calendar-orange.png" alt="" class="icon" style="width:12px;">
+                              <img src="@/assets/images/calendar-orange.png" alt="" class="icon" style="width:12px;">
                           </div>
 
                           <span>{{ item.start_date }} ~ {{ item.end_date }}</span>
                       </div>
                       <div class="info">
                         <div class="icon-wrap">
-                          <img src="/images/marker-orange.png" class="icon" alt="">
+                          <img src="@/assets/images/marker-orange.png" class="icon" alt="">
                         </div>
                         <span>{{ item.address }}  {{ item.address_detail }}</span>
                       </div>
                       <div class="info">
                           <div class="icon-wrap">
-                              <img src="/images/users-orange.png" alt="" class="icon" style="width:12px;">
+                              <img src="@/assets/images/users-orange.png" alt="" class="icon" style="width:12px;">
                           </div>
 
                           <span style="color:#FF7C2E">{{item.participant_count}}</span> <span>명 참여중</span>
@@ -75,7 +75,7 @@
 
               <div class="m-board-bottom">
                   <div class="tag light-orange">
-                    <img src="/images/parasole.png" class="icon" alt="">
+                    <img src="@/assets/images/parasole.png" class="icon" alt="">
                     <span>파라솔</span>
                   </div>
               </div>

@@ -30,7 +30,7 @@
                   >
                       <label>
                           <input type="radio" :value="option.value" v-model="grade">
-                          <img :src="option.image" :alt="option.label">
+                          <img :src="require(`@/assets/images/contacts/${getOptionSmile(option)}`)" :alt="option.label">
                       </label>
                       <div class="m-pop-title">
                           {{option.label}}
@@ -106,6 +106,9 @@ export default {
         this.comment = response.data[0].comment
       }
     },
+    getOptionSmile(option) {
+          return option.image;
+      },
     closeEvaluteModal() {
       this.$emit('close')
     },

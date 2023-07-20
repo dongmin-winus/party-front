@@ -6,7 +6,7 @@
       </div>
       <div v-if="paddingModal" class="m-pop-inner">
         <button v-if="cancelBtn" class="btn-close" @click.prevent="emitEvent('cancel')">
-          <img src="/images/x.png" alt="x" style="width:21px;">
+          <img src="@/assets/images/x.png" alt="x" style="width:21px;">
         </button>
         <div class="mt-8">
         <slot name="inner" />

@@ -23,7 +23,7 @@
                         <span class="alert blbs orange" v-if="$auth.user && $auth.user.has_new_notice"></span>
                     </button>
                     <button class="btn-util" @click="$router.push('/chat/create')">
-                        <img src="/images/Vector.svg" alt="" style='width:18px;'>
+                        <img src="@/assets/images/Vector.svg" alt="" style='width:18px;'>
                     </button>
                 </div>
             </div>

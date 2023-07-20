@@ -2,7 +2,7 @@
   <div class="m-pop type01" @click.stop="handleBackdropClick($event, 'm-pop type01')">
     <div class="m-pop-inner">
       <button class="btn-close" @click.prevent="emitEvent('cancel')">
-        <img src="/images/x.png" alt="" style="width:21px;">
+        <img src="@/assets/images/x.png" alt="" style="width:21px;">
       </button>
       <div class="m-pop-title">{{title}}</div>
       <div class="mt-8"></div>

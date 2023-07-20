@@ -43,7 +43,7 @@
             <div class="right">
               <button class="btn-util">
                 <nuxt-link to="/">
-                    <img src="/images/foword.png" alt="" style="width:10px;">
+                    <img src="@/assets/images/foword.png" alt="" style="width:10px;">
                 </nuxt-link>
               </button>
             </div>
@@ -52,7 +52,7 @@
             <div class="meeting contents" v-for="(item,index) in meetings" :key="index">
               <b class="title">{{ item.title }}</b>
               <article class="content">{{ replaceText(item.content, 40) }}</article>
-              <span ><img src="/images/marker-orange.png" class="icon" alt=""/>{{ item.district.name }}</span>
+              <span ><img src="@/assets/images/marker-orange.png" class="icon" alt=""/>{{ item.district.name }}</span>
               <div class="tags">
                 <span v-for="(tag, tagIndex) in item.tags" :key="tagIndex">#{{ tag }} &nbsp;</span>
 

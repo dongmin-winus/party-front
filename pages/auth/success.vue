@@ -4,7 +4,7 @@
         <div class="m-header type02">
             <div class="wrap">
                 <div class="left">
-                    <img src="/images/arrowLeft-black.png" alt="" style="width:14px;" @click="$router.back()">
+                    <img src="@/assets/images/arrowLeft-black.png" alt="" style="width:14px;" @click="$router.back()">
                 </div>
                 <div class="center">
                     <h3 class="title"></h3>
@@ -22,7 +22,7 @@
                         <br/>회원가입해주셔서 감사합니다.
                     </h3>
 
-                    <img src="/images/register-success.png" alt="" class="img">
+                    <img src="@/assets/images/register-success.png" alt="" class="img">
 
                     <div class="mt-16"></div>
 

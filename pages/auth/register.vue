@@ -4,7 +4,7 @@
         <div class="m-header type02">
             <div class="wrap">
                 <div class="left">
-                    <img src="/images/arrowLeft-black.png" alt="" style="width:14px;" @click="$router.go(-1)">
+                    <img src="@/assets/images/arrowLeft-black.png" alt="" style="width:14px;" @click="$router.go(-1)">
                 </div>
                 <div class="center">
                     <h3 class="title">회원가입</h3>
@@ -265,6 +265,7 @@ export default {
                 is_agree_privacy: false,
                 is_agree_push: false,
             },
+            agreements: [],
             agree1: false,
             agree2: false,
             agree3: false,
@@ -275,28 +276,26 @@ export default {
             errors: {},
         }
     },
-    async asyncData({$axios}) {
-        const agreements = await $axios.$get('/data/agreements.json')
-        return {
-            agreements
-        }
-    },
 
     computed: {
         isAgreeAll() {
             return this.agree1 && this.agree2 && this.agree3 && this.agree4  && this.agree6 && this.form.is_agree_push;
         },
         agreement1() {
-            return this.agreements.find(agreement => agreement.category === 'agreement1')
+            return this.agreements.length > 0 ? this.agreements.find(agreement => agreement.category === 'agreement1') : ''
         },
         agreement2() {
-            return this.agreements.find(agreement => agreement.category === 'agreement2')
+            return this.agreements.length > 0 ? this.agreements.find(agreement => agreement.category === 'agreement2') : ''
         },
         agreement4() {
-            return this.agreements.find(agreement => agreement.category === 'agreement4')
+            return this.agreements.length > 0 ? this.agreements.find(agreement => agreement.category === 'agreement4') : ''
         }
     },
     methods: {
+        async getAggrements() {
+            const agreements = await this.$axios.$get('/data/agreements.json')
+            this.agreements = agreements
+        },
         openFinder() {
             this.activeFinder = true;
         },
@@ -319,10 +318,7 @@ export default {
 
             if(this.form.referrer && !this.validatePhone(this.form.referrer))
                 return alert('추천인 전화 번호를 올바르게 입력해주세요. 예: 01012345678')
-            // this.$axios.post("/api/auth/check-nickname", this.form).then((response) => {
-            //     if(!response.data.result)
-            //         return alert("금지된 이름입니다.");
-            // });
+;
 
             this.$axios.post("/api/auth/register", this.form)
             .then((response) => {
@@ -393,14 +389,15 @@ export default {
         },
 
         replaceBr(str) {
+            if (!str) return '';
             const os = require('os');
             return str.replace(/<br>/g, os.EOL);
         }
 
     },
 
-    mounted() {
-
+    async mounted() {
+        await this.getAggrements();
     }
 }
 </script>

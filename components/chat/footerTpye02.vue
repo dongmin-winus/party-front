@@ -6,7 +6,7 @@
         <div v-else style="display: flex;">
           <img v-if="imageUrl" class="postImg" :src="imageUrl" />
           <div class="imgCancel">
-            <button :disabled="imageLoding" @click="imageCancel"><img src='/images/Xbtn.svg'
+            <button :disabled="imageLoding" @click="imageCancel"><img src='@/assets/images/Xbtn.svg'
                 style="width: 15px;" /></button>
           </div>
         </div>
@@ -19,7 +19,7 @@
           <div v-else style="display: flex;">
             <img v-if="imageUrl" class="postImg" :src="imageUrl" />
             <div class="imgCancel">
-              <button :disabled="imageLoding" @click="imageCancel"><img src='/images/Xbtn.svg'
+              <button :disabled="imageLoding" @click="imageCancel"><img src='@/assets/images/Xbtn.svg'
                   style="width: 15px;" /></button>
             </div>
           </div>
@@ -29,10 +29,10 @@
     <div class="chat-bottom">
       <div style=" margin-left: 20px; margin-right: 20px;  display: flex; align-items: center; width: 100%;">
         <div v-if="$store.state.option == false">
-          <img src="/images/Vector.svg" alt="" style='width:25px;  margin-right: 20px' @click="optionShow">
+          <img src="@/assets/images/Vector.svg" alt="" style='width:25px;  margin-right: 20px' @click="optionShow">
         </div>
         <div v-else>
-          <img src="/images/Xbtn.svg" alt="" style='width:25px;  margin-right: 20px' @click="optionShow">
+          <img src="@/assets/images/Xbtn.svg" alt="" style='width:25px;  margin-right: 20px' @click="optionShow">
         </div>
         <div class="chat-input-div">
           <textarea placeholder="메세지 보내기" v-model="message" class="chat-input" @keydown.enter.prevent="handleKeyDown"
@@ -40,13 +40,13 @@
 
           <div>
             <button @click="emoticonClick" v-if="$store.state.emoticonOption == false" class="button1"><img class="img"
-                src="/images/emoji.svg" alt=""></button>
-            <button @click="emoticonClick" v-else class="button1"><img class="img" src="/images/emojiOn.svg"
+                src="@/assets/images/emoji.svg" alt=""></button>
+            <button @click="emoticonClick" v-else class="button1"><img class="img" src="@/assets/images/emojiOn.svg"
                 alt=""></button>
             <button v-if="focusOn" :disabled="imageLoding" @click="send" class="button2"><img class="img"
-                src="/images/sendOn.svg"></button>
+                src="@/assets/images/sendOn.svg"></button>
             <button v-else :disabled="imageLoding" @click="send" class="button2"><img class="img"
-                src="/images/send.svg"></button>
+                src="@/assets/images/send.svg"></button>
           </div>
         </div>
       </div>
@@ -58,7 +58,7 @@
             <!-- user -->
             <input id="file-input" type="file" @change="handleImageChange" accept="image/*">
             <div class="gallery">
-              <img src="/images/gallery.svg" alt="">
+              <img src="@/assets/images/gallery.svg" alt="">
             </div>
           </label>
           <div class="option-name2">
@@ -70,7 +70,7 @@
             <!-- environment -->
             <input id="file-input2" type="file" @change="handleImageChange" accept="image/*" capture="camera">
             <div class="camera">
-              <img src="/images/chatCamera.svg" alt="">
+              <img src="@/assets/images/chatCamera.svg" alt="">
             </div>
           </label>
           <div class="option-name2">
@@ -80,7 +80,7 @@
         <div class="option-btn">
           <button @click="locationClick()" id="file-input3">
             <div class="location">
-              <img src="/images/location.svg" alt="">
+              <img src="@/assets/images/location.svg" alt="">
             </div>
           </button>
           <div class="option-name2">
@@ -330,9 +330,9 @@ export default {
     for (let i = 1; i < 33; i++) {
       // 10보다 작으면 앞에숫자에 0붙이기
       if (i < 10) {
-        this.emoticon.push(`/images/emoticon/애고미_이모티콘-0${i}.png`)
+        this.emoticon.push(`@/assets/images/emoticon/애고미_이모티콘-0${i}.png`)
       } else {
-        this.emoticon.push(`/images/emoticon/애고미_이모티콘-${i}.png`)
+        this.emoticon.push(`@/assets/images/emoticon/애고미_이모티콘-${i}.png`)
       }
     };
     this.emoticonList = this.splitArray(this.emoticon, 9);

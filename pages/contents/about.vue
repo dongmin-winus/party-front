@@ -109,7 +109,7 @@
                         </div>
                     </div>
 
-                    <img src="/images/about-bg.png" alt="" class="deco-about">
+                    <img src="@/assets/images/about-bg.png" alt="" class="deco-about">
                 </div>
             </section>
 

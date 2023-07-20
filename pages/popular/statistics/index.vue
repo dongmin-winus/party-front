@@ -19,7 +19,7 @@
                         <div class="ranking-wrap second" v-if="popularRankings.length >= 2">
                             <div class="ranking" >
                                 <div class="img-wrap">
-                                    <img :src="getUserImgUrl(popularRankings[1], 1)"  width="100px" alt="2등" class="img-rect">
+                                    <img :src="require(`@/assets/images/rankings/${getUserImgUrl(popularRankings[1], 1)}`)"  width="100px" alt="2등" class="img-rect">
 
                                     <div class="rounded">
                                         <span style="color:#0BAF00;"> {{ popularRankings[1].totalCount + 10000 }} </span>
@@ -42,7 +42,7 @@
                             <div class="ranking" >
                                 <div class="img-wrap">
                                     <img src="https://dotmzh1fysixs.cloudfront.net/1016/crown.png" width="20px" alt="" class="deco">
-                                    <img :src="getUserImgUrl(popularRankings[0], 2)" width="100px" alt="1등" class="img-rect">
+                                    <img :src="require(`@/assets/images/rankings/${getUserImgUrl(popularRankings[0], 2)}`)"  width="100px" alt="1등" class="img-rect">
                                     <div class="rounded">
                                         <span style="color:#0BAF00;"> {{ popularRankings[0].totalCount + 10000 }} </span>
                                     </div>
@@ -64,7 +64,7 @@
                         <div class="ranking-wrap second" v-if="popularRankings.length >= 3">
                             <div class="ranking" >
                                 <div class="img-wrap">
-                                    <img :src="getUserImgUrl(popularRankings[2], 3)" width="100px" alt="3등" class="img-rect">
+                                    <img :src="require(`@/assets/images/rankings/${getUserImgUrl(popularRankings[2], 3)}`)"  width="100px" alt="3등" class="img-rect">
                                     <div class="rounded">
                                             <span style="color:#0BAF00;"> {{ popularRankings[2].totalCount + 10000 }} </span>
                                     </div>
@@ -150,20 +150,18 @@ export default {
             tokenCount : 10000,
         }
     },
-    async asyncData({ $axios }) {
-        const response = await $axios.get('/api/popular-list?limitNumber=100');
-        let data = response.data.map((item) => {
-            item.totalCount = item.like_count + item.post_count + item.share_count + item.register_count;
-            return item;
-        })
-        data = data.sort((a,b) => {
-            return b.totalCount - a.totalCount;
-        })
-        return {
-            popularRankings : data
-        }
-    },
     methods: {
+        async getPopularRankings() {
+            const response = await this.$axios.get('/api/popular-list?limitNumber=100');
+            let data = response.data.map((item) => {
+                item.totalCount = item.like_count + item.post_count + item.share_count + item.register_count;
+                return item;
+            })
+            data = data.sort((a,b) => {
+                return b.totalCount - a.totalCount;
+            })
+            this.popularRankings = data;
+        },
         getPercentage(numerator, denominator) {
             const percent = Math.floor((numerator / denominator) * 100);
             if(percent > 100) return 100;
@@ -194,13 +192,16 @@ export default {
         },
 
         getUserImgUrl(share, i) {
-            return share.profile?.url ? share.profile.url : "../images/rankings/" + i + ".png";
+            return share.profile?.url ? share.profile.url : "" + i + ".png";
         },
         subText(i, n) {
             if (i.length <= n) { return i; } 
             else { return i.substring(0, n) + "..."; }
         } 
 
+    },
+    mounted () {
+        this.getPopularRankings();
     },
 
 }

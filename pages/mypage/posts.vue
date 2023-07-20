@@ -5,7 +5,7 @@
             <div class="wrap">
                 <div class="left">
                     <button class="btn-util" @click="$router.back()">
-                        <img src="/images/back.png" alt="" style="width:10px;">
+                        <img src="@/assets/images/back.png" alt="" style="width:10px;">
                     </button>
                 </div>
 

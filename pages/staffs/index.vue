@@ -77,7 +77,7 @@
                                 <div class="item-container">
                                     <div class="left">
                                         <div class="image-container">
-                                            <img src="/images/taegeuk.png" alt="">
+                                            <img src="@/assets/images/taegeuk.png" alt="">
                                         </div>
                                         <div class="text-container" >
                                             <p class="title">{{item.name == '' ? '담당자 미정' : item.name}}</p>
@@ -103,7 +103,7 @@
                         </li>
                     </ul>
                 </div>
-                <img src="/images/about-bg.png" alt="" class="deco-about">
+                <img src="@/assets/images/about-bg.png" alt="" class="deco-about">
             </section>
 
                         <quicks 

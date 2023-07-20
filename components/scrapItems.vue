@@ -37,7 +37,7 @@
 
                     <div class="m-board-fragment m-board-fragment-remove">
                         <button class="btn-remove" @click="remove(item)">
-                            <img src="/images/garbage.png" alt="" style="width:37px;">
+                            <img src="@/assets/images/garbage.png" alt="" style="width:37px;">
                         </button>
                     </div>
                 </div>

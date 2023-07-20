@@ -3,7 +3,7 @@
         <input type="file" :id="id" accept="image/*" capture="camera" @change="changeFile" ref="file">
 
         <div class="img-wrap">
-            <img src="/images/camera.png" alt="" style="width:18px;">
+            <img src="@/assets/images/camera.png" alt="" style="width:18px;">
         </div>
 
         <h3 class="title">사진 촬영</h3>

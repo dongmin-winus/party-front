@@ -4,7 +4,7 @@
         <div class="m-header type02">
             <div class="wrap">
                 <div class="left">
-                    <img src="/images/arrowLeft-black.png" alt="" style="width:14px;" @click="$router.go(-1)">
+                    <img src="@/assets/images/arrowLeft-black.png" alt="" style="width:14px;" @click="$router.go(-1)">
                 </div>
                 <div class="center">
                     <h3 class="title">내 정보 수정</h3>

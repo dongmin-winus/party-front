@@ -2,7 +2,7 @@
     <div class="m-pop type01" id="pop2">
         <div class="m-pop-inner">
             <button class="btn-close m-script-pop" @click="close">
-                <img src="/images/x.png" alt="" style="width:21px;">
+                <img src="@/assets/images/x.png" alt="" style="width:21px;">
             </button>
             <div class="nav-wrap">
                 <profile-img id="img" :isDefaultImage="isDefaultImage" :imgUrl="profileImage" @change="(data) => this.changeData(data)"/>
@@ -32,7 +32,7 @@ export default {
                     this.imgUrl: 
                     this.$auth.user.img? 
                         this.$auth.user.img.url: 
-                        '/images/profile_sample-preview.jpg';
+                        '@/assets/images/profile_sample-preview.jpg';
         },
         isDefaultImage() {
           const regex = /\/([^\/]+)$/; // 슬래시 이후의 문자열을 그룹화

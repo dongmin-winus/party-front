@@ -12,7 +12,7 @@
             <div class="m-pop type01" id="pop1" v-if="active" @click.stop="handleBackdropClick($event, 'm-pop type01')">
                 <div class="m-pop-inner">
                     <button class="btn-close m-script-pop" data-target="#pop1" @click="active = false">
-                        <img src="/images/x.png" alt="" style="width:21px;">
+                        <img src="@/assets/images/x.png" alt="" style="width:21px;">
                     </button>
 
                     <div class="m-pop-title">

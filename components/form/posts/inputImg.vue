@@ -3,7 +3,7 @@
         <input type="file" :id="id" accept="image/*" @change="changeFile" ref="file">
 
         <div class="img-wrap">
-            <img src="/images/pictureMen.png" alt="" style="width:20px;">
+            <img src="@/assets/images/pictureMen.png" alt="" style="width:20px;">
         </div>
 
         <h3 class="title">{{ this.title }}</h3>

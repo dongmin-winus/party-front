@@ -4,7 +4,7 @@
       <div class="m-header type02">
           <div class="wrap">
               <div class="left">
-                  <img src="/images/arrowLeft-black.png" alt="" style="width:14px;" @click="$router.go(-1)">
+                  <img src="@/assets/images/arrowLeft-black.png" alt="" style="width:14px;" @click="$router.go(-1)">
               </div>
               <div class="center">
                   <h3 class="title"></h3>
@@ -17,7 +17,7 @@
       <div class="container">
           <div class="m-center type01">
               <div class="wrap">
-                      <img src="/images/logo-big.png" alt="" class="logo" style="width:150px;">
+                      <img src="@/assets/images/logo-big.png" alt="" class="logo" style="width:150px;">
 
                       <h3 class="title">
                           연락처를 입력하세요

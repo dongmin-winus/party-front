@@ -129,7 +129,7 @@ export default {
     right: 20px;
     top: 25px;
     transform: translateY(-50%);
-    background: url(/images/chevron-down.png);
+    background: url(@/assets/images/chevron-down.png);
     background-size: 10px auto;
     }
     
