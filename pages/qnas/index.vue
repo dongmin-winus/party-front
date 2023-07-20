@@ -5,7 +5,7 @@
           <div class="wrap">
               <div class="left">
                   <button class="btn-util" @click="$router.back()">
-                      <img src="/images/back.png" alt="" style="width:10px; height:20px;">
+                      <img src="@/assets/images/back.png" alt="" style="width:10px; height:20px;">
                   </button>
               </div>
 
@@ -15,7 +15,7 @@
 
               <div class="right">
                 <button class="btn-util" id="kakao" @click="share">
-                      <img src="/images/qua_share.png" alt="" style="width:20px;">
+                      <img src="@/assets/images/qua_share.png" alt="" style="width:20px;">
                   </button>
               </div>
           </div>
@@ -31,7 +31,7 @@
               <span> {{ noticeItems.data[0].title }}</span>
             </div>
             <div class="right">
-              <img src="/images/arrowRight-gray.png" alt="">
+              <img src="@/assets/images/arrowRight-gray.png" alt="">
             </div>
           </nuxt-link>
 
@@ -69,13 +69,13 @@
             <div class="mt-8"></div>
             <div class="img-button-container">
               <nuxt-link to="/qnas/create" class="border-rounded">
-                <img src="/images/qna_post.png" alt="">
+                <img src="@/assets/images/qna_post.png" alt="">
                 <div class="mt-8"></div>
                 <p style="font-size:22px;">온라인 문의</p>
                 <p style="font-size:18px;font-weight:300; color:rgba(110, 108, 108, 0.752)">1:1 문의하기</p>
               </nuxt-link>
               <a class="border-rounded" href="tel:1544-7166">
-                  <img src="/images/qna_tell.png" alt="">
+                  <img src="@/assets/images/qna_tell.png" alt="">
                   <div class="mt-8"></div>
                   <p style="font-size:22px;">고객센터</p>
                   <p style="font-size:18px;font-weight:300; color:rgba(110, 108, 108, 0.752)">상담원 전화 상담</p>

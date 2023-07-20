@@ -46,37 +46,6 @@
                             </div>
                         </div>
                         <div class="mt-32"></div>
-                        <!-- <div class="rankings">
-                            <div class="ranking-wrap" 
-                                v-if="districtRegisterCounts.length >= 1"
-                                v-for="(rank,index) in uptoThreeDistrictRegisterCounts" :key="rank.district_id"
-                            >
-                                <div class="ranking" 
-                                    @click="changeDistrictInRanking({
-                                        id: districtRegisterCounts[index].district_id,
-                                        district: districtRegisterCounts[index].district
-                                    })"
-                                >
-                                    <div class="img-wrap">
-                                        <img src="https://dotmzh1fysixs.cloudfront.net/1016/crown.png" width="20px" alt="" class="deco">
-                                        <img :src="`images/rankings/${index+1}.png`" width="100px" alt="" class="img-rect">
-                                        <div class="more">
-                                            <span class="zero" v-if="rankingCount(districtRegisterCounts[index]) == 0">−</span>
-                                            <template  v-else>
-                                                <span class="tri">▲</span>&nbsp;<span style="color:#DC2626"> {{ rankingCount(districtRegisterCounts[index])}} </span>
-                                            </template>
-                                        </div>
-                                    </div>
-
-                                    <div class="fragment">
-                                        <p class="subtitle">{{ districtRegisterCounts[index].district }}</p>
-                                        <h3 class="title">
-                                            <span class="point">{{ index+1 }}</span>위
-                                        </h3>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
                         <!-- 1,2,3위 -->
                         <div class="rankings">
                             <!-- 2등 -->
@@ -84,7 +53,7 @@
                                 <div class="ranking" >
                                     <div class="img-wrap">
                                         <!-- <img src="https://dotmzh1fysixs.cloudfront.net/1016/crown.png" width="20px" alt="" class="deco"> -->
-                                        <img src="images/rankings/main_ranking_2nd.png" width="100px" alt="" class="img-rect">
+                                        <img src="@/assets/images/rankings/main_ranking_2nd.png" width="100px" alt="" class="img-rect">
 
                                     </div>
 
@@ -94,8 +63,8 @@
                                         </h3>
                                         <div class="subtitle-container">
                                             <p class="subtitle">{{ districtRegisterCounts[1].district }}</p>
-                                            <div class="badge">
-                                                <img :src="getBadgeSrc(rankingCount(districtRegisterCounts[1]))"/>
+                                            <div class="badge" v-if="getBadgeSrc(rankingCount(districtRegisterCounts[1]))">
+                                                <img :src="require(`@/assets/images/rankings/${getBadgeSrc(rankingCount(districtRegisterCounts[1]))}`)"/>
                                             </div>
                                         </div>
                                         <div :class="getScaleClass(rankingCount(districtRegisterCounts[1]),'ranked')">
@@ -112,7 +81,7 @@
                                 <div class="ranking">
                                     <div class="img-wrap">
                                         <!-- <img src="https://dotmzh1fysixs.cloudfront.net/1016/crown.png" width="20px" alt="" class="deco"> -->
-                                        <img src="images/rankings/main_ranking_1st.png" width="100px" alt="" class="img-rect">
+                                        <img src="@/assets/images/rankings/main_ranking_1st.png" width="100px" alt="" class="img-rect">
 
                                     </div>
 
@@ -122,8 +91,8 @@
                                         </h3>
                                         <div class="subtitle-container">
                                             <p class="subtitle">{{ districtRegisterCounts[0].district }}</p>
-                                            <div class="badge">
-                                                <img :src="getBadgeSrc(rankingCount(districtRegisterCounts[0]))"/>
+                                            <div class="badge" v-if="getBadgeSrc(rankingCount(districtRegisterCounts[0]))">
+                                                <img :src="require(`@/assets/images/rankings/${getBadgeSrc(rankingCount(districtRegisterCounts[0]))}`)"/>
                                             </div>
                                         </div>
                                         <div :class="getScaleClass(rankingCount(districtRegisterCounts[0]),'ranked')">
@@ -140,7 +109,7 @@
                                 <div class="ranking" >
                                     <div class="img-wrap">
                                         <!-- <img src="https://dotmzh1fysixs.cloudfront.net/1016/crown.png" width="20px" alt="" class="deco"> -->
-                                        <img src="images/rankings/main_ranking_3rd.png" width="100px" alt="" class="img-rect">
+                                        <img src="@/assets/images/rankings/main_ranking_3rd.png" width="100px" alt="" class="img-rect">
 
                                     </div>
 
@@ -150,8 +119,8 @@
                                         </h3>
                                         <div class="subtitle-container">
                                             <p class="subtitle">{{ districtRegisterCounts[2].district }} </p>
-                                            <div class="badge">
-                                                <img :src="getBadgeSrc(rankingCount(districtRegisterCounts[2]))"/>
+                                            <div class="badge" v-if="getBadgeSrc(rankingCount(districtRegisterCounts[2]))">
+                                                <img :src="require(`@/assets/images/rankings/${getBadgeSrc(rankingCount(districtRegisterCounts[2]))}`)"/>
                                             </div>
                                         </div>
                                         <div :class="getScaleClass(rankingCount(districtRegisterCounts[2]),'ranked')">
@@ -183,8 +152,8 @@
                                     <td>{{ districtRegisterCount.city}} {{districtRegisterCount.district}}</td>
                                     <td>
                                         <div class="right">
-                                            <div class="badge">
-                                                <img :src="getBadgeSrc(rankingCount(districtRegisterCount))"/>
+                                            <div class="badge" v-if="getBadgeSrc(rankingCount(districtRegisterCount))">
+                                                <img :src="require(`@/assets/images/rankings/${getBadgeSrc(rankingCount(districtRegisterCount))}`)"/>
                                             </div>
                                             <div :class="getScaleClass(rankingCount(districtRegisterCount))">
                                                 <span class="tri">▲ </span>&nbsp;<span> {{ rankingCount(districtRegisterCount) }} </span>
@@ -201,7 +170,7 @@
 
           <section class="section-ad2">
               <a href="#" target="_blank" class="link">
-                  <img src="/images/ad2.png" alt="">
+                  <img src="@/assets/images/ad2.png" alt="">
               </a>
           </section>
 
@@ -251,9 +220,11 @@ export default {
     },
     methods: {
         getBadgeSrc(rankingCount) {
-            if(rankingCount >= 1000 && rankingCount < 2000) return '/images/main_icon_badge_1k.png';
-            if(rankingCount >= 2000 && rankingCount < 3000) return '/images/main_icon_badge_2k.png';
-            if(rankingCount >= 3000 ) return '/images/main_icon_badge_3k.png';
+            if(rankingCount >= 1000 && rankingCount < 2000) return 'main_icon_badge_1k.png';
+            if(rankingCount >= 2000 && rankingCount < 3000) return 'main_icon_badge_2k.png';
+            if(rankingCount >= 3000 ) return 'main_icon_badge_3k.png';
+            if(rankingCount < 1000) return false;
+
         },
         getScaleClass(rankingCount, rankingType='unranked') {
             if(rankingType === 'ranked') {

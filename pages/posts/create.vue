@@ -220,7 +220,7 @@ export default {
         async store() {
             // 마을모임 코드
             if(this.form.board === 'meetings' && this.parasole) {
-                const res = await fetch('/images/meetings-parasole.jpg')
+                const res = await fetch('@/assets/images/meetings-parasole.jpg')
                 const data = await res.blob();
                 const file = new File([data], 'parasole',{ type: 'image/jpeg'});
                 this.form.thumbnail = file;

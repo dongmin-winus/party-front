@@ -1,9 +1,14 @@
+require('dotenv').config()
+
 import colors from 'vuetify/es5/util/colors'
 
 export default {
     ssr: true,
-    dev: process.env.NODE_ENV === "production" ? "http://api.jayuvillage.com" : "http://localhost:8000",
-    // Global page headers: https://go.nuxtjs.dev/config-head
+    dev: process.env.NODE_ENV === "production" ? "http://api.jayuvillages.com" : "http://localhost:8000",
+    target: process.env.NODE_ENV === 'production' ? 'static' : 'server', // default is 'server'
+    server: {
+        port: process.env.PORT, host: process.env.HOST
+    },
     head: {
         titleTemplate: '%s - ' + process.env.APP_NAME,
         title: process.env.APP_NAME,
@@ -43,7 +48,13 @@ export default {
     },
 
     // Global CSS: https://go.nuxtjs.dev/config-css
-    css: [],
+    css: [
+        '@/assets/css/style.css',
+        '@/assets/css/common.css',
+        '@/assets/css/datepicker.css',
+        '@/assets/css/datepicker.min.css',
+        '@/assets/css/swiper.min.css',
+    ],
 
     // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
     plugins: [
@@ -68,6 +79,7 @@ export default {
         '@nuxtjs/axios',
         '@nuxtjs/auth-next',
         '@nuxtjs/proxy',
+        '@nuxtjs/dotenv',
     ],
     axios: {
         credentials: true,
@@ -87,14 +99,10 @@ export default {
             target: process.env.ASSEM_BASE_URL,
             changeOrigin: true
         },
-        '/v1/': {
-            target: process.env.AI_BASE_URL,
-            changeOrigin: true,
-        },
-        '/link/': {
-            target: process.env.BIZCALL_BASE_URL,
-            changeOrigin: true,
-        }
+        // '/link/': {
+        //     target: process.env.BIZCALL_BASE_URL,
+        //     changeOrigin: true,
+        // }
     },
     router: {
         middleware: ['auth']

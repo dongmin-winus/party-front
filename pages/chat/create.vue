@@ -9,7 +9,7 @@
           <div class="chat-list" v-for="(data, index) in  memberList" :key="index">
             <div class="chat-margin">
               <div class="chat-circle">
-                <img class="chat-circle" :src="data.gender == '남' ? '/images/남성.png' : '/images/여성.png'" />
+                <img class="chat-circle" :src="require(`@/assets/images/${data.gender == '남' ? '남성.png' : '여성.png'}`)" />
               </div>
               <div class="chat-body">
                 <div class="chat-body-1">
@@ -20,7 +20,7 @@
                 </div>
               </div>
               <div class="chat-body-img" @click="chatCreate(data.id, data.name)">
-                <img src="/images/chat-alt-2.svg">
+                <img src="@/assets/images/chat-alt-2.svg">
               </div>
             </div>
           </div>
@@ -80,7 +80,7 @@ export default {
             query: {
               groupId: this.roomId,
               userName: name,
-              userProfile: '/images/profile.svg',
+              userProfile: '@/assets/images/profile.svg',
               online: true
             },
           })

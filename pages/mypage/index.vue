@@ -8,7 +8,7 @@
             <div class="wrap">
                 <div class="left">
                     <button class="btn-util">
-                        <img src="/images/back.png" alt="" style="width:10px;" @click="$router.back()">
+                        <img src="@/assets/images/back.png" alt="" style="width:10px;" @click="$router.back()">
                     </button>
                 </div>
 
@@ -17,7 +17,7 @@
                 </div>
 
                 <nuxt-link to="/contents/settings" class="btn-util">
-                    <img src="/images/setting.png" alt="" style="width:20px;">
+                    <img src="@/assets/images/setting.png" alt="" style="width:20px;">
                 </nuxt-link>
             </div>
         </div>
@@ -37,7 +37,7 @@
                     <div class="nick-wrap">
                         <span class="nick" @click="isProfilePopActive = true">{{ replaceText(this.$auth.user.nickname,8,"...") }}</span>
                         <button @click="isProfilePopActive = true">
-                            <img src="/images/edit.png" alt="" class="edit">
+                            <img src="@/assets/images/edit.png" alt="" class="edit">
                         </button>
                     </div>
                     <div class="mt-16 btn-wrap">
@@ -78,7 +78,7 @@
 
                             <div class="comment">
                                 자유마을 가입 시점 35
-                                <img src="/images/polygon.png" alt="" class="deco">
+                                <img src="@/assets/images/polygon.png" alt="" class="deco">
                             </div>
 
                             <span class="count">
@@ -99,11 +99,11 @@
                 <div class="menus">
                     <div class="wrap">
                         <nuxt-link to="/mypage/attendance" class="menu">
-                            <img src="/images/heart-active.png" alt="" class="icon" style="width:14px;">
+                            <img src="@/assets/images/heart-active.png" alt="" class="icon" style="width:14px;">
                             <p class="text">출석체크</p>
                         </nuxt-link>
                         <nuxt-link to="/share" class="menu">
-                            <img src="/images/heart-active.png" alt="" class="icon" style="width:14px;">
+                            <img src="@/assets/images/heart-active.png" alt="" class="icon" style="width:14px;">
                             <p class="text">공유랭킹</p>
                         </nuxt-link>
                     </div>
@@ -117,7 +117,7 @@
                 <div class="menus">
                     <div class="wrap">
                         <div class="menu" @click="activeModal=true">
-                            <img src="/images/board.png" alt="" class="icon" style="width:14px;">
+                            <img src="@/assets/images/board.png" alt="" class="icon" style="width:14px;">
                             <p class="text">관리지역 선택</p>
                         </div>
                     </div>
@@ -131,7 +131,7 @@
                 <div class="menus">
                     <div class="wrap">
                         <nuxt-link to="/infos/commissioner_namelist" class="menu">
-                            <img src="/images/board.png" alt="" class="icon" style="width:14px;">
+                            <img src="@/assets/images/board.png" alt="" class="icon" style="width:14px;">
                             <p class="text">지부 회원명단</p>
                         </nuxt-link>
                     </div>
@@ -146,15 +146,15 @@
                     <div class="menus">
                         <div class="wrap">
                             <nuxt-link to="/infos/namelist" class="menu">
-                                <img src="/images/board.png" alt="" class="icon" style="width:14px;">
+                                <img src="@/assets/images/board.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">내 마을 명단</p>
                             </nuxt-link>
                             <nuxt-link :to="{path:'/staffs', query:{rep_district_id:represenateDistrict['id'], rep_district_name:represenateDistrict['name']}}" class="menu">
-                                <img src="/images/board.png" alt="" class="icon" style="width:14px;">
+                                <img src="@/assets/images/board.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">마을임원확인</p>
                             </nuxt-link> 
                            <nuxt-link to="/infos/approvals" class="menu">
-                                <img src="/images/board.png" alt="" class="icon" style="width:14px;">
+                                <img src="@/assets/images/board.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">임원신청현황</p>
                             </nuxt-link> 
                         </div>
@@ -166,19 +166,19 @@
                     <div class="menus">
                         <div class="wrap">
                             <!-- <nuxt-link to="/infos/create" class="menu">
-                                <img src="/images/building.png" alt="" class="icon" style="width:14px;">
+                                <img src="@/assets/images/building.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">내 마을 소개</p>
                             </nuxt-link> -->
                             <nuxt-link :to="{path:'/staffs/create', query:{group:group,rep_district_id:represenateDistrict['id']}}" class="menu">
-                                <img src="/images/users.png" alt="" class="icon" style="width:14px;">
+                                <img src="@/assets/images/users.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">내 마을 임원진</p>
                             </nuxt-link>
                             <!-- <nuxt-link to="/contacts/create" class="menu">
-                                <img src="/images/chart.png" alt="" class="icon" style="width:14px;">
+                                <img src="@/assets/images/chart.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">내마을 국회의원</p>
                             </nuxt-link> -->
                             <nuxt-link to="/notices/create" class="menu">
-                                <img src="/images/board.png" alt="" class="icon" style="width:14px;">
+                                <img src="@/assets/images/board.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">내 마을 공지</p>
                             </nuxt-link>
                         </div>
@@ -191,15 +191,15 @@
                     <div class="menus">
                         <div class="wrap">
                             <nuxt-link to="/mypage/likePosts" class="menu">
-                                <img src="/images/heart-active.png" alt="" class="icon" style="width:14px;">
+                                <img src="@/assets/images/heart-active.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">좋아요 게시물</p>
                             </nuxt-link>
                             <nuxt-link to="/mypage/sharePosts" class="menu">
-                                <img src="/images/shareLink.png" alt="" class="icon" style="width:14px;">
+                                <img src="@/assets/images/shareLink.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">공유한 게시물</p>
                             </nuxt-link>
                             <nuxt-link to="/scraps" class="menu">
-                                <img src="/images/wallet.png" alt="" class="icon" style="width:14px;">
+                                <img src="@/assets/images/wallet.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">내 공유함</p>
                             </nuxt-link>
                         </div>
@@ -212,15 +212,15 @@
                     <div class="menus">
                         <div class="wrap">
                             <nuxt-link to="/mypage/posts" class="menu">
-                                <img src="/images/edit_document.png" alt="" class="icon" style="width:14px;">
+                                <img src="@/assets/images/edit_document.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">내가 쓴 게시글</p>
                             </nuxt-link>
                             <nuxt-link to="/mypage/comments" class="menu">
-                                <img src="/images/comment-black.png" alt="" class="icon" style="width:14px;">
+                                <img src="@/assets/images/comment-black.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">내가 쓴 댓글</p>
                             </nuxt-link>
                             <nuxt-link to="/mypage/participants" class="menu">
-                                <img src="/images/comment-black.png" alt="" class="icon" style="width:14px;">
+                                <img src="@/assets/images/comment-black.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">내 행사 관리</p>
                             </nuxt-link>
                         </div>
@@ -235,15 +235,15 @@
                     <div class="menus">
                         <div class="wrap">
                             <nuxt-link to="/mypage/likePosts" class="menu">
-                                <img src="/images/heart-active.png" alt="" class="icon" style="width:14px;">
+                                <img src="@/assets/images/heart-active.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">좋아요 게시물</p>
                             </nuxt-link>
                             <nuxt-link to="/mypage/sharePosts" class="menu">
-                                <img src="/images/shareLink.png" alt="" class="icon" style="width:14px;">
+                                <img src="@/assets/images/shareLink.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">공유한 게시물</p>
                             </nuxt-link>
                             <nuxt-link to="/scraps" class="menu">
-                                <img src="/images/wallet.png" alt="" class="icon" style="width:14px;">
+                                <img src="@/assets/images/wallet.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">내 공유함</p>
                             </nuxt-link>
                         </div>
@@ -256,15 +256,15 @@
                     <div class="menus">
                         <div class="wrap">
                             <nuxt-link to="/mypage/posts" class="menu">
-                                <img src="/images/edit_document.png" alt="" class="icon" style="width:14px;">
+                                <img src="@/assets/images/edit_document.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">내가 쓴 게시글</p>
                             </nuxt-link>
                             <nuxt-link to="/mypage/comments" href="#" class="menu">
-                                <img src="/images/comment-black.png" alt="" class="icon" style="width:14px;">
+                                <img src="@/assets/images/comment-black.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">내가 쓴 댓글</p>
                             </nuxt-link>
                             <nuxt-link to="/mypage/participants" class="menu">
-                                <img src="/images/comment-black.png" alt="" class="icon" style="width:14px;">
+                                <img src="@/assets/images/comment-black.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">내 행사 관리</p>
                             </nuxt-link>
                         </div>
@@ -487,7 +487,7 @@ export default {
 }
 .area-mypage .box-info .back {
     padding: 20px 20px 30px 20px;
-    background:url("/images/profile-back.jpg") no-repeat; background-size:cover;
+    background:url("@/assets/images/profile-back.jpg") no-repeat; background-size:cover;
     display:flex; align-items: center; justify-content: center;
     flex-direction: column;
 }

@@ -26,7 +26,7 @@
           <div class="chat-circle">
             <div class="chat-online-container">
               <img class="profile-img" v-if="data.user.img" :src="data.user.img.url" />
-              <img class="profile-img" v-else src="/images/profile.svg" />
+              <img class="profile-img" v-else src="@/assets/images/profile.svg" />
               <div v-if="data.online" class="chat-online-sub">
                 <div class="chat-online"></div>
               </div>
@@ -77,7 +77,7 @@ export default {
   methods:{
     listClick(id, name, profile, online){
       if(profile == null){
-        profile = "/images/profile.svg"
+        profile = "@/assets/images/profile.svg"
       }
       this.$router.push({
         // name: 'chat-view',

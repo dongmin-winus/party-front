@@ -138,7 +138,7 @@ export default {
       transform:translate(-50%,-50%);
       width:50px;
       height:50px;
-      background:url('/images/mv_play.png') no-repeat center center;
+      background:url('@/assets/images/mv_play.png') no-repeat center center;
       background-size:cover;
     }
   .add {

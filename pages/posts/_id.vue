@@ -5,7 +5,7 @@
         <div class="m-pop type01" v-if="activeScrapPop">
             <div class="m-pop-inner">
                 <button class="btn-close" @click="activeScrapPop = false">
-                    <img src="/images/x.png" alt="" style="width:21px;">
+                    <img src="@/assets/images/x.png" alt="" style="width:21px;">
                 </button>
 
                 <div class="m-pop-title" style="margin-bottom:10px;">내 공유함에 추가되었습니다.</div>
@@ -24,23 +24,23 @@
             <div class="wrap">
                 <div class="utils">
                     <button class="btn-util" @click="back">
-                        <img src="/images/back.png" alt="" style="width:10px;">
+                        <img src="@/assets/images/back.png" alt="" style="width:10px;">
                     </button>
 
                     <button class="btn-util" @click="$router.push('/')">
-                        <img src="/images/home2.png" alt="" style="width:21px;">
+                        <img src="@/assets/images/home2.png" alt="" style="width:21px;">
                     </button>
                 </div>
 
                 <div class="utils">
                     <!--<button class="btn-util">
-                        <img src="/images/search.png" alt="" style="width:18px;">
+                        <img src="@/assets/images/search.png" alt="" style="width:18px;">
                     </button>-->
                     <nuxt-link to="/notices" class="btn-util">
-                        <img src="/images/bell.png" alt="" style="width:18px;">
+                        <img src="@/assets/images/bell.png" alt="" style="width:18px;">
                     </nuxt-link>
 <!--                    <button class="btn-util">
-                        <img src="/images/dots.png" alt="" style="width:3px;">
+                        <img src="@/assets/images/dots.png" alt="" style="width:3px;">
                     </button>-->
                 </div>
             </div>
@@ -59,7 +59,7 @@
                             </div>
                             <div class="right">
                                 <a href="#" class="btn-report" @click.prevent="activeSpamPop = true">
-                                    <img src="/images/report.png" alt="" style="width:18px;">
+                                    <img src="@/assets/images/report.png" alt="" style="width:18px;">
                                 </a>
                             </div>
                         </div>
@@ -74,17 +74,17 @@
 
                             <div class="right">
                                 <div class="info">
-                                    <img src="/images/eye-gray.png" alt="" style="width:16px;">
+                                    <img src="@/assets/images/eye-gray.png" alt="" style="width:16px;">
                                     {{ item.view_count }}
                                 </div>
 
                                 <div class="info">
-                                    <img src="/images/comment-gray.png" alt="" style="width:12px;">
+                                    <img src="@/assets/images/comment-gray.png" alt="" style="width:12px;">
                                     {{item.comment_count}}
                                 </div>
 
                                 <div class="info">
-                                    <img src="/images/heart-gray.png" alt="" style="width:12px;">
+                                    <img src="@/assets/images/heart-gray.png" alt="" style="width:12px;">
                                     {{item.like_count}}
                                 </div>
                             </div>
@@ -101,7 +101,7 @@
                             <div class="infos">
                                 <div class="info">
                                     <div class="title">
-                                        <img src="/images/chat-primary.png" alt="" style="width:16px;">
+                                        <img src="@/assets/images/chat-primary.png" alt="" style="width:16px;">
                                         참여
                                     </div>
                                     <p class="body">
@@ -111,7 +111,7 @@
 
                                 <div class="info">
                                     <div class="title">
-                                        <img src="/images/calendar-primary.png" alt="" style="width:16px;">
+                                        <img src="@/assets/images/calendar-primary.png" alt="" style="width:16px;">
                                         행사시작
                                     </div>
                                     <p class="body">
@@ -121,7 +121,7 @@
 
                                 <div class="info">
                                     <div class="title">
-                                        <img src="/images/calendar-clock-primary.png" alt="" style="width:16px;">
+                                        <img src="@/assets/images/calendar-clock-primary.png" alt="" style="width:16px;">
                                         행사종료
                                     </div>
                                     <p class="body">
@@ -131,7 +131,7 @@
 
                                 <div class="info">
                                     <div class="title">
-                                        <img src="/images/users-primary.png" alt="" style="width:16px;">
+                                        <img src="@/assets/images/users-primary.png" alt="" style="width:16px;">
                                         모집인원
                                     </div>
                                     <p class="body">
@@ -141,7 +141,7 @@
 
                                 <div class="info">
                                     <div class="title">
-                                        <img src="/images/money-primary.png" alt="" style="width:16px;">
+                                        <img src="@/assets/images/money-primary.png" alt="" style="width:16px;">
                                         참가비
                                     </div>
                                     <p class="body">
@@ -207,23 +207,23 @@
                     <div class="wrap">
                         <div class="utils">
                             <button class="btn-util" @click="toggleLike">
-                                <img src="/images/heart-active.png" alt="" style="width:14px;" v-if="item.is_like == 1">
-                                <img src="/images/heart-inactive.png" alt="" style="width:14px;" v-else>
+                                <img src="@/assets/images/heart-active.png" alt="" style="width:14px;" v-if="item.is_like == 1">
+                                <img src="@/assets/images/heart-inactive.png" alt="" style="width:14px;" v-else>
                                 좋아요 {{ item.like_count }}
                             </button>
 
                             <button class="btn-util">
-                                <img src="/images/comment-black.png" alt="" style="width:14px;">
+                                <img src="@/assets/images/comment-black.png" alt="" style="width:14px;">
                                 댓글 {{ item.comment_count }}
                             </button>
 
                             <button class="btn-util" @click="storeScrap">
-                                <img src="/images/cart.png" alt="" style="width:24px;">
+                                <img src="@/assets/images/cart.png" alt="" style="width:24px;">
                                 글 담기
                             </button>
 
                             <button class="btn-util" id="kakao">
-                                <img src="/images/share.png" alt="" style="width:11px;">
+                                <img src="@/assets/images/share.png" alt="" style="width:11px;">
                                 공유
                             </button>
                         </div>

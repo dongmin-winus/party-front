@@ -5,7 +5,7 @@
       <div class="wrap">
         <div class="left">
           <button class="btn-util">
-            <img src="/images/back.png" alt="" style="width:10px;" @click="$router.back()">
+            <img src="@/assets/images/back.png" alt="" style="width:10px;" @click="$router.back()">
           </button>
         </div>
 
@@ -14,7 +14,7 @@
         </div>
 
         <nuxt-link to="/contents/settings" class="btn-util">
-          <img src="/images/setting.png" alt="" style="width:20px;">
+          <img src="@/assets/images/setting.png" alt="" style="width:20px;">
         </nuxt-link>
       </div>
     </div>
@@ -51,7 +51,7 @@
 
                   <div class="m-board-content">
                       <div class="evaluate-container">
-                          <span>의원활동 만족도</span> <img :src="getSmile(item.grade)" alt=""> <span :style="`color:${getColor(item.grade)}`">{{getLabel(item.grade)}}</span>
+                          <span>의원활동 만족도</span> <img :src="require(`@/assets/images/contacts/${getSmile(item.grade)}`)" alt=""> <span :style="`color:${getColor(item.grade)}`">{{getLabel(item.grade)}}</span>
                       </div>
                       <div class="mt-12"></div>
                       <p class="content-body" v-if="item.comment">{{replaceContent(item.comment)}}</p>
@@ -157,6 +157,7 @@ export default {
         this.toggleList ? this.toggleList = false : this.toggleList = true;
       },
       getSmile(evaluate) {
+        console.log(this.options.find(item => item.value === evaluate).image,333)
         return this.options.find(item => item.value === evaluate).image;
       },
       getLabel(evaluate) {

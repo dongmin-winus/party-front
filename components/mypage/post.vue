@@ -15,8 +15,8 @@
                     </div>
 
                     <div class="right" v-if="item.user.id == $auth.user.id">
-                        <img src="/images/dots.png" alt="" style="width:3px;" @click.prevent.stop="active = true" v-if="!active">
-                        <img src="/images/x.png" alt="" style="width:12px;" @click.prevent.stop="active = false" v-else>
+                        <img src="@/assets/images/dots.png" alt="" style="width:3px;" @click.prevent.stop="active = true" v-if="!active">
+                        <img src="@/assets/images/x.png" alt="" style="width:12px;" @click.prevent.stop="active = false" v-else>
                     </div>
                 </div>
 
@@ -25,17 +25,17 @@
 
                     <div class="utils">
                         <button class="btn-util filter-gray">
-                            <img src="/images/eye.png" alt="" style="width:20px;">
+                            <img src="@/assets/images/eye.png" alt="" style="width:20px;">
                             {{ item.view_count }}
                         </button>
 
                         <button class="btn-util filter-gray">
-                            <img src="/images/comment-black.png" alt="" style="width:15px;">
+                            <img src="@/assets/images/comment-black.png" alt="" style="width:15px;">
                             {{ item.comment_count }}
                         </button>
 
                         <button class="btn-util filter-gray">
-                            <img src="/images/heart-empty.png" alt="" style="width:15px;">
+                            <img src="@/assets/images/heart-empty.png" alt="" style="width:15px;">
                             {{ item.like_count }}
                         </button>
                     </div>

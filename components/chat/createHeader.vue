@@ -4,7 +4,7 @@
         <div class="m-header type01">
             <div class="wrap">
                 <div @click="$router.back()">
-                    <img src="/images/arrowLeft-black.png" style="width:10px;" />
+                    <img src="@/assets/images/arrowLeft-black.png" style="width:10px;" />
                 </div>
                 <div class="selects">
                     채팅 회원 명단

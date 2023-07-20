@@ -5,12 +5,12 @@
             <div class="m-sidebar-inner">
                 <div class="top">
                     <button class="btn-close" @click="activeSidebar = false">
-                        <img src="/images/x-bold.png" alt="" class="filter-white" style="width:14px;">
+                        <img src="@/assets/images/x-bold.png" alt="" class="filter-white" style="width:14px;">
                     </button>
 
                     <nuxt-link to="/auth/login" class="btn-login" v-if="!$auth.user">
                         로그인 해주세요
-                        <img src="/images/arrowRight.png" alt="" class="filter-white" style="width:10px;">
+                        <img src="@/assets/images/arrowRight.png" alt="" class="filter-white" style="width:10px;">
                     </nuxt-link>
                     <a href="#" class="btn-login" v-else>
                         안녕하세요, {{ $auth.user.nickname }}님!
@@ -19,7 +19,7 @@
                     <div class="links">
                         <a href="#" class="link" @click.prevent="toMain">
                             <div class="img-wrap">
-                                <img src="/images/home-big.png" alt="" class="filter-white" style="width:30px;">
+                                <img src="@/assets/images/home-big.png" alt="" class="filter-white" style="width:30px;">
                             </div>
 
                             <h3 class="title">홈</h3>
@@ -27,7 +27,7 @@
 
                         <a href="#" class="link" @click.prevent="sideMenuToDistrict($auth.user.district)">
                             <div class="img-wrap">
-                                <img src="/images/circleMen.png" alt="" class="filter-white" style="width:30px;">
+                                <img src="@/assets/images/circleMen.png" alt="" class="filter-white" style="width:30px;">
                             </div>
 
                             <h3 class="title">내 마을</h3>
@@ -35,7 +35,7 @@
 
                         <nuxt-link to="/notices" class="link">
                             <div class="img-wrap">
-                                <img src="/images/notice.png" alt="" class="filter-white" style="width:30px;">
+                                <img src="@/assets/images/notice.png" alt="" class="filter-white" style="width:30px;">
                             </div>
 
                             <h3 class="title">공지</h3>
@@ -49,7 +49,7 @@
                         <div class="menus">
                             <div class="menu-wrap">
                                 <a href="/contents/about" class="menu">
-                                    <img src="/images/icon-intro.png" style="width:60px" alt="" class="">
+                                    <img src="@/assets/images/icon-intro.png" style="width:60px" alt="" class="">
 
                                     <h3 class="title">자유마을 소개</h3>
                                 </a>
@@ -57,7 +57,7 @@
 
                             <div class="menu-wrap">
                                 <a href="/contents/declares" class="menu">
-                                    <img src="/images/icon-creed.png" style="width:60px" alt="" class="">
+                                    <img src="@/assets/images/icon-creed.png" style="width:60px" alt="" class="">
 
                                     <h3 class="title">10대 강령</h3>
                                 </a>
@@ -65,7 +65,7 @@
 
                             <!-- <div class="menu-wrap">
                                 <a href="/posts?board=photos" class="menu">
-                                    <img src="/images/news03.png" style="width:60px" alt="" class="">
+                                    <img src="@/assets/images/news03.png" style="width:60px" alt="" class="">
 
                                     <h3 class="title">총재 인사말</h3>
                                 </a>
@@ -106,12 +106,12 @@
                     <!-- <button :class="`btn-select ${(district && district.id == 0) || !district ? 'point' : ''}`" @click="active = true;">
                         {{ district.id == 0 ? "자유마을" : district.district }}
 
-                        <img src="/images/chevron-down.png" style="width:10px;" alt="" class="deco">
+                        <img src="@/assets/images/chevron-down.png" style="width:10px;" alt="" class="deco">
                     </button> -->
                     <button class="btn-select point" @click="handleActive">
                         {{ district.id == 0 ? "자유마을" : district.district }}
 
-                        <img src="/images/chevron-down.png" style="width:10px;" alt="" class="deco">
+                        <img src="@/assets/images/chevron-down.png" style="width:10px;" alt="" class="deco">
 
                         <div class="box-links" v-if="active">
                             <a href="#" :class="`link ${district.id == 0 ? 'active' : ''}`" @click.prevent="toDistrict()">자유마을 홈</a>
@@ -127,7 +127,7 @@
 
                 <div class="utils">
                     <button class="btn-util">
-                        <img src="/images/search.png" style="width:18px;" alt="" @click="activeSearch = !activeSearch">
+                        <img src="@/assets/images/search.png" style="width:18px;" alt="" @click="activeSearch = !activeSearch">
 
                         <form @submit.prevent="search" v-if="activeSearch">
                             <div class="m-input-text-wrap">
@@ -141,12 +141,12 @@
 
                     </button>
                     <button class="btn-util" @click="$router.push('/notices')">
-                        <img src="/images/bell.png" style="width:17px;" alt="">
+                        <img src="@/assets/images/bell.png" style="width:17px;" alt="">
 
                         <span class="alert blbs orange" v-if="$auth.user && $auth.user.has_new_notice"></span>
                     </button>
                     <button class="btn-util" @click="activeSidebar = true">
-                        <img src="/images/menu.png" alt="" style='width:18px;'>
+                        <img src="@/assets/images/menu.png" alt="" style='width:18px;'>
                     </button>
                 </div>
             </div>
@@ -171,7 +171,7 @@
                 <button type="button" class="m-btn type03 width-100" @click="searchDis">검색하기</button>
                 <div class="mt-8"></div>
                 <div class="image-container" @click="activeFinder = true">
-                    <img class="img" src="/images/village-search.png" alt="" >
+                    <img class="img" src="@/assets/images/village-search.png" alt="" >
                 </div>
             </template>
         </modal>

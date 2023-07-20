@@ -2,7 +2,7 @@
     <div class="m-pop type01" id="pop2">
         <div class="m-pop-inner">
             <button class="btn-close m-script-pop" @click="close">
-                <img src="/images/x.png" alt="" style="width:21px;">
+                <img src="@/assets/images/x.png" alt="" style="width:21px;">
             </button>
 
             <div class="m-pop-title">게시물 신고</div>

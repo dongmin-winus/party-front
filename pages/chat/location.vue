@@ -25,7 +25,7 @@
         <swiper class="swiper-container" :options="swiperOption">
           <swiper-slide class="swiper-slide" v-for="(slide, index) in pos" :key="index" v-if="index < 10">
             <div @click="setCenter(slide.y, slide.x)">
-              <img class="list-img" src="/images/emoticon/애고미_이모티콘-01.png" alt="">
+              <img class="list-img" src="@/assets/images/emoticon/애고미_이모티콘-01.png" alt="">
               <div>
               <span style="font-size: 14px;">{{ slide.title }}</span><br>
               <span style="font-size: 14px;">번호 </span><br>
@@ -201,7 +201,7 @@ export default {
     },  
     currentMarker(lat, lon) {
       // const imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png';
-      const imageSrc = '/images/emoticon/애고미_이모티콘-02.png'
+      const imageSrc = '@/assets/images/emoticon/애고미_이모티콘-02.png'
       const imageSize = new kakao.maps.Size(64, 69);
       const imageOption = { offset: new kakao.maps.Point(27, 69) };
       const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);

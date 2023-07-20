@@ -5,23 +5,23 @@
             <div class="wrap">
                 <div class="utils">
                     <button class="btn-util" @click="$router.back();">
-                        <img src="/images/back.png" alt="" style="width:10px;">
+                        <img src="@/assets/images/back.png" alt="" style="width:10px;">
                     </button>
 
                     <button class="btn-util" @click="$router.push('/')">
-                        <img src="/images/home2.png" alt="" style="width:21px;">
+                        <img src="@/assets/images/home2.png" alt="" style="width:21px;">
                     </button>
                 </div>
 
                 <div class="utils">
                     <!--<button class="btn-util">
-                        <img src="/images/search.png" alt="" style="width:18px;">
+                        <img src="@/assets/images/search.png" alt="" style="width:18px;">
                     </button>-->
                     <nuxt-link to="/notices" class="btn-util">
-                        <img src="/images/bell.png" alt="" style="width:18px;">
+                        <img src="@/assets/images/bell.png" alt="" style="width:18px;">
                     </nuxt-link>
                     <button class="btn-util">
-                        <img src="/images/dots.png" alt="" style="width:3px;">
+                        <img src="@/assets/images/dots.png" alt="" style="width:3px;">
                     </button>
                 </div>
             </div>
@@ -55,7 +55,7 @@
                     <div class="wrap">
                         <div class="utils" style="justify-content: flex-end">
                             <button class="btn-util" @click="share">
-                                <img src="/images/share.png" alt="" style="width:11px;">
+                                <img src="@/assets/images/share.png" alt="" style="width:11px;">
                                 공유
                             </button>
                         </div>

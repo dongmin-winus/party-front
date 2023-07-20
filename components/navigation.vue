@@ -5,7 +5,7 @@
             <div :class="`nav-wrap ${$route.path === '/' ? 'active' : ''}`">
                 <nuxt-link to="/" class="nav">
                     <div class="img-wrap">
-                        <img :src="`${$route.path === '/' ? '/images/home_solid.png' : '/images/home.png'}`" alt="" style="width:21px;">
+                        <img :src="require(`@/assets/images/${$route.path === '/' ? 'home_solid.png' : 'home.png'}`)" alt="" style="width:21px;">
                     </div>
 
                     <h3 class="title">홈</h3>
@@ -15,7 +15,7 @@
             <div :class="`nav-wrap ${$route.path === '/posts' ? 'active' : ''}`">
                 <a href="/posts" class="nav">
                     <div class="img-wrap">
-                        <img :src="`${$route.path === '/posts' ? '/images/newspaper_solid.png' : '/images/newspaper.png'}`" alt="" style="width:21px;">
+                        <img :src="require(`@/assets/images/${$route.path === '/posts' ? 'newspaper_solid.png' : 'newspaper.png'}`)" alt="" style="width:21px;">
                     </div>
                     <h3 class="title">마을소식</h3> 
                 </a>
@@ -23,7 +23,7 @@
             <div class="nav-wrap">
                 <nuxt-link to="/scraps" class="nav">
                     <div class="img-wrap">
-                        <img :src="`${$route.path === '/scraps' ? '/images/scrap_solid.png' : '/images/scrap.png'}`" alt="" style="width:21px;">
+                        <img :src="require(`@/assets/images/${$route.path === '/scraps' ? 'scrap_solid.png' : 'scrap.png'}`)" alt="" style="width:21px;">
 
                     </div>
 
@@ -34,9 +34,9 @@
             <div :class="`nav-wrap ${$route.path === '/chat' ? 'active' : ''}`">
                 <nuxt-link to="/chat" class="nav">
                     <div class="img-wrap">
-                        <img v-if="$route.path === '/chat'" src="/images/chatActive.svg" alt="" style="width: 19px;"/>
-                        <img v-else src="/images/chat.svg" alt="" style="width:19px;">
-                        <!-- <img src="/images/chat-alt-2.png" alt="" style="width:19px;"> -->
+                        <img v-if="$route.path === '/chat'" src="@/assets/images/chatActive.svg" alt="" style="width: 19px;"/>
+                        <img v-else src="@/assets/images/chat.svg" alt="" style="width:19px;">
+                        <!-- <img src="@/assets/images/chat-alt-2.png" alt="" style="width:19px;"> -->
                     </div>
 
                     <h3 class="title">채팅</h3>
@@ -46,7 +46,7 @@
             <div :class="`nav-wrap ${$route.path.includes('/mypage') ? 'active' : ''}`">
                 <nuxt-link to="/mypage" class="nav">
                     <div class="img-wrap">
-                        <img :src="`${$route.path === '/mypage' ? '/images/user_solid.png' : '/images/user.png'}`" alt="" style="width:21px;">
+                        <img :src="require(`@/assets/images/${$route.path === '/mypage' ? 'user_solid.png' : 'user.png'}`)" alt="" style="width:21px;">
                     </div>
 
                     <h3 class="title">내 정보</h3>

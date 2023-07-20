@@ -5,17 +5,17 @@
             <div class="wrap">
                 <div class="utils">
                     <button class="btn-util" @click="back">
-                        <img src="/images/back.png" alt="" style="width:10px;">
+                        <img src="@/assets/images/back.png" alt="" style="width:10px;">
                     </button>
 
                     <button class="btn-util" @click="$router.push('/')">
-                        <img src="/images/home2.png" alt="" style="width:21px;">
+                        <img src="@/assets/images/home2.png" alt="" style="width:21px;">
                     </button>
                 </div>
 
                 <div class="utils">
                     <nuxt-link to="/notices" class="btn-util">
-                        <img src="/images/bell.png" alt="" style="width:18px;">
+                        <img src="@/assets/images/bell.png" alt="" style="width:18px;">
                     </nuxt-link>
                 </div>
             </div>

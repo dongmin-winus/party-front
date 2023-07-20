@@ -2,7 +2,7 @@
     <div class="m-pop type01">
         <div class="m-pop-inner">
             <button class="btn-close" @click="close">
-                <img src="/images/x.png" alt="" style="width:21px;">
+                <img src="@/assets/images/x.png" alt="" style="width:21px;">
             </button>
 
             <div class="m-pop-title">내 지갑에 추가</div>

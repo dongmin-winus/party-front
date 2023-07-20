@@ -6,7 +6,7 @@
         <div class="wrap">
             <div class="left">
                 <button class="btn-util">
-                    <img src="/images/back.png" alt="" style="width:10px;" @click="$router.push('/mypage')">
+                    <img src="@/assets/images/back.png" alt="" style="width:10px;" @click="$router.push('/mypage')">
                 </button>
             </div>
 
@@ -15,7 +15,7 @@
             </div>
 
             <nuxt-link to="/contents/settings" class="btn-util">
-                <img src="/images/setting.png" alt="" style="width:20px;">
+                <img src="@/assets/images/setting.png" alt="" style="width:20px;">
             </nuxt-link>
         </div>
     </div>
@@ -60,17 +60,17 @@
                   
                   <img
                     v-if="item.type === 'stamped' && !isGiftDay(item)"
-                    src="/images/attendance-success.png" 
+                    src="@/assets/images/attendance-success.png" 
                     class="stamp" alt="" srcset="">
 
                   <img
                     v-else-if="item.type === 'gift' && isUnderStamped(item)"
-                    src="/images/attendance-gift.png" 
+                    src="@/assets/images/attendance-gift.png" 
                     class="stamp" alt="" srcset="">
 
                   <div v-else-if="item.type === 'gift' && !isUnderStamped(item)">
                     <div class="mt-12">
-                      <img src="/images/gift.png" class="stamp-gift" alt="" srcset="">  
+                      <img src="@/assets/images/gift.png" class="stamp-gift" alt="" srcset="">  
                     </div> 
                   </div>
 
@@ -102,7 +102,7 @@
       >
         <template #outter>
           <div class="attendance-modal">
-            <img src="/images/attendance_congrats.jpeg" alt="" class="modal-content">
+            <img src="@/assets/images/attendance_congrats.jpeg" alt="" class="modal-content">
           </div>
           <div class="btn-container">
             <button class="btn" @click="activateModal = false">닫기</button>
@@ -319,7 +319,7 @@ export default {
 }
 .area-index .section-attendance-back .content {
     /* padding:40px 20px 30px 20px; */
-    background:url("/images/attendance.png") no-repeat; background-size:cover; border-radius:5px;
+    background:url("@/assets/images/attendance.png") no-repeat; background-size:cover; border-radius:5px;
     text-align: center;
     height: 150px;
     max-width: 100%;
@@ -400,7 +400,7 @@ export default {
   flex: 1 0 21%; /* explanation below */
   flex:none;
   margin: 5px;
-  background:url("/images/attendance-base.png") no-repeat; background-size:cover;
+  background:url("@/assets/images/attendance-base.png") no-repeat; background-size:cover;
   width:65px;
   height:65px;
 }

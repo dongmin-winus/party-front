@@ -7,13 +7,15 @@
             <!-- 지역이 본부 x & 로그인 -->
             <div class="fragment" v-if="district && district.id != 0">
                 <section class="section-ad">
-                    <swiper id="banner1" :options="bannerOptions">
-                        <swiper-slide v-for="(slide,index) in homeBanner1" :key="slide.id">
-                            <a :href="slide.link_url" target="_blank" class="link">
-                                <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
-                            </a>
-                        </swiper-slide>
-                    </swiper> 
+                    <client-only>
+                        <swiper :options="bannerOptions">
+                            <swiper-slide v-for="(slide,index) in homeBanner1" :key="slide.id">
+                                <a :href="slide.link_url" target="_blank" class="link">
+                                    <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
+                                </a>
+                            </swiper-slide>
+                        </swiper> 
+                    </client-only>
                 </section>
                 <section class="section-values">
                     <img src="https://dotmzh1fysixs.cloudfront.net/1018/base-town.png" alt="" class="base">
@@ -26,7 +28,7 @@
                                 </nuxt-link>
                                 <nuxt-link to="/staffs" class="right">
                                     <div>
-                                        <img src="/images/main_icon_staff.png" alt="" class="">
+                                        <img src="@/assets/images/main_icon_staff.png" alt="" class="">
                                     </div>
                                     <div>
                                         <span>섬기는<br />사람들</span>
@@ -109,13 +111,15 @@
             <!-- 지역이 본부 | 비로그인 -->
             <div class="fragment" v-else>
                 <section class="section-ad">
-                    <swiper id="banner2" :options="bannerOptions">
-                        <swiper-slide v-for="(slide,index) in homeBanner1" :key="slide.id">
-                            <a :href="slide.link_url" target="_blank" class="link">
-                                <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
-                            </a>
-                        </swiper-slide>
-                    </swiper> 
+                    <client-only>
+                        <swiper :options="bannerOptions">
+                            <swiper-slide v-for="(slide,index) in homeBanner1" :key="slide.id">
+                                <a :href="slide.link_url" target="_blank" class="link">
+                                    <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
+                                </a>
+                            </swiper-slide>
+                        </swiper> 
+                    </client-only>
                 </section>
                 <!-- 마을 홍보 영상들 -->
                 <section class="section-promotion" v-if="promotionList.length !== 0">
@@ -124,28 +128,29 @@
                             <p class="sub">생생한 지역 인터뷰</p>
                             이달의 <span class="point">마을</span>
                         </div>
-                        <swiper id="promotionSwiper" ref="promotionSwiper" :options="swiperOptions" @slideChange="runOnChange">
-                            <swiper-slide v-for="(slide,index) in promotionList" :key="slide.id">
-                                <nuxt-link :to="`/posts/${slide.id}`">
-                                    <div class="content">
-                                        <div style="position:relative; border:1px solid #bdbdbd; border-radius:10px; height:inherit;">
-                                            <div class="recommend">
-                                                <span style="color:white;">{{new Date().getMonth()+1}}월추천</span>
+                        <client-only>
+                            <swiper :options="swiperOptions">
+                                <swiper-slide v-for="(slide,index) in promotionList" :key="slide.id">
+                                    <nuxt-link :to="`/posts/${slide.id}`">
+                                        <div class="content">
+                                            <div style="position:relative; border:1px solid #bdbdbd; border-radius:10px; height:inherit;">
+                                                <div class="recommend">
+                                                    <span style="color:white;">{{new Date().getMonth()+1}}월추천</span>
+                                                </div>
+                                                <img class="img" :src="slide.video_thumbnail" alt="-" />
+                                                <div class="mt-8"></div>
+                                                <p style="font-weight:500; font-size:20px; color:#0BAF00" align="center">{{seperateString(slide.title,'/')[0]}}</p>
+                                                <p style="display:block; margin: 0 15px; font-weight:300; font-size:16px; overflow:hidden; white-space:nowrap" align="center" v-html="seperateString(slide.title,'/')[1]"></p>
                                             </div>
-                                            <img class="img" :src="slide.video_thumbnail" alt="-" />
-                                            <div class="mt-8"></div>
-                                            <p style="font-weight:500; font-size:20px; color:#0BAF00" align="center">{{seperateString(slide.title,'/')[0]}}</p>
-                                            <p style="display:block; margin: 0 15px; font-weight:300; font-size:16px; overflow:hidden; white-space:nowrap" align="center" v-html="seperateString(slide.title,'/')[1]"></p>
+    
                                         </div>
-   
-                                    </div>
-                                </nuxt-link>
+                                    </nuxt-link>
+                                    <div class="mt-8"></div>
+                                    <nuxt-link :to="`/posts/${activePromotionId}`" class="m-btn type02 bg-revert-primary">자세히보기 +</nuxt-link>
 
-
-                            </swiper-slide>
-                        </swiper>
-                        <div class="mt-8"></div>
-                        <nuxt-link :to="`/posts/${activePromotionId}`" class="m-btn type02 bg-revert-primary">자세히보기 +</nuxt-link>
+                                </swiper-slide>
+                            </swiper>
+                        </client-only>
                     </div>
                 </section>
             </div>
@@ -204,7 +209,7 @@
                                 >
                                     <div class="img-wrap">
                                         <!-- <img src="https://dotmzh1fysixs.cloudfront.net/1016/crown.png" width="20px" alt="" class="deco"> -->
-                                        <img src="images/rankings/main_ranking_2nd.png" width="100px" alt="" class="img-rect">
+                                        <img src="@/assets/images/rankings/main_ranking_2nd.png" width="100px" alt="" class="img-rect">
 
                                     </div>
 
@@ -215,7 +220,7 @@
                                         <div class="subtitle-container">
                                             <p class="subtitle">{{ districtRegisterCounts[1].district }}</p>
                                             <div class="badge" v-if="getBadgeSrc(rankingCount(districtRegisterCounts[1]))">
-                                                <img :src="getBadgeSrc(rankingCount(districtRegisterCounts[1]))"/>
+                                                <img :src="require(`@/assets/images/${getBadgeSrc(rankingCount(districtRegisterCounts[1]))}`)"/>
                                             </div>
                                         </div>
                                         <div :class="getScaleClass(rankingCount(districtRegisterCounts[1]),'ranked')">
@@ -237,7 +242,7 @@
                                 >
                                     <div class="img-wrap">
                                         <!-- <img src="https://dotmzh1fysixs.cloudfront.net/1016/crown.png" width="20px" alt="" class="deco"> -->
-                                        <img src="images/rankings/main_ranking_1st.png" width="100px" alt="" class="img-rect">
+                                        <img src="@/assets/images/rankings/main_ranking_1st.png" width="100px" alt="" class="img-rect">
 
                                     </div>
 
@@ -248,7 +253,7 @@
                                         <div class="subtitle-container">
                                             <p class="subtitle">{{ districtRegisterCounts[0].district }}</p>
                                             <div class="badge" v-if="getBadgeSrc(rankingCount(districtRegisterCounts[0]))">
-                                                <img :src="getBadgeSrc(rankingCount(districtRegisterCounts[0]))"/>
+                                                <img :src="require(`@/assets/images/${getBadgeSrc(rankingCount(districtRegisterCounts[0]))}`)"/>
                                             </div>
                                         </div>
                                         <div :class="getScaleClass(rankingCount(districtRegisterCounts[0]),'ranked')">
@@ -270,7 +275,7 @@
                                 >
                                     <div class="img-wrap">
                                         <!-- <img src="https://dotmzh1fysixs.cloudfront.net/1016/crown.png" width="20px" alt="" class="deco"> -->
-                                        <img src="images/rankings/main_ranking_3rd.png" width="100px" alt="" class="img-rect">
+                                        <img src="@/assets/images/rankings/main_ranking_3rd.png" width="100px" alt="" class="img-rect">
 
                                     </div>
 
@@ -281,7 +286,7 @@
                                         <div class="subtitle-container">
                                             <p class="subtitle">{{ districtRegisterCounts[2].district }} </p>
                                             <div class="badge" v-if="getBadgeSrc(rankingCount(districtRegisterCounts[2]))">
-                                                <img :src="getBadgeSrc(rankingCount(districtRegisterCounts[2]))"/>
+                                                <img :src="require(`@/assets/images/${getBadgeSrc(rankingCount(districtRegisterCounts[2]))}`)"/>
                                             </div>
                                         </div>
                                         <div :class="getScaleClass(rankingCount(districtRegisterCounts[2]),'ranked')">
@@ -309,7 +314,7 @@
                                         <div class="rank">
                                             <div class="left">
                                                 <div class="petit-image">
-                                                    <img :src="`images/rankings/${index+4}.png`" alt="" srcset="">
+                                                    <img :src="require(`@/assets/images/rankings/${index+4}.png`)" alt="" srcset="">
                                                 </div>
                                                 <div class=" fixed-width">
                                                     {{index + 1}}위
@@ -320,7 +325,7 @@
                                             </div>
                                             <div class="right">
                                                 <div class="badge" v-if="getBadgeSrc(rankingCount(districtRegisterCount))">
-                                                    <img :src="getBadgeSrc(rankingCount(districtRegisterCount))"/>
+                                                    <img :src="require(`@/assets/images/${getBadgeSrc(rankingCount(districtRegisterCount))}`)"/>
                                                 </div>
                                                 <div :class="getScaleClass(rankingCount(districtRegisterCount))">
                                                     <span class="tri">▲ </span>&nbsp;<span> {{ rankingCount(districtRegisterCount) }} </span>
@@ -338,13 +343,15 @@
             </section>
 
             <section class="section-ad">
-                <swiper id="banner3" :options="middleBannerOptions">
-                    <swiper-slide v-for="(slide,index) in homeBanner2" :key="slide.id">
-                        <a :href="slide.link_url" target="_blank" class="link">
-                            <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
-                        </a>
-                    </swiper-slide>
-                </swiper> 
+                <client-only>
+                    <swiper :options="middleBannerOptions">
+                        <swiper-slide v-for="(slide,index) in homeBanner2" :key="slide.id">
+                            <a :href="slide.link_url" target="_blank" class="link">
+                                <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
+                            </a>
+                        </swiper-slide>
+                    </swiper> 
+                </client-only>
             </section>
 
             <!-- 자유마을 스토리 -->
@@ -354,24 +361,26 @@
                             <p class="sub">도란도란 따뜻함이 가득한</p>
                             자유마을 <span class="point">스토리</span>
                         </div>
-                        <swiper id="storySwiper" :options="storyOptions">
-                            <swiper-slide v-for="(slide,index) in storyList" :key="slide.id">
-                                <nuxt-link :to="`/posts/${slide.id}`" style="padding-bottom:32px;">
-                                    <div class="story-container">
-                                        <div class="ribbon">
-                                            <p class="year">{{ new Date().getFullYear() }}</p>
-                                            <p class="month">{{ new Date().getMonth() + 1 }}월</p>
+                        <client-only>
+                            <swiper :options="storyOptions">
+                                <swiper-slide v-for="(slide,index) in storyList" :key="slide.id">
+                                    <nuxt-link :to="`/posts/${slide.id}`" style="padding-bottom:32px;">
+                                        <div class="story-container">
+                                            <div class="ribbon">
+                                                <p class="year">{{ new Date().getFullYear() }}</p>
+                                                <p class="month">{{ new Date().getMonth() + 1 }}월</p>
+                                            </div>
+                                            <img class="img" :src="slide.video_thumbnail" alt="-">
+                                            <div class="content-container">
+                                                <p style="font-size:20px; font-weight:500" v-html="replaceText(slide.title,10)"></p>
+                                                <p style="color:#777; overflow:hidden;" v-html="replaceText(slide.content,10)"></p>
+                                            </div>
                                         </div>
-                                        <img class="img" :src="slide.video_thumbnail" alt="-">
-                                        <div class="content-container">
-                                            <p style="font-size:20px; font-weight:500" v-html="replaceText(slide.title,10)"></p>
-                                            <p style="color:#777; overflow:hidden;" v-html="replaceText(slide.content,10)"></p>
-                                        </div>
-                                    </div>
-                                </nuxt-link>
-                            </swiper-slide>
-                            <div class="swiper-pagination" slot="pagination"></div>
-                        </swiper>
+                                    </nuxt-link>
+                                </swiper-slide>
+                                <div class="swiper-pagination" slot="pagination"></div>
+                            </swiper>
+                        </client-only>
                         <div class="mt-12"></div>
                 </div>
             </section>
@@ -486,7 +495,7 @@
                                 </div>
                                 <p style="font-size:30px; font-weight:700;">{{ congressmanItem.korean_name }} 의원</p>
                                 <div class="activity-point">
-                                    <span>활동만족도</span> &nbsp;<img :src="makeAvgImg" style="width:25px; height:25px;" alt="">
+                                    <span>활동만족도</span> &nbsp;<img :src="require(`@/assets/images/${makeAvgImg}`)" style="width:25px; height:25px;" alt="">
                                 </div>
                             </div>
                         </div>
@@ -498,13 +507,15 @@
 
             <div class="mt-12"></div>
             <section class="section-ad">
-                <swiper id="banner4" :options="bannerOptions">
-                    <swiper-slide v-for="(slide,index) in homeBanner3" :key="slide.id">
-                        <a :href="slide.link_url" target="_blank" class="link">
-                            <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
-                        </a>
-                    </swiper-slide>
-                </swiper> 
+                <client-only>
+                    <swiper :options="bannerOptions">
+                        <swiper-slide v-for="(slide,index) in homeBanner3" :key="slide.id">
+                            <a :href="slide.link_url" target="_blank" class="link">
+                                <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
+                            </a>
+                        </swiper-slide>
+                    </swiper> 
+                </client-only>
             </section>
 
             <quicks 
@@ -671,7 +682,7 @@ export default {
             activePromotionId: 0,
             storyList: [],
             meetingList: [],
-            homeBanners:[],
+            homeBanners: {},
 
             congressmanItem: null,
             temp: null,
@@ -682,36 +693,36 @@ export default {
             pointNoticeOpen: false,
         }
     },
-    async asyncData({$axios}) {
-        const homeBanners = await $axios.get('/api/banners/home');
-        const promotionList = await $axios.get('/api/promotion');
-        const meetingList = await $axios.get('/api/meeting');
-        return {
-            promotionList: [
-                ...promotionList.data.promotion.map((item) => {
-                    return {
-                        ...item,
-                        video_thumbnail: item.video_thumbnail.replace(/0\.jpg/g, 'mqdefault.jpg')
-                    }
-                })
-            ],
-            storyList: [
-                ...promotionList.data.story.map((item) => {
-                    return {
-                        ...item,
-                        video_thumbnail: item.video_thumbnail.replace(/0\.jpg/g, 'mqdefault.jpg')
-                    }
-                })
-            ],
-            homeBanners: {
-                ...homeBanners.data,
+    // async asyncData({$axios}) {
+    //     const homeBanners = await $axios.get('/api/banners/home');
+    //     const promotionList = await $axios.get('/api/promotion');
+    //     const meetingList = await $axios.get('/api/meeting');
+    //     return {
+    //         promotionList: [
+    //             ...promotionList.data.promotion.map((item) => {
+    //                 return {
+    //                     ...item,
+    //                     video_thumbnail: item.video_thumbnail.replace(/0\.jpg/g, 'mqdefault.jpg')
+    //                 }
+    //             })
+    //         ],
+    //         storyList: [
+    //             ...promotionList.data.story.map((item) => {
+    //                 return {
+    //                     ...item,
+    //                     video_thumbnail: item.video_thumbnail.replace(/0\.jpg/g, 'mqdefault.jpg')
+    //                 }
+    //             })
+    //         ],
+    //         homeBanners: {
+    //             ...homeBanners.data,
                 
-            },
-            meetingList: [
-                ...meetingList.data.data,
-            ]
-        };
-    },
+    //         },
+    //         meetingList: [
+    //             ...meetingList.data.data,
+    //         ]
+    //     };
+    // },
     computed: {
         district(){
             return this.$store.state.district;
@@ -761,19 +772,19 @@ export default {
             return this.districtRegisterCounts.slice(0,3);
         },
         homeBanner1() {
-            return this.homeBanners.banners.filter(banner => {
+            return this.homeBanners.banners ?  this.homeBanners.banners.filter(banner => {
                 return banner.position === 'top';
-            })
+            }) : [];
         },
         homeBanner2() {
-            return this.homeBanners.banners.filter(banner => {
+            return this.homeBanners.banners ? this.homeBanners.banners.filter(banner => {
                 return banner.position === 'middle';
-            })
+            }) : [];
         },
         homeBanner3() {
-            return this.homeBanners.banners.filter(banner => {
+            return this.homeBanners.banners ?  this.homeBanners.banners.filter(banner => {
                 return banner.position === 'bottom';
-            })
+            }) : [];
         },
         
         aggregateReviews() {
@@ -793,15 +804,15 @@ export default {
             return Math.floor((sum / (totalCount * 5)) * 100);
         },
         makeAvgImg(){
-            let img = '/images/contacts/f_1.png';
+            let img = 'contacts/f_1.png';
             if(this.evaluateAvg > 80) {
-                img = '/images/contacts/f_5.png';
+                img = 'contacts/f_5.png';
             }else if(this.evaluateAvg > 60) {
-                img = '/images/contacts/f_4.png';
+                img = 'contacts/f_4.png';
             }else if(this.evaluateAvg > 40) {
-                img = '/images/contacts/f_3.png';
+                img = 'contacts/f_3.png';
             }else if(this.evaluateAvg > 20) {
-                img = '/images/contacts/f_2.png';
+                img = 'contacts/f_2.png';
             }
             return img;
         },
@@ -810,6 +821,34 @@ export default {
     },
 
     methods: { 
+        async init() {
+            const homeBanners = await this.$axios.get('/api/banners/home');
+            const promotionList = await this.$axios.get('/api/promotion');
+            const meetingList = await this.$axios.get('/api/meeting');
+            this.promotionList= [
+                ...promotionList.data.promotion.map((item) => {
+                    return {
+                        ...item,
+                        video_thumbnail: item.video_thumbnail.replace(/0\.jpg/g, 'mqdefault.jpg')
+                    }
+                })
+            ];
+            this.storyList= [
+                ...promotionList.data.story.map((item) => {
+                    return {
+                        ...item,
+                        video_thumbnail: item.video_thumbnail.replace(/0\.jpg/g, 'mqdefault.jpg')
+                    }
+                })
+            ];
+            this.homeBanners= {
+                ...homeBanners.data,
+                
+            };
+            this.meetingList= [
+                ...meetingList.data.data,
+            ];
+        },
         getActiveIndex(swiper) {
             return swiper.activeIndex;
         },
@@ -864,9 +903,9 @@ export default {
    
         },
         getBadgeSrc(rankingCount) {
-            if(rankingCount >= 1000 && rankingCount < 2000) return '/images/main_icon_badge_1k.png';
-            if(rankingCount >= 2000 && rankingCount < 3000) return '/images/main_icon_badge_2k.png';
-            if(rankingCount >= 3000 ) return '/images/main_icon_badge_3k.png';
+            if(rankingCount >= 1000 && rankingCount < 2000) return 'main_icon_badge_1k.png';
+            if(rankingCount >= 2000 && rankingCount < 3000) return 'main_icon_badge_2k.png';
+            if(rankingCount >= 3000 ) return 'main_icon_badge_3k.png';
             if(rankingCount < 1000) return false;
         },
         getScaleClass(rankingCount, rankingType='unranked') {
@@ -1150,6 +1189,7 @@ export default {
     },
 
     async mounted() {
+        await this.init();
         this.switchRankGuide('total-rankings');
         this.switchPopularRankGuide('year');
         if(!Cookies.get('allPopClosedToday')) {
@@ -1432,7 +1472,7 @@ export default {
         right: 3%;
         min-width: 12%;
         min-height: 80px;
-        background:url('/images/ribbon.png') no-repeat center center;
+        background:url('@/assets/images/ribbon.png') no-repeat center center;
         background-size:cover;
     }
 

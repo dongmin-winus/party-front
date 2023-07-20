@@ -126,7 +126,7 @@
                             <div class="title-container">
                                 <div class="left">의원 평가</div>
                                 <div class="right">
-                                    <img src="/images/arrowRight-gray.png" alt="" style="width:14px;" @click="$router.push('/contacts/evaluateList')">
+                                    <img src="@/assets/images/arrowRight-gray.png" alt="" style="width:14px;" @click="$router.push('/contacts/evaluateList')">
                                 </div>
                             </div>
                             <!-- <div class="title-contaiiner">
@@ -143,7 +143,7 @@
                                   <div class="average">
                                       <!-- smile & evaluate percentage -->
                                       <div class="smile">
-                                          <img :src="makeAvgImg" >
+                                          <img :src="require(`@/assets/images/${makeAvgImg}`)" >
                                           <div class="smile-label">{{evaluateAvg}}% ({{totalCount}}명)</div>
                                       </div>
                                   </div>
@@ -159,7 +159,7 @@
                                     <div class="bar" :style="`height:${barProgress(index)}%`"></div>
                                   </div>
                                   <div class="smile">
-                                    <img :src="option.image" :alt="option.label">
+                                    <img :src="require(`@/assets/images/contacts/${getOptionSmile(option)}`)" :alt="option.label">
                                     <div class="smile-label"><span :style="`color:${option.color}`">{{option.label}}</span></div>
                                   </div>
                                 </div>
@@ -190,7 +190,7 @@
               <swiper v-show="toggleList == 'good'" :options="swiperOptions">
                 <swiper-slide v-for="(slide,index) in goodList" :key="slide.id">
                   <div class="content">
-                    <div><img src="/images/double-quote.png" style="width:27px; height:24px;" alt=""></div>
+                    <div><img src="@/assets/images/double-quote.png" style="width:27px; height:24px;" alt=""></div>
                     <div class="mt-8"></div>
                     <p>{{slide.comment}}</p>
                     <div class="mt-8"></div>
@@ -203,7 +203,7 @@
               <swiper v-show="toggleList == 'bad'" :options="swiperOptions">
                 <swiper-slide v-for="(slide,index) in badList" :key="slide.id">
                   <div class="content">
-                    <div><img src="/images/double-quote.png" style="width:27px; height:24px;" alt=""></div>
+                    <div><img src="@/assets/images/double-quote.png" style="width:27px; height:24px;" alt=""></div>
                     <div class="mt-8"></div>
                     <p>{{slide.comment}}</p>
                     <div class="mt-8"></div>
@@ -219,7 +219,7 @@
                 <button v-else="review_check" class="m-btn type02 bg-revert-primary width-100" >의원 평가 수정하기</button>
               </div>
             </section>
-            <img src="/images/about-bg.png" alt="" class="deco-about">
+            <img src="@/assets/images/about-bg.png" alt="" class="deco-about">
             <!-- <quicks 
                 :createUrl="'/posts/create'"
                 :btnName="'글쓰기'"
@@ -307,15 +307,15 @@ export default {
             return Math.floor((sum / (totalCount * 5)) * 100);
         },
         makeAvgImg(){
-            let img = '/images/contacts/f_1.png';
+            let img = 'contacts/f_1.png';
             if(this.evaluateAvg > 80) {
-                img = '/images/contacts/f_5.png';
+                img = 'contacts/f_5.png';
             }else if(this.evaluateAvg > 60) {
-                img = '/images/contacts/f_4.png';
+                img = 'contacts/f_4.png';
             }else if(this.evaluateAvg > 40) {
-                img = '/images/contacts/f_3.png';
+                img = 'contacts/f_3.png';
             }else if(this.evaluateAvg > 20) {
-                img = '/images/contacts/f_2.png';
+                img = 'contacts/f_2.png';
             }
             return img;
         },
@@ -397,6 +397,10 @@ export default {
                 console.error(error);
             }
         },
+        getOptionSmile(option) {
+            return option.image;
+        },
+
         /**
          * 의원 약력 등 추가 정보
          */

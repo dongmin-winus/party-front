@@ -21,11 +21,11 @@ export const state = () => ({
     contactItem: {},
     contactReviews: null,
     options: [
-        { value: 5, color: 'red', label: '최고', image: '/images/contacts/f_5.png' },
-        { value: 4, color: '#ffd627', label: '좋음', image: '/images/contacts/f_4.png' },
-        { value: 3, color: '#00ba00', label: '보통', image: '/images/contacts/f_3.png' },
-        { value: 2, color: '#296fe5', label: '별로', image: '/images/contacts/f_2.png' },
-        { value: 1, color: '#837f7f', label: '최악', image: '/images/contacts/f_1.png' },
+        { value: 5, color: 'red', label: '최고', image: 'f_5.png' },
+        { value: 4, color: '#ffd627', label: '좋음', image: 'f_4.png' },
+        { value: 3, color: '#00ba00', label: '보통', image: 'f_3.png' },
+        { value: 2, color: '#296fe5', label: '별로', image: 'f_2.png' },
+        { value: 1, color: '#837f7f', label: '최악', image: 'f_1.png' },
     ],
 
     //for mapView
@@ -37,7 +37,7 @@ export const state = () => ({
     option: false,
     chatSearch: false,
     emoticonOption: false,
-    
+
 });
 
 export const getters = {
