@@ -63,7 +63,7 @@ export default {
                 return 'call_before.png'
             }
         },
-        wWhiteround(item) {
+        showWhiteround(item) {
             return item.call_count && item.call_count > 1
         }
     },
