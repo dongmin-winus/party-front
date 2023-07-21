@@ -111,7 +111,7 @@
             </div>
 
             <!-- 253 위원장(지부장)메뉴 -->
-            <div class="menus-wrap" v-if="staffCertificated == '총괄지역팀장'">
+            <div class="menus-wrap" v-if="staffCertificated == '총괄팀장'">
                 <h3 class="title">충괄지역팀장 활동</h3>
                 <div class="mt-12"></div>
                 <div class="menus">
@@ -125,7 +125,7 @@
             </div>
 
             <!-- 253 위원장(지부장)메뉴 -->
-            <div class="menus-wrap" v-if="staffCertificated == '위원장'">
+            <div class="menus-wrap" v-if="staffCertificated == '총괄위원장'">
                 <h3 class="title">위원장 활동</h3>
                 <div class="mt-12"></div>
                 <div class="menus">
@@ -363,19 +363,36 @@ export default {
                     phone: item.phone,
                 }
             });
+            // if(response.data === false) {
+            //     this.staffCertificated = false;
+            // }else if(response.data.position === '대표') {
+            //     this.staffCertificated = '대표';
+            //     this.represenateDistrict = {
+            //         id:response.data.district_id,
+            //         name:response.data.district,
+            //     };
+            //     this.group = response.data.group;
+            // }else if(response.data.position === '위원장') {
+            //     this.staffCertificated = '위원장';
+            // }else if(response.data.position === '총괄지역팀장') {
+            //     this.staffCertificated = '총괄지역팀장';
+            //     this.high_id = response.data.id;
+            //     await this.getElections();
+            // }
+            const position = response.data.position;
             if(response.data === false) {
                 this.staffCertificated = false;
-            }else if(response.data.position === '대표') {
-                this.staffCertificated = '대표';
+            }else if(position[0] === 'A0001') {
+                this.staffCertificated = position[1];
                 this.represenateDistrict = {
                     id:response.data.district_id,
                     name:response.data.district,
                 };
                 this.group = response.data.group;
-            }else if(response.data.position === '위원장') {
-                this.staffCertificated = '위원장';
-            }else if(response.data.position === '총괄지역팀장') {
-                this.staffCertificated = '총괄지역팀장';
+            }else if(position[0] == 'C0001') {
+                this.staffCertificated = position[1];
+            }else if(position[0] == 'C0002') {
+                this.staffCertificated = position[1];
                 this.high_id = response.data.id;
                 await this.getElections();
             }
