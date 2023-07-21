@@ -70,15 +70,17 @@ export default {
     }
   },
   watch: {
-    value(data) {
-      const payload = this.computedItems.find(item => item.value === data);
-      if(payload) {
-        this.select(payload)
-      }else {
-        this.selecteItem = "";
-      }
-        
-    }
+    value: {
+      handler(data) {
+        const payload = this.computedItems.find(item => item.value === data);
+        if(payload) {
+          this.select(payload)
+        }else {
+          this.selecteItem = "";
+        }
+      },
+      immediate: true
+    },
   },
   data() {
     return {

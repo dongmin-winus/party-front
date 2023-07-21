@@ -58,7 +58,7 @@
                 <div class="sep">
                   {{ item.content }}  
                 </div> 
-                <button @click.stop="participate(item.id)" class="mt-12 m-btn type02 bg-primary">행사 참여신청</button>
+                <button v-if="item.can_participate == 1"  @click.stop="participate(item.id)" :class="`mt-12 m-btn type02 ${item.is_participate == 0 ? 'bg-primary' : 'bg-red'}`">{{item.is_participate == 0 ? '행사 참여신청' : '참가 취소'}}</button>
               </div>
             </template>
           </accordion-item>
@@ -102,11 +102,19 @@ export default {
       // this.$set(this.asse,`${board}`, response.data.data);
     },
     async search() {
-      console.log(this.word)
       await this.getList('assembly', this.word)
     },
-    participate(id) {
-      console.log(id);
+    async participate(id) {
+      const response = await this.$axios.post(`/api/enroll`, {
+        event_id: id,
+      });
+      alert(response.data.message);
+      this.assemblyList = [...this.assemblyList.map(item => {
+        if(item.id === id) {
+          item.is_participate = item.is_participate == 0 ? 1 : 0;
+        }
+        return item;
+      })];
     },
   },
   mounted () {
