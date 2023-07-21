@@ -33,12 +33,12 @@
                             <h3 class="title">내 마을</h3>
                         </a>
 
-                        <nuxt-link to="/notices" class="link">
+                        <nuxt-link to="/qnas" class="link">
                             <div class="img-wrap">
                                 <img src="@/assets/images/notice.png" alt="" class="filter-white" style="width:30px;">
                             </div>
 
-                            <h3 class="title">공지</h3>
+                            <h3 class="title">고객센터</h3>
                         </nuxt-link>
                     </div>
                 </div>
