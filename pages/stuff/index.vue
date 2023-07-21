@@ -1,5 +1,5 @@
 <template>
-  <div class="area-index">
+  <div class="area-stuff">
     <header-type01/>
     <!-- 내용 영역 -->
     <div style="padding-top:30px;">
@@ -11,11 +11,10 @@
           </div>
           <swiper v-if="boardLists.assembly?.length > 0" class="swiper2" :options="assemblySlideOption" >
             <swiper-slide v-for="(slide,index) in boardLists.assembly" :key="slide.id">
-              <div class="mt-24">
+              <nuxt-link to="/stuff/assembly" class="mt-24">
                 <div class="first-item" style="padding-bottom:32px;">
                   <div class="banner01" :style="`background-image:url(${slide.img ? slide.img.url : 'images/stuff_01.png'});`"></div>
                   <div class="mt-24 d-day">
-                    <!-- TODO계상 필요함 -->
                     <span class="d-day-text">{{calculateDdays(slide.start_date,slide.end_date)}}</span>
                   </div>
                   <div class="info-container mt-12">
@@ -24,14 +23,14 @@
                     <span class="sub-info">{{slide.address}}</span>
                   </div>
                 </div>
-              </div>
+              </nuxt-link>
             </swiper-slide>
             <div class="swiper-pagination"  slot="pagination"></div>
           </swiper> 
         </div>
 
         <!-- TODO 동네 모임 -->
-        <!-- <div class="mt-24 meeting fragment frame">
+        <!-- <div class="mt-12 meeting fragment frame">
           <div class="m-title type01">
             <p class="sub02">2배 더 유익한 시간 보내기</p>
             <span class="highlighter-point">동네모임</span>
@@ -49,7 +48,7 @@
             </div>
           </div>
           <div class="mt-12 ">
-            <div class="meeting contents" v-for="(item,index) in meetings" :key="index">
+            <div class="contents-shadow meeting" v-for="(item,index) in meetings" :key="index">
               <b class="title">{{ item.title }}</b>
               <article class="content">{{ replaceText(item.content, 40) }}</article>
               <span ><img src="@/assets/images/marker-orange.png" class="icon" alt=""/>{{ item.district.name }}</span>
@@ -63,7 +62,49 @@
           </div>
         </div> -->
 
-        <div class="m-24 edu fragment frame">
+        <!-- 동네 미션 -->
+        <div class="frame">
+          <div class="m-title type01">
+            <p class="sub02">승부욕 활활 타오르는</p>
+            <span class="highlighter-point">다양한 미션</span>
+          </div>
+          <div class="mt-8 content-header">
+            <div class="left">
+              <b class="title"># 다양한 미션 챌린지</b>
+            </div>
+            <div class="right">
+              <button class="btn-util">
+                <nuxt-link to="/">
+                    <img src="@/assets/images/foword.png" alt="" style="width:10px;">
+                </nuxt-link>
+              </button>
+            </div>
+          </div>
+
+          <div class="mt-12 contents-shadow">
+            <div class="mission">
+              <div class="inner-content" v-for="(item,index) in missions"  :key="index">
+                <div v-if="item.img" class="left" :style="`background:url(${item.img.preview_url}) no-repeat; background-size:cover; border-radius:5px;`"></div>
+                <div class="right">
+                  <div class="writings">
+                    <b class="title">{{ replaceText(item.title,10) }}</b>
+                    <p style="color:#777">{{ item.duration }}</p>
+                    <p><span style="color:#0BAF00">{{ item.participant_count }}</span>명 참여중</p>
+                  </div>
+                  <div class="btns">
+                    <button class="m-btn type01 primary" style="width: 50px; background-color:rgb(228,245,226);">
+                      참여
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <nuxt-link to="/stuff/mission" class="m-btn type02 bg-revert-primary">미션 더보기 +</nuxt-link>
+          </div>
+        </div>
+
+        <!-- TODO 마을교육  -->
+        <!-- <div class="m-24 edu fragment frame">
           <div class="m-title type01">
             <p class="sub02">우리는 이겼습니다!</p>
             <span class="highlighter-point">나라살리는 마을교육</span>
@@ -82,7 +123,7 @@
             </div>
           </div>
           <nuxt-link to="/" class="mt-12 m-btn type02 bg-revert-primary">마을교육 더보기 +</nuxt-link>
-        </div>
+        </div> -->
       </section>
     </div>
     <navigation />
@@ -160,6 +201,7 @@ export default {
           memberCount: 8
         },
       ],
+      missions: [],
       boardLists:{},
     }
   },
@@ -176,11 +218,21 @@ export default {
         })
       }
       this.$set(this.boardLists,`${board}`, response.data.data);
+    },
+    async getMissions(categoryId = null) {
+      const response = await this.$axios.get(`/api/missions`, {
+        params: {
+          board: 'mission',
+          category_id: categoryId
+        }
+      })
+      this.missions = response.data.data;
     }
   },
   mounted () {
     this.getList('assembly');
     this.getList('education');
+    this.getMissions();
   },
 }
 </script>

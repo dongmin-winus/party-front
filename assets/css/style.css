@@ -808,32 +808,32 @@ html {
     background-color:#D30000;
 }
 
-.area-index .section-stuff {
+.area-stuff .section-stuff {
     background-color:#FFF;
 }
 
-.area-index .section-stuff .frame {
+.area-stuff .section-stuff .frame {
     padding: 30px 20px;
 }
 
-.area-index .section-stuff .m-title.type01 {
+.area-stuff .section-stuff .m-title.type01 {
     margin-bottom:10px;
     text-align: left;
 }
 
-.area-index .section-stuff .m-title.type01 .highlighter-point {
+.area-stuff .section-stuff .m-title.type01 .highlighter-point {
     font-family: inherit;
     font-size: inherit;
     font-weight: inherit;
     background: linear-gradient(to top, #AEE2AC 50%, transparent 50%);
 }
 
-.area-index .section-stuff .banner01 {
+.area-stuff .section-stuff .banner01 {
     height:170px; 
     background-size:cover;
     border-radius:10px;
 }
-.area-index .section-stuff .d-day {
+.area-stuff .section-stuff .d-day {
     width: 60px;
     height: 25px;
     background: white;
@@ -841,12 +841,12 @@ html {
     border: 1px solid #FF7C2E;
     display:flex; align-items: center; justify-content: center;
 }
-.area-index .section-stuff .d-day .d-day-text {
+.area-stuff .section-stuff .d-day .d-day-text {
     color: #FF7C2E;
     font-weight:500;
 }
 
-.area-index .section-stuff .info-container {
+.area-stuff .section-stuff .info-container {
     display:flex;
     flex-direction: column;
     align-content: 1;
@@ -854,37 +854,38 @@ html {
     justify-content: flex-start;
 }
 
-.area-index .section-stuff .info-container .main-info {
+.area-stuff .section-stuff .info-container .main-info {
     font-size: 28px;
     font-weight: 500;
     margin-bottom: 5px;
 }
-.area-index .section-stuff .info-container .sub-info {
+.area-stuff .section-stuff .info-container .sub-info {
     font-size: 20px;
     font-weight: 300;
     color: #555;
 }
 
-.area-index .section-stuff .meeting.fragment {
+.area-stuff .section-stuff .meeting.fragment {
     background-color:#F5F5F5;
 }
 
-.area-index .section-stuff .content-header {
+.area-stuff .section-stuff .content-header {
     display:flex; align-items: center; justify-content: space-between;
     padding: 10px 0;
 }
 
-.area-index .section-stuff .content-header .title {
+.area-stuff .section-stuff .content-header .title {
     font-size: 20px;
     font-weight: 500;
 }
 
-.area-index .section-stuff .meeting.contents {
+.area-stuff .section-stuff .contents-shadow {
     position:relative;
     display:flex; align-items: space-around; justify-content: start;
     flex-direction: column;
 
-    padding: 10px 50px 10px 10px;
+    /* padding: 10px 50px 10px 10px; */
+    padding: 10px;
     margin-bottom: 10px;
 
     border: 1px solid #F5F5F5;
@@ -894,13 +895,13 @@ html {
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
 
 }
-.area-index .section-stuff .meeting.contents .title {
+.area-stuff .section-stuff .contents-shadow.meeting .title {
     font-size: 18px;
     font-weight: 500;
     margin-bottom: 10px;
 }
 
-.area-index .section-stuff .meeting.contents .content {
+.area-stuff .section-stuff .contents-shadow.meeting .content {
     font-size: 16px;
     font-weight: 300;
     margin-bottom: 10px;
@@ -908,13 +909,78 @@ html {
 
 }
 
-.area-index .section-stuff .meeting.contents .tags {
+.area-stuff .section-stuff .contents-shadow.meeting .tags {
     display:flex; align-items: center; justify-content: flex-start;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     margin-bottom: 10px;
 }
 
-.area-index .section-stuff .edu {
+.area-stuff .mission {
+    display:flex; flex-direction:column; align-items: center; justify-content: flex-start;
+}
+.area-stuff .mission .inner-content {
+    display:flex; align-items: center; justify-content: flex-start;
+    width:100%;
+    margin-bottom: 10px;
+}
+.area-stuff .mission .left {
+    width:60px;
+    min-width:60px;
+    min-height:60px;
+    margin-right: 5px;
+}
+
+.area-stuff .mission .right {
+    display:flex;  justify-content: space-between;
+    width:100%;
+    min-height:60px;
+}
+.area-stuff .mission .right .writings {
+    display:flex; flex-direction:column; justify-content: flex-start;
+
+}
+.area-stuff .mission .right .btns {
+    display:flex; flex-direction:column; justify-content: center;
+    align-items: center;
+}
+.area-stuff .mission-categories {
+    background-color:#F9F9F9;
+    min-height: 40px;
+    width: 100%;
+    overflow-x: scroll;
+    scrollbar-width: none;    
+    -ms-overflow-style: none;  
+}
+.area-stuff .mission-categories::-webkit-scrollbar {
+    display: none; 
+}
+
+.area-stuff .mission-categories .horizontal-scroll {
+    white-space: nowrap; /* 내부 아이템들이 한 줄에 표시되도록 합니다 */
+    list-style: none; /* 기본 리스트 스타일 제거 */
+    padding: 0;
+    margin: 0;
+}
+
+.area-stuff .mission-categories .horizontal-scroll li {
+    display: inline-block; /* 내부 아이템들을 가로로 표시하도록 설정 */
+   
+}
+.area-stuff .mission-categories .horizontal-scroll .category {
+    display:flex; align-items: center; justify-content: center;
+    height: 40px;
+    min-width: 70px;
+}
+.area-stuff .mission-categories .horizontal-scroll .category.active {
+    background-color:#0BAF00;
+    color: #FFF;
+    border-radius: 10px;
+    height: 40px;
+    min-width: 70px;
+}
+
+
+.area-stuff .edu {
     background-color:#E4F5E2;
 }
 
@@ -3036,6 +3102,13 @@ label {
     margin-right:16px;
     font-size:20px;
     color:#fff;
+}
+
+.area-stuff .section-ad {
+    margin-top:30px;
+}
+.area-stuff .section-ad .link img {
+    display:block; width:100%;
 }
 
 .area-stuff .frame {

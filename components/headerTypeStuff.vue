@@ -31,7 +31,9 @@
             <span class="current">{{current.value}}</span>
             <div class="box-links" v-if="activeBox">
               <nuxt-link :class="`link ${current.code == 'assembly' ? 'active' : ''}`" to="/stuff/assembly">대규모집회</nuxt-link>
-              <nuxt-link :class="`link ${current.code == 'education' ? 'active' : ''}`"  to="/stuff/education">마을교육</nuxt-link>
+              <!-- <nuxt-link :class="`link ${current.code == 'meeting' ? 'active' : ''}`"  to="/stuff/meeting">동네모임</nuxt-link> -->
+              <nuxt-link :class="`link ${current.code == 'mission' ? 'active' : ''}`"  to="/stuff/mission">다양한 미션</nuxt-link>
+              <!-- <nuxt-link :class="`link ${current.code == 'education' ? 'active' : ''}`"  to="/stuff/education">마을교육</nuxt-link> -->
             </div>
           </button>
           <div class="chevron" :style="`background-image:url('..@/assets/images/chevron-down-outline.png');`"></div>
