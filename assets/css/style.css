@@ -319,6 +319,43 @@ html {
 .area-region-activity img {
     max-width:100%;
 }
+
+.area-region-activity .categories {
+    background-color:#F9F9F9;
+    min-height: 40px;
+    width: 100%;
+    overflow-x: scroll;
+    scrollbar-width: none;    
+    -ms-overflow-style: none;  
+}
+.area-region-activity .categories::-webkit-scrollbar {
+    display: none; 
+}
+
+.area-region-activity .horizontal-scroll {
+    white-space: nowrap; /* 내부 아이템들이 한 줄에 표시되도록 합니다 */
+    list-style: none; /* 기본 리스트 스타일 제거 */
+    margin: 0;
+}
+
+.area-region-activity .horizontal-scroll li {
+    display: inline-block; /* 내부 아이템들을 가로로 표시하도록 설정 */
+    padding: 0 5px;
+   
+}
+.area-region-activity .horizontal-scroll .category {
+    display:flex; align-items: center; justify-content: center;
+    height: 40px;
+    min-width: 70px;
+}
+.area-region-activity .horizontal-scroll .category.active {
+    background-color:#0BAF00;
+    color: #FFF;
+    border-radius: 10px;
+    height: 40px;
+    min-width: 70px;
+}
+
 .area-notices-index .container .top {
     display:flex; align-items: center; justify-content: space-between;
 }
@@ -2365,6 +2402,9 @@ html {
 }
 .bg-revert-grey {
     border-color:#BDC3C7 !important; color:black !important; background-color:#fff !important;
+}
+.bg-revert-orange {
+    border-color:#FF7C2E !important; color:#FF7C2E !important; background-color:#fff !important;
 }
 
 .bg-red {

@@ -147,16 +147,16 @@
                         <div class="wrap">
                             <nuxt-link to="/infos/namelist" class="menu">
                                 <img src="@/assets/images/board.png" alt="" class="icon" style="width:14px;">
-                                <p class="text">내 마을 명단</p>
+                                <p class="text">내 마을 회원</p>
                             </nuxt-link>
-                            <nuxt-link :to="{path:'/staffs', query:{rep_district_id:represenateDistrict['id'], rep_district_name:represenateDistrict['name']}}" class="menu">
+                            <nuxt-link :to="{path:'/staffs/manage', query:{rep_district_id:represenateDistrict['id'], rep_district_name:represenateDistrict['name']}}" class="menu">
                                 <img src="@/assets/images/board.png" alt="" class="icon" style="width:14px;">
-                                <p class="text">마을임원확인</p>
+                                <p class="text">내 마을 임원</p>
                             </nuxt-link> 
-                           <nuxt-link to="/infos/approvals" class="menu">
+                           <!-- <nuxt-link to="/infos/approvals" class="menu">
                                 <img src="@/assets/images/board.png" alt="" class="icon" style="width:14px;">
-                                <p class="text">임원신청현황</p>
-                            </nuxt-link> 
+                                <p class="text">임원신청현황(삭제)</p>
+                            </nuxt-link>  -->
                         </div>
                     </div>
                 </div>
@@ -169,10 +169,10 @@
                                 <img src="@/assets/images/building.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">내 마을 소개</p>
                             </nuxt-link> -->
-                            <nuxt-link :to="{path:'/staffs/create', query:{group:group,rep_district_id:represenateDistrict['id']}}" class="menu">
+                            <!-- <nuxt-link :to="{path:'/staffs/create', query:{group:group,rep_district_id:represenateDistrict['id']}}" class="menu">
                                 <img src="@/assets/images/users.png" alt="" class="icon" style="width:14px;">
-                                <p class="text">내 마을 임원진</p>
-                            </nuxt-link>
+                                <p class="text">내 마을 임원진(삭제)</p>
+                            </nuxt-link> -->
                             <!-- <nuxt-link to="/contacts/create" class="menu">
                                 <img src="@/assets/images/chart.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">내마을 국회의원</p>
