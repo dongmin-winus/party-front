@@ -60,15 +60,16 @@
                                 <div class="m-board-btns">
                                     <div class="m-btns type01" >
                                         <div class="m-btn-wrap">
-                                            <button v-if="!item.id" type="button" class="m-btn type01 height-full bg-revert-primary" @click="setForm(item)">
+                                            <button v-show="!item.id" type="button" class="m-btn type01 height-full bg-revert-primary" @click="setForm(item)">
                                                 등록 
                                             </button>
-                                            <button v-else type="button" class="m-btn type01 height-full bg-revert-orange" @click="setForm(item)">
+                                            <button v-show="item.id" type="button" class="m-btn type01 height-full bg-revert-orange" @click="setForm(item)">
                                                 수정 
                                             </button>
                                         </div>
                                         <div class="m-btn-wrap">
-                                            <button type="button" class="m-btn type01 height-full bg-revert-red" @click="openReminder(item,'삭제','취소')">
+                                            <!-- <button type="button" class="m-btn type01 height-full bg-revert-red" @click="openReminder(item,'삭제','취소')"> -->
+                                            <button type="button" class="m-btn type01 height-full bg-revert-red" @click="handleDeleteDemo(item)">
                                                 삭제 
                                             </button>
                                         </div>
@@ -127,10 +128,12 @@
               <div class="m-board-btns" style="width:100%; display:flex; justify-content:space-around;">
                 <div class="m-btns type01" >
                   <div class="m-btn-wrap">
-                    <button v-if="!form.id" type="button" class="m-btn type01 height-full bg-revert-primary" @click="store()">
+                    <!-- <button v-if="!form.id" type="button" class="m-btn type01 height-full bg-revert-primary" @click="store()"> -->
+                    <button v-if="!form.id" type="button" class="m-btn type01 height-full bg-revert-primary" @click="storeDemo()">
                         등록 
                     </button>
-                    <button v-else type="button" class="m-btn type01 height-full bg-revert-orange" @click="updateItem()">
+                    <!-- <button v-else type="button" class="m-btn type01 height-full bg-revert-orange" @click="updateItem()"> -->
+                    <button v-else type="button" class="m-btn type01 height-full bg-revert-orange" @click="updateDemo()">
                         수정 
                     </button>
                   </div>
@@ -154,7 +157,7 @@
         :excecute="excecuteName"
         :cancel="cancelName"
         :item="item"
-        @excecute="remove"
+        @excecute="removeDemo"
         @cancel="closeReminder"
     />
   </div>
@@ -353,15 +356,18 @@ export default {
         this.activeModal = false;
         this.reset();
       },
-      setForm(item) {
+      setForm(item, isDelete = false) {
           this.form = Object.assign({},{
               ...item,
               groupName: this.transGroup(item.group),
           })
-          this.changePosition(item.position);
-          this.imgUrl = item.img.url;
-          this.isEditMode = true;
-          this.activeModal = true;
+          if(!isDelete) {
+            this.changePosition(item.position);
+            this.imgUrl = item.img.url;
+            this.isEditMode = true;
+            this.activeModal = true;
+          }
+
       },
 
       reset(){
@@ -377,6 +383,71 @@ export default {
         this.positionSelected = false;
         this.imgUrl = "";
         this.isEditMode = false;
+      },
+      storeDemo() {
+        if(!this.selectedItem.position) return alert("직책을 선택해주세요.");
+          this.form.position = this.selectedItem.position;
+          this.form.district_id = this.rep_district_id;
+          this.form.id = Math.max(...this.county.filter(item => item.id !== null).map(item => item.id))+1;
+          this.county = [
+            ...this.county.map(item => {
+                if(item.position === this.form.position) {
+                    return {
+                        ...item,
+                        id: this.form.id,
+                        name: this.form.name,
+                        phone: this.form.phone,
+                    }
+                }else {
+                    return item;
+                }
+            })
+          ];
+          alert("성공적으로 등록되었습니다.")
+          this.closeModal();
+      },
+      updateDemo() {
+        this.form.position = this.selectedItem.position;
+        this.form.district_id = this.rep_district_id;
+        this.county = [
+            ...this.county.map(item => {
+                if(item.position === this.form.position) {
+                    return {
+                        ...item,
+                        name: this.form.name,
+                        phone: this.form.phone,
+                    }
+                }else {
+                    return item;
+                }
+            })
+        ];
+        alert("성공적으로 수정되었습니다.");
+        this.closeModal();
+      },
+      handleDeleteDemo(item) {
+        this.setForm(item, true);
+        this.openReminder(item,'삭제','취소');
+      },
+      removeDemo() {
+        this.form.position = this.selectedItem.position;
+        this.form.district_id = this.rep_district_id;
+        this.county = [
+            ...this.county.map(item => {
+                if(item.id === this.form.id) {
+                    return {
+                        ...item,
+                        id: null,
+                        name: "",
+                        phone: "",
+                    }
+                }else {
+                    return item;
+                }
+            })
+          ];
+          alert("삭제되었습니다 데모.")
+          this.closeReminder();
       },
       async store() {
           if(!this.selectedItem.position) return alert("직책을 선택해주세요.");
