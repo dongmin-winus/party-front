@@ -1,6 +1,6 @@
 <template>
   <div class="area-stuff">
-    <headerTypeStuff :current="currentMenu" />
+    <headerTypeStuff :title="'행사교육'" :current="currentMenu" />
       <div class="container add">
         <div class="frame">
           <div class="m-title type01">
@@ -21,12 +21,15 @@
                 </swiper> 
             </client-only>
         </section>
-        <div class="frame">
-          <b style="font-size:20px;">새로운 미션 챌린지 도전!</b>
-          <button class="m-btns type01 bg-revert-primary">+</button>
+        <div class="title-container" style="padding:5px 5px;">
+          <b style="font-size:25px;">새로운 미션 챌린지 도전!</b>
+          <nuxt-link to="/stuff/mission/create" class="m-btn-wrap">
+            <button class="m-btn type01 bg-primary">미션 등록</button>
+
+          </nuxt-link>
         </div>
         <!-- 카레고리 스크롤 -->
-        <div class="mission-categories">
+        <div class="mission-select">
           <ul class="horizontal-scroll">
             <li v-for="(item,index) in missionCategories" :key="index" @click="selectCategory(item.id)">
               <div class="category" :class="item.id === selectedCategory ? 'active' : ''">
@@ -38,7 +41,7 @@
         <!-- 리스트 -->
         <div class="frame">
           <div class="mission">
-            <div class="inner-content" v-for="(item,index) in missions"  :key="index">
+            <div v-if="missions.length > 0" class="inner-content" v-for="(item,index) in missions"  :key="index">
               <div v-if="item.img" class="left" :style="`background:url(${item.img.preview_url}) no-repeat; background-size:cover; border-radius:5px;`"></div>
               <div class="right">
                 <div class="writings">
@@ -47,11 +50,21 @@
                   <p><span style="color:#0BAF00">{{ item.participant_count }}</span>명 참여중</p>
                 </div>
                 <div class="btns">
-                  <button class="m-btn type01 primary" style="width: 50px; background-color:rgb(228,245,226);">
+                  <button v-if="item.is_participate == 0" class="m-btn type01 primary" style="width: 80px; background-color:rgb(228,245,226);"
+                    @click="toggleParticipate(item.id)"
+                  >
                     참여
+                  </button>
+                  <button v-if="item.is_participate != 0" class="m-btn type01 bg-revert-primary primary" style="width: 80px; background-color:rgb(228,245,226);"
+                    @click="toggleParticipate(item.id)" 
+                  >
+                    참여 완료
                   </button>
                 </div>
               </div>
+            </div>
+            <div v-show="missions.length == 0" class="inner-content relative">
+              <b class="absolute">미션이 없습니다.</b>
             </div>
           </div>
         </div>
@@ -103,7 +116,7 @@ export default {
           category_id: categoryId
         }
       })
-      this.missions = response.data.data;
+      this.missions = [...response.data.data];
     },
     async getMissionCategories() {
       const response = await this.$axios.get(`/api/mission-category`)
@@ -117,7 +130,17 @@ export default {
     },
     selectCategory(id) {
       this.selectedCategory = id;
-      // this.getMissions(id);
+      this.getMissions(id);
+    },
+
+    async toggleParticipate(id) {
+      const response = await this.$axios.post(`/api/enroll`, {
+        event_id: id,
+      });
+      if (response) {
+        alert(response.data.message);
+        this.getMissions(this.selectedCategory);
+      }
     }
   },
   mounted() {
@@ -131,5 +154,22 @@ export default {
 <style scoped>
   .add {
     padding-top: 120px !important;
+  }
+  .title-container {
+    display:flex; 
+    justify-content:space-between;
+    align-items:center;
+    
+  }
+  .inner-content.relative {
+    position:relative;
+  }
+  .inner-content.relative .absolute {
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    font-size:20px;
+    color:#777;
   }
 </style>

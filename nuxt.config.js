@@ -63,7 +63,8 @@ export default {
         { src: '~/plugins/axios.js' },
         { src: '~/plugins/vue2-touch-events.js' },
         // { src: '~/plugins/swiper.js', mode: 'client' }
-        { src: '~/plugins/swiper.js', ssr: false }
+        { src: '~/plugins/swiper.js', ssr: false },
+        { src: '~/plugins/v-calendar.js', ssr: false },
     ],
 
     // Auto import components: https://go.nuxtjs.dev/config-components

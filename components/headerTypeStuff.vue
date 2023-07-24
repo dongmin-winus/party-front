@@ -10,13 +10,13 @@
         </div>
 
         <div class="center">
-            <h3 class="title">행사교육</h3>
+            <h3 class="title">{{title}}</h3>
         </div>
 
         <div></div>
       </div>
     </div>
-    <div class="m-header type02 add">
+    <div class="m-header type02 add" v-if="current">
       <div class="menu-container">
         <div class="left">
           <nuxt-link to="/">
@@ -47,6 +47,10 @@
 <script>
 export default {
   props: {
+    title: {
+      type: String,
+      default: '',
+    },
     current: {
       type: Object,
       default: () => ({

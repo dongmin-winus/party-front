@@ -74,7 +74,7 @@
             </div>
             <div class="right">
               <button class="btn-util">
-                <nuxt-link to="/">
+                <nuxt-link to="/stuff/mission">
                     <img src="@/assets/images/foword.png" alt="" style="width:10px;">
                 </nuxt-link>
               </button>
