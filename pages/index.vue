@@ -1251,9 +1251,9 @@ export default {
     }
     .area-index .section-popular .m-table li:first-child .rank{
 
-                box-shadow: 5px 3px 33px 2px rgba(30,212,37,0.49);
--webkit-box-shadow: 5px 3px 33px 2px rgba(30,212,37,0.49);
--moz-box-shadow: 5px 3px 33px 2px rgba(30,212,37,0.49);
+                box-shadow: 5px 3px 33px 2px rgba(199, 181, 17, 0.49);
+-webkit-box-shadow: 5px 3px 33px 2px rgba(199, 181, 17, 0.49);
+-moz-box-shadow: 5px 3px 33px 2px rgba(199, 181, 17, 0.49);
 }
     .titles {
         display: flex;
