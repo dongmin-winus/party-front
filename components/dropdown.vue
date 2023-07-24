@@ -1,10 +1,10 @@
 <template>
   <div class="select-wrap" >
-    <div class="selectFirst" v-show="!selected" @click="$emit('toggle')">{{menuTitle}}</div>
-    <div class="selectFirst" v-show="selected" @click="$emit('toggle')">{{selectedItem}}</div>
-    <div class="selectOption" @click="$emit('toggle')">
+    <div class="selectFirst" :style="`${noBorder ? 'border:none' : ''} !important; background-color:${themeColor} !important; color:${themeFontColor} !important`" v-show="!selected" @click="$emit('toggle')">{{menuTitle}}</div>
+    <div class="selectFirst" :style="`${noBorder ? 'border:none' : ''} !important; background-color:${themeColor} !important;`" v-show="selected" @click="$emit('toggle')">{{selectedItem}}</div>
+    <div class="selectOption" :style="`background-color:${themeColor} !important;`"  @click="$emit('toggle')">
       <ul v-if="activate">
-          <li v-for="(item,index) in computedItems" :key="index" @click="select(item)">
+          <li :style="`border-bottom: 1px solid ${themeBorder} !important;`" v-for="(item,index) in computedItems" :key="index" @click="select(item)">
               {{item.value}}
           </li>
       </ul>
@@ -50,6 +50,31 @@ export default {
     selected: {
       type: Boolean,
       default: false,
+    },
+    /**
+     * 테마 컬러
+     */
+    themeColor: {
+      type: String,
+      default: "#fff"
+    },
+    themeFontColor: {
+      type: String,
+      default: "#000"
+    },
+    /**
+     * 테마 테두리
+     */
+    themeBorder: {
+      type: String,
+      default: "#eee"
+    },
+    /**
+     *  선택창만 테두리 없음
+     */
+    noBorder: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {

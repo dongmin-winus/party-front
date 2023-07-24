@@ -980,7 +980,7 @@ html {
     display:flex; flex-direction:column; justify-content: center;
     align-items: center;
 }
-.area-stuff .mission-categories {
+.area-stuff .mission-select {
     background-color:#F9F9F9;
     min-height: 40px;
     width: 100%;
@@ -988,27 +988,51 @@ html {
     scrollbar-width: none;    
     -ms-overflow-style: none;  
 }
-.area-stuff .mission-categories::-webkit-scrollbar {
+.area-stuff .mission-select::-webkit-scrollbar {
     display: none; 
 }
 
-.area-stuff .mission-categories .horizontal-scroll {
+.area-stuff .mission-select .noscroll {
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+.area-stuff .mission-select .noscroll .cycle * {
+
+    display:flex; align-items: center; justify-content: center;
+    height: 40px;
+    min-width: 70px;
+    margin: 0 5px;
+    background-color:#F9F9F9;
+    border-radius: 5px;
+    color: #777;
+}
+
+.area-stuff .mission-select .noscroll .cycle.active * {
+    background-color:#0BAF00;
+    color: #FFF;
+    border-radius: 5px;
+    height: 40px;
+    min-width: 70px;
+    color: white;
+}
+
+.area-stuff .mission-select .horizontal-scroll {
     white-space: nowrap; /* 내부 아이템들이 한 줄에 표시되도록 합니다 */
     list-style: none; /* 기본 리스트 스타일 제거 */
     padding: 0;
     margin: 0;
 }
 
-.area-stuff .mission-categories .horizontal-scroll li {
+.area-stuff .mission-select li {
     display: inline-block; /* 내부 아이템들을 가로로 표시하도록 설정 */
    
 }
-.area-stuff .mission-categories .horizontal-scroll .category {
+.area-stuff .mission-select .category {
     display:flex; align-items: center; justify-content: center;
     height: 40px;
     min-width: 70px;
 }
-.area-stuff .mission-categories .horizontal-scroll .category.active {
+.area-stuff .mission-select .category.active {
     background-color:#0BAF00;
     color: #FFF;
     border-radius: 10px;
