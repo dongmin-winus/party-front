@@ -92,8 +92,15 @@
                     <p><span style="color:#0BAF00">{{ item.participant_count }}</span>명 참여중</p>
                   </div>
                   <div class="btns">
-                    <button class="m-btn type01 primary" style="width: 50px; background-color:rgb(228,245,226);">
+                    <button v-if="item.is_participate == 0" class="m-btn type01 primary" style="width: 80px; background-color:rgb(228,245,226);"
+                      @click="toggleParticipate(item.id)"
+                    >
                       참여
+                    </button>
+                    <button v-if="item.is_participate != 0" class="m-btn type01 bg-revert-primary primary" style="width: 80px; background-color:rgb(228,245,226);"
+                      @click="toggleParticipate(item.id)" 
+                    >
+                      참여 완료
                     </button>
                   </div>
                 </div>
@@ -227,6 +234,15 @@ export default {
         }
       })
       this.missions = response.data.data;
+    },
+    async toggleParticipate(id) {
+      const response = await this.$axios.post(`/api/enroll`, {
+        event_id: id,
+      });
+      if (response) {
+        alert(response.data.message);
+        this.getMissions(this.selectedCategory);
+      }
     }
   },
   mounted () {
