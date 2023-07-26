@@ -68,8 +68,8 @@
                                             </button>
                                         </div>
                                         <div class="m-btn-wrap">
-                                            <!-- <button type="button" class="m-btn type01 height-full bg-revert-red" @click="openReminder(item,'삭제','취소')"> -->
-                                            <button type="button" class="m-btn type01 height-full bg-revert-red" @click="handleDeleteDemo(item)">
+                                            <button type="button" class="m-btn type01 height-full bg-revert-red" @click="openReminder(item,'삭제','취소')">
+                                            <!-- <button type="button" class="m-btn type01 height-full bg-revert-red" @click="handleDeleteDemo(item)"> -->
                                                 삭제 
                                             </button>
                                         </div>
@@ -128,12 +128,12 @@
               <div class="m-board-btns" style="width:100%; display:flex; justify-content:space-around;">
                 <div class="m-btns type01" >
                   <div class="m-btn-wrap">
-                    <!-- <button v-if="!form.id" type="button" class="m-btn type01 height-full bg-revert-primary" @click="store()"> -->
-                    <button v-if="!form.id" type="button" class="m-btn type01 height-full bg-revert-primary" @click="storeDemo()">
+                    <button v-if="!form.id" type="button" class="m-btn type01 height-full bg-revert-primary" @click="store()">
+                    <!-- <button v-if="!form.id" type="button" class="m-btn type01 height-full bg-revert-primary" @click="storeDemo()"> -->
                         등록 
                     </button>
-                    <!-- <button v-else type="button" class="m-btn type01 height-full bg-revert-orange" @click="updateItem()"> -->
-                    <button v-else type="button" class="m-btn type01 height-full bg-revert-orange" @click="updateDemo()">
+                    <button v-else type="button" class="m-btn type01 height-full bg-revert-orange" @click="updateItem()">
+                    <!-- <button v-else type="button" class="m-btn type01 height-full bg-revert-orange" @click="updateDemo()"> -->
                         수정 
                     </button>
                   </div>
@@ -157,7 +157,7 @@
         :excecute="excecuteName"
         :cancel="cancelName"
         :item="item"
-        @excecute="removeDemo"
+        @excecute="remove"
         @cancel="closeReminder"
     />
   </div>
