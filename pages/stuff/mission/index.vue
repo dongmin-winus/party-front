@@ -14,7 +14,7 @@
             <client-only>
                 <swiper :options="middleBannerOptions">
                     <swiper-slide v-for="(slide,index) in banners" :key="slide.id">
-                        <a :href="slide.link_url" target="_blank" class="link">
+                        <a :href="slide.link_url" target="_blank" class="link" @click="countClick('banner',slide.id)">
                             <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
                         </a>
                     </swiper-slide>
@@ -22,7 +22,7 @@
             </client-only>
         </section>
         <div class="title-container" style="padding:5px 5px;">
-          <b style="font-size:25px;">새로운 미션 챌린지 도전!</b>
+          <b style="font-size:20px; font-weight:600;">새로운 미션 챌린지 도전!</b>
           <nuxt-link to="/stuff/mission/create" class="m-btn-wrap">
             <button class="m-btn type01 bg-primary">미션 등록</button>
 
@@ -42,13 +42,13 @@
         <div class="frame">
           <div class="mission">
             <div v-if="missions.length > 0" class="inner-content" v-for="(item,index) in missions"  :key="index">
-              <div v-if="item.img" class="left" :style="`background:url(${item.img.preview_url}) no-repeat; background-size:cover; border-radius:5px;`"></div>
+              <nuxt-link :to="`/stuff/mission/${item.id}`" v-if="item.img" class="left" :style="`background:url(${item.img.preview_url}) no-repeat; background-size:cover; border-radius:5px;`"></nuxt-link>
               <div class="right">
-                <div class="writings">
+                <nuxt-link :to="`/stuff/mission/${item.id}`" class="writings">
                   <b class="title">{{ replaceText(item.title,10) }}</b>
                   <p style="color:#777">{{ item.duration }}</p>
                   <p><span style="color:#0BAF00">{{ item.participant_count }}</span>명 참여중</p>
-                </div>
+                </nuxt-link>
                 <div class="btns">
                   <button v-if="item.is_participate == 0" class="m-btn type01 primary" style="width: 80px; background-color:rgb(228,245,226);"
                     @click="toggleParticipate(item.id)"

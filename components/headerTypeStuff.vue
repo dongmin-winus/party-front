@@ -36,7 +36,7 @@
               <!-- <nuxt-link :class="`link ${current.code == 'education' ? 'active' : ''}`"  to="/stuff/education">마을교육</nuxt-link> -->
             </div>
           </button>
-          <div class="chevron" :style="`background-image:url('..@/assets/images/chevron-down-outline.png');`"></div>
+          <div class="chevron" style=""></div>
         </div>
        
       </div>
@@ -92,5 +92,8 @@ export default {
 .box-links .link.active {
   background-color:#0A8803;
   color:white;
+}
+.chevron {
+  background-image:url('@/assets/images/chevron-down-outline.png');
 }
 </style>
