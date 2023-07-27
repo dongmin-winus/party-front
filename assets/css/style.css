@@ -229,6 +229,9 @@ html {
 .width-100 {
     width:100%;
 }
+.width-90 {
+    width:90%;
+}
 .m-input-error {
   margin-top:4px;
   font-size:14px;

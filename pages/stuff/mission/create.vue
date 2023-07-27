@@ -45,22 +45,39 @@
           </div>
         </div>
         <div class="mt-16 m-input-wrap">
-          <h3 class="m-input-title type01">미션 시작일</h3>
+          <h3 class="m-input-title type01">미션 시작일(필수)</h3>
             <div class="m-input-text type01">
-              <input readonly v-model="computedDate" type="text" @click="toggleCalendar = !toggleCalendar" placeholder="미션 시작일">
+              <input readonly v-model="computedStartDate" type="text" @click="toggleCalendar1 = !toggleCalendar1" placeholder="미션 시작일">
             </div>
             <client-only>
               <v-date-picker 
-                v-if="toggleCalendar"
-                is-expanded
+                v-if="toggleCalendar1"
                 locale="ko"
+                is-expanded
+                color="green"
                 :min-date="new Date()"
-                v-model="selectedDate"
+                v-model="selectedStartDate"
               />
             </client-only>
         </div>
         <div class="mt-16 m-input-wrap">
-          <h3 class="m-input-title type01">미션주기</h3>
+          <h3 class="m-input-title type01">미션 종료일(선택)</h3>
+            <div class="m-input-text type01">
+              <input readonly v-model="computedEndDate" type="text" @click="toggleCalendar2 = !toggleCalendar2" placeholder="미션 종료일">
+            </div>
+            <client-only>
+              <v-date-picker 
+                v-if="toggleCalendar2"
+                locale="ko"
+                is-expanded
+                color="green"
+                :min-date="new Date()"
+                v-model="selectedEndDate"
+              />
+            </client-only>
+        </div>
+        <div class="mt-16 m-input-wrap">
+          <h3 class="m-input-title type01">미션 주기</h3>
           <div class="mission-select" style="background-color:white !important;">
             <ul class="noscroll">
               <li v-for="(item,index) in durations" :key="index" @click="selectCycle(item.id)">
@@ -110,8 +127,10 @@ export default {
   data() {
     return {
       missionCategories: [],
-      toggleCalendar: false,
-      selectedDate:{},
+      toggleCalendar1: false,
+      toggleCalendar2: false,
+      selectedStartDate:null,
+      selectedEndDate:null,
 
       durations:[
         {
@@ -156,16 +175,22 @@ export default {
         return item.name;
       })
     },
-    computedDate() {
-      if(!this.selectedDate) return;
-      if(typeof this.selectedDate === 'string') return this.selectedDate;
-      if(typeof this.selectedDate === 'object' && this.selectedDate instanceof Date) {
-        const year = this.selectedDate.getFullYear();
-        const month = this.selectedDate.getMonth() + 1;
-        const date = this.selectedDate.getDate();
-        return `${year}-${month}-${date}`;
+    computedStartDate() {
+      if(!this.selectedStartDate) return;
+      if(this.selectedStartDate instanceof Date) {
+        return this.getDateString(this.selectedStartDate);
       }
-
+    },
+    computedEndDate() {
+      if(!this.selectedEndDate) return;
+      if(this.selectedEndDate instanceof Date) {
+        if(this.selectedEndDate < this.selectedStartDate) {
+          alert('시작일보다 종료일이 빠를 수 없습니다.')
+          this.selectedEndDate = null;
+          return;
+        }
+        return this.getDateString(this.selectedEndDate);
+      }
     },
     computedFileName() {
       if(!this.imgs.contentImgs.length) return;
@@ -173,11 +198,16 @@ export default {
     }
   },
   watch: {
-    selectedDate(val) {
+    selectedStartDate(val) {
       if(val) {
-        this.toggleCalendar = false;
+        this.toggleCalendar1 = false;
       }
-    }
+    },
+    selectedEndDate(val) {
+      if(val) {
+        this.toggleCalendar2 = false;
+      }
+    },
   },
   methods: {
     async getMissionCategories() {
@@ -205,9 +235,11 @@ export default {
       this.form = {
         ...this.form,
         duration: this.durations.find(item => item.id === this.selectedCycle).name,
-        start_date: this.computedDate,
+        start_date: this.computedStartDate,
+        end_date: this.computedEndDate,
         thumbnail: this.imgs.contentImgs[0].file,
       }
+      if(!this.computedEndDate) delete this.form.end_date;
       let formData = new FormData();
       for(let key in this.form) {
         formData.append(key, this.form[key]);
@@ -220,6 +252,13 @@ export default {
       }else {
         alert('등록 중 오류가 발생했습니다.')
       }
+    },
+
+    getDateString(date) {
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1;
+      const day = date.getDate();
+      return `${year}-${month}-${day}`;
     }
   },
   mounted () {

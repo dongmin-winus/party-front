@@ -68,37 +68,35 @@
             <p class="sub02">승부욕 활활 타오르는</p>
             <span class="highlighter-point">다양한 미션</span>
           </div>
-          <div class="mt-8 content-header">
+          <nuxt-link to="/stuff/mission" class="mt-8 content-header">
             <div class="left">
               <b class="title"># 다양한 미션 챌린지</b>
             </div>
             <div class="right">
               <button class="btn-util">
-                <nuxt-link to="/stuff/mission">
-                    <img src="@/assets/images/foword.png" alt="" style="width:10px;">
-                </nuxt-link>
+                  <img src="@/assets/images/foword.png" alt="" style="width:10px;">
               </button>
             </div>
-          </div>
+          </nuxt-link>
 
           <div class="mt-12 contents-shadow">
             <div class="mission">
               <div class="inner-content" v-for="(item,index) in missions"  :key="index">
-                <div v-if="item.img" class="left" :style="`background:url(${item.img.preview_url}) no-repeat; background-size:cover; border-radius:5px;`"></div>
+                <nuxt-link :to="`/stuff/mission/${item.id}`" v-if="item.img" class="left" :style="`background:url(${item.img.preview_url}) no-repeat; background-size:cover; border-radius:5px;`"></nuxt-link>
                 <div class="right">
-                  <div class="writings">
+                  <nuxt-link :to="`/stuff/mission/${item.id}`" class="writings">
                     <b class="title">{{ replaceText(item.title,10) }}</b>
                     <p style="color:#777">{{ item.duration }}</p>
                     <p><span style="color:#0BAF00">{{ item.participant_count }}</span>명 참여중</p>
-                  </div>
+                  </nuxt-link>
                   <div class="btns">
                     <button v-if="item.is_participate == 0" class="m-btn type01 primary" style="width: 80px; background-color:rgb(228,245,226);"
-                      @click="toggleParticipate(item.id)"
+                      @click.stop="toggleParticipate(item.id)"
                     >
                       참여
                     </button>
                     <button v-if="item.is_participate != 0" class="m-btn type01 bg-revert-primary primary" style="width: 80px; background-color:rgb(228,245,226);"
-                      @click="toggleParticipate(item.id)" 
+                      @click.stop="toggleParticipate(item.id)" 
                     >
                       참여 완료
                     </button>

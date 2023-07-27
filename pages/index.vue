@@ -10,7 +10,7 @@
                     <client-only>
                         <swiper :options="bannerOptions">
                             <swiper-slide v-for="(slide,index) in homeBanner1" :key="slide.id">
-                                <a :href="slide.link_url" target="_blank" class="link">
+                                <a :href="slide.link_url" target="_blank" class="link" @click="countClick('banner',slide.id)">
                                     <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
                                 </a>
                             </swiper-slide>
@@ -114,7 +114,7 @@
                     <client-only>
                         <swiper :options="bannerOptions">
                             <swiper-slide v-for="(slide,index) in homeBanner1" :key="slide.id">
-                                <a :href="slide.link_url" target="_blank" class="link">
+                                <a :href="slide.link_url" target="_blank" class="link" @click="countClick('banner',slide.id)">
                                     <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
                                 </a>
                             </swiper-slide>
@@ -346,7 +346,7 @@
                 <client-only>
                     <swiper :options="middleBannerOptions">
                         <swiper-slide v-for="(slide,index) in homeBanner2" :key="slide.id">
-                            <a :href="slide.link_url" target="_blank" class="link">
+                            <a :href="slide.link_url" target="_blank" class="link" @click="countClick('banner',slide.id)">
                                 <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
                             </a>
                         </swiper-slide>
@@ -510,7 +510,7 @@
                 <client-only>
                     <swiper :options="bannerOptions">
                         <swiper-slide v-for="(slide,index) in homeBanner3" :key="slide.id">
-                            <a :href="slide.link_url" target="_blank" class="link">
+                            <a :href="slide.link_url" target="_blank" class="link" @click="countClick('banner',slide.id)">
                                 <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
                             </a>
                         </swiper-slide>

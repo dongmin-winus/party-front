@@ -7,6 +7,10 @@ export default {
     }
   },
   methods: {
+    async countClick(click_type, click_id) {
+      // console.log(click_type, click_id, 333)
+      const res = await this.$axios.post('/api/click-count', { click_type, click_id });
+    },
     handleBackdropClick(e, className) {
       // console.log(e.srcElement._prevClass,33223)
       if (e.srcElement._prevClass === className) {
@@ -24,6 +28,26 @@ export default {
       const day = String(date.getDate()).padStart(2, '0');
 
       return `${year}${delimiter}${month}${delimiter}${day}`;
+    },
+    dateDiffInDays(dateStr1, dateStr2) {
+      if (!dateStr1 || !dateStr2) return;
+      // Date 객체를 생성하여 날짜 문자열을 파싱합니다.
+      const date1 = new Date(dateStr1);
+      const date2 = new Date(dateStr2);
+
+      // 날짜가 유효한지 확인합니다.
+      if (isNaN(date1) || isNaN(date2)) {
+        throw new Error("Invalid date format");
+      }
+
+      // 24시간(1일)의 밀리초(ms) 값
+      const oneDayMs = 24 * 60 * 60 * 1000;
+
+      // 날짜의 차이를 일수로 계산합니다.
+      const diffInMs = Math.abs(date1 - date2);
+      const diffInDays = Math.floor(diffInMs / oneDayMs);
+
+      return diffInDays;
     },
     validateDate(dateString) {
       // Check if the input is a number with 6 digits
