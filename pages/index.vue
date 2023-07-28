@@ -361,7 +361,8 @@
                     :autoplay="true"
                     :autoplay-timeout="2000"
                     :mouse-drag="false"
-                    :pagination-enabled="false"
+                    :pagination-enabled="true"
+                    :pagination-position="'bottom'"
                 >
                     <slide class="swiper-slide" v-for="(slide,index) in getHomeBanner2" :key="slide.id">
                         <a :href="slide.link_url" target="_blank" class="link" @click="countClick('banner',slide.id)">
