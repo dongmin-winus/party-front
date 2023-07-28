@@ -7,15 +7,21 @@
             <!-- 지역이 본부 x & 로그인 -->
             <div class="fragment" v-if="district && district.id != 0">
                 <section class="section-ad">
-                    <client-only>
-                        <swiper :options="bannerOptions">
-                            <swiper-slide v-for="(slide,index) in homeBanner1" :key="slide.id">
-                                <a :href="slide.link_url" target="_blank" class="link" @click="countClick('banner',slide.id)">
-                                    <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
-                                </a>
-                            </swiper-slide>
-                        </swiper> 
-                    </client-only>
+                    <carousel
+                        :adjustableHeight="true"
+                        :loop="true" 
+                        :per-page="1"
+                        :autoplay="true"
+                        :autoplay-timeout="5000"
+                        :mouse-drag="false"
+                        :pagination-enabled="false"
+                    >
+                        <slide class="swiper-slide" v-for="(slide,index) in getHomeBanner1" :key="slide.id">
+                            <a :href="slide.link_url" target="_blank" class="link" @click="countClick('banner',slide.id)">
+                                <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
+                            </a>
+                        </slide>
+                    </carousel>
                 </section>
                 <section class="section-values">
                     <img src="https://dotmzh1fysixs.cloudfront.net/1018/base-town.png" alt="" class="base">
@@ -111,15 +117,21 @@
             <!-- 지역이 본부 | 비로그인 -->
             <div class="fragment" v-else>
                 <section class="section-ad">
-                    <client-only>
-                        <swiper :options="bannerOptions">
-                            <swiper-slide v-for="(slide,index) in homeBanner1" :key="slide.id">
-                                <a :href="slide.link_url" target="_blank" class="link" @click="countClick('banner',slide.id)">
-                                    <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
-                                </a>
-                            </swiper-slide>
-                        </swiper> 
-                    </client-only>
+                    <carousel
+                        :adjustableHeight="true"
+                        :loop="true" 
+                        :per-page="1"
+                        :autoplay="true"
+                        :autoplay-timeout="5000"
+                        :mouse-drag="false"
+                        :pagination-enabled="false"
+                    >
+                        <slide class="swiper-slide" v-for="(slide,index) in getHomeBanner1" :key="slide.id">
+                            <a :href="slide.link_url" target="_blank" class="link" @click="countClick('banner',slide.id)">
+                                <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
+                            </a>
+                        </slide>
+                    </carousel>
                 </section>
                 <!-- 마을 홍보 영상들 -->
                 <section class="section-promotion" v-if="promotionList.length !== 0">
@@ -128,29 +140,28 @@
                             <p class="sub">생생한 지역 인터뷰</p>
                             이달의 <span class="point">마을</span>
                         </div>
-                        <client-only>
-                            <swiper :options="swiperOptions">
-                                <swiper-slide v-for="(slide,index) in promotionList" :key="slide.id">
-                                    <nuxt-link :to="`/posts/${slide.id}`">
-                                        <div class="content">
-                                            <div style="position:relative; border:1px solid #bdbdbd; border-radius:10px; height:inherit;">
-                                                <div class="recommend">
-                                                    <span style="color:white;">{{new Date().getMonth()+1}}월추천</span>
-                                                </div>
-                                                <img class="img" :src="slide.video_thumbnail" alt="-" />
-                                                <div class="mt-8"></div>
-                                                <p style="font-weight:500; font-size:20px; color:#0BAF00" align="center">{{seperateString(slide.title,'/')[0]}}</p>
-                                                <p style="display:block; margin: 0 15px; font-weight:300; font-size:16px; overflow:hidden; white-space:nowrap" align="center" v-html="seperateString(slide.title,'/')[1]"></p>
+                        <swiper :options="swiperOptions">
+                            <swiper-slide v-for="(slide,index) in promotionList" :key="slide.id">
+                                <nuxt-link :to="`/posts/${slide.id}`">
+                                    <div class="content">
+                                        <div style="position:relative; border:1px solid #bdbdbd; border-radius:10px; height:inherit;">
+                                            <div class="recommend">
+                                                <span style="color:white;">{{new Date().getMonth()+1}}월추천</span>
                                             </div>
-    
+                                            <img class="img" :src="slide.video_thumbnail" alt="-" />
+                                            <div class="mt-8"></div>
+                                            <p style="font-weight:500; font-size:20px; color:#0BAF00" align="center">{{seperateString(slide.title,'/')[0]}}</p>
+                                            <p style="display:block; margin: 0 15px; font-weight:300; font-size:16px; overflow:hidden; white-space:nowrap" align="center" v-html="seperateString(slide.title,'/')[1]"></p>
                                         </div>
-                                    </nuxt-link>
-                                    <div class="mt-8"></div>
-                                    <nuxt-link :to="`/posts/${activePromotionId}`" class="m-btn type02 bg-revert-primary">자세히보기 +</nuxt-link>
 
-                                </swiper-slide>
-                            </swiper>
-                        </client-only>
+                                    </div>
+                                </nuxt-link>
+                                <div class="mt-8"></div>
+                                <nuxt-link :to="`/posts/${activePromotionId}`" class="m-btn type02 bg-revert-primary">자세히보기 +</nuxt-link>
+
+                            </swiper-slide>
+                        </swiper>
+                        <div class="mt-40"></div>  
                     </div>
                 </section>
             </div>
@@ -342,46 +353,58 @@
                 </div>
             </section>
 
-            <section class="section-ad">
-                <client-only>
-                    <swiper :options="middleBannerOptions">
-                        <swiper-slide v-for="(slide,index) in homeBanner2" :key="slide.id">
-                            <a :href="slide.link_url" target="_blank" class="link" @click="countClick('banner',slide.id)">
-                                <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
-                            </a>
-                        </swiper-slide>
-                    </swiper> 
-                </client-only>
+            <section class="section-ad"> 
+                <carousel
+                    :adjustableHeight="true"
+                    :loop="true" 
+                    :per-page="1"
+                    :autoplay="true"
+                    :autoplay-timeout="2000"
+                    :mouse-drag="false"
+                    :pagination-enabled="false"
+                >
+                    <slide class="swiper-slide" v-for="(slide,index) in getHomeBanner2" :key="slide.id">
+                        <a :href="slide.link_url" target="_blank" class="link" @click="countClick('banner',slide.id)">
+                            <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
+                        </a>
+                    </slide>
+                </carousel>
             </section>
 
             <!-- 자유마을 스토리 -->
             <section class="section-story" v-if="district.id == 0">
                 <div class="wrap">
-                        <div class="m-title type01">
-                            <p class="sub">도란도란 따뜻함이 가득한</p>
-                            자유마을 <span class="point">스토리</span>
-                        </div>
-                        <client-only>
-                            <swiper :options="storyOptions">
-                                <swiper-slide v-for="(slide,index) in storyList" :key="slide.id">
-                                    <nuxt-link :to="`/posts/${slide.id}`" style="padding-bottom:32px;">
-                                        <div class="story-container">
-                                            <div class="ribbon">
-                                                <p class="year">{{ new Date().getFullYear() }}</p>
-                                                <p class="month">{{ new Date().getMonth() + 1 }}월</p>
-                                            </div>
-                                            <img class="img" :src="slide.video_thumbnail" alt="-">
-                                            <div class="content-container">
-                                                <p style="font-size:20px; font-weight:500" v-html="replaceText(slide.title,10)"></p>
-                                                <p style="color:#777; overflow:hidden;" v-html="replaceText(slide.content,10)"></p>
-                                            </div>
-                                        </div>
-                                    </nuxt-link>
-                                </swiper-slide>
-                                <div class="swiper-pagination" slot="pagination"></div>
-                            </swiper>
-                        </client-only>
-                        <div class="mt-12"></div>
+                    <div class="m-title type01">
+                        <p class="sub">도란도란 따뜻함이 가득한</p>
+                        자유마을 <span class="point">스토리</span>
+                    </div>
+                    <carousel
+                        :adjustableHeight="true"
+                        :loop="true" 
+                        :per-page="1"
+                        :autoplay="true"
+                        :autoplay-timeout="5000"
+                        :mouse-drag="false"
+                        :pagination-enabled="true"
+                        :pagination-position="'bottom-overlay'"
+                    >
+                        <slide class="swiper-slide" v-for="(slide,index) in storyList" :key="slide.id">
+                            <nuxt-link :to="`/posts/${slide.id}`" style="padding-bottom:32px;">
+                                <div class="story-container">
+                                    <div class="ribbon">
+                                        <p class="year">{{ new Date().getFullYear() }}</p>
+                                        <p class="month">{{ new Date().getMonth() + 1 }}월</p>
+                                    </div>
+                                    <img class="img" :src="slide.video_thumbnail" alt="-">
+                                    <div class="content-container">
+                                        <p style="font-size:20px; font-weight:500" v-html="replaceText(slide.title,10)"></p>
+                                        <p style="color:#777; overflow:hidden;" v-html="replaceText(slide.content,10)"></p>
+                                    </div>
+                                </div>
+                            </nuxt-link>
+                        </slide>
+                    </carousel>
+                    <div class="mt-12"></div>
                 </div>
             </section>
 
@@ -507,15 +530,21 @@
 
             <div class="mt-12"></div>
             <section class="section-ad">
-                <client-only>
-                    <swiper :options="bannerOptions">
-                        <swiper-slide v-for="(slide,index) in homeBanner3" :key="slide.id">
-                            <a :href="slide.link_url" target="_blank" class="link" @click="countClick('banner',slide.id)">
-                                <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
-                            </a>
-                        </swiper-slide>
-                    </swiper> 
-                </client-only>
+                <carousel
+                    :adjustableHeight="true"
+                    :loop="true" 
+                    :per-page="1"
+                    :autoplay="true"
+                    :autoplay-timeout="5000"
+                    :mouse-drag="false"
+                    :pagination-enabled="false"
+                >
+                    <slide class="swiper-slide" v-for="(slide,index) in getHomeBanner3" :key="slide.id">
+                        <a :href="slide.link_url" target="_blank" class="link" @click="countClick('banner',slide.id)">
+                            <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
+                        </a>
+                    </slide>
+                </carousel>
             </section>
 
             <quicks 
@@ -570,14 +599,12 @@
 
 <script>
 import * as Cookies from "js-cookie";
-import {VueperSlides, VueperSlide } from 'vueperslides'
-import 'vueperslides/dist/vueperslides.css';
+import { mapActions } from 'vuex';
 import common from '~/utils/common';
 export default {
     name: 'IndexPage',
     auth: false,
     components: {
-        VueperSlides,VueperSlide
     },
     mixins: [common],
     data() {
@@ -771,22 +798,16 @@ export default {
         uptoThreeDistrictRegisterCounts() {
             return this.districtRegisterCounts.slice(0,3);
         },
-        homeBanner1() {
-            return this.homeBanners.banners ?  this.homeBanners.banners.filter(banner => {
-                return banner.position === 'top';
-            }) : [];
+
+        getHomeBanner1() {
+            return this.$store.getters.getHomeBanner1;
         },
-        homeBanner2() {
-            return this.homeBanners.banners ? this.homeBanners.banners.filter(banner => {
-                return banner.position === 'middle';
-            }) : [];
+        getHomeBanner2() {
+            return this.$store.getters.getHomeBanner2;
         },
-        homeBanner3() {
-            return this.homeBanners.banners ?  this.homeBanners.banners.filter(banner => {
-                return banner.position === 'bottom';
-            }) : [];
+        getHomeBanner3() {
+            return this.$store.getters.getHomeBanner3;
         },
-        
         aggregateReviews() {
             let reviews = this.$store.state.contactReviews.data;
             const countBy = this.countBy(reviews, 'grade', [1,2,3,4,5]);
@@ -820,9 +841,14 @@ export default {
 
     },
 
-    methods: { 
+    methods: {
+        ...mapActions(['FETCH_HOME_BANNER1','FETCH_HOME_BANNER2','FETCH_HOME_BANNER3']),
         async init() {
-            const homeBanners = await this.$axios.get('/api/banners/home');
+            let homeBanners;
+            if(!this.$store.state.homebanner1.length > 0) {
+                homeBanners = await this.$axios.get('/api/banners/home');
+
+            }
             const promotionList = await this.$axios.get('/api/promotion');
             const meetingList = await this.$axios.get('/api/meeting');
             this.promotionList= [
@@ -841,10 +867,22 @@ export default {
                     }
                 })
             ];
-            this.homeBanners= {
-                ...homeBanners.data,
-                
-            };
+            if(homeBanners?.data) {
+                this.homeBanners= {
+                    ...homeBanners.data,
+                    
+                };
+                this.FETCH_HOME_BANNER1(this.homeBanners.banners.filter(banner => {
+                    return banner.position === 'top';
+                }));
+                this.FETCH_HOME_BANNER2(this.homeBanners.banners.filter(banner => {
+                    return banner.position === 'middle';
+                }));
+                this.FETCH_HOME_BANNER3(this.homeBanners.banners.filter(banner => {
+                    return banner.position === 'bottom';
+                }));
+            }
+
             this.meetingList= [
                 ...meetingList.data.data,
             ];

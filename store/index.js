@@ -38,6 +38,11 @@ export const state = () => ({
     chatSearch: false,
     emoticonOption: false,
 
+    //banners
+    homebanner1: [],
+    homebanner2: [],
+    homebanner3: [],
+
 });
 
 export const getters = {
@@ -65,7 +70,17 @@ export const getters = {
     },
     getContactReviews(state) {
         return state.contactReviews;
-    }
+    },
+
+    getHomeBanner1(state) {
+        return state.homebanner1;
+    },
+    getHomeBanner2(state) {
+        return state.homebanner2;
+    },
+    getHomeBanner3(state) {
+        return state.homebanner3;
+    },
 }
 
 export const actions = {
@@ -104,6 +119,17 @@ export const actions = {
     async fetchNearCoords({ commit }, payload) {
         const { data } = await fetchNearCoords(payload.data);
         commit('setCoords', data);
+    },
+
+    //banners
+    FETCH_HOME_BANNER1({ commit }, data) {
+        commit('setHomeBanner1', data);
+    },
+    FETCH_HOME_BANNER2({ commit }, data) {
+        commit('setHomeBanner2', data);
+    },
+    FETCH_HOME_BANNER3({ commit }, data) {
+        commit('setHomeBanner3', data);
     },
 }
 
@@ -166,6 +192,17 @@ export const mutations = {
     },
     setEmoticonOption(state, data) {
         state.emoticonOption = data
-    }
+    },
+
+    //banners
+    setHomeBanner1(state, data) {
+        state.homebanner1 = data;
+    },
+    setHomeBanner2(state, data) {
+        state.homebanner2 = data;
+    },
+    setHomeBanner3(state, data) {
+        state.homebanner3 = data;
+    },
 
 }
