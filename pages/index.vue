@@ -17,7 +17,7 @@
                         :pagination-enabled="false"
                     >
                         <slide class="swiper-slide" v-for="(slide,index) in getHomeBanner1" :key="slide.id">
-                            <a :href="slide.link_url" target="_blank" class="link" @click="countClick('banner',slide.id)">
+                            <a :href="slide.link_url" target="_blank" class="link">
                                 <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
                             </a>
                         </slide>
@@ -127,7 +127,7 @@
                         :pagination-enabled="false"
                     >
                         <slide class="swiper-slide" v-for="(slide,index) in getHomeBanner1" :key="slide.id">
-                            <a :href="slide.link_url" target="_blank" class="link" @click="countClick('banner',slide.id)">
+                            <a :href="slide.link_url" target="_blank" class="link">
                                 <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
                             </a>
                         </slide>
@@ -843,6 +843,18 @@ export default {
 
     methods: {
         ...mapActions(['FETCH_HOME_BANNER1','FETCH_HOME_BANNER2','FETCH_HOME_BANNER3']),
+        async countClick(click_type, click_id) {
+        // console.log(click_type, click_id, 333)
+        const res = await this.$axios.post('/api/click-count', { click_type, click_id });
+        },
+        handleBackdropClick(e, className) {
+        // console.log(e.srcElement._prevClass,33223)
+        if (e.srcElement._prevClass === className) {
+            this.activeSidebar = false;
+            this.active = false;
+            this.$emit('cancel');
+        }
+        },
         async init() {
             let homeBanners;
             if(!this.$store.state.homebanner1.length > 0) {
