@@ -261,13 +261,13 @@ export default {
             return this.positions.filter(item => !(item.position == '대표')).map((item) => {
                 return item.position
             })
-        }
+        },
   },
 
   watch: {
       '$store.state.district.id'() {
           this.setCountyLists()
-      }
+      },
   },
   methods: {
     selectCategory(id) {
@@ -454,6 +454,7 @@ export default {
             this.form.position = this.selectedItem.position;
             this.form.district_id = this.rep_district_id;
             this.form.group = this.form.group;
+            if(!this.validatePhone(this.form.phone)) return alert("올바른 전화번호를 입력해주세요.");
             let form = (new Form(this.form)).data();
             try {
                 const response = await this.$axios.post("/api/districts/" + this.form.district_id + "/staff", form);
@@ -470,6 +471,7 @@ export default {
             this.form.position = this.selectedItem.position;
             this.form.district_id = this.rep_district_id;
             this.form.group = this.form.group;
+            if(!this.validatePhone(this.form.phone)) return alert("올바른 전화번호를 입력해주세요.");
             let form = (new Form(this.form).data());
             const {data} = await this.$axios.post(`/api/districts/${this.form.district_id}/staff/update/${this.form.id}`, form);
             data.result ? alert("성공적으로 수정되었습니다.") : alert(data.message);
