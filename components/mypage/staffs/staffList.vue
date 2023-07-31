@@ -475,10 +475,8 @@ export default {
             this.form.group = this.form.group;
             let form = (new Form(this.form).data());
             const {data} = await this.$axios.post(`/api/districts/${this.form.district_id}/staff/update/${this.form.id}`, form);
-            if(data.result) {
-                alert("성공적으로 수정되었습니다.");
-                this.closeModal();
-            }
+            data.result ? alert("성공적으로 수정되었습니다.") : alert(data.message);
+            this.closeModal();
         } catch (error) {
             console.error(error);
         }
