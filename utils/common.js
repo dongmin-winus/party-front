@@ -8,7 +8,14 @@ export default {
   },
   methods: {
 
-
+    handleBackdropClick(e, className) {
+      // console.log(e.srcElement._prevClass,33223)
+      if (e.srcElement._prevClass === className) {
+        this.activeSidebar = false;
+        this.active = false;
+        this.$emit('cancel');
+      }
+    },
     formatDate(dateString, delimiter = '.') {
       if (!dateString) return '';
       const date = new Date(dateString);
