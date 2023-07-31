@@ -450,23 +450,20 @@ export default {
           this.closeReminder();
       },
       async store() {
-          if(!this.selectedItem.position) return alert("직책을 선택해주세요.");
-          this.form.position = this.selectedItem.position;
-          this.form.district_id = this.rep_district_id;
-          this.form.group = this.form.group;
-          let form = (new Form(this.form)).data();
-          try {
-              const response = await this.$axios.post("/api/districts/" + this.form.district_id + "/staff", form);
-              if(response.status === 200 || response.status === 201) {
-                  alert("성공적으로 등록되었습니다.")
-                  this.reset();
-                  await this.init();
-                  this.closeModal();
-              }
-          } catch (error) {
-              // console.log(error.response,333)
-              if(error.response.status === 500) return alert("등록 중 오류가 발생했습니다. 입력된 정보를 확인해주세요.");
-          }
+            if(!this.selectedItem.position) return alert("직책을 선택해주세요.");
+            this.form.position = this.selectedItem.position;
+            this.form.district_id = this.rep_district_id;
+            this.form.group = this.form.group;
+            let form = (new Form(this.form)).data();
+            try {
+                const response = await this.$axios.post("/api/districts/" + this.form.district_id + "/staff", form);
+                (response.status === 201) ? alert("성공적으로 등록되었습니다.") : alert(response.data.message);
+                this.closeModal();
+            } catch (error) {
+                if(error.response.status === 500) return alert("등록 중 오류가 발생했습니다. 입력된 정보를 확인해주세요.");
+            }
+            this.reset();
+            await this.init();
       },
       async updateItem() {
         try {
