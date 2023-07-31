@@ -1,5 +1,5 @@
 <template>
-    <div class="area-index">
+    <div class="area-index" v-if="!loading">
         <header-type01
         />
         <!-- 내용 영역 -->
@@ -621,6 +621,8 @@ export default {
     mixins: [common],
     data() {
         return {
+            loading: true,
+
             toggleList: 'total-rankings',
             togglePopularList: 'year',
             guideText: '',
@@ -1264,6 +1266,9 @@ export default {
     },
 
     async mounted() {
+        this.$nextTick(function() {
+            this.loading = false;
+        })
         await this.init();
         this.switchRankGuide('total-rankings');
         this.switchPopularRankGuide('year');
