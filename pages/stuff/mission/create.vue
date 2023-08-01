@@ -120,6 +120,7 @@ import headerTypeStuff from '@/components/headerTypeStuff.vue';
 import Dropdown from "@/components/dropdown";
 import InputImg from "@/components/form/posts/inputImg2";
 export default {
+  auth:true,
   name:"create",
   components: {
     headerTypeStuff, Dropdown, InputImg

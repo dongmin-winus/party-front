@@ -140,6 +140,7 @@ import 'swiper/css/swiper.css'
 import common from '@/utils/common'
 import swiperCarusel from '@/components/swiperCarusel.vue'
 export default {
+  auth: false,
   mixins: [common],
   components: {
     swiperCarusel
@@ -234,6 +235,11 @@ export default {
       this.missions = response.data.data;
     },
     async toggleParticipate(id) {
+      // if(!this.$auth.user) {
+      //   alert('로그인 후 이용해주세요.');
+      //   this.$router.push('/auth/login');
+      //   return;
+      // } 
       const response = await this.$axios.post(`/api/enroll`, {
         event_id: id,
       });
