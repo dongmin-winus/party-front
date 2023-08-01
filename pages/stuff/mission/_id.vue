@@ -86,6 +86,7 @@ import common from '@/utils/common';
 import headerTypeStuff from '../../../components/headerTypeStuff.vue';
 import stictyButton from '../../../components/sticyButton.vue';
 export default {
+  auth: false,
   components: {
     headerTypeStuff,
     stictyButton,

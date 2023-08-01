@@ -76,6 +76,7 @@ import accordionItem from '@/components/accordionItem.vue';
 
 import common from '@/utils/common.js'
 export default {
+  auth: false,
   components: {
     headerTypeStuff, accordion, accordionItem
   },

@@ -78,6 +78,7 @@ import 'swiper/css/swiper.css'
 import common from '~/utils/common';
 import headerTypeStuff from '@/components/headerTypeStuff.vue'
 export default {
+  auth:false,
   components: {
     headerTypeStuff,
   },
