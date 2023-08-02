@@ -330,9 +330,9 @@ export default {
     for (let i = 1; i < 33; i++) {
       // 10보다 작으면 앞에숫자에 0붙이기
       if (i < 10) {
-        this.emoticon.push(`@/assets/images/emoticon/애고미_이모티콘-0${i}.png`)
+        this.emoticon.push(require(`@/assets/images/emoticon/애고미_이모티콘-0${i}.png`))
       } else {
-        this.emoticon.push(`@/assets/images/emoticon/애고미_이모티콘-${i}.png`)
+        this.emoticon.push(require(`@/assets/images/emoticon/애고미_이모티콘-${i}.png`))
       }
     };
     this.emoticonList = this.splitArray(this.emoticon, 9);
