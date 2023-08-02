@@ -205,7 +205,7 @@ export default {
       }
       this.makeStampInfo();
       if(this.stampReward && isLastDayOfMonth) {
-        this.activateModal = true;
+        // this.activateModal = true;
       }else {
         alert('출석도장을 찍었습니다.')
       }
