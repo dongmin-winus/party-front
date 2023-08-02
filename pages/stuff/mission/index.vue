@@ -110,14 +110,6 @@ export default {
       // console.log(click_type, click_id, 333)
       const res = await this.$axios.post('/api/click-count', { click_type, click_id });
     },
-    handleBackdropClick(e, className) {
-      // console.log(e.srcElement._prevClass,33223)
-      if (e.srcElement._prevClass === className) {
-        this.activeSidebar = false;
-        this.active = false;
-        this.$emit('cancel');
-      }
-    },
     async getBannerList() {
       const homeBanners = await this.$axios.get('/api/banners/home');
       this.banners = homeBanners.data.banners.filter(banner => banner.position === 'middle');

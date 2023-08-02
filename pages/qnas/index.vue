@@ -224,11 +224,12 @@ export default {
               const { data } = await this.$axios.get(`/api/staff-check?phone=${this.staffNumber}`);
               
               if(data.position) {
-                  this.staffInfo = `${data.district.state} ${data.district.city} ${data.district.district} ${transGroup(data.group)} ${data.position} ${data.name}`;
+                  this.staffInfo = `${data.district.state} ${data.district.city} ${data.district.district} ${this.transGroup(data.group)} ${data.position} ${data.name}`;
               } else {
                   alert(`${data}`);
               }
           } catch (error) {
+            console.log(error,333);
               alert(error.response.data.message);
           }
           
