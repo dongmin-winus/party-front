@@ -77,7 +77,7 @@ export default {
   methods:{
     listClick(id, name, profile, online){
       if(profile == null){
-        profile = "@/assets/images/profile.svg"
+        profile = require("@/assets/images/profile.svg")
       }
       this.$router.push({
         // name: 'chat-view',

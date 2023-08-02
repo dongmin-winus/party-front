@@ -80,7 +80,7 @@ export default {
             query: {
               groupId: this.roomId,
               userName: name,
-              userProfile: '@/assets/images/profile.svg',
+              userProfile: require('@/assets/images/profile.svg'),
               online: true
             },
           })
