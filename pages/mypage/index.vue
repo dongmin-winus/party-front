@@ -98,6 +98,10 @@
                 <div class="mt-12"></div>
                 <div class="menus">
                     <div class="wrap">
+                        <nuxt-link to="/mypage/qr" class="menu">
+                            <img src="@/assets/images/board.png" alt="" class="icon" style="width:14px;">
+                            <p class="text">내 큐알코드 확인</p>
+                        </nuxt-link>
                         <nuxt-link to="/mypage/attendance" class="menu">
                             <img src="@/assets/images/heart-active.png" alt="" class="icon" style="width:14px;">
                             <p class="text">출석체크</p>
