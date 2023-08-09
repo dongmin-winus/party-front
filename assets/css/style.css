@@ -289,6 +289,13 @@ html {
     margin-bottom:16px;
 }
 
+.area-my-boards .section-ad {
+    margin-top:30px;
+}
+.area-my-boards .section-ad .link img {
+    display:block; width:100%;
+}
+
 .area-staff .item {
     margin-top:20px;
     padding:20px; border:1px solid #e1e1e1; border-radius:5px;
