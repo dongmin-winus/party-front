@@ -78,7 +78,7 @@ export default {
                 .then((response) => {
                     this.$store.commit("changeDistrict", this.$auth.user.district);
 
-                    this.$router.push(this.$auth.$state.redirect ? this.$auth.$state.redirect : this.$router.back());
+                    this.$router.push(this.$auth.$state.redirect ? this.$auth.$state.redirect : '/');
                 })
                 .catch(e => {
                     if (e.response.data.errors)

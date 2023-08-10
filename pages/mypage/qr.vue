@@ -16,17 +16,15 @@
     </div>
     <div class="container">
       <section class="section-ad">
-        <client-only>
-            <swiper :options="middleBannerOptions">
-                <swiper-slide v-for="(slide,index) in banners" :key="slide.id">
-                    <a :href="slide.link_url" target="_blank" class="link" @click="countClick('banner',slide.id)">
-                        <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
-                    </a>
-                </swiper-slide>
-            </swiper> 
-        </client-only>
+        <swiper :options="middleBannerOptions">
+            <swiper-slide v-for="(slide,index) in banners" :key="slide.id">
+                <a :href="slide.link_url" target="_blank" class="link" @click="countClick('banner',slide.id)">
+                    <img class="img" v-if="slide.image" :src="slide.image.url" alt="-">
+                </a>
+            </swiper-slide>
+        </swiper> 
       </section>
-      <div class="qr-container"></div>
+      <div class="qr-container" v-html="qrData"></div>
     </div>
     <!-- 광고배너 -->
     
@@ -50,6 +48,7 @@ export default {
             disableOnInteraction: false,
         },
       },
+      qrData: null,
       banners:[],
     }
   },
@@ -62,8 +61,7 @@ export default {
       const response = await this.$axios.get(`/api/qrcode/${this.$auth.user.id}`)
       console.log(response)
       if(response.data) {
-        const qrContainer = document.querySelector('.qr-container')
-        qrContainer.innerHTML = response.data
+        this.qrData = response.data;
       }
     }
   },
@@ -77,7 +75,7 @@ export default {
 <style>
   .qr-container {
     width: 100%;
-    height: 75vh;
+    height: 50vh;
     display: flex;
     justify-content: center;
     align-items: center;
