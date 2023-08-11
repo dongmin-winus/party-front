@@ -98,6 +98,10 @@
                 <div class="mt-12"></div>
                 <div class="menus">
                     <div class="wrap">
+                        <nuxt-link to="/popular/rank" class="menu">
+                            <img src="@/assets/images/board.png" alt="" class="icon" style="width:14px;">
+                            <p class="text">개인랭킹</p>
+                        </nuxt-link>
                         <nuxt-link to="/mypage/qr" class="menu">
                             <img src="@/assets/images/board.png" alt="" class="icon" style="width:14px;">
                             <p class="text">내 큐알코드 확인</p>
