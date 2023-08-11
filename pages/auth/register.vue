@@ -18,7 +18,6 @@
             <div class="container">
                 <div class="wrap">
                     <div class="mt-40"></div>
-
                     <div class="m-input-checkbox type01">
                         <input type="checkbox" checked v-if="isAgreeAll">
                         <input type="checkbox" v-else>
@@ -130,7 +129,18 @@
 
                         <p class="m-input-error" v-if="errors.nickname" v-text="errors.nickname[0]"></p>
                     </div>
+                    <div class="mt-16"></div>
+                    <div class="m-input-wrap">
+                        <h3 class="m-input-title type01">연락처</h3>
 
+                        <div class="m-input-text type01">
+                            <input type="text" maxlength="11" placeholder="번호 입력(01077775555)" v-model="form.phone">
+                        </div>
+
+                        <p class="m-input-error" v-if="errors.phone" v-text="errors.phone[0]"></p>
+                        <p class="m-input-error" :class="computedPhoneValid" v-if="form.phone && !errors.phone" v-text="phoneValidText"></p>
+
+                    </div>
                     <div class="mt-16"></div>
 
                     <div class="m-input-wrap">
@@ -160,19 +170,6 @@
                       <div class="mt-8">
                             <span style="color: red">*</span>행정동을 모르실 경우 찾기 버튼을 누르세요.  <button style="color: #0f38bd;" v-touch:tap="openFinder">찾기</button>
                         </div>
-                    </div>
-
-                    <div class="mt-16"></div>
-
-                    <div class="m-input-wrap">
-                        <h3 class="m-input-title type01">연락처</h3>
-
-                        <div class="m-input-text type01">
-                            <input type="text" maxlength="11" placeholder="번호 입력(01077775555)" v-model="form.phone">
-                        </div>
-
-                        <p class="m-input-error" v-if="errors.phone" v-text="errors.phone[0]"></p>
-
                     </div>
 
                     <div class="mt-16"></div>
@@ -252,6 +249,8 @@ export default {
     mixins:[common],
     data() {
         return {
+            phoneValidated: false,
+            phoneValidText: undefined,
             activeFinder:false,
             container:{},
             step: 1,
@@ -289,9 +288,31 @@ export default {
         },
         agreement4() {
             return this.agreements.length > 0 ? this.agreements.find(agreement => agreement.category === 'agreement4') : ''
+        },
+
+        computedPhoneValid() {
+            return this.phoneValidated ? 'primary' : ''
         }
     },
+    watch: {
+        'form.phone': {
+            handler: function (val, oldVal) {
+                if(this.validatePhone(val) || val === '') {
+                    if(val == '') this.phoneValidText = ''
+                    if(this.validatePhone(val)) this.getPhoneValidation(val)
+                }else {
+                    this.phoneValidText = '11자리 휴대폰 번호를 입력해주세요.'
+                    this.phoneValidated = false
+                }
+            },
+        },
+    },
     methods: {
+        async getPhoneValidation(phone) {
+            const {result, message} = await this.$axios.$get(`/api/member-certify?phone=${phone}`)
+            result == true ?  this.phoneValidated = true : this.phoneValidated = false;
+            message ? this.phoneValidText = message : this.phoneValidText = ''
+        },
         async getAggrements() {
             const agreements = await this.$axios.$get('/data/agreements.json')
             this.agreements = agreements
@@ -310,6 +331,8 @@ export default {
             this.form.district_id = data.district_id
         },
         register() {
+            if(!this.validatePhone(this.form.phone))
+                return alert('휴대폰번호를 올바르게 입력해주세요. 예: 01012345678')
             if(!this.validateDate(this.form.birth)) {
                 return alert('생년월일을 올바르게 입력해주세요.')
             }
@@ -334,6 +357,8 @@ export default {
                 .catch((error) => {
                     if (error.response && error.response.data)
                         this.errors = error.response.data.errors;
+                    if(error.response.status === 422)
+                        alert(error.response.data.message)
                 });
 
 
@@ -356,6 +381,8 @@ export default {
                 .catch(e => {
                     if(e.response && e.response.data)
                         this.errors = e.response.data.errors;
+                    if(error.response.status === 422)
+                        alert(error.response.data.message)
                 });
         },
 
