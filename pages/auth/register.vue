@@ -333,15 +333,14 @@ export default {
         register() {
             if(!this.validatePhone(this.form.phone))
                 return alert('휴대폰번호를 올바르게 입력해주세요. 예: 01012345678')
-            if(!this.validateDate(this.form.birth)) {
+            if(!this.validateDate(this.form.birth))
                 return alert('생년월일을 올바르게 입력해주세요.')
-            }
             if(!this.form.is_agree_privacy)
                 return alert("필수약관에 동의해주세요.");
-
             if(this.form.referrer && !this.validatePhone(this.form.referrer))
-                return alert('추천인 전화 번호를 올바르게 입력해주세요. 예: 01012345678')
-;
+                return alert('추천인 전화 번호를 올바르게 입력해주세요. 예: 01012345678');
+            if(this.form.phone == this.form.referrer)
+                return alert('본인을 추천인으로 등록할 수 없습니다.');
 
             this.$axios.post("/api/auth/register", this.form)
             .then((response) => {
@@ -364,15 +363,16 @@ export default {
 
         },
         helpRegister() {
-            if(!this.validateDate(this.form.birth)) {
+            if(!this.validatePhone(this.form.phone))
+                return alert('휴대폰번호를 올바르게 입력해주세요. 예: 01012345678')
+            if(!this.validateDate(this.form.birth))
                 return alert('생년월일을 올바르게 입력해주세요.')
-            }
             if(!this.form.is_agree_privacy)
                 return alert("필수약관에 동의해주세요.");
-
             if(this.form.referrer && !this.validatePhone(this.form.referrer))
                 return alert('추천인번호는 11자리로 입력해주세요. 예: 01012345678')
-
+            if(this.form.phone == this.form.referrer)
+                return alert('본인을 추천인으로 등록할 수 없습니다.');
             this.$axios.post("/api/auth/register", this.form)
                 .then((response) => {
                     alert('가입신청 완료되었습니다.')
