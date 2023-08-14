@@ -133,7 +133,7 @@
             </div>
 
             <!-- 253 위원장(지부장)메뉴 -->
-            <div class="menus-wrap" v-if="staffCertificated == '총괄위원장'">
+            <div class="menus-wrap" v-if="staffCertificated == '실행위원장'">
                 <h3 class="title">위원장 활동</h3>
                 <div class="mt-12"></div>
                 <div class="menus">
