@@ -32,7 +32,7 @@
 
             <section class="section-content">
                 <div class="wrap">
-                    <div class="fragment-wrap" v-if="item">
+                    <div class="fragment-wrap" v-if="item.address">
                         <div class="fragment">
                             <div class="m-title type01 align-left">
                                 {{this.$store.state.district.district}}은

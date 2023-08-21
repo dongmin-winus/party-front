@@ -499,7 +499,7 @@
             </section> -->
 
             <!-- 우리마을 국회의원 -->
-            <section class="section-contact" v-if="district && district.id != 0">
+            <section class="section-contact" v-if="district && district.id != 0 && congressmanItem?.congress_code !== ''">
                 <div class="wrap">
                     <div class="content">
                         <div class="m-title type01">

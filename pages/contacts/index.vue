@@ -32,12 +32,12 @@
 
             <section class="section-content">
                 <div class="wrap">
-                    <div class="m-empty type01" v-if="!item">준비중입니다.</div>
+                    <div class="m-empty type01" v-if="temp?.congress_code === ''">준비중입니다.</div>
 
-                    <section class="section-content" v-if="item">
+                    <section class="section-content" v-else-if="item">
                         <div class="wrap">
                           <div class="img-wrap">
-                              <img :src="item.img.url" alt="">
+                              <img :src="item?.img.url" alt="">
                           </div>
                           <button v-if="!review_check" class="m-btn type02 width-100" @click="openEvaluateModal">의원 평가하기</button>
                           <button v-else="review_check" class="m-btn type02 width-100" @click="openEvaluateModal" >의원 평가 수정하기</button>
