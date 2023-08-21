@@ -35,11 +35,13 @@
                         </div>
                     </div>
 
-                    <div class="m-board-fragment m-board-fragment-remove">
+
+                    <!-- TODO 230821 필독기간 지나면 복구 -->
+                    <!-- <div class="m-board-fragment m-board-fragment-remove">
                         <button class="btn-remove" @click="remove(item)">
                             <img src="@/assets/images/garbage.png" alt="" style="width:37px;">
                         </button>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -111,6 +113,9 @@ export default {
             }).then(response => {
                 this.items = response.data;
                 this.extractImages(this.items.data);
+
+                //TODO 230821 필독기간 지나면 삭제
+                this.form.selected_ids = this.items.data.map(item => item.id)
             });
         },
 
