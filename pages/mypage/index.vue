@@ -138,9 +138,13 @@
                 <div class="mt-12"></div>
                 <div class="menus">
                     <div class="wrap">
-                        <nuxt-link to="/infos/commissioner_namelist" class="menu">
+                        <nuxt-link to="/infos/branch_manager/commissioner_namelist" class="menu">
                             <img src="@/assets/images/board.png" alt="" class="icon" style="width:14px;">
                             <p class="text">지부 회원명단</p>
+                        </nuxt-link>
+                        <nuxt-link to="/infos/branch_manager/daily_report" class="menu">
+                            <img src="@/assets/images/board.png" alt="" class="icon" style="width:14px;">
+                            <p class="text">일일보고 현황</p>
                         </nuxt-link>
                     </div>
                 </div>
@@ -150,9 +154,13 @@
             <!-- 마을대표 메뉴 -->
             <div v-if="staffCertificated == '대표'">
                 <div class="menus-wrap">
-                    <h3 class="title">나의 조직활동</h3>
+                    <h3 class="title">대표 활동</h3>
                     <div class="menus">
                         <div class="wrap">
+                            <nuxt-link to="/infos/daily_report" class="menu">
+                                <img src="@/assets/images/board.png" alt="" class="icon" style="width:14px;">
+                                <p class="text">일일보고</p>
+                            </nuxt-link>
                             <nuxt-link to="/infos/namelist" class="menu">
                                 <img src="@/assets/images/board.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">내 마을 회원</p>
