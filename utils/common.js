@@ -83,7 +83,10 @@ export default {
     validatePhone(phoneNumber) {
       return /^010\d{8}$/.test(phoneNumber)
     },
-
+    formatPhone(phoneNumber) {
+      if (!phoneNumber) return;
+      return phoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+    },
     replaceContent(content) {
       let replaced = content.replace(/<\/?[^>]+>/ig, " ").replace(/&\s?nbsp;/ig, " ").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
       return replaced;
