@@ -7,19 +7,29 @@
       <div class="m-pop-title">{{title}}</div>
       <div class="mt-8"></div>
       <div class="m-board-btns mt-20">
-        <div class="m-input m-input-text type01">
-            <input type="text" placeholder="주소를 입력해주세요" :disabled="searchComplete" v-model="keyword" @keyup.enter="trans">
+        <div class="m-input m-input-text type01 clear-input-container">
+          <input  v-model="keyword" type="text" placeholder="주소를 입력해주세요">
+          <button class="clear-input-btn" v-if="searchComplete" @click="clearInput">
+            <span class="btn-character">X</span>
+          </button>
         </div>
         <div class="mt-16"></div>
+        <Dropdown
+          v-if="searchComplete"
+          :menu-title="'검색 결과'"
+          :items="results"
+          :value="'0'"
+          :selected="selected"
+          :activate="activeDropdown"
+          @toggle="toggleDropdown"
+          @change="changeSelected"
+        />
         <div class="m-btns type01">
           <div class="m-btn-wrap" v-if="!searchComplete">
-            <button class="m-btn type02 bg-revert-red width-100" @click.prevent="trans">변환하기</button>
+            <button class="m-btn type02 bg-revert-red width-100" @click.prevent="trans">검색하기</button>
           </div>
           <div class="m-btn-wrap" v-if="searchComplete">
-            <button class="m-btn type02 bg-revert-primary width-100" @click.prevent="search">검색하기</button>
-          </div>
-          <div class="m-btn-wrap" v-if="searchComplete">
-            <button class="m-btn type02 bg-revert-primary width-100" @click.prevent="clear">초기화</button>
+            <button class="m-btn type02 bg-revert-primary width-100" @click.prevent="search">선택하기</button>
           </div>
         </div>
       </div>
@@ -29,6 +39,7 @@
 </template>
 
 <script>
+import Dropdown from './dropdown.vue'
 import common from '../utils/common'
 export default {
   props: {
@@ -50,6 +61,9 @@ export default {
     }
   },
   mixins: [common],
+  components: {
+    Dropdown,
+  },
   data() {
     return {
       keyword: "",
@@ -65,7 +79,7 @@ export default {
         "대전광역시": "대전",
         "울산광역시": "울산",
         "세종특별자치시": "세종",
-        "강원도": "강원",
+        "강원특별자치도": "강원",
         "충청북도": "충북",
         "충청남도": "충남",
         "전라북도": "전북",
@@ -75,6 +89,9 @@ export default {
         "제주특별자치도": "제주"
       },
       searchComplete : false,
+      activeDropdown: false,
+      results: [],
+      selected:false,
     }
   },
   watch: {
@@ -93,9 +110,23 @@ export default {
       })
     }
   },
+
   methods: {
     emitEvent(eventName, payload = undefined) {
       this.$emit(eventName, payload);
+    },
+    clearInput() {
+      this.keyword = null;
+      this.searchComplete = false;
+      this.selected = false;
+      this.results = [];
+    },
+    toggleDropdown() {
+      this.activeDropdown = !this.activeDropdown;
+    },
+    changeSelected(item) {
+      this.keyword = item;
+      this.selected = true;
     },
     async trans() {
         if(this.keyword == '')
@@ -108,10 +139,24 @@ export default {
                 keyword: this.keyword
             },
         }).then(({data}) => {
-            const hemdNm = data.results.juso[0].hemdNm;
-            this.keyword = hemdNm;
-            this.searchComplete = true;
+          const array = data.results.juso.map(item => {
+            return `${this.handleAddr(item.hemdNm)}`
+            
+          });
+          this.results = [...new Set(array)];
+          this.toggleDropdown();
+
+          // const hemdNm = data.results.juso[0].hemdNm;
+          // this.keyword = hemdNm;
+          this.searchComplete = true;
         })
+    },
+    handleAddr(addr) {
+      const arr = addr.split(" ");
+      if(arr.length == 4)
+        return `${arr[0]} ${arr[1]}${arr[2]} ${arr[3]}`;
+      else if(arr.length == 3)
+        return `${arr[0]} ${arr[1]} ${arr[2]}`;
     },
     search() {
       const keys = ['state','city','district'];
@@ -124,10 +169,6 @@ export default {
       this.$emit('setContainer',container);
       this.$emit('cancel')
     },
-    clear() {
-      this.keyword = '';
-      this.searchComplete = false;
-    }
   },
 }
 </script>
@@ -136,5 +177,22 @@ export default {
 input:disabled {
   -webkit-text-fill-color: #000;
   opacity: 1; /* required on iOS */
+}
+
+.clear-input-container {
+  position: relative;
+}
+
+.clear-input-container .clear-input-btn {
+  position:absolute;
+  right:10px;
+  top: 50%;
+  transform:translateY(-50%);
+  
+}
+.clear-input-container .clear-input-btn .btn-character {
+  font-size: 20px;
+  font-weight:700;
+  color: #777777;
 }
 </style>
