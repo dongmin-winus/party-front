@@ -128,6 +128,10 @@
                             <img src="@/assets/images/board.png" alt="" class="icon" style="width:14px;">
                             <p class="text">관리지역 선택</p>
                         </div>
+                        <nuxt-link to="/infos/general_manager/daily_report" class="menu">
+                            <img src="@/assets/images/board.png" alt="" class="icon" style="width:14px;">
+                            <p class="text">일일보고 현황</p>
+                        </nuxt-link>
                     </div>
                 </div>
             </div>

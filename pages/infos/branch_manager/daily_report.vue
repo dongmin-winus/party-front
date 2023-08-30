@@ -18,17 +18,6 @@
     </div>
     <!-- content container -->
     <div class="container">
-      <!-- <div class="utils">
-        <button class="btn-util" style="width:100%">
-          <div class="m-input-text-wrap">
-            <div class="m-input-text type01">
-              <input type="text" placeholder="검색일자를 선택하세요." v-model="word" @keyup.enter="search">
-
-              <i class="xi-search m-input-text-deco" @click="search"></i>
-            </div>
-          </div>
-        </button>
-      </div> -->
       <div class="mt-24"></div>
       <section class="section-promotion">
         <div class="wrap">
@@ -62,7 +51,35 @@
           </label>
         </div>  
       </div>  
+      <div class="mt-12" style="display:flex; justify-content: space-around; ">
+        <div class="m-input-text type01 clear-input-container">
+          <input readonly v-model="computedDate" type="text" @click="toggleCalendar1 = !toggleCalendar1" placeholder="검색일">
+          <button class="clear-input-btn" v-if="computedDate" @click="clearInput">
+            <span class="btn-character">X</span>
+          </button>
+        </div>
+        <div class="m-board-btns">
+          <div class="m-btns type01">
+            <div class="m-btn-wrap" @click="search">
+              <button class="m-btn type02 bg-primary">검색</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <client-only>
+        <div style="position:relative">
+          <v-date-picker 
+            style="position:fixed; z-index:999;"
+            v-if="toggleCalendar1"
+            locale="ko"
+            color="green"
+            :max-date="new Date()"
+            v-model="selectedDate"
+            @input="toggleCalendar1 = false"
+          />
+        </div>
 
+      </client-only>
       <div class="mt-12"></div>
       <div class="flex-w-full bg-lightGray">
         <div class="col-name">일자</div> 
@@ -71,31 +88,17 @@
         <div class="col-name">상세</div>
       </div>
       <!-- rawValue.data로 v-for 반복 구조 만들기 -->    
-      <div class="flex-w-full" v-for="item in rawValue?.data" :key="item.id">
-        <div class="col-name">{{ formatDate(item.created_at,'-') }}</div>
-        <div class="col-name">{{ item.district }}</div>
-        <div class="col-name">{{ item.name }}</div>
-        <div class="col-name">
-          <button class="btn-util" @click="openInfoModal(item)">
-            <div class="m-btn type04 bg-revert-primary">
-              상세
-            </div>
-          </button>
-        </div>
+      <div class="flex-w-full" v-for="item in rawValue?.data">
+        <div class="col-name" @click="openInfoModal(item)">{{ listDate }}</div>
+        <div class="col-name" @click="openInfoModal(item)">{{ item.district }}</div>
+        <div class="col-name" @click="openInfoModal(item)">{{ item.name }}</div>
       </div>
 
       <!-- TODO rawValue의 bm들 중 reporting : 1 인 위 데이터 빼고 빨갛게 만들어서 리스트 (상세버튼 생략 ) -->
       <div class="flex-w-full" v-for="item in unreportedList" :key="item.id">
-        <div class="col-name red">{{ formatDate(new Date(),'-') }}</div>
-        <div class="col-name red">{{ item.district }}</div>
-        <div class="col-name red">{{ item.name }}</div>
-        <div class="col-name red">
-          <!-- <button class="btn-util" @click="openInfoModal(item)">
-            <div class="m-btn type04 bg-revert-primary">
-              상세
-            </div>
-          </button> -->
-        </div>
+        <div class="col-name red" @click="openInfoModal(item)">{{ listDate }}</div>
+        <div class="col-name red" @click="openInfoModal(item)">{{ item.district }}</div>
+        <div class="col-name red" @click="openInfoModal(item)">{{ item.name }}</div>
       </div>
     </div>
 
@@ -113,8 +116,12 @@
             </div>
             <div class="inner-form">
               <div class="title">
+                <span class="main">{{ formatDate(selectedItem.created_at,'-') }}</span>
+              </div>
+              <div class="title">
                 <span class="sub-point">{{ selectedItem.election }} {{ selectedItem.district }}</span>
-                <span class="main">{{ selectedItem.name }}</span>
+                <span class="main">{{ selectedItem.name }}</span><br/>
+                <span class="main">{{ formatPhone(selectedItem.phone) }}</span>
               </div>
               <div class="mt-8"></div>
 
@@ -198,9 +205,20 @@ export default {
 
       rawValue:null,
       unreportedList: [],
+
+
+      toggleCalendar1: false,
+      selectedDate: null,
+      listDate: '',
     }
   },
   computed: {
+    computedDate() {
+      if(!this.selectedDate) return;
+      if(this.selectedDate instanceof Date) {
+        return this.formatDate(this.selectedDate,'-');
+      }
+    },
     total() {
       return this.items.meta.total 
     },
@@ -259,17 +277,11 @@ export default {
             });
         }
     },
-    search() {
-      this.$axios.get(`/api/districts/${this.countyInfo.district_id}/members`, {
-        params: {
-          search: {
-            keyword: this.word
-          }
-          
-        }
-      }).then(response => {
-        this.items = response.data;
-      })
+    clearInput() {
+      this.selectedDate = null;
+    },
+    async search() {
+      await this.getReportData();
     },
 
     openInfoModal(item) {
@@ -278,6 +290,7 @@ export default {
     },
 
      handleReportData({ bm, data }) {
+      this.getListDate();
       //rawValue의 bm들 중 reporting : 1 인 위 데이터 빼고 빨갛게 만들어서 리스트 (상세버튼 생략 )
       const dataDistricts = data.map(item => item.district);
       const filteredBm = bm.filter(item => !dataDistricts.includes(item.district));
@@ -286,7 +299,11 @@ export default {
 
     async getReportData() {
       try {
-        const response = await this.$axios.get(`/api/reports/md-list?phone=${this.$auth.user.phone}`);
+        const response = await this.$axios.get(`/api/reports/md-list?phone=${this.$auth.user.phone}`, {
+          params: {
+            startDate: this.selectedDate ? this.getDateString(this.selectedDate) : null,
+          }
+        });
         this.rawValue = response.data;
         this.handleReportData(response.data);
         if(this.rawValue.message) alert(this.rawValue.message)
@@ -296,6 +313,17 @@ export default {
         }
       }
 
+    },
+    getDateString(date) {
+      if(!date) return null;
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1;
+      const day = date.getDate();
+      return `${year}-${month}-${day}`;
+    },
+
+    getListDate() {
+      this.listDate = this.selectedDate ? this.formatDate(this.selectedDate,'-') :this.formatDate(new Date(),'-')
     },
   },
   async created () {
@@ -324,7 +352,7 @@ export default {
 
   .deca {
     width:100%;
-    height:600px;
+    height:650px;
     border-radius: 5px;
     background-color: #eee;
 
@@ -508,5 +536,23 @@ export default {
     width: 48%;
     background: #fafafa;
 }
+
+.clear-input-container {
+  position: relative;
+}
+
+.clear-input-container .clear-input-btn {
+  position:absolute;
+  right:10px;
+  top: 50%;
+  transform:translateY(-50%);
+  
+}
+.clear-input-container .clear-input-btn .btn-character {
+  font-size: 20px;
+  font-weight:700;
+  color: #777777;
+}
+
 
 </style>  

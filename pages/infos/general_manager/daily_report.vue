@@ -22,69 +22,91 @@
       <section class="section-promotion">
         <div class="wrap">
           <div class="m-title type01">
-            <p class="sub" style="text-align: center; color: #626262; font-size: 19px; pbottom: 10px;">{{countyInfo.state }} {{countyInfo.city }} {{ countyInfo.district }} 일일보고</p>
+            <!-- <p class="sub" style="text-align: center; color: #626262; font-size: 19px; padding-bottom: 10px;">{{countyInfo.state }} {{countyInfo.city }}</p> -->
+            <p class="point" style="text-align: center;"> {{rawValue?.general_manager }} </p>
           </div>
-          <div style="display:flex; justify-content: space-around; ">
-            <div class="m-input-checkbox type01" style="height:fit-content; padding-top:10px;">
-                <input type="checkbox"  v-model="allData">
-                <label class="new-position" @click="allData = !allData">전체</label>
-            </div>
-            <div class="m-input-text type01 clear-input-container">
-              <input readonly v-model="computedDate" type="text" @click="toggleCalendar1 = !toggleCalendar1" placeholder="검색일">
-              <button class="clear-input-btn" v-if="computedDate" @click="clearInput">
-                <span class="btn-character">X</span>
-              </button>
-            </div>
-            <div class="m-board-btns">
-              <div class="m-btns type01">
-                <div class="m-btn-wrap" @click="search">
-                  <button class="m-btn type02 bg-primary">검색</button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="m-board-btns mt-8" v-if="!reportedToday">
-              <div class="m-btns type01">
-                <nuxt-link :to="'/infos/create_daily_report'" class="m-btn-wrap">
-                  <a class="m-btn type01 revert-bg-primary" style=" color:#01ab01;  font-weight:500;">등 록</a>
-                </nuxt-link>
-              </div>
-            </div>
-          <client-only>
-            <div style="position:relative">
-              <v-date-picker 
-                style="position:fixed; z-index:999;"
-                v-if="toggleCalendar1"
-                locale="ko"
-                color="green"
-                :max-date="new Date()"
-                v-model="selectedDate"
-                @input="toggleCalendar1 = false"
-              />
-            </div>
-
-          </client-only>
         </div>
       </section>
-      <div class="mt-12"></div> 
+      <div class="mt-12"></div>
+      <div class="m-input-checkboxes type04">
+        <div class="m-input-checkbox" style="border: 2px solid #d61a1a; box-shadow: 0 0 3px red">
+          <input type="radio" id="waiting" value="waiting" v-model="toggleList">
+          <label for="waiting">
+            <p style="color:red">{{ rawValue?.bm.length - rawValue?.data.length }}</p>
+            <p style="color:red">미보고</p>
+          </label>
+        </div>
+        <div class="m-input-checkbox">
+          <input type="radio" id="confirmed" value="confirmed" v-model="toggleList">
+          <label for="confirmed">
+            <p>{{ rawValue?.data.length }}</p>
+            <p>보고완료</p>
+          </label>
+        </div>
+        <div class="m-input-checkbox" style="background-color:#E7F7E5">
+          <input type="radio" id="total" value="total" v-model="toggleList">
+          <label for="total">
+            <p>{{ rawValue?.bm.length }}</p>
+            <p>마을 총원</p>
+          </label>
+        </div>  
+      </div>  
+      <div class="mt-12" style="display:flex; justify-content: space-around; ">
+        <div class="m-input-text type01 clear-input-container">
+          <input readonly v-model="computedDate" type="text" @click="toggleCalendar1 = !toggleCalendar1" placeholder="검색일">
+          <button class="clear-input-btn" v-if="computedDate" @click="clearInput">
+            <span class="btn-character">X</span>
+          </button>
+        </div>
+        <div class="m-board-btns">
+          <div class="m-btns type01">
+            <div class="m-btn-wrap" @click="search">
+              <button class="m-btn type02 bg-primary">검색</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <client-only>
+        <div style="position:relative">
+          <v-date-picker 
+            style="position:fixed; z-index:999;"
+            v-if="toggleCalendar1"
+            locale="ko"
+            color="green"
+            :max-date="new Date()"
+            v-model="selectedDate"
+            @input="toggleCalendar1 = false"
+          />
+        </div>
 
+      </client-only>
       <div class="mt-12"></div>
       <div class="flex-w-full bg-lightGray">
         <div class="col-name">일자</div> 
-        <div class="col-name">마을</div>
-        <div class="col-name">상세</div>
+        <div class="col-name">구분</div>
+        <div class="col-name">이름</div>
       </div>
       <!-- rawValue.data로 v-for 반복 구조 만들기 -->    
-      <div class="flex-w-full" v-for="item in rawValue?.data">
-        <div class="col-name">{{ formatDate(item.created_at,'-') }}</div>
-        <div class="col-name">{{ countyInfo.district }}</div>
-        <div class="col-name">
+      <div class="flex-w-full" v-for="item in rawValue?.data" :key="item.id">
+        <div class="col-name" @click="openInfoModal(item)">{{ listDate }}</div>
+        <div class="col-name" @click="openInfoModal(item)">{{ item.election }}</div>
+        <div class="col-name" @click="openInfoModal(item)">{{ item.name }}</div>
+
+        <!-- <div class="col-name">
           <button class="btn-util" @click="openInfoModal(item)">
             <div class="m-btn type04 bg-revert-primary">
               상세
             </div>
           </button>
-        </div>
+        </div> -->
+      </div>
+
+      <!-- TODO rawValue의 bm들 중 reporting : 1 인 위 데이터 빼고 빨갛게 만들어서 리스트 (상세버튼 생략 ) -->
+      <div class="flex-w-full" v-for="item in unreportedList" :key="item.id">
+        <div class="col-name red" @click="openInfoModal(item)">{{ listDate }}</div>
+        <div class="col-name red" @click="openInfoModal(item)">{{ item.election }}</div>
+        <div class="col-name red" @click="openInfoModal(item)">{{ item.name }}</div>
+
       </div>
     </div>
 
@@ -104,6 +126,11 @@
               <div class="title">
                 <span class="main">{{ formatDate(selectedItem.created_at,'-') }}</span>
               </div>
+              <div class="title">
+                <span class="sub-point">{{ selectedItem.election }} {{ selectedItem.district }}</span>
+                <span class="main">{{ selectedItem.name }}</span><br/>
+                <span class="main">{{ formatPhone(selectedItem.phone) }}</span>
+              </div>
               <div class="mt-8"></div>
 
               <!-- 일일보고 데이터 -->
@@ -119,12 +146,6 @@
               </ul>
 
               <div class="mt-8"></div>
-              <div class="comment">
-                <p>비고</p>
-                <div class="m-input-textarea type01 lightgrey">
-                  <textarea readonly placeholder="기타 의견을 입력해주세요" v-model="selectedItem.memo"></textarea>
-                </div>
-              </div>
             </div>
 
             <div class="buttons">
@@ -191,26 +212,13 @@ export default {
       toggleCalendar1: false,
       selectedDate: null,
       listDate: '',
-      allData: false,
-      reportedToday: false,
-    }
-  },
-  watch: {
-    allData(val) {
-      if(val)
-        this.selectedDate = null;
-    },
-    selectedDate(val) {
-      if(val) {
-        this.allData = false;
-      }
     }
   },
   computed: {
     computedDate() {
       if(!this.selectedDate) return;
       if(this.selectedDate instanceof Date) {
-        return this.getDateString(this.selectedDate);
+        return this.formatDate(this.selectedDate,'-');
       }
     },
     total() {
@@ -283,7 +291,7 @@ export default {
       this.activeInfoModal = true;
     },
 
-    handleReportData({ bm, data }) {
+     handleReportData({ bm, data }) {
       this.getListDate();
       //rawValue의 bm들 중 reporting : 1 인 위 데이터 빼고 빨갛게 만들어서 리스트 (상세버튼 생략 )
       const dataDistricts = data.map(item => item.district);
@@ -293,15 +301,13 @@ export default {
 
     async getReportData() {
       try {
-        const response = await this.$axios.get(`/api/reports/list`, {
+        const response = await this.$axios.get(`/api/reports/high-list?phone=${this.$auth.user.phone}`, {
           params: {
             startDate: this.selectedDate ? this.getDateString(this.selectedDate) : null,
-            all: this.allData ? this.allData : null,
           }
         });
         this.rawValue = response.data;
         this.handleReportData(response.data);
-        
         if(this.rawValue.message) alert(this.rawValue.message)
       } catch (error) {
         if(error.response?.status == 500) {
@@ -310,9 +316,6 @@ export default {
       }
 
     },
-    getListDate() {
-      this.listDate = this.selectedDate ? this.formatDate(this.selectedDate,'-') :this.formatDate(new Date(),'-')
-    },
     getDateString(date) {
       if(!date) return null;
       const year = date.getFullYear();
@@ -320,18 +323,16 @@ export default {
       const day = date.getDate();
       return `${year}-${month}-${day}`;
     },
-    async hasReportedToday() {
-      const {data} = await this.$axios.get(`/api/reports/list`);
-      console.log(data,3333)
-      this.reportedToday =  data.data.length>0 ? true : false;
-    }
+
+    getListDate() {
+      this.listDate = this.selectedDate ? this.formatDate(this.selectedDate,'-') :this.formatDate(new Date(),'-')
+    },
   },
   async created () {
     await this.checkManagerAuth({
         phone: this.$auth.user.phone,
     });
     await this.getReportData();
-    await this.hasReportedToday();
   },
 }
 </script>
@@ -555,8 +556,5 @@ export default {
   color: #777777;
 }
 
-label.new-position:before {
-  top:15px;
-}
 
 </style>  
