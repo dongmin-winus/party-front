@@ -121,10 +121,9 @@ export default {
       const requiredValues = Object.keys(this.form).filter(item => this.labelData.hasOwnProperty(item))
       if(Object.entries(this.form).filter(item => requiredValues.includes(item[0]) && (item[1] === null || item[1] === '')).length > 0) return alert('입력되지 않은 항목이 있습니다.')
       this.form.reporting = 1
-      const response = await this.$axios.post('/api/reports', this.form)
-
+      const response = await this.$axios.post('/api/reports', this.form);
       
-      if(response.result) {
+      if(response.data.result) {
         alert('일일보고가 등록되었습니다.')
         this.$router.back()
       } else {
