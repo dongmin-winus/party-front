@@ -85,7 +85,6 @@
         <div class="col-name">일자</div> 
         <div class="col-name">마을</div>
         <div class="col-name">대표</div>
-        <div class="col-name">상세</div>
       </div>
       <!-- rawValue.data로 v-for 반복 구조 만들기 -->    
       <div class="flex-w-full" v-for="item in rawValue?.data">

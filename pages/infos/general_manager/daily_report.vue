@@ -91,14 +91,6 @@
         <div class="col-name" @click="openInfoModal(item)">{{ listDate }}</div>
         <div class="col-name" @click="openInfoModal(item)">{{ item.election }}</div>
         <div class="col-name" @click="openInfoModal(item)">{{ item.name }}</div>
-
-        <!-- <div class="col-name">
-          <button class="btn-util" @click="openInfoModal(item)">
-            <div class="m-btn type04 bg-revert-primary">
-              상세
-            </div>
-          </button>
-        </div> -->
       </div>
 
       <!-- TODO rawValue의 bm들 중 reporting : 1 인 위 데이터 빼고 빨갛게 만들어서 리스트 (상세버튼 생략 ) -->
@@ -291,11 +283,11 @@ export default {
       this.activeInfoModal = true;
     },
 
-     handleReportData({ bm, data }) {
+    handleReportData({ bm, data }) {
       this.getListDate();
       //rawValue의 bm들 중 reporting : 1 인 위 데이터 빼고 빨갛게 만들어서 리스트 (상세버튼 생략 )
-      const dataDistricts = data.map(item => item.district);
-      const filteredBm = bm.filter(item => !dataDistricts.includes(item.district));
+      const dataElections = data.map(item => item.election);
+      const filteredBm = bm.filter(item => !dataElections.includes(item.election));
       this.unreportedList = filteredBm;
     },
 
