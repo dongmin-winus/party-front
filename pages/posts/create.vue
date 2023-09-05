@@ -169,6 +169,7 @@
 </template>
 
 <script>
+import * as Cookies from "js-cookie";
 import InputCamera from '../../components/form/posts/inputCamera';
 import InputLink from "../../components/form/posts/inputLink";
 import InputImg from "../../components/form/posts/inputImg";
@@ -218,6 +219,10 @@ export default {
     },
     methods: {
         async store() {
+            if(Cookies.get('havePostedInTenMin')) {
+                alert('게시글 작성 후 10분 이내에는 글을 등록할 수 없습니다.');
+                return;
+            }
             // 마을모임 코드
             if(this.form.board === 'meetings' && this.parasole) {
                 const res = await fetch('@/assets/images/meetings-parasole.jpg')
@@ -262,12 +267,13 @@ export default {
 
             let form = (new Form(this.form)).data();
 
+            let tenMin = new Date(new Date().getTime() + 10 * 60 * 1000);
             // update
             if(this.item)
                 return this.$axios.post("/api/posts/update/" + this.item.id, form)
                     .then((response) => {
                         alert("성공적으로 처리되었습니다.");
-
+                        Cookies.set('havePostedInTenMin',true,{expires: tenMin, secure: false});
                         this.$router.back();
                     })
                     .catch((error) => {
@@ -279,7 +285,7 @@ export default {
             this.$axios.post("/api/posts", form)
                 .then((response) => {
                     alert("성공적으로 처리되었습니다.");
-
+                    Cookies.set('havePostedInTenMin',true,{expires: tenMin, secure: false});
                     this.$router.back();
                 })
                 .catch((error) => {
