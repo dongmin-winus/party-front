@@ -310,7 +310,7 @@ export default {
                   })
               )
           })
-          this.county = [...this.countyLists[0]];
+          this.county = [...this.countyLists[this.group ? this.group - 1 : 0]];
           this.activeCounty = this.group ? this.group : 1;
           this.registerStatus = response.data.register;
       },
