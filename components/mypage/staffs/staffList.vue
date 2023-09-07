@@ -169,7 +169,7 @@ import InputLink from "~/components/form/posts/inputLink";
 import InputImg from "~/components/form/posts/inputImg";
 import InputThumbnail from "~/components/form/posts/inputThumbnail";
 import InputAddress from "~/components/form/inputAddress";
-
+import {mapGetters} from "vuex";
 
 import Reminder from "@/components/reminder.vue";
 import Dropdown from "@/components/dropdown";
@@ -252,16 +252,19 @@ export default {
   },
 
   computed: {
-      computedCountySections() {
-          const set = [...new Set(this.rawValues.map(item => item.group))];
-          // set.splice(set.indexOf(null), 1);
-          return set;
-      },
-      computedPositions() {
-            return this.positions.filter(item => !(item.position == '대표')).map((item) => {
-                return item.position
-            })
-        },
+    computedCountySections() {
+        const set = [...new Set(this.rawValues.map(item => item.group))];
+        // set.splice(set.indexOf(null), 1);
+        return set;
+    },
+    computedPositions() {
+        return this.positions.filter(item => !(item.position == '대표')).map((item) => {
+            return item.position
+        })
+    },
+    ...mapGetters({
+        group:'getGroup'
+    }),
   },
 
   watch: {
@@ -308,7 +311,7 @@ export default {
               )
           })
           this.county = [...this.countyLists[0]];
-          this.activeCounty = 1;
+          this.activeCounty = this.group ? this.group : 1;
           this.registerStatus = response.data.register;
       },
       async getPositions(rep_district_id = undefined) {
