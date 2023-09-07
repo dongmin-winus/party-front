@@ -43,9 +43,15 @@ export const state = () => ({
     homebanner2: [],
     homebanner3: [],
 
+    //마을 그룹
+    group: '',
+
 });
 
 export const getters = {
+    getGroup: (state) => {
+        return state.group
+    },
     getDistrict: (state) => {
         return state.district
     },
@@ -84,6 +90,10 @@ export const getters = {
 }
 
 export const actions = {
+    //마을 그룹
+    FETCH_GROUP({ commit }, group) {
+        commit('setGroup', group);
+    },
     //TODO axios codes would be needed here
     FETCH_POST_ITEMS({ commit }, items) {
         commit('SET_POST_ITEMS', items);
@@ -134,6 +144,10 @@ export const actions = {
 }
 
 export const mutations = {
+    //마을 그룹
+    setGroup(state, group) {
+        state.group = group;
+    },
     changeDistrict(state, data) {
         state.district = data;
     },

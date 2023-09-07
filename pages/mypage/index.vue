@@ -338,6 +338,7 @@
 
 <script>
 import Form from "@/utils/Form";
+import { mapActions } from 'vuex';
 import ProfilePop from '../../components/profilePop.vue'
 import common from '@/utils/common'
 export default {
@@ -370,6 +371,7 @@ export default {
         }
     },
     methods: {
+        ...mapActions(['FETCH_GROUP']),
         store() {
 
         },
@@ -402,7 +404,8 @@ export default {
             const position = response.data.position;
             if(response.data === false) {
                 this.staffCertificated = false;
-            }else if(position[0] === 'A0001') {
+            }else if(position[0] === 'A0001') { //동대표
+                this.FETCH_GROUP(response.data.group)
                 this.staffCertificated = position[1];
                 this.represenateDistrict = {
                     id:response.data.district_id,
