@@ -12,6 +12,7 @@
             <div v-show="registerInfo.length > 0">
                 <div class="mt-8"></div>
                 <ul class="items custom-ul">
+                    
                     <li v-for="(item, index) in registerInfo" :key="index" style="padding:10px 10px;">
                         <div class="item-container">
                             <div class="left">
@@ -35,13 +36,14 @@
                 </ul>
             </div>
             <div class="mt-12 m-tabs type01" v-if="computedCountySections.length > 1">
-                <div class="m-tab-wrap" v-for="(item) in computedCountySections">
-                    <div class="m-tab" :class="`${activeCounty === item ? 'active' : ''}`" @click="getCounty(item)">
-                        <span class="text">{{ $store.state.district.district }}&nbsp; {{ transGroup(item) }}</span>
+                <div v-if="item == rawGroup" class="m-tab-wrap" v-for="(item) in computedCountySections">
+                    <div class="m-tab" :class="`${activeCounty === item ? 'active' : ''}`" @click="getCounty(rawGroup)">
+                        <span class="text">{{ $store.state.district.district }}&nbsp; {{ transGroup(rawGroup) }}</span>
                     </div>
                 </div>
             </div>
             <ul class="items custom-ul">
+
                 <li v-for="item in county" :key="item.id">
                     <div class="wrapper">
                         <div class="mt-20"></div>
@@ -206,6 +208,7 @@ export default {
           activeCounty: undefined,
           errors: {},
           rep_district: {},
+          rawGroup: null,
 
 
           categories: [
@@ -289,10 +292,13 @@ export default {
       async setCountyLists(rep_district_id = undefined) {
           this.rawValues = [];
           this.countyLists = [];
+
           const response = await this.$axios.get(`/api/districts/${rep_district_id ? rep_district_id : this.$store.state.district.id}/staff`);
           this.rawValues = response.data.data;
+          this.rawGroup = response.data.group;
+
           this.computedCountySections.forEach(group => {
-              const county = this.rawValues.filter(rawValue => rawValue.group === group);
+              const county = this.rawValues.filter(rawValue => rawValue.group === this.rawGroup);
               this.countyLists.push(
                   this.positions.map(position => {
                       const positionData = county.find(value => value.position === position.position);
