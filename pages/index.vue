@@ -1269,12 +1269,13 @@ export default {
         this.getPopularRakings(10);
 
         if(this.district.id != 0) {
+            this.$axios.get("/api/districts/" + this.district.id + "/register_rates")
+            .then(response => {
+                this.registerRates = response.data.registerRates;
+            });
             await this.$store.dispatch('FETCH_CONTACT_REVIEW', this.district.id);
             await this.getCongressmanInfo();
-            this.$axios.get("/api/districts/" + this.district.id + "/register_rates")
-                .then(response => {
-                    this.registerRates = response.data.registerRates;
-                });
+
         }
 
 
