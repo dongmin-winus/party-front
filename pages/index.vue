@@ -234,7 +234,12 @@
                                             <span class="point">2</span>위
                                         </h3>
                                         <div class="subtitle-container">
-                                            <p class="subtitle">{{ districtRegisterCounts[1].district }}</p>
+                                            <!-- <p class="subtitle">{{ districtRegisterCounts[1].district }}</p> -->
+                                            <div style="display:flex; flex-direction:column;">
+                                                <p class="subtitle">{{ districtRegisterCounts[1].state }}</p>
+                                                <p class="subtitle">{{ districtRegisterCounts[1].city }}</p>
+                                                <p class="subtitle">{{ districtRegisterCounts[1].district }}</p>
+                                            </div>
                                             <div class="badge" v-if="getBadgeSrc(rankingCount(districtRegisterCounts[1]))">
                                                 <img :src="require(`@/assets/images/${getBadgeSrc(rankingCount(districtRegisterCounts[1]))}`)"/>
                                             </div>
@@ -267,7 +272,12 @@
                                             <span class="point">1</span>위
                                         </h3>
                                         <div class="subtitle-container">
-                                            <p class="subtitle">{{ districtRegisterCounts[0].district }}</p>
+                                            <!-- <p class="subtitle">{{ districtRegisterCounts[0].district }}</p> -->
+                                            <div style="display:flex; flex-direction:column;">
+                                                <p class="subtitle">{{ districtRegisterCounts[0].state }}</p>
+                                                <p class="subtitle">{{ districtRegisterCounts[0].city }}</p>
+                                                <p class="subtitle">{{ districtRegisterCounts[0].district }}</p>
+                                            </div>
                                             <div class="badge" v-if="getBadgeSrc(rankingCount(districtRegisterCounts[0]))">
                                                 <img :src="require(`@/assets/images/${getBadgeSrc(rankingCount(districtRegisterCounts[0]))}`)"/>
                                             </div>
@@ -300,7 +310,12 @@
                                             <span class="point">3</span>위
                                         </h3>
                                         <div class="subtitle-container">
-                                            <p class="subtitle">{{ districtRegisterCounts[2].district }} </p>
+                                            <!-- <p class="subtitle">{{ districtRegisterCounts[2].district }} </p> -->
+                                            <div style="display:flex; flex-direction:column;">
+                                                <p class="subtitle">{{ districtRegisterCounts[2].state }}</p>
+                                                <p class="subtitle">{{ districtRegisterCounts[2].city }}</p>
+                                                <p class="subtitle">{{ districtRegisterCounts[2].district }}</p>
+                                            </div>
                                             <div class="badge" v-if="getBadgeSrc(rankingCount(districtRegisterCounts[2]))">
                                                 <img :src="require(`@/assets/images/${getBadgeSrc(rankingCount(districtRegisterCounts[2]))}`)"/>
                                             </div>
@@ -1346,8 +1361,9 @@ export default {
     }
 
     .fragment .subtitle-container .subtitle {
-        font-size: 0.9rem !important;
+        font-size: 0.8rem !important;
         margin-right:3px;
+        line-height: 0.7;
     }
     .time-container {
         display: flex;
