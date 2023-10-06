@@ -36,9 +36,15 @@
                 </ul>
             </div>
             <div class="mt-12 m-tabs type01" v-if="computedCountySections.length > 1">
-                <div  class="m-tab-wrap" v-for="(item) in computedCountySections">
+                <!-- <div class="m-tab-wrap" v-for="(item) in computedCountySections">
                     <div class="m-tab" :class="`${activeCounty === item ? 'active' : ''}`" @click="getCounty(item)">
                         <span class="text">{{ $store.state.district.district }}&nbsp; {{ transGroup(item) }}</span>
+                    </div>
+                </div> -->
+                <!--TODO 231006 대표 마이페이지 - 마을임원관리 :자기그룹만 보이게 수정 -->
+                <div class="m-tab-wrap">
+                    <div class="m-tab active">
+                        <span class="text">{{ $store.state.district.district }}&nbsp; {{ transGroup(group) }}</span>
                     </div>
                 </div>
             </div>
