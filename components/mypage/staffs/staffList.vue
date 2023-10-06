@@ -36,9 +36,9 @@
                 </ul>
             </div>
             <div class="mt-12 m-tabs type01" v-if="computedCountySections.length > 1">
-                <div v-if="item == rawGroup" class="m-tab-wrap" v-for="(item) in computedCountySections">
-                    <div class="m-tab" :class="`${activeCounty === item ? 'active' : ''}`" @click="getCounty(rawGroup)">
-                        <span class="text">{{ $store.state.district.district }}&nbsp; {{ transGroup(rawGroup) }}</span>
+                <div  class="m-tab-wrap" v-for="(item) in computedCountySections">
+                    <div class="m-tab" :class="`${activeCounty === item ? 'active' : ''}`" @click="getCounty(item)">
+                        <span class="text">{{ $store.state.district.district }}&nbsp; {{ transGroup(item) }}</span>
                     </div>
                 </div>
             </div>
@@ -298,7 +298,7 @@ export default {
           this.rawGroup = response.data.group;
 
           this.computedCountySections.forEach(group => {
-              const county = this.rawValues.filter(rawValue => rawValue.group === this.rawGroup);
+              const county = this.rawValues.filter(rawValue => rawValue.group === group);
               this.countyLists.push(
                   this.positions.map(position => {
                       const positionData = county.find(value => value.position === position.position);
@@ -336,10 +336,10 @@ export default {
           await this.setCountyLists(rep_district_id);
       },
       getCounty(item) {
-          this.activeCounty = item;
-          this.county = [
-              ...this.countyLists[item-1]
-          ]
+        this.activeCounty = item;
+        this.county = [
+            ...this.countyLists[item-1]
+        ]
       },
       togglePosition() {
           this.activeDropdown = !this.activeDropdown;
