@@ -350,7 +350,7 @@
                                                     {{index + 1}}위
                                                 </div>
                                                 <div>
-                                                    {{ districtRegisterCount.city}} {{districtRegisterCount.district}}
+                                                    {{ districtRegisterCount.state }} {{ districtRegisterCount.city}} {{districtRegisterCount.district}}
                                                 </div>                                                
                                             </div>
                                             <div class="right">

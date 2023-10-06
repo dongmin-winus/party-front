@@ -164,7 +164,7 @@
 >
                                     <template v-if="index >= 3 && districtRegisterCount">
                                     <td>{{index + 1}}위</td>
-                                    <td>{{ districtRegisterCount.city}} {{districtRegisterCount.district}}</td>
+                                    <td>{{ districtRegisterCount.state }} {{ districtRegisterCount.city}} {{districtRegisterCount.district}}</td>
                                     <td>
                                         <div class="right">
                                             <div class="badge" v-if="getBadgeSrc(rankingCount(districtRegisterCount))">
