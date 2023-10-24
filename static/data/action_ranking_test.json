@@ -1,0 +1,92 @@
+[
+  {
+    "ranking":1,
+    "district": "장위동",
+    "recommendation": {
+      "direct":500000,
+      "indirect":500000,
+      "total":1000000   
+    }
+  },
+  {
+    "ranking":2,
+    "district": "장위동2",
+    "recommendation": {
+      "direct":500000,
+      "indirect":500000,
+      "total":1000000   
+    }
+  },
+  {
+    "ranking":3,
+    "district": "장위동3",
+    "recommendation": {
+      "direct":500000,
+      "indirect":500000,
+      "total":1000000   
+    }
+  },
+  {
+    "ranking":4,
+    "district": "장위동4",
+    "recommendation": {
+      "direct":500000,
+      "indirect":500000,
+      "total":1000000   
+    }
+  },
+  {
+    "ranking":5,
+    "district": "장위동5",
+    "recommendation": {
+      "direct":500000,
+      "indirect":500000,
+      "total":1000000   
+    }
+  },
+  {
+    "ranking":6,
+    "district": "장위동6",
+    "recommendation": {
+      "direct":500000,
+      "indirect":500000,
+      "total":1000000   
+    }
+  },
+  {
+    "ranking":7,
+    "district": "장위동7",
+    "recommendation": {
+      "direct":500000,
+      "indirect":500000,
+      "total":1000000   
+    }
+  },
+  {
+    "ranking":8,
+    "district": "장위동8",
+    "recommendation": {
+      "direct":500000,
+      "indirect":500000,
+      "total":1000000   
+    }
+  },
+  {
+    "ranking":9,
+    "district": "장위동9",
+    "recommendation": {
+      "direct":500000,
+      "indirect":500000,
+      "total":1000000   
+    }
+  },
+  {
+    "ranking":10,
+    "district": "장위동10",
+    "recommendation": {
+      "direct":500000,
+      "indirect":500000,
+      "total":1000000   
+    }
+  }
+]
