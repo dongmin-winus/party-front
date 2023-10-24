@@ -7,7 +7,9 @@ export default {
     }
   },
   methods: {
-
+    countDots(num = 0) {
+      return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    },
     handleBackdropClick(e, className) {
       // console.log(e.srcElement._prevClass,33223)
       if (e.srcElement._prevClass === className) {

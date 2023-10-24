@@ -373,6 +373,141 @@
                 </div>
             </section>
 
+            <section class="section-action-ranking" style="background-color:#F7F7F7; padding:24px 0;">
+                <div class="wrap">
+                    <div class="content">
+                        <div class="m-title type01">
+                            <p class="sub">순위 현황 한 눈에 보기</p>
+                            마을 활동랭킹 <span class="point">TOP 10</span>
+                        </div>
+                        <div class="m-input-checkboxes" :class="`${$auth.user ? ($store.state.district.id !== 0 ?  'type01' : 'type05') : 'type05'}`">
+                            <div class="mt-8"></div>
+                            <div class="m-input-checkbox">
+                                <input type="radio" id="total" value="total" v-model="toggleActionList">
+                                <label for="total">전체</label>
+                            </div>
+                            <div class="m-input-checkbox">
+                                <input type="radio" id="weekly" value="weekly" v-model="toggleActionList">
+                                <label for="weekly">주간</label>
+                            </div>
+                            <div class="m-input-checkbox">
+                                <input type="radio" id="monthly" value="monthly" v-model="toggleActionList">
+                                <label for="monthly">월간</label>
+                            </div>
+                        </div>
+                        <div class="mt-8"></div>
+                        <div class="time-container">
+                            <div class="left"></div>
+                            <div class="right">
+                                <div class="time">
+                                    총 누적 기준
+                                </div>
+                                <div class="icon-container" >
+                                    <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path opacity="0.2" d="M18.1828 9.87501C18.1828 11.5181 17.6955 13.1243 16.7827 14.4905C15.8698 15.8567 14.5723 16.9215 13.0543 17.5503C11.5363 18.1791 9.86586 18.3436 8.25433 18.0231C6.64279 17.7025 5.1625 16.9113 4.00065 15.7494C2.8388 14.5876 2.04757 13.1073 1.72702 11.4958C1.40646 9.88423 1.57098 8.21383 2.19977 6.6958C2.82856 5.17777 3.89338 3.88028 5.25957 2.96742C6.62576 2.05456 8.23197 1.56732 9.87508 1.56732C12.0784 1.56732 14.1915 2.44259 15.7495 4.00059C17.3075 5.55858 18.1828 7.67168 18.1828 9.87501Z" fill="#777777"/>
+                                        <path d="M9.875 0.875C8.09497 0.875 6.35491 1.40284 4.87487 2.39177C3.39483 3.38071 2.24128 4.78631 1.56009 6.43085C0.8789 8.07538 0.70067 9.88498 1.04794 11.6308C1.3952 13.3766 2.25237 14.9803 3.51104 16.239C4.76971 17.4976 6.37336 18.3548 8.11919 18.7021C9.86502 19.0493 11.6746 18.8711 13.3192 18.1899C14.9637 17.5087 16.3693 16.3552 17.3582 14.8751C18.3472 13.3951 18.875 11.655 18.875 9.875C18.8725 7.48882 17.9235 5.2011 16.2362 3.51382C14.5489 1.82654 12.2612 0.87752 9.875 0.875ZM9.875 17.4904C8.36882 17.4904 6.89646 17.0437 5.64412 16.207C4.39178 15.3702 3.4157 14.1808 2.83931 12.7893C2.26292 11.3977 2.11211 9.86655 2.40595 8.38931C2.69979 6.91207 3.42508 5.55514 4.49011 4.49011C5.55514 3.42508 6.91208 2.69978 8.38931 2.40594C9.86655 2.1121 11.3978 2.26291 12.7893 2.8393C14.1808 3.41569 15.3702 4.39177 16.207 5.64412C17.0438 6.89646 17.4904 8.36882 17.4904 9.875C17.4881 11.894 16.685 13.8297 15.2574 15.2574C13.8297 16.685 11.894 17.4881 9.875 17.4904ZM9.18269 10.5673V5.72115C9.18269 5.53754 9.25563 5.36145 9.38547 5.23162C9.5153 5.10178 9.69139 5.02885 9.875 5.02885C10.0586 5.02885 10.2347 5.10178 10.3645 5.23162C10.4944 5.36145 10.5673 5.53754 10.5673 5.72115V10.5673C10.5673 10.7509 10.4944 10.927 10.3645 11.0568C10.2347 11.1867 10.0586 11.2596 9.875 11.2596C9.69139 11.2596 9.5153 11.1867 9.38547 11.0568C9.25563 10.927 9.18269 10.7509 9.18269 10.5673ZM10.9135 13.6827C10.9135 13.8881 10.8526 14.0889 10.7385 14.2596C10.6243 14.4304 10.4622 14.5635 10.2724 14.6421C10.0826 14.7207 9.87385 14.7413 9.67241 14.7012C9.47097 14.6611 9.28593 14.5622 9.1407 14.417C8.99547 14.2718 8.89656 14.0867 8.85649 13.8853C8.81642 13.6838 8.83699 13.475 8.91559 13.2853C8.99419 13.0955 9.12729 12.9333 9.29806 12.8192C9.46884 12.7051 9.66961 12.6442 9.875 12.6442C10.1504 12.6442 10.4146 12.7536 10.6093 12.9484C10.8041 13.1431 10.9135 13.4073 10.9135 13.6827Z" fill="#777777"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-32"></div>
+
+                        <!-- 1,2,3위 자리 -->
+                        <div class="podium">
+                            <div v-for="(item, index) in actionRankings.slice(0,3)"
+                                :class="`${index === 0 ? 'first' : index === 1 ? 'second' : 'third'}`"
+                            >
+                                <img :src="require(`@/assets/images/${index == 0 ? 'action_1st.png' : index == 1 ? 'action_2nd.png' : 'action_3rd.png'}`)"  alt="">
+
+                                <div class="ranking-info">
+                                    <p class="title">
+                                        <span class="point">{{ item.ranking }}</span>위&nbsp;
+                                        <span class="point">{{ item.district }}</span> 
+                                    </p>
+                                    <div class="details-container">
+                                        <div class="details" :class="`${index === 0 ? 'first' : index === 1 ? 'second' : 'third'}`">
+                                            <p >{{ countDots(item.recommendation.direct) }}{{ item.recommendation.direct > 0 ? '▲' : '-' }}</p>
+                                            <p>우리동네</p>
+                                        </div>
+                                        <div class="details" :class="`${index === 0 ? 'first' : index === 1 ? 'second' : 'third'}`">
+                                            <p>{{ countDots(item.recommendation.indirect) }}{{ item.recommendation.indirect > 0 ? '▲' : '-' }}</p>
+                                            <p>이웃동네</p>
+                                        </div>
+                                        <div class="details total">
+                                            <p class="total">{{ countDots(item.recommendation.total) }}{{ item.recommendation.total > 0 ? '▲' : '-' }}</p>
+                                            <p>총 추천 수</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 4위 이상 -->
+                        <div class="mt-12"></div>
+
+                        <!-- TODO 우리 동네 랭킹 점수 필요함 -->
+                        <div class="wrapper" v-if="$auth.user?.district_id !== undefined">
+                            <ul class="m-table type01 rank-container">
+                                <li>
+                                    <div class="rank my-town">
+                                        <div class="left">
+                                            <!-- 100위 안에 들면 primary + 숫자 표기, 그렇지 않으면 #777 '-' 표기 -->
+                                            <div class="fixed-width" :class="`primary`">
+                                                13위
+                                            </div>
+                                            <div>
+                                                우리 동네
+                                            </div>
+                                            <div>
+                                                {{ $auth.user.district.city }} {{ $auth.user.district.district }}
+                                            </div>
+                                        </div>
+                                        <div class="right">
+                                            <div class="bg-red-30" style="color:red">
+                                                {{ countDots(50000) }}{{ 50000 > 0 ? '▲' : '-' }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="wrapper" v-if="actionRankings.length > 3">
+                            <ul class="m-table type01 rank-container">
+                                <li v-for="(item, index) in actionRankings.slice(2)" :key="index" 
+                                >
+                                    <template v-if="index >= 3 && item">
+                                    
+                                        <div class="rank">
+                                            <div class="left">
+                                                <div class="petit-image">
+                                                    <img :src="require(`@/assets/images/rankings/${index+4}.png`)" alt="" srcset="">
+                                                </div>
+                                                <div class=" fixed-width">
+                                                    {{index + 1}}위
+                                                </div>
+                                                <div>
+                                                   {{item.district}}
+                                                </div>                                                
+                                            </div>
+                                            <div class="right">
+                                                <!-- <div class="badge" v-if="getBadgeSrc(rankingCount(item))">
+                                                    <img :src="require(`@/assets/images/${getBadgeSrc(rankingCount(item))}`)"/>
+                                                </div> -->
+                                                <div class="bg-red-30" style="color:red">
+                                                    {{ countDots(item.recommendation.total) }}{{ item.recommendation.total > 0 ? '▲' : '-' }}
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </template>
+                                </li>
+                            </ul>
+                            <nuxt-link to="/rank" class="m-btn type02 bg-revert-primary">마을 랭킹 TOP 100 +</nuxt-link>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <section class="section-ad">
                 <client-only>
                     <carousel
@@ -625,6 +760,10 @@ export default {
     mixins: [common],
     data() {
         return {
+            //action-ranking
+            actionRankings: [],
+            toggleActionList: 'total',
+
             loading: true,
 
             toggleList: 'total-rankings',
@@ -860,6 +999,13 @@ export default {
     },
 
     methods: {
+        //test data
+        async getActionRankings() {
+            const actionRankings = await this.$axios.$get('/data/action_ranking_test.json')
+            this.actionRankings = actionRankings
+        },
+
+
         ...mapActions(['FETCH_HOME_BANNER1','FETCH_HOME_BANNER2','FETCH_HOME_BANNER3']),
         async countClick(click_type, click_id) {
         // console.log(click_type, click_id, 333)
@@ -1270,6 +1416,9 @@ export default {
     },
 
     async mounted() {
+        //action ranking test data
+        await this.getActionRankings();
+
         this.$nextTick(function() {
             this.loading = false;
         })
@@ -1361,9 +1510,8 @@ export default {
     }
 
     .fragment .subtitle-container .subtitle {
-        font-size: 0.8rem !important;
+        font-size: 0.9rem !important;
         margin-right:3px;
-        line-height: 0.7;
     }
     .time-container {
         display: flex;
