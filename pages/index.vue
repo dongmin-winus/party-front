@@ -450,7 +450,7 @@
                             <ul class="m-table type01 rank-container">
                                 <li>
                                     <div class="rank my-town">
-                                        <div class="left">
+                                        <div class="left">toggleActionList
                                             <!-- 100위 안에 들면 primary + 숫자 표기, 그렇지 않으면 #777 '-' 표기 -->
                                             <div :class="`primary`">
                                                 {{ actionMyRanking.rank <= 100 ? actionMyRanking.rank : '---' }}위
@@ -473,9 +473,9 @@
                         </div>
                         <div class="wrapper" v-if="actionRankings.length > 3">
                             <ul class="m-table type01 rank-container">
-                                <li v-for="(item, index) in actionRankings.slice(2)" :key="index" 
+                                <li v-for="(item, index) in actionRankings.slice(3)" :key="index" 
                                 >
-                                    <template v-if="index >= 3 && item">
+                                    <template>
                                     
                                         <div class="rank">
                                             <div class="left">
@@ -483,7 +483,7 @@
                                                     <img :src="require(`@/assets/images/rankings/${index+4}.png`)" alt="" srcset="">
                                                 </div>
                                                 <div class=" fixed-width">
-                                                    {{item.rank + 1}}위
+                                                    {{item.rank}}위
                                                 </div>
                                                 <div>
                                                    {{item.state}} {{ item.city }} {{item.district}}
@@ -493,7 +493,7 @@
                                                 <!-- <div class="badge" v-if="getBadgeSrc(rankingCount(item))">
                                                     <img :src="require(`@/assets/images/${getBadgeSrc(rankingCount(item))}`)"/>
                                                 </div> -->
-                                                <div class="bg-red-30" style="color:red">
+                                                <div class="bg-red-30" style="color:red; text-align:center;">
                                                     {{ countDots(item.total_count) }}{{ item.total_count > 0 ? '▲' : '-' }}
                                                 </div>
                                             </div>
