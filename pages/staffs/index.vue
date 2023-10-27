@@ -269,7 +269,7 @@ export default {
             this.getPositions(this.rep_district.id)
         }else {
             this.getPositions();
-            this.getRegisterInfo();
+            if(this.$auth.user) this.getRegisterInfo();
         }
         
     },

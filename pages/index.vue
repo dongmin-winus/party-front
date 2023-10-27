@@ -383,16 +383,16 @@
                         <div class="m-input-checkboxes" :class="`${$auth.user ? ($store.state.district.id !== 0 ?  'type01' : 'type05') : 'type05'}`">
                             <div class="mt-8"></div>
                             <div class="m-input-checkbox">
-                                <input type="radio" id="total" value="total" v-model="toggleActionList">
-                                <label for="total">전체</label>
+                                <input type="radio" id="year" value="year" v-model="toggleActionList">
+                                <label for="year">전체</label>
                             </div>
                             <div class="m-input-checkbox">
-                                <input type="radio" id="weekly" value="weekly" v-model="toggleActionList">
-                                <label for="weekly">주간</label>
+                                <input type="radio" id="week" value="week" v-model="toggleActionList">
+                                <label for="week">주간</label>
                             </div>
                             <div class="m-input-checkbox">
-                                <input type="radio" id="monthly" value="monthly" v-model="toggleActionList">
-                                <label for="monthly">월간</label>
+                                <input type="radio" id="month" value="month" v-model="toggleActionList">
+                                <label for="month">월간</label>
                             </div>
                         </div>
                         <div class="mt-8"></div>
@@ -421,20 +421,20 @@
 
                                 <div class="ranking-info">
                                     <p class="title">
-                                        <span class="point">{{ item.ranking }}</span>위&nbsp;
+                                        <span class="point">{{ item.rank }}</span>위&nbsp;
                                         <span class="point">{{ item.district }}</span> 
                                     </p>
                                     <div class="details-container">
                                         <div class="details" :class="`${index === 0 ? 'first' : index === 1 ? 'second' : 'third'}`">
-                                            <p >{{ countDots(item.recommendation.direct) }}{{ item.recommendation.direct > 0 ? '▲' : '-' }}</p>
+                                            <p >{{ countDots(item.my_count) }}{{ item.my_count > 0 ? '▲' : '-' }}</p>
                                             <p>우리동네</p>
                                         </div>
                                         <div class="details" :class="`${index === 0 ? 'first' : index === 1 ? 'second' : 'third'}`">
-                                            <p>{{ countDots(item.recommendation.indirect) }}{{ item.recommendation.indirect > 0 ? '▲' : '-' }}</p>
+                                            <p>{{ countDots(item.neighbor_count) }}{{ item.neighbor_count > 0 ? '▲' : '-' }}</p>
                                             <p>이웃동네</p>
                                         </div>
                                         <div class="details total">
-                                            <p class="total">{{ countDots(item.recommendation.total) }}{{ item.recommendation.total > 0 ? '▲' : '-' }}</p>
+                                            <p class="total">{{ countDots(item.total_count) }}{{ item.total_count > 0 ? '▲' : '-' }}</p>
                                             <p>총 추천 수</p>
                                         </div>
                                     </div>
@@ -452,11 +452,11 @@
                                     <div class="rank my-town">
                                         <div class="left">
                                             <!-- 100위 안에 들면 primary + 숫자 표기, 그렇지 않으면 #777 '-' 표기 -->
-                                            <div class="fixed-width" :class="`primary`">
-                                                13위
+                                            <div :class="`primary`">
+                                                {{ actionMyRanking.rank <= 100 ? actionMyRanking.rank : '---' }}위
                                             </div>
-                                            <div>
-                                                우리 동네
+                                            <div class="badge">
+                                                우리동네
                                             </div>
                                             <div>
                                                 {{ $auth.user.district.city }} {{ $auth.user.district.district }}
@@ -464,7 +464,7 @@
                                         </div>
                                         <div class="right">
                                             <div class="bg-red-30" style="color:red">
-                                                {{ countDots(50000) }}{{ 50000 > 0 ? '▲' : '-' }}
+                                                {{ countDots(actionMyRanking.total_count) }}{{ actionMyRanking.total_count > 0 ? '▲' : '-' }}
                                             </div>
                                         </div>
                                     </div>
@@ -483,10 +483,10 @@
                                                     <img :src="require(`@/assets/images/rankings/${index+4}.png`)" alt="" srcset="">
                                                 </div>
                                                 <div class=" fixed-width">
-                                                    {{index + 1}}위
+                                                    {{item.rank + 1}}위
                                                 </div>
                                                 <div>
-                                                   {{item.district}}
+                                                   {{item.state}} {{ item.city }} {{item.district}}
                                                 </div>                                                
                                             </div>
                                             <div class="right">
@@ -494,7 +494,7 @@
                                                     <img :src="require(`@/assets/images/${getBadgeSrc(rankingCount(item))}`)"/>
                                                 </div> -->
                                                 <div class="bg-red-30" style="color:red">
-                                                    {{ countDots(item.recommendation.total) }}{{ item.recommendation.total > 0 ? '▲' : '-' }}
+                                                    {{ countDots(item.total_count) }}{{ item.total_count > 0 ? '▲' : '-' }}
                                                 </div>
                                             </div>
 
@@ -502,7 +502,9 @@
                                     </template>
                                 </li>
                             </ul>
-                            <nuxt-link to="/rank" class="m-btn type02 bg-revert-primary">마을 랭킹 TOP 100 +</nuxt-link>
+
+                            <!-- TODO 마을활동랭킹 TOp 100 페이지 만들어야함 -->
+                            <!-- <nuxt-link to="/rank" class="m-btn type02 bg-revert-primary">마을 랭킹 TOP 100 +</nuxt-link> -->
                         </div>
                     </div>
                 </div>
@@ -762,7 +764,8 @@ export default {
         return {
             //action-ranking
             actionRankings: [],
-            toggleActionList: 'total',
+            actionMyRanking: {},
+            toggleActionList: 'year',
 
             loading: true,
 
@@ -1000,9 +1003,21 @@ export default {
 
     methods: {
         //test data
-        async getActionRankings() {
-            const actionRankings = await this.$axios.$get('/data/action_ranking_test.json')
-            this.actionRankings = actionRankings
+        async getActionRankings(date='year') {
+            // const actionRankings = await this.$axios.$get('/data/action_ranking_test.json')
+            const response = await this.$axios.$get('/api/district-rankings/10', {
+                params: {
+                    date
+                }
+            });
+            console.log(response,32323)
+            this.actionRankings = response.data.sort((a,b) => {
+                return b.total_count - a.total_count;
+            }).map((item, index) => {
+                item['rank'] = index + 1;
+                return item;
+            })
+            if(this.$auth.user) this.actionMyRanking = response.my_district;
         },
 
 
@@ -1388,6 +1403,9 @@ export default {
             this.switchRankGuide(value);
             this.getRankings(10);
         },
+        toggleActionList(value) {
+            this.getActionRankings(value);
+        },
         togglePopularList(value) {
             if(value !== 'statistics') {
                 this.form.popularRankUrl = value;
@@ -1417,7 +1435,7 @@ export default {
 
     async mounted() {
         //action ranking test data
-        await this.getActionRankings();
+        await this.getActionRankings('year');
 
         this.$nextTick(function() {
             this.loading = false;
