@@ -1198,7 +1198,7 @@ html {
 } */
 .area-index .section-ranking .rankings .ranking-wrap.first {
     /* padding:0 30px; */
-    height: 300px;
+    height: 340px;
     width: 140px;
     background-color:rgb(255,224,64);
     margin-right:5px;
@@ -1210,7 +1210,7 @@ html {
 
 .area-index .section-ranking .rankings .ranking-wrap.second {
     /* padding:0 30px; */
-    height: 280px;
+    height: 320px;
     background-color:rgb(221,221,221);
     width: 140px;
     margin-right:5px;
@@ -1221,7 +1221,7 @@ html {
 }
 
 .area-index .section-ranking .rankings .ranking-wrap.third {
-    height: 270px;
+    height: 310px;
     background-color:rgb(236,188,153);
     width: 140px;
     margin-right:5px;
