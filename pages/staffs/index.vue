@@ -33,7 +33,7 @@
                 <div class="m-empty type01" v-if="positions.length === 0">준비중입니다.</div>
 
                 <div class="wrap">
-                    <div v-show="registerInfo.length > 0">
+                    <div v-show="registerInfo.length > 0 && $auth.user?.district.id == $store.state.district.id">
                         <p style="font-size:18px; font-weight:500; color:#777;">내가 신청한 직분</p>
                         <div class="mt-8"></div>
                         <ul class="items custom-ul">
@@ -89,7 +89,7 @@
                                             <div class="m-btns type01" >
                                                 <div class="m-btn-wrap ">
                                                     <button type="button" :class="getRegisterClass()" @click.prevent="debounceRegister(item)">
-                                                        {{registerStatus? '신청 ⊕' : $auth.user?.district.id == $store.state.district.id? '신청후 대기중' : '신청 불가능'}}
+                                                        {{registerStatus.status? $auth.user?.district.id == $store.state.district.id?  registerStatus.message : '신청 불가능' : $auth.user?.district.id == $store.state.district.id? registerStatus.message : '신청 불가능'}}
                                                     </button>
                                                 </div>
                                             </div>
@@ -138,7 +138,7 @@ export default {
             positions: [],
             countyLists: [],
             county: [],
-            registerStatus: undefined,
+            registerStatus: {},
             registerInfo:[],
             activeCounty: undefined,
             errors: {},
@@ -196,7 +196,7 @@ export default {
             })
             this.county = [...this.countyLists[0]];
             this.activeCounty = 1;
-            this.registerStatus = response.data.register;
+            this.registerStatus = {status:response.data.register, message:response.data.message};
         },
         async getPositions(rep_district_id = undefined) {
             const response = await this.$axios.get(`/api/districts/${this.$store.state.district.id}/position`);
@@ -220,14 +220,14 @@ export default {
             ]
         },
         getRegisterClass() {
-            const colorClass = this.registerStatus ? 'm-btn type01 height-full bg-revert-primary' : 'm-btn type01 height-full bg-grey'
+            const colorClass = this.registerStatus.status ? this.$auth.user?.district.id == this.$store.state.district.id ?  'm-btn type01 height-full bg-revert-primary' : 'm-btn type01 height-full bg-grey' : 'm-btn type01 height-full bg-grey'
             return colorClass;
         },
         async getRegisterInfo() {
             const {data} = await this.$axios.get(`/api/staff/1/show-register`);
             if(data) {
                 this.registerInfo = [...data];
-                this.registerInfo.length === 0 ? this.registerStatus = true : this.registerStatus = false;
+                this.registerInfo.length === 0 ? this.registerStatus['status'] = false : this.registerStatus['status'] = true;
             }
         },
         async register(item) {
@@ -269,7 +269,7 @@ export default {
             this.getPositions(this.rep_district.id)
         }else {
             this.getPositions();
-            if(this.$auth.user) this.getRegisterInfo();
+            this.getRegisterInfo();
         }
         
     },
