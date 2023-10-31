@@ -2004,6 +2004,7 @@ html {
     box-shadow:1px 3px 6px rgba(0,0,0,0.16);
     padding: 20px;
     display:flex; flex-direction:column;
+    margin-bottom:20px;
 }
 .area-delivery-requisition .container .item-section .grid-container {
     display: grid; 
@@ -2027,10 +2028,86 @@ html {
     margin-top:10px;
 }
 .area-delivery-requisition .container .item-section .grid-container .item-container .item .img img {
-    position:absolute; left:50%; top:50%; transform:translate(-50%, -50%);
-    width:inherit;
-    height:90%;
+    position:absolute; 
+    left:50%; top:50%; transform:translate(-50%, -50%);
+    width: inherit;
+    height:inherit;
+    max-height: 90%;
 }
+
+.area-delivery-requisition-detail .content {
+    display:flex; flex-direction:column;
+    align-items: center; justify-content: space-between;
+    width:100%; height:100%;
+}
+.area-delivery-requisition-detail .content .item-section {
+    /* height:10px;  */
+    width:90%;
+    height:35vh;
+    background-color:#F5F5F5;
+    border-radius:5px;
+}
+.area-delivery-requisition-detail .content .item-section .swiper-slide .image-container {
+    position:relative;
+    min-height: 300px;
+    height:90%;
+    margin-top:10px;
+}
+.area-delivery-requisition-detail .content .item-section .swiper-slide .image-container .img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform:translate(-50%, -50%);
+    width: 90%;      /* 혹은 원하는 너비를 지정하세요 */
+    height: 90%;     /* 혹은 원하는 높이를 지정하세요 */
+    object-fit: contain; /* 원하는 object-fit 값을 사용하세요 */
+}
+.area-delivery-requisition-detail .content .info-section {
+    width:90%;
+    display:flex; flex-direction:column;
+    justify-content: start;
+}
+.area-delivery-requisition-detail .content .info-section div {
+    border-bottom:1px solid #e1e1e1;
+    padding:20px 0;
+}
+.area-delivery-requisition-detail .content .info-section .info {
+   display:flex;
+}
+.area-delivery-requisition-detail .content .info-section .info.no-border {
+    border-bottom:none;
+ }
+.area-delivery-requisition-detail .content .info-section .info .title {
+    width: 20vw;
+}
+.area-delivery-requisition-detail .content .info-section .info .value {
+   color:#777;
+}
+.area-delivery-requisition-detail .content .info-section .info span {
+    flex: 0 0 auto;
+    margin-right: 10px;
+}
+.area-delivery-requisition-detail .content .guide-section {
+    margin-top: 20px;
+    width:90%;
+    margin-bottom: 90px;
+}
+.area-delivery-requisition-detail .content .guide-section .title {
+    margin-bottom: 15px;
+    font-size: large;
+    font-weight: 600;
+}
+.area-delivery-requisition-detail .content .guide-section .guide-content {
+    width:100%;
+    display:flex; flex-direction:column;
+    background-color:#F5F5F5;
+    border-radius:5px;
+    padding: 13px 7px;
+}
+.area-delivery-requisition-detail .content .guide-section .guide-content pre {
+    color:#777;
+}
+
 .m-icon-heart {
     display:inline-block;
     width:11px; height:10px;
@@ -3388,7 +3465,8 @@ label {
 }
 .area-mypage .menus-wrap > .title {
     padding-left:20px; margin-bottom:20px;
-    font-size:22px; font-weight:bold; font-family: GmarketSans;
+    font-size:18px; font-weight:500; font-family: GmarketSans;
+    color:#777
 }
 .area-mypage .menus {
     background-color:#F9F9F9;
