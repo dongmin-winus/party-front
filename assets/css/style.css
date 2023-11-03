@@ -1401,7 +1401,7 @@ html {
     color:#2563EB;
 }
 
-// section-action-ranking .podium
+/*  section-action-ranking .podium */
 .area-index .section-action-ranking .podium {
     display:flex; flex-direction:column; align-items: center; justify-content: center;
 }
