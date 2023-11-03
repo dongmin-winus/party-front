@@ -1054,6 +1054,14 @@ html {
     background-color:#E4F5E2;
 }
 
+.area-index .section-webtoon {
+    padding: 30px 20px;
+}
+
+.area-index .section-webtoon .m-title.type01 {
+    text-align: center;
+}
+
 .area-index .section-parasole {
     background-color:#F5F5F5;
     padding: 30px 20px;

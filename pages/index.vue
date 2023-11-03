@@ -85,35 +85,47 @@
                             </div>
                         </div>
                     </div>
-                    <div class="mt-40"></div>
 
-                    <!-- parasole -->
-                    <section class="section-parasole" >
+                </section>
+                <section class="mt-12 section-webtoon">
                         <div class="m-title type01">
-                            다양한 <span class="highlighter-point">파라솔 소식을</span><br/>
-                            빠르게 만나보세요
+                            <p class="sub">알기쉬운 애국정보</p>
+                            자유마을 <span class="point">웹툰</span>
                         </div>
-                        <div class="mt-8"></div>
-                        <ul class="m-table type01">
-                            <li v-for="(item, index) in meetingList" :key="index">
-                                <nuxt-link :to="`/somoim/${item.id}`">
-                                    <div class="meeting"  v-if="item.img && index == 0">
-                                        <div class="image-container" :style="getBackground(item.img)">
-                                            <div class="new">NEW</div>
-                                            <p class="meeting-date">{{ item.start_date }}</p>
-                                            <p class="meeting-title"><span class="board">&#91;{{ item.formatBoard }}&#93;</span>&nbsp;{{ replaceText(item.title,18) }}</p>
-                                        </div>
-                                    </div>
-                                    <div class="meeting"  v-else>
+                        <div class="mt-8">
+                            <div class="image-container" :style="`background-image:url(${webtoonThumb})`"></div>
+                        </div>
+
+                </section>
+                <div class="mt-40"></div>
+                <!-- parasole -->
+                <section class="section-parasole" >
+                    <div class="m-title type01">
+                        다양한 <span class="highlighter-point">파라솔 소식을</span><br/>
+                        빠르게 만나보세요
+                    </div>
+                    <div class="mt-8 image-container">
+                        <img src="https://dotmzh1fysixs.cloudfront.net/1018/parasole.png" alt="" class="img">
+                    </div>
+                    <ul class="m-table type01">
+                        <li v-for="(item, index) in meetingList" :key="index">
+                            <nuxt-link :to="`/somoim/${item.id}`">
+                                <div class="meeting"  v-if="item.img && index == 0">
+                                    <div class="image-container" :style="getBackground(item.img)">
+                                        <div class="new">NEW</div>
                                         <p class="meeting-date">{{ item.start_date }}</p>
                                         <p class="meeting-title"><span class="board">&#91;{{ item.formatBoard }}&#93;</span>&nbsp;{{ replaceText(item.title,18) }}</p>
                                     </div>
-                                </nuxt-link>
-                            </li>
-                        </ul>
-                        <div class="mt-8"></div>
-                        <nuxt-link to="/somoim" class="m-btn type02 bg-revert-primary">더보기 +</nuxt-link>
-                    </section>
+                                </div>
+                                <div class="meeting"  v-else>
+                                    <p class="meeting-date">{{ item.start_date }}</p>
+                                    <p class="meeting-title"><span class="board">&#91;{{ item.formatBoard }}&#93;</span>&nbsp;{{ replaceText(item.title,18) }}</p>
+                                </div>
+                            </nuxt-link>
+                        </li>
+                    </ul>
+                    <div class="mt-8"></div>
+                    <nuxt-link to="/somoim" class="m-btn type02 bg-revert-primary">더보기 +</nuxt-link>
                 </section>
             </div>
 
@@ -138,6 +150,18 @@
                             </slide>
                         </carousel>
                     </client-only>
+                </section>
+                <!-- webtoon -->
+                <section class="mt-12 section-webtoon">
+                    <div class="m-title type01">
+                        <p class="sub">알기쉬운 애국정보</p>
+                        자유마을 <span class="point">웹툰</span>
+                    </div>
+                    <div class="mt-8">
+                        <div class="image-container" :style="`background-image:url(${webtoonThumb})`">
+                        </div>
+                    </div>
+
                 </section>
                 <!-- 마을 홍보 영상들 -->
                 <section class="section-promotion" v-if="promotionList.length !== 0">
@@ -373,7 +397,8 @@
                 </div>
             </section>
 
-            <section class="section-action-ranking" style="background-color:#F7F7F7; padding:24px 0;">
+            <!-- TODO 231103 액션랭킹 주석 해재하게 -->
+            <!-- <section class="section-action-ranking" style="background-color:#F7F7F7; padding:24px 0;">
                 <div class="wrap">
                     <div class="content">
                         <div class="m-title type01">
@@ -412,7 +437,6 @@
                         </div>
                         <div class="mt-32"></div>
 
-                        <!-- 1,2,3위 자리 -->
                         <div class="podium">
                             <div v-for="(item, index) in actionRankings.slice(0,3)"
                                 :class="`${index === 0 ? 'first' : index === 1 ? 'second' : 'third'}`"
@@ -442,16 +466,13 @@
                             </div>
                         </div>
 
-                        <!-- 4위 이상 -->
                         <div class="mt-12"></div>
 
-                        <!-- TODO 우리 동네 랭킹 점수 필요함 -->
                         <div class="wrapper" v-if="$auth.user?.district_id !== undefined">
                             <ul class="m-table type01 rank-container">
                                 <li>
                                     <div class="rank my-town">
-                                        <div class="left">toggleActionList
-                                            <!-- 100위 안에 들면 primary + 숫자 표기, 그렇지 않으면 #777 '-' 표기 -->
+                                        <div class="left">
                                             <div :class="`primary`">
                                                 {{ actionMyRanking.rank <= 100 ? actionMyRanking.rank : '---' }}위
                                             </div>
@@ -490,9 +511,6 @@
                                                 </div>                                                
                                             </div>
                                             <div class="right">
-                                                <!-- <div class="badge" v-if="getBadgeSrc(rankingCount(item))">
-                                                    <img :src="require(`@/assets/images/${getBadgeSrc(rankingCount(item))}`)"/>
-                                                </div> -->
                                                 <div class="bg-red-30" style="color:red; text-align:center;">
                                                     {{ countDots(item.total_count) }}{{ item.total_count > 0 ? '▲' : '-' }}
                                                 </div>
@@ -503,12 +521,11 @@
                                 </li>
                             </ul>
 
-                            <!-- TODO 마을활동랭킹 TOp 100 페이지 만들어야함 -->
-                            <!-- <nuxt-link to="/rank" class="m-btn type02 bg-revert-primary">마을 랭킹 TOP 100 +</nuxt-link> -->
+                            <nuxt-link to="/rank" class="m-btn type02 bg-revert-primary">마을 랭킹 TOP 100 +</nuxt-link>
                         </div>
                     </div>
                 </div>
-            </section>
+            </section> -->
 
             <section class="section-ad">
                 <client-only>
@@ -762,6 +779,8 @@ export default {
     mixins: [common],
     data() {
         return {
+            //webtoon
+            webtoonThumb: '',
             //action-ranking
             actionRankings: [],
             actionMyRanking: {},
@@ -1002,6 +1021,12 @@ export default {
     },
 
     methods: {
+        async getWebtoon() {
+            const response =  await this.$axios.get('/api/webtoon'); 
+            if(response.data) {
+                this.webtoonThumb = response.data.post[0].thumbnail;
+            }
+        },
         //test data
         async getActionRankings(date='year') {
             // const actionRankings = await this.$axios.$get('/data/action_ranking_test.json')
@@ -1403,9 +1428,10 @@ export default {
             this.switchRankGuide(value);
             this.getRankings(10);
         },
-        toggleActionList(value) {
-            this.getActionRankings(value);
-        },
+        // TODO 231103 액션랭킹 주석 해재하게
+        // toggleActionList(value) {
+        //     this.getActionRankings(value);
+        // },
         togglePopularList(value) {
             if(value !== 'statistics') {
                 this.form.popularRankUrl = value;
@@ -1434,8 +1460,10 @@ export default {
     },
 
     async mounted() {
+        await this.getWebtoon()
         //action ranking test data
-        await this.getActionRankings('year');
+        // TODO 231103 액션랭킹 주석 해재하게
+        // await this.getActionRankings('year');
 
         this.$nextTick(function() {
             this.loading = false;
