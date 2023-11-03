@@ -99,7 +99,7 @@
                         </div>
 
                 </section>
-                <div class="mt-40"></div>
+                <div class="mt-12"></div>
                 <!-- parasole -->
                 <section class="section-parasole" >
                     <div class="m-title type01">
