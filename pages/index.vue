@@ -93,7 +93,9 @@
                             자유마을 <span class="point">웹툰</span>
                         </div>
                         <div class="mt-8">
-                            <div class="image-container" :style="`background-image:url(${webtoonThumb})`"></div>
+                            <nuxt-link :to="`/posts/${webtoonId}`" class="image-container">
+                                <img :src="`${webtoonThumb}`" class="img" alt="">
+                            </nuxt-link>
                         </div>
 
                 </section>
@@ -153,14 +155,15 @@
                 </section>
                 <!-- webtoon -->
                 <section class="mt-12 section-webtoon">
-                    <div class="m-title type01">
-                        <p class="sub">알기쉬운 애국정보</p>
-                        자유마을 <span class="point">웹툰</span>
-                    </div>
-                    <div class="mt-8">
-                        <div class="image-container" :style="`background-image:url(${webtoonThumb})`">
+                        <div class="m-title type01">
+                            <p class="sub">알기쉬운 애국정보</p>
+                            자유마을 <span class="point">웹툰</span>
                         </div>
-                    </div>
+                        <div class="mt-8">
+                            <nuxt-link :to="`/posts/${webtoonId}`" class="image-container">
+                                <img :src="`${webtoonThumb}`" class="img" alt="">
+                            </nuxt-link>
+                        </div>
 
                 </section>
                 <!-- 마을 홍보 영상들 -->
@@ -781,6 +784,7 @@ export default {
         return {
             //webtoon
             webtoonThumb: '',
+            webtoonId: undefined,
             //action-ranking
             actionRankings: [],
             actionMyRanking: {},
@@ -1025,6 +1029,7 @@ export default {
             const response =  await this.$axios.get('/api/webtoon'); 
             if(response.data) {
                 this.webtoonThumb = response.data.post[0].thumbnail;
+                this.webtoonId = response.data.post[0].id;
             }
         },
         //test data
