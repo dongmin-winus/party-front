@@ -1076,7 +1076,7 @@ export default {
                 ...promotionList.data.promotion.map((item) => {
                     return {
                         ...item,
-                        video_thumbnail: item.video_thumbnail.replace(/0\.jpg/g, 'mqdefault.jpg')
+                        video_thumbnail: item.video_thumbnail ? item.video_thumbnail.replace(/0\.jpg/g, 'mqdefault.jpg') : ''
                     }
                 })
             ];
@@ -1084,7 +1084,7 @@ export default {
                 ...promotionList.data.story.map((item) => {
                     return {
                         ...item,
-                        video_thumbnail: item.video_thumbnail.replace(/0\.jpg/g, 'mqdefault.jpg')
+                        video_thumbnail: item.video_thumbnail ? item.video_thumbnail.replace(/0\.jpg/g, 'mqdefault.jpg') : ''
                     }
                 })
             ];
