@@ -1,0 +1,142 @@
+{
+  "current_order": {
+    "order_id":"1131",
+    "order_type": "delivery",
+    "order_state": "배송중",
+    "order_date": "2023.11.20",
+    "delivery_date": "2023.11.21",
+    "items": [
+      {
+        "type": "newspaper",
+        "news_date": "2023.11.15",
+        "amount": 10
+      },
+      {
+        "type": "parasole",
+        "amount": 1
+      }
+    ],
+    "client": "홍길동",
+    "phone": "010-1234-5678",
+    "address": "서울시 강남구 테헤란로 427",
+    "delivery_request": "직접받고 부재시 문앞에 놓아주세요",
+    "enterence_password": "자유출입가능"
+  },
+  "past_orders": [
+    {
+      "order_id":"2245",
+      "order_type": "pickup",
+      "order_state": "픽업 완료",
+      "order_date": "2023.11.10",
+      "pickup_date": "2023.11.11",
+      "items": [
+        {
+          "type": "shoulder_belt",
+          "amount": 5
+        },
+        {
+          "type": "banner",
+          "amount": 1
+        }
+      ],
+      "client": "홍길동",
+      "phone": "010-1234-5678"
+    },
+    {
+      "order_id":"4463",
+      "order_type": "delivery",
+      "order_state": "배송 완료",
+      "order_date": "2023.11.15",
+      "delivery_date": "2023.11.16",
+      "items": [
+        {
+          "type": "newspaper",
+          "news_date": "2023.11.15",
+          "amount": 50
+        },
+        {
+          "type": "newspaper",
+          "news_date": "2023.11.10",
+          "amount": 50
+        },
+        {
+          "type": "leaflet",
+          "amount": 100
+        }
+      ],
+      "client": "홍길동",
+      "phone": "010-1234-5678",
+      "address": "서울시 강남구 테헤란로 427",
+      "delivery_request": "직접받고 부재시 문앞에 놓아주세요",
+      "enterence_password": "자유출입가능"
+    }
+  ],
+  "inventory_list": [
+    {
+      "type": "newspaper",
+      "name": "자유일보 신문",
+      "definition":"자유일보 신문입니다.",
+      "detail_image": [
+        "requisition_detail_newspaper_01.png",
+        "requisition_detail_newspaper_02.png"
+      ],
+      "stock": 100,
+      "shipping_fee": "무료"
+    },
+    {
+      "type": "leaflet",
+      "name": "전단지",
+      "definition":"전단지입니다.",
+      "detail_image": [
+        "requisition_detail_leaflet_01.png",
+        "requisition_detail_newspaper_02.png"
+      ],
+      "stock": 100,
+      "shipping_fee": "무료"
+    },
+    {
+      "type": "banner",
+      "name": "현수막",
+      "definition":"현수막입니다.",
+      "detail_image": [
+        "requisition_detail_banner_01.png",
+        "requisition_detail_banner_02.png"
+      ],
+      "stock": 100,
+      "shipping_fee": "무료"
+    },
+    {
+      "type": "parasole",
+      "name": "파라솔",
+      "definition":"키높이 우산과 같이 접을 수 있습니다.",
+      "detail_image": [
+        "requisition_detail_parasole_01.png",
+        "requisition_detail_parasole_02.png"
+      ],
+      "stock": 100,
+      "shipping_fee": "무료"
+    },
+    {
+      "type": "shoulder_belt",
+      "name": "어깨띠",
+      "definition":"어깨끈입니다.",
+      "detail_image": [
+        "requisition_detail_shoulder_belt_01.png",
+        "requisition_detail_shoulder_belt_02.png"
+      ],
+      "stock": 100,
+      "shipping_fee": "무료"
+    },
+    {
+      "type": "flag",
+      "name": "자유마을 깃발",
+      "definition":"깃발입니다.",
+      "detail_image": [
+        "requisition_detail_flag_01.png",
+        "requisition_detail_flag_02.png"
+      ],
+      "stock": 100,
+      "shipping_fee": "무료"
+    }
+  ]
+}

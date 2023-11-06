@@ -222,6 +222,10 @@
                                 <img src="@/assets/images/wallet.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">내 공유함</p>
                             </nuxt-link>
+                            <nuxt-link to="/delivery" class="menu">
+                                <img src="@/assets/images/wallet.png" alt="" class="icon" style="width:14px;">
+                                <p class="text">물품 신청</p>
+                            </nuxt-link>
                         </div>
                     </div>
                 </div>
@@ -265,6 +269,10 @@
                             <nuxt-link to="/scraps" class="menu">
                                 <img src="@/assets/images/wallet.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">내 공유함</p>
+                            </nuxt-link>
+                            <nuxt-link to="/delivery" class="menu">
+                                <img src="@/assets/images/wallet.png" alt="" class="icon" style="width:14px;">
+                                <p class="text">물품 신청</p>
                             </nuxt-link>
                         </div>
                     </div>
