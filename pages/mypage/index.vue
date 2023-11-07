@@ -106,6 +106,11 @@
                             <img src="@/assets/images/board.png" alt="" class="icon" style="width:14px;">
                             <p class="text">내 큐알코드 확인</p>
                         </nuxt-link>
+                        <nuxt-link to="/mypage/choochun" class="menu">
+                            <img src="@/assets/images/board.png" alt="" class="icon" style="width:14px;">
+                            <p class="text">내 추천인 점수 확인</p>
+                        </nuxt-link>
+
                         <nuxt-link to="/mypage/attendance" class="menu">
                             <img src="@/assets/images/heart-active.png" alt="" class="icon" style="width:14px;">
                             <p class="text">출석체크</p>
