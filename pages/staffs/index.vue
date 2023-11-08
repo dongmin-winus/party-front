@@ -89,7 +89,8 @@
                                             <div class="m-btns type01" >
                                                 <div class="m-btn-wrap ">
                                                     <button type="button" :class="getRegisterClass()" @click.prevent="debounceRegister(item)">
-                                                        {{registerStatus.status? $auth.user?.district.id == $store.state.district.id?  registerStatus.message : '신청 불가능' : $auth.user?.district.id == $store.state.district.id? registerStatus.message : '신청 불가능'}}
+                                                        {{ getRegisterMessage }}
+                                                        <!-- {{registerStatus.status? $auth.user?.district.id == $store.state.district.id?  registerStatus.message : '신청 불가능' : $auth.user?.district.id == $store.state.district.id? registerStatus.message : '신청 불가능'}} -->
                                                     </button>
                                                 </div>
                                             </div>
@@ -153,14 +154,31 @@ export default {
             // set.splice(set.indexOf(null), 1);
             return set;
         },
+        getRegisterMessage() {
+            const message = this.registerStatus.status 
+            ? this.$auth.user?.district.id == this.$store.state.district.id
+                ? this.registerStatus.message 
+                : '신청 불가능'
+            : this.$auth.user?.district.id == this.$store.state.district.id 
+                ? this.registerStatus.message 
+                : '신청 불가능'
+            return message;
+        },
     },
 
     watch: {
         '$store.state.district.id'() {
             this.setCountyLists()
-        }
+        },
+        registerStatus: {
+            handler() {
+                this.getRegisterClass()
+            },
+            deep: true,
+        }   
     },
     methods: {
+
         phoneReplace(phone) {
             if(phone) {
                 let num =  phone.replaceAll("[\\s\\-()]", "");
@@ -220,9 +238,13 @@ export default {
             ]
         },
         getRegisterClass() {
-            const colorClass = this.registerStatus.status ? this.$auth.user?.district.id == this.$store.state.district.id ?  'm-btn type01 height-full bg-revert-primary' : 'm-btn type01 height-full bg-grey' : 'm-btn type01 height-full bg-grey'
+            const colorClass = this.registerStatus.message == '신청'
+                ?  'm-btn type01 height-full bg-revert-primary'
+                : 'm-btn type01 height-full bg-grey'
             return colorClass;
         },
+
+        //내가 신청한 직분 정보 불러오는 메서드
         async getRegisterInfo() {
             const {data} = await this.$axios.get(`/api/staff/1/show-register`);
             if(data) {
@@ -232,13 +254,14 @@ export default {
         },
         async register(item) {
             if(this.$auth.user?.district.id !== this.$store.state.district.id) return alert('회원가입하신 지역만 신청 가능합니다.');
-            if(!this.registerStatus) return alert('1개의 직분만 신청 가능합니다.');
+            if(this.registerStatus.message !== '신청') return alert('1개의 직분만 신청 가능합니다.');
             const response = await this.$axios.post(`/api/staff/${this.$store.state.district.id}/register`, {
                 after: item.position,
                 group: item.group,
             });
             if(response) {
                 alert('신청이 완료되었습니다.');
+                await this.setCountyLists();
                 await this.getRegisterInfo();
             }
         },
@@ -248,6 +271,7 @@ export default {
                     const response = await this.$axios.delete(`/api/staff/1/delete-register/${id}`);
                     if(response) {
                         alert('신청이 취소되었습니다.');
+                        await this.setCountyLists();
                         await this.getRegisterInfo();
                     }
                 } catch (error) {
