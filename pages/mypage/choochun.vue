@@ -8,7 +8,7 @@
           </button>
         </div>
         <div class="center">
-            <h3 class="title">내 추천인 점수</h3>
+            <h3 class="title">추천인 받은 횟수</h3>
         </div>
 
         <div class="right"></div>
@@ -24,8 +24,8 @@
             </swiper-slide>
         </swiper> 
       </section>
-      <div class="referrer-container" v-if="referralCode.referrer_count">
-        <p class="title primary">내 추천인 점수</p>
+      <div class="referrer-container" v-if="referralCode.referrer_count >= 0">
+        <p class="title primary">추천인 받은 횟수</p>
         <p class="score"> {{referralCode.referrer_count}}</p>
       </div>
     </div>
