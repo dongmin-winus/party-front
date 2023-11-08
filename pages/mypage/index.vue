@@ -108,7 +108,7 @@
                         </nuxt-link>
                         <nuxt-link to="/mypage/choochun" class="menu">
                             <img src="@/assets/images/board.png" alt="" class="icon" style="width:14px;">
-                            <p class="text">내 추천인 점수 확인</p>
+                            <p class="text">추천인 받은 횟수 확인</p>
                         </nuxt-link>
 
                         <nuxt-link to="/mypage/attendance" class="menu">
