@@ -87,17 +87,29 @@
                     </div>
 
                 </section>
+                <!-- webtoon -->
                 <section class="mt-12 section-webtoon">
-                        <div class="m-title type01">
-                            <p class="sub">알기쉬운 애국정보</p>
-                            자유마을 <span class="point">웹툰</span>
-                        </div>
-                        <div class="mt-8">
-                            <nuxt-link :to="`/posts/${webtoonId}`" class="image-container">
-                                <img :src="`${webtoonThumb}`" class="img" alt="">
-                            </nuxt-link>
-                        </div>
-
+                    <div class="m-title type01">
+                        <img width="200" src="@/assets/images/webtoon_title_img.png" alt="">
+                    </div>
+                    <client-only>
+                        <carousel
+                            :adjustableHeight="true"
+                            :loop="true" 
+                            :per-page="1"
+                            :autoplay="true"
+                            :autoplay-timeout="5000"
+                            :mouse-drag="false"
+                            :pagination-enabled="true"
+                            :pagination-position="'bottom-overlay'"
+                        >
+                            <slide class="swiper-slide" v-for="(slide,index) in webtoonList" :key="slide.id">
+                                <nuxt-link :to="`/posts/${slide.id}`" class="image-container">
+                                    <img :src="`${slide.thumbnail}`" class="img" alt="">
+                                </nuxt-link>
+                            </slide>
+                        </carousel>
+                    </client-only>
                 </section>
                 <div class="mt-12"></div>
                 <!-- parasole -->
@@ -155,16 +167,27 @@
                 </section>
                 <!-- webtoon -->
                 <section class="mt-12 section-webtoon">
-                        <div class="m-title type01">
-                            <p class="sub">알기쉬운 애국정보</p>
-                            자유마을 <span class="point">웹툰</span>
-                        </div>
-                        <div class="mt-8">
-                            <nuxt-link :to="`/posts/${webtoonId}`" class="image-container">
-                                <img :src="`${webtoonThumb}`" class="img" alt="">
-                            </nuxt-link>
-                        </div>
-
+                    <div class="m-title type01">
+                        <img width="200" src="@/assets/images/webtoon_title_img.png" alt="">
+                    </div>
+                    <client-only>
+                        <carousel
+                            :adjustableHeight="true"
+                            :loop="true" 
+                            :per-page="1"
+                            :autoplay="true"
+                            :autoplay-timeout="5000"
+                            :mouse-drag="false"
+                            :pagination-enabled="true"
+                            :pagination-position="'bottom-overlay'"
+                        >
+                            <slide class="swiper-slide" v-for="(slide,index) in webtoonList" :key="slide.id">
+                                <nuxt-link :to="`/posts/${slide.id}`" class="image-container">
+                                    <img :src="`${slide.thumbnail}`" class="img" alt="">
+                                </nuxt-link>
+                            </slide>
+                        </carousel>
+                    </client-only>
                 </section>
                 <!-- 마을 홍보 영상들 -->
                 <section class="section-promotion" v-if="promotionList.length !== 0">
@@ -783,6 +806,7 @@ export default {
     data() {
         return {
             //webtoon
+            webtoonList: [],
             webtoonThumb: '',
             webtoonId: undefined,
             //action-ranking
@@ -1028,6 +1052,9 @@ export default {
         async getWebtoon() {
             const response =  await this.$axios.get('/api/webtoon'); 
             if(response.data) {
+                this.webtoonList = response.data.post.sort((a,b) => {
+                    return b.id - a.id;
+                });
                 this.webtoonThumb = response.data.post[0].thumbnail;
                 this.webtoonId = response.data.post[0].id;
             }
@@ -1434,9 +1461,9 @@ export default {
             this.getRankings(10);
         },
         // TODO 231103 액션랭킹 주석 해재하게
-        // toggleActionList(value) {
-        //     this.getActionRankings(value);
-        // },
+        toggleActionList(value) {
+            this.getActionRankings(value);
+        },
         togglePopularList(value) {
             if(value !== 'statistics') {
                 this.form.popularRankUrl = value;
@@ -1468,7 +1495,7 @@ export default {
         await this.getWebtoon()
         //action ranking test data
         // TODO 231103 액션랭킹 주석 해재하게
-        // await this.getActionRankings('year');
+        await this.getActionRankings('year');
 
         this.$nextTick(function() {
             this.loading = false;
