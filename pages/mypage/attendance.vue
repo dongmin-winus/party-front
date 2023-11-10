@@ -301,9 +301,10 @@ export default {
     this.getCurrentMonthLastDay();
     this.makeStampInfo();
 
-    if(this.stampedDays == this.currentMonthLastDay) {
-      this.activateModal = true;
-    }
+    //TODO 231110 보상 모달 비활성화
+    // if(this.stampedDays == this.currentMonthLastDay) {
+    //   this.activateModal = true;
+    // }
   },
 }
 </script>
