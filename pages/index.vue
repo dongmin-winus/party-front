@@ -424,7 +424,7 @@
             </section>
 
             <!-- TODO 231103 액션랭킹 주석 해재하게 -->
-            <!-- <section class="section-action-ranking" style="background-color:#F7F7F7; padding:24px 0;">
+            <section class="section-action-ranking" style="background-color:#F7F7F7; padding:24px 0;">
                 <div class="wrap">
                     <div class="content">
                         <div class="m-title type01">
@@ -471,8 +471,8 @@
 
                                 <div class="ranking-info">
                                     <p class="title">
-                                        <span class="point">{{ item.rank }}</span>위&nbsp;
-                                        <span class="point">{{ item.district }}</span> 
+                                        <span class="point">{{ item.rank }}</span>위
+                                        <span class="sub">{{item.state}} {{ item.city }} {{item.district}}</span> 
                                     </p>
                                     <div class="details-container">
                                         <div class="details" :class="`${index === 0 ? 'first' : index === 1 ? 'second' : 'third'}`">
@@ -551,7 +551,7 @@
                         </div>
                     </div>
                 </div>
-            </section> -->
+            </section>
 
             <section class="section-ad">
                 <client-only>
@@ -1067,13 +1067,12 @@ export default {
                     date
                 }
             });
-            console.log(response,32323)
-            this.actionRankings = response.data.sort((a,b) => {
+            this.actionRankings = response.sort((a,b) => {
                 return b.total_count - a.total_count;
             }).map((item, index) => {
                 item['rank'] = index + 1;
                 return item;
-            })
+            }).slice(0, 10);
             if(this.$auth.user) this.actionMyRanking = response.my_district;
         },
 
