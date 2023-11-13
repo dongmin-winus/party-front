@@ -476,15 +476,15 @@
                                     </p>
                                     <div class="details-container">
                                         <div class="details" :class="`${index === 0 ? 'first' : index === 1 ? 'second' : 'third'}`">
-                                            <p >{{ countDots(item.my_count) }}{{ item.my_count > 0 ? '▲' : '-' }}</p>
+                                            <p >{{ countDots(item.my_count) }}{{ item.my_count > 0 ? '▲' : '' }}</p>
                                             <p>우리동네</p>
                                         </div>
                                         <div class="details" :class="`${index === 0 ? 'first' : index === 1 ? 'second' : 'third'}`">
-                                            <p>{{ countDots(item.neighbor_count) }}{{ item.neighbor_count > 0 ? '▲' : '-' }}</p>
+                                            <p>{{ countDots(item.neighbor_count) }}{{ item.neighbor_count > 0 ? '▲' : '' }}</p>
                                             <p>이웃동네</p>
                                         </div>
                                         <div class="details total">
-                                            <p class="total">{{ countDots(item.total_count) }}{{ item.total_count > 0 ? '▲' : '-' }}</p>
+                                            <p class="total">{{ countDots(item.total_count) }}{{ item.total_count > 0 ? '▲' : '' }}</p>
                                             <p>총 추천 수</p>
                                         </div>
                                     </div>
@@ -494,13 +494,14 @@
 
                         <div class="mt-12"></div>
 
+                        <!-- TODO 마을활동랭킹 에러나는 부분 (내 마을) -->
                         <div class="wrapper" v-if="$auth.user?.district_id !== undefined">
                             <ul class="m-table type01 rank-container">
                                 <li>
                                     <div class="rank my-town">
                                         <div class="left">
                                             <div :class="`primary`">
-                                                {{ actionMyRanking.rank <= 100 ? actionMyRanking.rank : '---' }}위
+                                                {{ actionMyRanking.rank <= 100 ? actionMyRanking.rank > 0 ? actionMyRanking.rank : '---' : '---' }}위
                                             </div>
                                             <div class="badge">
                                                 우리동네
@@ -510,8 +511,8 @@
                                             </div>
                                         </div>
                                         <div class="right">
-                                            <div class="bg-red-30" style="color:red">
-                                                {{ countDots(actionMyRanking.total_count) }}{{ actionMyRanking.total_count > 0 ? '▲' : '-' }}
+                                            <div class="bg-red-30" style="color:red; text-align:center;">
+                                                {{ countDots(actionMyRanking.total_count) }}{{ actionMyRanking.total_count > 0 ? '▲' : '' }}
                                             </div>
                                         </div>
                                     </div>
@@ -538,7 +539,7 @@
                                             </div>
                                             <div class="right">
                                                 <div class="bg-red-30" style="color:red; text-align:center;">
-                                                    {{ countDots(item.total_count) }}{{ item.total_count > 0 ? '▲' : '-' }}
+                                                    {{ countDots(item.total_count) }}{{ item.total_count > 0 ? '▲' : '' }}
                                                 </div>
                                             </div>
 
@@ -1067,7 +1068,7 @@ export default {
                     date
                 }
             });
-            this.actionRankings = response.sort((a,b) => {
+            this.actionRankings = response.data.sort((a,b) => {
                 return b.total_count - a.total_count;
             }).map((item, index) => {
                 item['rank'] = index + 1;
