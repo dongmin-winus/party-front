@@ -423,8 +423,8 @@
                 </div>
             </section>
 
-            <!-- TODO 231103 액션랭킹 주석 해재하게 -->
-            <section class="section-action-ranking" style="background-color:#F7F7F7; padding:24px 0;">
+            <!-- TODO 231113 액션랭킹 주석 해재하게 -->
+            <!-- <section class="section-action-ranking" style="background-color:#F7F7F7; padding:24px 0;">
                 <div class="wrap">
                     <div class="content">
                         <div class="m-title type01">
@@ -494,7 +494,6 @@
 
                         <div class="mt-12"></div>
 
-                        <!-- TODO 마을활동랭킹 에러나는 부분 (내 마을) -->
                         <div class="wrapper" v-if="$auth.user?.district_id !== undefined">
                             <ul class="m-table type01 rank-container">
                                 <li>
@@ -552,7 +551,7 @@
                         </div>
                     </div>
                 </div>
-            </section>
+            </section> -->
 
             <section class="section-ad">
                 <client-only>
