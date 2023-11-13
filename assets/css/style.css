@@ -1069,6 +1069,7 @@ html {
     object-fit: contain;
     width: inherit;
     height: inherit;
+    min-height: 350px;
 }
 
 .area-index .section-webtoon .m-title.type01 {
@@ -1421,17 +1422,17 @@ html {
 .area-index .section-action-ranking .podium .first {
     display:flex; justify-content: space-between;
     background-color:rgb(255,224,64);
-    padding: 10px;
+    padding: 5px;
 }
 .area-index .section-action-ranking .podium .second {
     display:flex; justify-content: space-between;
     background-color:rgb(221,221,221);
-    padding: 10px;
+    padding: 5px;
 }
 .area-index .section-action-ranking .podium .third {
     display:flex; justify-content: space-between;
     background-color:rgb(236,188,153);
-    padding: 10px;
+    padding: 5px;
 }
 
 .area-index .section-action-ranking .podium .ranking-info {
@@ -1445,6 +1446,11 @@ html {
 .area-index .section-action-ranking .podium .ranking-info .title .point {
     font-size:32px; font-weight:600; font-family: GmarketSans; color:#000;
 }
+.area-index .section-action-ranking .podium .ranking-info .title .sub {
+    font-size:20px; font-weight:600; font-family: GmarketSans; color:#000;
+    letter-spacing: -1px;
+}
+
 .area-index .section-action-ranking .podium .ranking-info .details-container {
     display:flex; align-items: center; justify-content: center;
 
@@ -2134,11 +2140,62 @@ html {
     dislpay:flex; flex-direction:column;
 }
 .area-delivery-address .container .section-delivery .address-container {
-    border:1px solid #777;
     border-radius:5px;
-    width:90%;
+    width:100%;
+    margin-bottom:10px;
+    padding: 20px 10px;
+    border-bottom: 1px solid #e1e1e1;
+}
+.area-delivery-address .container .section-delivery .address-container .title-container  {
+    display:flex; justify-content: space-between;
+    
+}
+.area-delivery-address .container .section-delivery .address-container .title-container .left  {
+    display:flex; align-items: center;
+}
 
-
+.area-delivery-address .container .section-delivery .address-container .title-container .left .title {
+    font-size:20px;
+    font-weight:500;
+    margin-bottom:10px;
+}
+.area-delivery-address .container .section-delivery .address-container .title-container .left .active-mark {
+    border-radius:5px;
+    background-color: rgb(228,245,226);
+    color:#0BAF00;
+    font-size: 12px;
+    width: fit-content;
+    min-height: 20px;
+    padding: 0 5px;
+    margin-bottom:5px;
+    margin-left:10px;
+    vertical-align: middle;
+}
+.area-delivery-address .container .section-delivery .address-container .address.sub {
+    color:#777;
+}
+.area-delivery-address .container .section-delivery .partition {
+    margin: 10px 0;
+    border-top: 1px solid #e1e1e1;
+    line-height: 160%;
+}
+.area-delivery-address .container .section-delivery .partition .sub {
+    color:#777;
+    font-size: 14px;
+}
+.area-delivery-address .container .section-delivery .address-container.active {
+    border:1px solid #0BAF00;
+}
+.area-delivery-address .container .bottom-bar {
+    height: 50px;
+    width: 100%;
+    border-radius: 5px;
+    /* center text */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    margin-bottom: 10px;
 }
 
 .m-icon-heart {
