@@ -37,7 +37,7 @@
 
 <script>
 export default {
-  auth: 'guest',
+  auth: false,
   components: {
   },
 }
