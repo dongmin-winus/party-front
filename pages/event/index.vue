@@ -36,10 +36,8 @@
 </template>
 
 <script>
-import AttendanceComments from '../../components/attendanceComments/AttendanceComments.vue';
 export default {
   components: {
-    AttendanceComments,
   },
 }
 </script>
