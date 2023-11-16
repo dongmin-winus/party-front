@@ -90,7 +90,7 @@
                 <!-- webtoon -->
                 <section class="mt-12 section-webtoon">
                     <div class="m-title type01">
-                        <img width="200" src="@/assets/images/webtoon_title_img.png" alt="">
+                        <img width="200" src="@/assets/images/webtoon_title_improved.png" alt="">
                     </div>
                     <client-only>
                         <carousel
@@ -168,7 +168,7 @@
                 <!-- webtoon -->
                 <section class="mt-12 section-webtoon">
                     <div class="m-title type01">
-                        <img width="200" src="@/assets/images/webtoon_title_img.png" alt="">
+                        <img width="200" src="@/assets/images/webtoon_title_improved.png" alt="">
                     </div>
                     <client-only>
                         <carousel
