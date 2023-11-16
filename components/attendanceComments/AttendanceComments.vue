@@ -6,9 +6,10 @@
         <SimpleComment v-for="item in items.data" :key="item.id" :item="item" :commentable_id="form.commentable_id" :commentable_type="form.commentable_type"/>
     </div>
 
-    <no-ssr>
+    <!-- <no-ssr>
         <infinite-loading @infinite="loadMore" v-if="items.links.next" />
-    </no-ssr>
+    </no-ssr> -->
+    <scroll-loading @load="loadMore" v-if="items.links.next" />
   </div>
 </template>
 
