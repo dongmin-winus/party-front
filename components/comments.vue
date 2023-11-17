@@ -3,9 +3,10 @@
         <!-- 하단 네비게이션바 -->
         <comment-navigation :commentable_id="form.commentable_id" :commentable_type="form.commentable_type" @created="(obj) => this.updateComment(obj)" />
         <div class="m-comments type01">
-            <div class="m-comments-top" v-if="hide_order">
+            <div class="m-comments-top">
                 <a href="#" :class="`btn-filter ${form.align === 'desc' ? 'active' : ''}`" @click.prevent="() => {form.align = 'desc'; getItems();}">최신순</a>
                 <a href="#" :class="`btn-filter ${form.align === 'asc' ? 'active' : ''}`" @click.prevent="() => {form.align = 'asc'; getItems();}">오래된순</a>
+                <a v-if="!hide_like" href="#" :class="`btn-filter ${form.align === 'like' ? 'active' : ''}`" @click.prevent="() => {form.align = 'like'; getItems();}">좋아요순</a>
             </div>
 
             <comment v-for="item in items.data" :key="item.id" :item="item" :commentable_id="form.commentable_id" :commentable_type="form.commentable_type" @removed="removed"/>
@@ -21,8 +22,8 @@
 <script>
 export default {
     props: {
-        hide_order: {
-            default: false
+        hide_like: {
+            default: true
         },
         commentable_id: {
             required: true

@@ -9,7 +9,7 @@
             <div class="content">
                 <h3 class="title">{{ item.user.nickname }}</h3>
                 <p class="sub">{{ item.user.district.district }} · {{ item.diff_at }}</p>
-                <p class="body removed" v-if="item.deleted_at">글이 삭제되었습니다.</p>
+                <p class="body removed" v-if="item.deleted_at">{{ $auth.user ? '댓글을 삭제하였습니다' : '댓글이 삭제되었습니다.' }}</p>
                 <p class="body" v-else>{{ item.content }}</p>
 
                 <div class="utils">
