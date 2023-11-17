@@ -27,7 +27,7 @@
           <div class="rounded">
             <!-- <attendance-comments :commentable_id="1" :commentable_type="`attendance`"/> -->
             <!-- <attendance-comments :commentable_id="3" :commentable_type="`calendar`"/> -->
-            <comments :hide_order="true" :commentable_id="3" commentable_type="calendar"/>
+            <comments :hide_like="false" :commentable_id="3" commentable_type="calendar"/>
           </div>
         </div>
     </div>
