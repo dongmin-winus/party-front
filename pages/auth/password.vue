@@ -40,7 +40,10 @@
                             <div class="m-input-text type04">
                                 <input type="text" placeholder="6자리 인증번호" v-model="form.certify">
                             </div>
-                            <button class="m-btn type02" @click="cirtificateWithNumber">확인</button>
+                            <button class="m-btn type02"
+                              :style="numberCertificated ? 'background-color: #1539ed !important; color: #fff !important;' : ''" 
+                              :disabled="numberCertificated"
+                              @click="cirtificateWithNumber">{{numberCertificated ? '인증완료' : '확인'}}</button>
                           <span :class="computedTimerClass" v-if="isCertifyCalled && !numberCertificated">{{ leftTimes }}</span>
                           <span class="success" v-if="numberCertificated">인증완료</span>
                           </div>
@@ -207,4 +210,5 @@ export default {
     font-size: 18px;
     color: #1539ed;
   }
+
 </style>
