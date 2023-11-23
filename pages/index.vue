@@ -1333,13 +1333,25 @@ export default {
             this.form.district = data.district
         },
 
-        getRankings(count){
+        async getRankings(count){
+            // 서버 과부화방지용 json 데이터 로드
+            // const rankings = await this.$axios.$get('/data/ranking_static_data.json')
+            // this.districtRegisterCounts = rankings.districtRegisterCounts;
+
+            // 기존 db 데이터 조회
             this.$axios.get(`/api/${this.form.rankingUrl}/${count}`)
                 .then(response => {
                     this.districtRegisterCounts = response.data.districtRegisterCounts;
                 });
         },
         async getPopularRakings(count) {
+            // 서버 과부화방지용 json 데이터 로드
+            // let response = await this.$axios.$get('/data/ranking_static_data.json')
+            // response = {
+            //     data: response.popular.slice(0,10)
+            // }   
+
+            // 기존 db 데이터 조회
             const response = await this.$axios.get(`/api/popular-list?limitNumber=${count}&date=${this.form.popularRankUrl}`);
             let data = response.data.map((item) => {
                 item.totalCount = this.getPopularTotalCount(item);
@@ -1351,7 +1363,6 @@ export default {
             this.popularRankings = [...data];
         },
 
-        //TODO daily-rankings 현재 처리되고 있지 않음
         rankingCount(ranking){
             if(this.form.rankingUrl === 'rankings')
                 return ranking.now_week_count;
@@ -1492,9 +1503,6 @@ export default {
 
     async mounted() {
         await this.getWebtoon()
-        //action ranking test data
-        // TODO 231103 액션랭킹 주석 해재하게
-        await this.getActionRankings('year');
 
         this.$nextTick(function() {
             this.loading = false;
@@ -1505,7 +1513,8 @@ export default {
         if(!Cookies.get('allPopClosedToday')) {
             await this.getNoticeContents();
         }
-
+        // TODO 231103 액션랭킹 주석 
+        // await this.getActionRankings('year');
         this.getRankings(10);
         this.getPopularRakings(10);
 
