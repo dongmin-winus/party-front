@@ -188,15 +188,23 @@ export default {
              }
 
         },
+        async gropCheck() {
+            const {data} = await this.$axios.get(`/api/group-check`);
+            // const {group, district_id} = data[0];
+            // this.userGroup = group;
+            // this.districtId = district_id;
+            return data[0];
+        },  
         async setCountyLists(rep_district_id = undefined) {
             this.rawValues = [];
-            this.countyLists = [];
+            this.countyLists = {};
             const response = await this.$axios.get(`/api/districts/${rep_district_id ? rep_district_id : this.$store.state.district.id}/staff`);
             this.rawValues = response.data.data;
             this.computedCountySections.forEach(group => {
                 const county = this.rawValues.filter(rawValue => rawValue.group === group);
-                this.countyLists.push(
-                    this.positions.map(position => {
+                this.countyLists = {
+                    ...this.countyLists,
+                    [group] : this.positions.map(position => {
                         const positionData = county.find(value => value.position === position.position);
                         return {
                             ...position,
@@ -210,10 +218,12 @@ export default {
                             updated_at: positionData ? positionData.updated_at : "",
                         }
                     })
-                )
+                }
             })
-            this.county = [...this.countyLists[0]];
-            this.activeCounty = 1;
+
+            const { group, district_id } = await this.gropCheck();
+            this.county = [ ...this.countyLists[`${group && (this.$store.state.district.id == district_id) ? group : '1'}`] ];
+            this.activeCounty = group && (this.$store.state.district.id == district_id) ? group : 1;
             this.registerStatus = {status:response.data.register, message:response.data.message};
         },
         async getPositions(rep_district_id = undefined) {
@@ -234,7 +244,7 @@ export default {
         getCounty(item) {
             this.activeCounty = item;
             this.county = [
-                ...this.countyLists[item-1]
+                ...this.countyLists[item]
             ]
         },
         getRegisterClass() {
