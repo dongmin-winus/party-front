@@ -2,6 +2,7 @@
   <div>
     <div class="m-visual type01">
         <h3 class="title">{{rep_district['name'] ? rep_district['name'] : this.$store.state.district.district}} 섬기는 사람들</h3>
+        <input type="text" v-model="something">
     </div>
 
     <div class="mt-32"></div>
@@ -199,12 +200,16 @@ export default {
       default: ''
     }
   },
+
   async asyncData({$axios}) {
       const {data} = await $axios.get('/api/districts/1/position');
       return {modalPositions: data}
   },
   data() {
       return {
+        something: null,
+
+
           rawValues: [],
           positions: [],
           countyLists: [],
@@ -280,6 +285,21 @@ export default {
       '$store.state.district.id'() {
           this.setCountyLists()
       },
+      'form.name': function(newVal,oldVal) {
+        // const regex = /[^가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]/g;
+        const regex = new RegExp("[^가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]", "g");
+        console.log(newVal,oldVal, 3333)
+        console.log(regex.test(newVal), 4444)
+        if(regex.test(newVal) || regex.test(oldVal)) {
+            this.form.name = newVal.replace(regex, '');
+        }
+        // newVal = val.replace(/[^가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]/g, '');
+    },
+    something: function(val) {
+        console.log(val,3333)
+        
+       
+    },
   },
   methods: {
     selectCategory(id) {
@@ -469,6 +489,13 @@ export default {
             this.form.position = this.selectedItem.position;
             this.form.district_id = this.rep_district_id;
             this.form.group = this.form.group;
+
+            const regex = new RegExp("[^가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]", "g");
+            if(regex.test(this.form.name)) {
+                return alert("이름에 특수문자는 입력할 수 없습니다.");
+            }else if(regex.test(this.form.phone)) {
+                return alert("전화번호에 특수문자는 입력할 수 없습니다.");
+            }
             if(!this.validatePhone(this.form.phone)) return alert("올바른 전화번호를 입력해주세요.");
             let form = (new Form(this.form)).data();
             try {
