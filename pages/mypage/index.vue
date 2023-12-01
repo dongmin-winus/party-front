@@ -161,7 +161,7 @@
 
             <!-- <div v-if="$auth.hasScope('manager')"> -->
             <!-- 마을대표 메뉴 -->
-            <div v-if="staffCertificated == '대표'">
+            <div v-if="staffCertificated == '마을대표'">
                 <div class="menus-wrap">
                     <h3 class="title">대표 활동</h3>
                     <div class="menus">
@@ -270,6 +270,10 @@
                             <nuxt-link to="/scraps" class="menu">
                                 <img src="@/assets/images/wallet.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">내 공유함</p>
+                            </nuxt-link>
+                            <nuxt-link to="/delivery" class="menu">
+                                <img src="@/assets/images/wallet.png" alt="" class="icon" style="width:14px;">
+                                <p class="text">물품 신청</p>
                             </nuxt-link>
                         </div>
                     </div>
@@ -392,8 +396,8 @@ export default {
             });
             // if(response.data === false) {
             //     this.staffCertificated = false;
-            // }else if(response.data.position === '대표') {
-            //     this.staffCertificated = '대표';
+            // }else if(response.data.position === '마을대표') {
+            //     this.staffCertificated = '마을대표';
             //     this.represenateDistrict = {
             //         id:response.data.district_id,
             //         name:response.data.district,
