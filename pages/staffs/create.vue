@@ -147,7 +147,7 @@ export default {
     auth: true,
     computed: {
         computedPositions() {
-            return this.positions.filter(item => !(item.position == '마을대표' || item.position == '대표' || item.position == '부대표')).map((item) => {
+            return this.positions.filter(item => !(item.position == '대표' || item.position == '부대표')).map((item) => {
                 return item.position
             })
         }
@@ -212,7 +212,7 @@ export default {
             window.scrollTo(0,0);
         }, 
         notRep(item) {
-            return !(item.position == '마을대표' || item.position == '대표' || item.position == '부대표')
+            return !(item.position == '대표' || item.position == '부대표')
         },
         async updateItem() {
             try {

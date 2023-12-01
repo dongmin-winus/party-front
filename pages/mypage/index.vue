@@ -161,7 +161,7 @@
 
             <!-- <div v-if="$auth.hasScope('manager')"> -->
             <!-- 마을대표 메뉴 -->
-            <div v-if="staffCertificated == '마을대표' || staffCertificated == '대표'">
+            <div v-if="staffCertificated == '대표'">
                 <div class="menus-wrap">
                     <h3 class="title">대표 활동</h3>
                     <div class="menus">

@@ -268,7 +268,7 @@ export default {
         return set;
     },
     computedPositions() {
-        return this.positions.filter(item => !(item.position == '마을대표' || item.position == '대표')).map((item) => {
+        return this.positions.filter(item => !(item.position == '대표')).map((item) => {
             return item.position
         })
     },
