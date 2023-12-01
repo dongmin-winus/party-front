@@ -161,7 +161,7 @@
 
             <!-- <div v-if="$auth.hasScope('manager')"> -->
             <!-- 마을대표 메뉴 -->
-            <div v-if="staffCertificated == '마을대표'">
+            <div v-if="staffCertificated == '마을대표' || staffCertificated == '대표'">
                 <div class="menus-wrap">
                     <h3 class="title">대표 활동</h3>
                     <div class="menus">
@@ -394,22 +394,7 @@ export default {
                     phone: item.phone,
                 }
             });
-            // if(response.data === false) {
-            //     this.staffCertificated = false;
-            // }else if(response.data.position === '마을대표') {
-            //     this.staffCertificated = '마을대표';
-            //     this.represenateDistrict = {
-            //         id:response.data.district_id,
-            //         name:response.data.district,
-            //     };
-            //     this.group = response.data.group;
-            // }else if(response.data.position === '위원장') {
-            //     this.staffCertificated = '위원장';
-            // }else if(response.data.position === '총괄지역팀장') {
-            //     this.staffCertificated = '총괄지역팀장';
-            //     this.high_id = response.data.id;
-            //     await this.getElections();
-            // }
+ 
             const position = response.data.position;
             if(response.data === false) {
                 this.staffCertificated = false;
