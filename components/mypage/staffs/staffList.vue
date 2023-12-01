@@ -293,6 +293,13 @@ export default {
     },
   },
   methods: {
+    async groupCheck() {
+            const {data} = await this.$axios.get(`/api/group-check`);
+            // const {group, district_id} = data[0];
+            // this.userGroup = group;
+            // this.districtId = district_id;
+            return data[0];
+        },  
     selectCategory(id) {
       this.selectedCategory = id;
       // this.getMissions(id);
@@ -308,7 +315,7 @@ export default {
       },
       async setCountyLists(rep_district_id = undefined) {
           this.rawValues = [];
-          this.countyLists = [];
+          this.countyLists = {};
 
           const response = await this.$axios.get(`/api/districts/${rep_district_id ? rep_district_id : this.$store.state.district.id}/staff`);
           this.rawValues = response.data.data;
@@ -316,24 +323,26 @@ export default {
 
           this.computedCountySections.forEach(group => {
               const county = this.rawValues.filter(rawValue => rawValue.group === group);
-              this.countyLists.push(
-                  this.positions.map(position => {
-                      const positionData = county.find(value => value.position === position.position);
-                      return {
-                          ...position,
-                          group: group, //computedCountySections 의 각 원소는 그룹명(1,2,3, ...)이다.
-                          district_id: this.$store.state.district.id,
-                          id: positionData ? positionData.id : null,
-                          available: positionData ? false : true,
-                          name: positionData ? positionData.name : "",
-                          phone: positionData ? positionData.phone : "",
-                          created_at: positionData ? positionData.created_at : "",
-                          updated_at: positionData ? positionData.updated_at : "",
-                      }
-                  })
-              )
+              this.countyLists = {
+                    ...this.countyLists,
+                    [group] : this.positions.map(position => {
+                        const positionData = county.find(value => value.position === position.position);
+                        return {
+                            ...position,
+                            group: group, //computedCountySections 의 각 원소는 그룹명(1,2,3, ...)이다.
+                            district_id: this.$store.state.district.id,
+                            id: positionData ? positionData.id : null,
+                            available: positionData ? false : true,
+                            name: positionData ? positionData.name : "",
+                            phone: positionData ? positionData.phone : "",
+                            created_at: positionData ? positionData.created_at : "",
+                            updated_at: positionData ? positionData.updated_at : "",
+                        }
+                    })
+                }
           })
-          this.county = [...this.countyLists[this.group ? this.group - 1 : 0]];
+          const { group, district_id } = await this.groupCheck();
+          this.county = [ ...this.countyLists[`${group && (this.$store.state.district.id == district_id) ? group : '1'}`]];
           this.activeCounty = this.group ? this.group : 1;
           this.registerStatus = response.data.register;
       },
@@ -355,7 +364,7 @@ export default {
       getCounty(item) {
         this.activeCounty = item;
         this.county = [
-            ...this.countyLists[item-1]
+            ...this.countyLists[item]
         ]
       },
       togglePosition() {
