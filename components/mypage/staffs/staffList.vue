@@ -2,7 +2,6 @@
   <div>
     <div class="m-visual type01">
         <h3 class="title">{{rep_district['name'] ? rep_district['name'] : this.$store.state.district.district}} 섬기는 사람들</h3>
-        <input type="text" v-model="something">
     </div>
 
     <div class="mt-32"></div>
@@ -207,9 +206,6 @@ export default {
   },
   data() {
       return {
-        something: null,
-
-
           rawValues: [],
           positions: [],
           countyLists: [],
@@ -294,11 +290,6 @@ export default {
             this.form.name = newVal.replace(regex, '');
         }
         // newVal = val.replace(/[^가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]/g, '');
-    },
-    something: function(val) {
-        console.log(val,3333)
-        
-       
     },
   },
   methods: {
