@@ -259,6 +259,10 @@
 
                     <div class="menus">
                         <div class="wrap">
+                            <nuxt-link v-if="staffCertificated == '임원진'" to="/infos/namelist" class="menu">
+                                <img src="@/assets/images/board.png" alt="" class="icon" style="width:14px;">
+                                <p class="text">내 마을 회원</p>
+                            </nuxt-link>
                             <nuxt-link to="/mypage/likePosts" class="menu">
                                 <img src="@/assets/images/heart-active.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">좋아요 게시물</p>
@@ -271,10 +275,10 @@
                                 <img src="@/assets/images/wallet.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">내 공유함</p>
                             </nuxt-link>
-                            <nuxt-link to="/delivery" class="menu">
+                            <!-- <nuxt-link to="/delivery" class="menu">
                                 <img src="@/assets/images/wallet.png" alt="" class="icon" style="width:14px;">
                                 <p class="text">물품 신청</p>
-                            </nuxt-link>
+                            </nuxt-link> -->
                         </div>
                     </div>
                 </div>

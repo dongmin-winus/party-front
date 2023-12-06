@@ -41,27 +41,27 @@
       </section>
       <div class="mt-12"></div>
       <div class="m-input-checkboxes type04">
-        <div class="m-input-checkbox" style="border: 2px solid #d61a1a; box-shadow: 0 0 3px red">
+        <div class="m-input-checkbox" :class="toggleList == 'waiting' ? 'activated' : ''">
           <input type="radio" id="waiting" value="waiting" v-model="toggleList">
-          <label for="waiting">
-            <p style="color:red">{{ total - items.meta.total_call_count }}</p>
+          <label for="waiting" style="height:100%;">
+            <p style="color:red">{{ totalCount - items.meta.total_call_count }}</p>
             <p style="color:red">대기중</p>
           </label>
         </div>
-        <div class="m-input-checkbox">
+        <div class="m-input-checkbox" :class="toggleList == 'confirmed' ? 'activated' : ''">
           <input type="radio" id="confirmed" value="confirmed" v-model="toggleList">
           <label for="confirmed">
             <p>{{ items.meta.total_call_count }}</p>
             <p>확인완료</p>
           </label>
         </div>
-        <div class="m-input-checkbox" style="background-color:#E7F7E5">
+        <!-- <div class="m-input-checkbox" :class="toggleList == 'total' ? 'activated' : ''" style="background-color:#E7F7E5">
           <input type="radio" id="total" value="total" v-model="toggleList">
           <label for="total">
             <p>{{ total }}</p>
             <p>총 인원</p>
           </label>
-        </div>  
+        </div>   -->
       </div>  
 
       <div class="mt-12"></div>
@@ -189,7 +189,7 @@ export default {
       },
       selectedItem: {
       },
-      toggleList: '',
+      toggleList: 'waiting',
       formerVn: null,
       word:"",
       activeInfoModal: false,
@@ -205,8 +205,8 @@ export default {
     }
   },
   computed: {
-    total() {
-      return this.items.meta.total 
+    totalCount() {
+      return this.items.meta.total_count;
     },
     computedWaiting() {
       return this.items.data.filter(item => item.call_count == null).length;
@@ -222,6 +222,10 @@ export default {
     'selectedItem.status': function(val) {
       this.reasonSelected = false;
       this.selectedItem.reason = undefined;
+    },
+    toggleList(val) {
+      this.form.page = 1;
+      this.getItems();
     }
   },
   methods: {
@@ -274,7 +278,11 @@ export default {
     getItems(){
         this.form.page = 1;
 
-        this.$axios.get(`/api/districts/${this.countyInfo.district_id}/members`)
+        this.$axios.get(`/api/districts/${this.countyInfo.district_id}/members`,{
+            params: {
+              call_count: this.toggleList == 'waiting' ? null : 1,
+            }
+        })
             .then(response => {
                 this.items = response.data;
             });
@@ -288,15 +296,16 @@ export default {
       )
       if(data.rs == 'SUCCESS') {
         window.location.href = `tel:${data.vn}`
-        this.items = {
-          ...this.items,
-          data: this.items.data.map((mapItem) => {
-            if(mapItem.id == item.id) {
-              mapItem.call_count = item.call_count + 1;
-            }
-            return mapItem;
-          })
-        }
+        await this.getItems();
+        // this.items = {
+        //   ...this.items,
+        //   data: this.items.data.map((mapItem) => {
+        //     if(mapItem.id == item.id) {
+        //       mapItem.call_count = item.call_count + 1;
+        //     }
+        //     return mapItem;
+        //   })
+        // }
         this.formerVn = data.vn;
       }
     },
@@ -480,6 +489,7 @@ export default {
 
 .m-input-checkboxes.type04 {
     display:flex; width: 100%;   overflow:hidden;
+    padding-top: 10px;
 }
 .m-input-checkboxes.type04 .m-input-checkbox {
     flex:1;
@@ -526,6 +536,11 @@ export default {
 }
 .primary {
     color:#0BAF00 !important;
+}
+
+.activated {
+  border: 2px solid ; 
+  box-shadow: 0 0 10px #0BAF00;
 }
 
 </style>  
