@@ -130,13 +130,13 @@
                   <div class="m-input-checkboxes type01">
                     <div class="m-input-checkbox">
                         <input type="radio" id="12" value="delete" v-model="selectedItem.status">
-                        <label for="12">삭제</label>
+                        <label for="12">강성</label>
                     </div>
                     <div class="m-input-checkbox">
                         <input type="radio" id="13" value="store" v-model="selectedItem.status">
                         <label for="13" 
                         :style="selectedItem.status ? '' : 'background-color: #0BAF00; color: #fff'"
-                      >보관</label>
+                      >활동</label>
                     </div>
                   </div>
                 </div>
