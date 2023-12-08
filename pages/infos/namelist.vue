@@ -65,10 +65,18 @@
       </div>  
 
       <div class="mt-12"></div>
-      <div class="flex-w-full bg-lightGray"><div class="col-name">서명일</div> <div class="col-name">회원정보</div></div>
+      <div class="flex-w-full bg-lightGray">
+        <div class="col-name">서명일</div> 
+        <div class="col-name">회원정보</div>
+        <div class="col-name" v-if="toggleList == 'confirmed'">발신인원</div>
+      </div>
       <div class="wrap">
         <div class="m-boards type02">
-            <name v-for="item in items.data" :key="item.id" :item="item" @click="openInfoModal(item)" @makeProxyPhoneCall="getProxyPhoneCall(item)"/>
+            <name v-for="item in items.data" :key="item.id" :item="item" 
+              @clickName="openInfoModal(item)"
+              @clickNumber="openDispatchList(item)"
+              @makeProxyPhoneCall="getProxyPhoneCall(item)"
+            />
         </div>
       </div>
       <scroll-loading @load="loadMore" v-if="items.links.next" />
@@ -83,68 +91,87 @@
     >
       <template #outter>
           <div class="deca">
-            <div class="m-pop-title" style="padding-top:40px;">
+            <!-- <div class="m-pop-title" style="padding-top:40px;">
               회원 정보
-            </div>
+            </div> -->
             <div class="inner-form">
-              <div class="title">
-                <span class="main">{{ selectedItem.name }}</span>
-                <span class="sub-point">자유마을 회원</span>
+              <div class="m-input-checkboxes type01">
+                <div class="m-input-checkbox">
+                    <input type="radio" id="info" value="info" v-model="modalTitle">
+                    <label for="info">회원 정보</label>
+                </div>
+                <div class="m-input-checkbox">
+                    <input type="radio" id="dispatchList" value="dispatchList" v-model="modalTitle">
+                    <label for="dispatchList" 
+                    >발신 목록</label>
+                </div>
               </div>
-              <div class="mt-8"></div>
-              <div class="date">
-                <p>자유마을 가입일</p>
+              <template v-if="modalTitle == 'info'">
                 <div class="mt-8"></div>
+                <div class="title">
+                  <span class="main">{{ selectedItem.name }}</span>
+                  <span class="sub-point">자유마을 회원</span>
+                </div>
+                <div class="mt-8"></div>
+                <div class="date">
+                  <p>자유마을 가입일</p>
+                  <div class="mt-8"></div>
 
-                <div class="m-input-dates type01">
-                    <div class="m-input-text type01">
-                        <input type="text" v-model="computeDate" readonly>
+                  <div class="m-input-dates type01">
+                      <div class="m-input-text type01">
+                          <input type="text" v-model="computeDate" readonly>
+                      </div>
+                  </div>
+                </div>
+                <div class="mt-8"></div>
+                <div class="info">
+                  <p>정보 관리</p>
+                  <div class="mt-8"></div>
+                  <div class="m-input-checkboxes type01">
+                    <div class="m-input-checkbox">
+                        <input type="radio" id="12" value="delete" v-model="selectedItem.status">
+                        <label for="12">삭제</label>
                     </div>
-                </div>
-              </div>
-              <div class="mt-8"></div>
-              <div class="info">
-                <p>정보 관리</p>
-                <div class="mt-8"></div>
-                <div class="m-input-checkboxes type01">
-                  <div class="m-input-checkbox">
-                      <input type="radio" id="12" value="delete" v-model="selectedItem.status">
-                      <label for="12">삭제</label>
-                  </div>
-                  <div class="m-input-checkbox">
-                      <input type="radio" id="13" value="store" v-model="selectedItem.status">
-                      <label for="13" 
-                      :style="selectedItem.status ? '' : 'background-color: #0BAF00; color: #fff'"
-                     >보관</label>
+                    <div class="m-input-checkbox">
+                        <input type="radio" id="13" value="store" v-model="selectedItem.status">
+                        <label for="13" 
+                        :style="selectedItem.status ? '' : 'background-color: #0BAF00; color: #fff'"
+                      >보관</label>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="mt-8"></div>
-              <div class="reason" v-if="selectedItem.status == 'delete'">
-                <p>삭제의견</p>
                 <div class="mt-8"></div>
-                <Dropdown
-                  :menuTitle="'삭제의견'"
-                  :activate="activeDropdown"
-                  :items="reasons"
-                  :selected="reasonSelected"
-                  @toggle="toggleReason"
-                  @change="changeReason"
-                />
-              </div>
-              <div class="mt-8"></div>
-              <div class="comment">
-                <p>의견 메모</p>
-                <div class="m-input-textarea type01 lightgrey">
-                  <textarea placeholder="기타 의견을 입력해주세요" v-model="selectedItem.memo"></textarea>
+                <div class="reason" v-if="selectedItem.status == 'delete'">
+                  <p>삭제의견</p>
+                  <div class="mt-8"></div>
+                  <Dropdown
+                    :menuTitle="'삭제의견'"
+                    :activate="activeDropdown"
+                    :items="reasons"
+                    :selected="reasonSelected"
+                    @toggle="toggleReason"
+                    @change="changeReason"
+                  />
                 </div>
-              </div>
+                <div class="mt-8"></div>
+                <div class="comment">
+                  <p>의견 메모</p>
+                  <div class="m-input-textarea type01 lightgrey">
+                    <textarea placeholder="기타 의견을 입력해주세요" v-model="selectedItem.memo"></textarea>
+                  </div>
+                </div>
+              </template>
+              <template v-else-if="modalTitle == 'dispatchList'">
+                <div v-for="name in selectedItem.manager_name?.split(',')">
+                  <span class="dispatch-name">{{ name }}</span>
+                </div>
+              </template>
             </div>
 
             <div class="buttons">
               <div class="m-btns type01">
                 <div class="m-btn-wrap" >
-                  <button class="m-btn type01 bg-revert-grey  width-100" @click="activeInfoModal = false">취소</button>
+                  <button class="m-btn type01 bg-revert-grey  width-100" @click="activeInfoModal = false">닫기</button>
                 </div>
                 <div class="m-btn-wrap">
                   <button class="m-btn type01 bg-primary width-100" style="color: #fff" @click="confirm">완료</button>
@@ -190,6 +217,8 @@ export default {
       selectedItem: {
       },
       toggleList: 'waiting',
+      
+      modalTitle: 'info',
       formerVn: null,
       word:"",
       activeInfoModal: false,
@@ -311,6 +340,12 @@ export default {
     },
 
     openInfoModal(item) {
+      this.modalTitle = 'info';
+      this.selectedItem = item;
+      this.activeInfoModal = true;
+    },
+    openDispatchList(item) {
+      this.modalTitle = 'dispatchList';
       this.selectedItem = item;
       this.activeInfoModal = true;
     },
@@ -360,7 +395,7 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 0 40px;
+    padding: 0 50px;
   }
   .flex-w-full .col-name {
     width: 40%;
@@ -375,13 +410,13 @@ export default {
   }
   .deca .inner-form {
     width: 90%;
-    height: 70%;
+    height: 80%;
     border-radius: 5px;
     background-color: #fff;
     border: 1px solid #BDC3C7;
 
     position: absolute;
-    top: 15%;
+    top: 5%;
     left: 5%;
   }
   .deca .buttons {
@@ -541,6 +576,16 @@ export default {
 .activated {
   border: 2px solid ; 
   box-shadow: 0 0 10px #0BAF00;
+}
+
+.dispatch-name {
+  display: inline-block;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #0BAF00;
+  color: #fff;
+  font-size: 22px;
+  margin: 5px 5px;
 }
 
 </style>  
