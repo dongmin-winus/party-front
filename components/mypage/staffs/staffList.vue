@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="m-visual type01">
-        <h3 class="title">{{rep_district['name'] ? rep_district['name'] : this.$store.state.district.district}} 섬기는 사람들</h3>
+        <h3 class="title">{{rep_district['name'] ? rep_district['name'] : $store.state.district.district}} 섬기는 사람들</h3>
     </div>
 
     <div class="mt-32"></div>
@@ -44,7 +44,7 @@
                 <!--TODO 231006 대표 마이페이지 - 마을임원관리 :자기그룹만 보이게 수정 -->
                 <div class="m-tab-wrap">
                     <div class="m-tab active">
-                        <span class="text">{{ $store.state.district.district }}&nbsp; {{ transGroup(group) }}</span>
+                        <span class="text">{{rep_district['name'] ? rep_district['name'] : this.$store.state.district.district}}&nbsp; {{ transGroup(group) }}</span>
                     </div>
                 </div>
             </div>
@@ -284,8 +284,6 @@ export default {
       'form.name': function(newVal,oldVal) {
         // const regex = /[^가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]/g;
         const regex = new RegExp("[^가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]", "g");
-        console.log(newVal,oldVal, 3333)
-        console.log(regex.test(newVal), 4444)
         if(regex.test(newVal) || regex.test(oldVal)) {
             this.form.name = newVal.replace(regex, '');
         }
@@ -316,7 +314,6 @@ export default {
       async setCountyLists(rep_district_id = undefined) {
           this.rawValues = [];
           this.countyLists = {};
-
           const response = await this.$axios.get(`/api/districts/${rep_district_id ? rep_district_id : this.$store.state.district.id}/staff`);
           this.rawValues = response.data.data;
           this.rawGroup = response.data.group;
@@ -330,7 +327,7 @@ export default {
                         return {
                             ...position,
                             group: group, //computedCountySections 의 각 원소는 그룹명(1,2,3, ...)이다.
-                            district_id: this.$store.state.district.id,
+                            district_id: (rep_district_id ? rep_district_id : this.$store.state.district.id),
                             id: positionData ? positionData.id : null,
                             available: positionData ? false : true,
                             name: positionData ? positionData.name : "",
@@ -342,12 +339,13 @@ export default {
                 }
           })
           const { group, district_id } = await this.groupCheck();
-          this.county = [ ...this.countyLists[`${group && (this.$store.state.district.id == district_id) ? group : '1'}`]];
+          this.county = [ ...this.countyLists[`${group && ((rep_district_id ? rep_district_id : this.$store.state.district.id) == district_id) ? group : '1'}`]];
           this.activeCounty = this.group ? this.group : 1;
           this.registerStatus = response.data.register;
       },
+
       async getPositions(rep_district_id = undefined) {
-          const response = await this.$axios.get(`/api/districts/${this.$store.state.district.id}/position`);
+          const response = await this.$axios.get(`/api/districts/${rep_district_id ? rep_district_id : this.$store.state.district.id}/position`);
           this.positions = [
               ...response.data.map(item => {
                   return {
@@ -536,6 +534,10 @@ export default {
       
 
       init() {
+        this.rep_district = {
+          id:this.rep_district_id,
+          name:this.rep_district_name,
+        }
         if(this.rep_district.id ) {
             this.getPositions(this.rep_district.id)
         }else {
@@ -546,10 +548,10 @@ export default {
   },
 
   mounted() {
-      this.rep_district = {
-          id:this.rep_district_id,
-          name:this.rep_district_name,
-      }
+    //   this.rep_district = {
+    //       id:this.rep_district_id,
+    //       name:this.rep_district_name,
+    //   }
       this.init();
       
   },
