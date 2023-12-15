@@ -1,5 +1,5 @@
 <template>
-    <div class="m-board" @click="$emit('click')">
+    <div class="m-board" >
         <div class="m-board-fragments">
             <div class="m-board-fragment">
                 <div class="m-board-top">
@@ -9,8 +9,12 @@
                                 {{ computeDate}}
                                 
                             </div>
-                            <div class="left-items middle">
+                            <div class="left-items " @click="$emit('clickName')">
                                 {{item.name }}
+                                
+                            </div>
+                            <div class="left-items " @click="$emit('clickNumber')">
+                                {{item.manager_name?.split(',').length }}
                                 
                             </div>
                         </div>
@@ -76,19 +80,21 @@ export default {
 
 <style scoped>
     .m-board-top .left {
-        width: 250px;
+        width: 300px;
         height: 55px;
     }    
     .m-board-top .left .left-container {
         height:inherit;
         display: flex;
         flex-direction: row;
-        justify-content: flex-start;
+        justify-content: space-around;
         align-items: center;
     }
     .m-board-top .left .left-items {
         width: 50%;
         font-size: 18px;
+        text-align:center;
+        padding-left: 10px;
     }
     .m-board-top .left .left-items.middle {
         text-align: center;
