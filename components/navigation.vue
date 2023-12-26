@@ -21,7 +21,7 @@
                 </a>
             </div>
             <div :class="`nav-wrap ${$route.path === '/posts' ? '' : ''}`">
-                <nuxt-link to="/scraps" class="">
+                <nuxt-link to="/volunteer/register" class="">
                     <div class="img-wrap organizational_position">
                         <div class="" :class="`${ $route.path === '/posts' ? 'organizational_tap_active' : 'organizational_tap' } `">
                             <img :src="require(`@/assets/images/${$route.path === '/posts' ? 'organizational_solid.png' : 'organizational.png'}`)" alt="" style="width: 23px;">
