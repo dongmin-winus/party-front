@@ -69,6 +69,8 @@
         <div class="col-name">서명일</div> 
         <div class="col-name">회원정보</div>
         <div class="col-name" v-if="toggleList == 'confirmed'">발신인원</div>
+        <div class="col-name" v-else-if="toggleList"></div>
+        <div class="col-name" ></div>
       </div>
       <div class="wrap">
         <div class="m-boards type02">
@@ -395,10 +397,11 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 0 50px;
+    padding-left:40px;
   }
   .flex-w-full .col-name {
     width: 40%;
+
   }
   .deca {
     width:100%;
