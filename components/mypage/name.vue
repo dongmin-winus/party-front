@@ -1,33 +1,21 @@
 <template>
     <div class="m-board" >
-        <div class="m-board-fragments">
-            <div class="m-board-fragment">
-                <div class="m-board-top">
-                    <div class="left">
-                        <div class="left-container">
-                            <div class="left-items">
-                                {{ computeDate}}
-                                
-                            </div>
-                            <div class="left-items " @click="$emit('clickName')">
-                                {{item.name }}
-                                
-                            </div>
-                            <div class="left-items " @click="$emit('clickNumber')">
-                                {{item.manager_name?.split(',').length }}
-                                
-                            </div>
-                        </div>
-                        <!-- <h3 class="title">
-                            {{ computeDate}}
-                        </h3>
-                        <p class="m-board-bottom" style="color: #AAAAAA" >{{ computeDate }} 가입</p> -->
-                    </div>
-                    <div class="right" @click.stop="$emit('makeProxyPhoneCall')">
-                        <img :src="require(`@/assets/images/${everCalled(item)}`)" alt="">
-                        <div v-if="showWhiteround(item)" class="white-round">{{ `${item.call_count && item.call_count > 1 ? item.call_count : 0}` }}</div>
-                    </div>
-                </div>
+        <div class="item-container">
+            <div class="items">
+                {{ computeDate}}
+                
+            </div>
+            <div class="items " @click="$emit('clickName')">
+                {{item.name }}
+                
+            </div>
+            <div class="items " @click="$emit('clickNumber')">
+                {{item.manager_name?.split(',').length }}
+                
+            </div>
+            <div class="items">
+                <img class="call_image" :src="require(`@/assets/images/${everCalled(item)}`)" alt="">
+                <div v-if="showWhiteround(item)" class="white-round">{{ `${item.call_count && item.call_count > 1 ? item.call_count : 0}` }}</div>
             </div>
         </div>
     </div>
@@ -79,33 +67,41 @@ export default {
 </script>
 
 <style scoped>
-    .m-board-top .left {
+    /* .m-board-top .left {
         width: 300px;
         height: 55px;
-    }    
-    .m-board-top .left .left-container {
+    }     */
+    .m-board .item-container{
         height:inherit;
         display: flex;
         flex-direction: row;
         justify-content: space-around;
         align-items: center;
+        /* width:100%;
+        height: 50px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 0 50px; */
     }
-    .m-board-top .left .left-items {
-        width: 50%;
-        font-size: 18px;
+    .m-board .item-container .items {
+        width: 40%;
+        font-size: 16px;
         text-align:center;
-        padding-left: 10px;
-    }
-    .m-board-top .left .left-items.middle {
-        text-align: center;
-    }
-    .m-board-top .right {
         position: relative;
     }
-    .m-board-top .right .white-round {
+
+     .m-board .items .iems .call-image {
+        bottom: -5px;
+        right: 15px;
+        width: 20px;
+        height: 20px;
+     }
+
+    .m-board .items .white-round {
         position: absolute;
         bottom: -5px;
-        right: -5px;
+        right: 15px;
         width: 20px;
         height: 20px;
         border-radius: 50%;
