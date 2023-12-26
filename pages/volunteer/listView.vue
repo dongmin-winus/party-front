@@ -20,7 +20,7 @@
     <div class="container">
       <div class="wrap mt-12">
         <div class="content">
-          <label for="">봉사자 정보</label>
+          <label for="">회원 정보</label>
           <div class="vol-info">
             <span>{{ volunteer.name }} / {{ volunteer.phone }}</span>
             <span class="verified">회원인증</span>
@@ -61,6 +61,7 @@ import { mapGetters, mapActions } from 'vuex';
 import Edit from '@/components/volunteer/Edit.vue';
 import List from '@/components/volunteer/List.vue';
 export default {
+  auth:false,
   components: {
     Edit,
     List

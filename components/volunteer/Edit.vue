@@ -52,7 +52,7 @@ export default {
     async submit(){
       this.list = this.list.filter(item => item.name && item.phone);
       if(!this.list.length) {
-        alert('봉사자 정보를 입력해주세요.');
+        alert('회원 정보를 입력해주세요.');
         return;
       }
       // 전화번호 validatePhone 통과 못하면 return

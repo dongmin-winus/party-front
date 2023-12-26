@@ -10,7 +10,7 @@
         </div>
 
         <div class="center">
-          <h3 class="title">봉사자 인증</h3>
+          <h3 class="title">회원 인증</h3>
         </div>
         
         <div></div>
@@ -21,12 +21,12 @@
       <div class="wrap mt-32">
         <div class="content">
           <div class="m-title type01" style="text-align: center;">
-            봉사자 인증
-            <p class="sub">자유마을 봉사자 회원확인을 진행합니다.</p>
+            회원 인증
+            <p class="sub">자유마을 회원 회원확인을 진행합니다.</p>
           </div>
           <div class="m-input-text-wrap mt-32">
             <div class="m-input-text type01">
-              <label for="">봉사자 이름</label>
+              <label for="">회원 이름</label>
               <input type="text" class="mt-8" placeholder="이름을 입력해주세요." v-model="name">
             </div>
             <div class="m-input-withBtn mt-24">
@@ -59,6 +59,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 export default {
+  auth: false,
   computed: {
     volunteerInfo() {
       return this.$store.getters.getVolunteer; 
@@ -110,7 +111,7 @@ export default {
         name: this.name,
         phone: this.phone
       });
-      alert('봉사자 인증이 완료되었습니다.');
+      alert('회원 인증이 완료되었습니다.');
       this.$router.push('/volunteer/listView');
     }
   },
