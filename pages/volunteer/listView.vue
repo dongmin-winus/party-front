@@ -10,7 +10,7 @@
         </div>
 
         <div class="center">
-          <h3 class="title">조직활동 입력</h3>
+          <h3 class="title">30명 추천서</h3>
         </div>
         
         <div></div>
@@ -21,19 +21,22 @@
       <div class="wrap mt-12">
         <div class="content">
           
-            <label for="">회원 정보</label>
+            <label for="">본인 정보</label>
             <div class="vol-info">
               <template v-if="volunteer.vol_id">
                 <span>{{ volunteer.name }} / {{ volunteer.phone }}</span>
-                <span class="verified">회원인증</span>
+                <span class="verified">등록완료</span>
               </template>
               <template v-else>
                 <input type="text" name="" id="" class="name" v-model="vol_info.name" placeholder="이름">
                 <input type="number" name="" id="" class="phone" v-model="vol_info.phone" placeholder="전화번호">
-                <span class="verify" @click="checkVolunteer">인증하기</span>
+                <span class="verify" @click="checkVolunteer">본인등록</span>
               </template>
             </div>
-         
+            <p style="padding: 5px">자유대한민국을 지키기위해 30명 확보합시다!</p>
+                    <p style="padding: 5px"><span style="color: red">*</span><span>본인 인증 진행 후 명단 등록이 가능합니다. 이름과 연락처 기재 후
+                            인증버튼을 클릭하세요.
+                        </span></p>
         </div>
       </div>
 
@@ -91,7 +94,6 @@ export default {
     },
     listLeft() {
       const leftLength = 30 - this.list.length;
-      console.log(leftLength, 'leftLength')
       const container = [];
       for(let i = 0; i < 30; i++) {
         container.push({
@@ -126,7 +128,7 @@ export default {
     await this.getList();
   },
   methods: {
-    ...mapActions(['FETCH_VOLUNTEER']),
+    ...mapActions(['FETCH_VOLUNTEER','FETCH_VOLUNTEER_LIST']),
     async checkVolunteer() {
       const { name, phone } = this.vol_info;
       const response = await this.$axios.get('/api/volunteer-check', {
@@ -156,10 +158,25 @@ export default {
         phone
       });
       alert('회원 인증이 완료되었습니다.');
+      this.getList();
       // this.$router.push('/volunteer/listView');
     },
     updateList(listItem = null) {
-      console.log(listItem, 'updateList',3333)
+      if(listItem) {
+        const newList = this.list.map(item => {
+          if(item.id == listItem.id) {
+            return listItem;
+          }
+          return item;
+        });
+        this.FETCH_VOLUNTEER({
+          ...this.volunteer,
+        });
+        this.FETCH_VOLUNTEER_LIST([...newList])
+        this.list = [...this.$store.getters.getVolunteerList]
+      }else {
+        this.getList();
+      }
     },
     async getList() {
       const response = await this.$axios.get('/api/volunteer-list', {
@@ -171,8 +188,8 @@ export default {
         this.list = [...response.data.data];
         this.FETCH_VOLUNTEER({
           ...this.volunteer,
-          list: [...response.data.data]
         });
+        this.FETCH_VOLUNTEER_LIST([...response.data.data]);
       }
       
     },

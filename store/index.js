@@ -49,14 +49,17 @@ export const state = () => ({
         vol_id: '',
         name: '',
         phone: '',
-        // list: [],
-    }
+    },
+    volunteerList: [],
 
 });
 
 export const getters = {
     getVolunteer: (state) => {
         return state.volunteer
+    },
+    getVolunteerList: (state) => {
+        return state.volunteerList
     },
     getGroup: (state) => {
         return state.group
@@ -101,6 +104,9 @@ export const getters = {
 export const actions = {
     FETCH_VOLUNTEER({ commit }, data) {
         commit('setVolunteer', data);
+    },
+    FETCH_VOLUNTEER_LIST({ commit }, data) {
+        commit('setVolunteerList', data);
     },
     //마을 그룹
     FETCH_GROUP({ commit }, group) {
@@ -158,6 +164,10 @@ export const actions = {
 export const mutations = {
     setVolunteer(state, data) {
         state.volunteer = data;
+    },
+    setVolunteerList(state, data) {
+        console.log(data);
+        state.volunteerList = data;
     },
     //마을 그룹
     setGroup(state, group) {
