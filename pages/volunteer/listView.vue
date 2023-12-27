@@ -120,7 +120,8 @@ export default {
         phone: this.$store.getters.getVolunteer.phone ?? null
       },
       list: [],
-      editMode: 'create'
+      editMode: 'create',
+
 
     }
   },
@@ -161,6 +162,7 @@ export default {
       this.getList();
       // this.$router.push('/volunteer/listView');
     },
+
     updateList(listItem = null) {
       if(listItem) {
         const newList = this.list.map(item => {
@@ -173,9 +175,8 @@ export default {
           ...this.volunteer,
         });
         this.FETCH_VOLUNTEER_LIST([...newList])
-        // this.list = [...this.$store.getters.getVolunteerList]
-      }else {
         this.getList();
+        // this.list = [...this.$store.getters.getVolunteerList]
       }
     },
     async getList() {
