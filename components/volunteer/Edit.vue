@@ -63,6 +63,7 @@ export default {
   watch: {
     propList:{
       handler(newValue) {
+        console.log('propList watched')
         const mappingList =  this.listForm.map((item, index) => {
           return {
             ...item,
@@ -139,9 +140,11 @@ export default {
         
           
         });
-        console.log(response.data, 'response.data',1111111)
         if(response.data.result) {
           alert('회원정보 입력/적용에 성공하였습니다.');
+          if(type == 'create') {
+            this.dataCase = [...this.dataCase];
+          } 
           this.$emit('updateList', response.data.data);
         } else {
           //TODO 여기가 문제
@@ -156,8 +159,7 @@ export default {
 
     },
     setActionBtnName(listItem){
-      
-      return listItem.id ? '적용' : '등록';
+      return listItem.id ? '수정' : '등록';
     },
     setActionBtnColor(listItem){
       return listItem.id ? 'bg-revert-red' : 'bg-revert-primary';
