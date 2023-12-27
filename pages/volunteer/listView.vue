@@ -173,7 +173,7 @@ export default {
           ...this.volunteer,
         });
         this.FETCH_VOLUNTEER_LIST([...newList])
-        this.list = [...this.$store.getters.getVolunteerList]
+        // this.list = [...this.$store.getters.getVolunteerList]
       }else {
         this.getList();
       }
