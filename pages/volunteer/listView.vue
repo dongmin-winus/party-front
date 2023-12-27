@@ -187,7 +187,18 @@ export default {
     justify-content: space-between;
     padding: 12px;
     background-color: rgba( 255, 255, 255, 0.1 );
-    border-top: 1px solid #eee;
+  }
+  @media screen and (min-width: 501px) {
+    .sticky-btns {
+      position: fixed;
+      bottom: 0;
+      left: 36%;
+      width: 28%;
+      display: flex;
+      justify-content: space-between;
+      padding: 12px;
+      background-color: rgba( 255, 255, 255, 0.1 );
+    }
   }
   .sticky-btns .w-500 {
     width: 100%;
