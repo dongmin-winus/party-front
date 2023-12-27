@@ -83,7 +83,8 @@ export default {
 .organizational_position {
     position: absolute;
     bottom: 10px;
-    
+    left: 50%;
+    transform: translate(-50%, 0%);
 }
 .oranizational_icon {
     width: 36px;
