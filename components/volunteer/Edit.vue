@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="list-container">
-      <div v-for="(item,index) in form" :key="index">
+      <div v-for="(item,index) in dataCase" :key="index">
         <span>{{ index + 1 }}</span>
-        <input class="name" type="text" :disabled="disabled" v-model="item.name" placeholder="이릅입력">
+        <input class="name" type="text" :disabled="disabled" v-model="item.name"  placeholder="이릅입력">
         <input class="phone" :class="setPhoneWidth" type="number" :disabled="disabled" v-model="item.phone"  placeholder="휴대폰입력">
         <button v-if="!disabled" class="action" :class="setActionBtnColor(item)" @click.prevnet="action(item)">{{ setActionBtnName(item) }}</button>
       </div>
@@ -63,23 +63,27 @@ export default {
   watch: {
     propList:{
       handler(newValue) {
-        this.list = [...newValue];
-        this.form = [...newValue, ...this.listForm.slice(this.list.length)];
+        const mappingList =  this.listForm.map((item, index) => {
+          return {
+            ...item,
+            ...this.propList[index]
+          }
+        });
+        this.dataCase = [...mappingList];
       },
       immediate: true
-  }
+    }
   },
   data() {
     return {
       //props not to be mutated
-      list: [],
-      form: [],
+      dataCase: [],
+      case2: []
     }
   },
-  mounted () {
-    console.log(this.listForm, 'listForm'),
-    console.log(this.list, 'list')
-    console.log(this.computedList, 'computedList')
+  created () {
+    //listForm 의 상위에 propList 를 덮어씌움
+
   },
   methods: {
     // async submit(){
@@ -103,7 +107,14 @@ export default {
     //     this.$emit('cancel');
     //   }
     // },
+    updateItem($event,idx, itemKey){
+      this.case2.push({
+        ...this.dataCase[idx],
+        [itemKey]: $event.target.value
+      })
+    },
     async action(listItem){
+      console.log(listItem, 'listItem')
       try {
         const { name, phone, id, vol_id } = listItem;
         const type = listItem.id ? 'update' : 'create';
@@ -119,7 +130,7 @@ export default {
         //   alert('전화번호를 올바르게 입력해주세요.');
         //   return;
         // }
-        const api = type == 'create' ? '/api/volunteer-register' : `/api/volunteer-list/${listItem.id}`;
+        const api = type == 'create' ? '/api/volunteer-register' : `/api/volunteer-list/${id}`;
         const params = type == 'create' ? {vol_id,name, phone, written:0} : { name, phone, written:2};
         const method = type == 'create' ? 'post' : 'put';
         const response = await this.$axios[method]( api, { 
@@ -128,8 +139,9 @@ export default {
         
           
         });
-        console.log(response,343333)
+        console.log(response.data, 'response.data',1111111)
         if(response.data.result) {
+          alert('회원정보 입력/적용에 성공하였습니다.');
           this.$emit('updateList', response.data.data);
         } else {
           //TODO 여기가 문제
