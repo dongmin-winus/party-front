@@ -155,4 +155,18 @@ export default {
     z-index: 1;
     text-align: center;
   }
+  @media screen and (min-width: 501px) {
+    .sticky-btns {
+      position: fixed;
+      bottom: 40px;
+      left: 36%;
+      width: 28%;
+      padding: 0 16px;
+      background-color: #fff;
+      
+      display: flex;
+      z-index: 1;
+      text-align: center;
+    }
+  }
 </style>

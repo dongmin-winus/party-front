@@ -12,20 +12,20 @@
                 </nuxt-link>
             </div>
 
-            <div :class="`nav-wrap ${$route.path === '/posts' ? 'active' : ''}`">
+            <div :class="`nav-wrap ${$route.path.includes('/posts') ? 'active' : ''}`">
                 <a href="/posts" class="nav">
                     <div class="">
-                        <img :src="require(`@/assets/images/${$route.path === '/posts' ? 'newspaper_solid.png' : 'newspaper.png'}`)" alt="" style="width:21px;">
+                        <img :src="require(`@/assets/images/${$route.path.includes('/posts') ? 'newspaper_solid.png' : 'newspaper.png'}`)" alt="" style="width:21px;">
                     </div>
                     <h3 class="title">마을소식</h3> 
                 </a>
             </div>
-            <div :class="`nav-wrap ${$route.path === '/posts' ? '' : ''}`">
+            <div :class="`nav-wrap ${$route.path.includes('/volunteer') ? '' : ''}`">
                 <nuxt-link to="/volunteer/register" class="">
                     <div class="img-wrap organizational_position">
-                        <div class="" :class="`${ $route.path === '/posts' ? 'organizational_tap_active' : 'organizational_tap' } `">
-                            <img :src="require(`@/assets/images/${$route.path === '/posts' ? 'organizational_solid.png' : 'organizational.png'}`)" alt="" style="width: 23px;">
-                             <h3 :class="`${$route.path === '/posts' ? 'organizational_title_active' : 'organizational_title'} `">조직활동</h3>
+                        <div class="" :class="`${ $route.path.includes('/volunteer') ? 'organizational_tap_active' : 'organizational_tap' } `">
+                            <img :src="require(`@/assets/images/${$route.path.includes('/volunteer') ? 'organizational_solid.png' : 'organizational.png'}`)" alt="" style="width: 23px;">
+                             <h3 :class="`${$route.path.includes('/volunteer') ? 'organizational_title_active' : 'organizational_title'} `">조직활동</h3>
                         </div>
                        
                     </div>
@@ -34,10 +34,10 @@
                 </nuxt-link>
             </div>
 
-            <div :class="`nav-wrap ${$route.path === '/chat' ? 'active' : ''}`">
+            <div :class="`nav-wrap ${$route.path.includes('/chat') ? 'active' : ''}`">
                 <nuxt-link to="/chat" class="nav">
                     <div class="img-wrap">
-                        <img v-if="$route.path === '/chat'" src="@/assets/images/chatActive.svg" alt="" style="width: 19px;"/>
+                        <img v-if="$route.path.includes('/chat')" src="@/assets/images/chatActive.svg" alt="" style="width: 19px;"/>
                         <img v-else src="@/assets/images/chat.svg" alt="" style="width:19px;">
                         <!-- <img src="@/assets/images/chat-alt-2.png" alt="" style="width:19px;"> -->
                     </div>
