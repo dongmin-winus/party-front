@@ -108,6 +108,12 @@ export const actions = {
     FETCH_VOLUNTEER_LIST({ commit }, data) {
         commit('setVolunteerList', data);
     },
+    ADD_VOLUNTEER_LIST({ commit }, data) {
+        commit('addValunteerList', data);
+    },
+    MODIFY_VOLUNTEER_LIST({ commit }, data) {
+        commit('modifyValunteerList', data);
+    },
     //마을 그룹
     FETCH_GROUP({ commit }, group) {
         commit('setGroup', group);
@@ -166,8 +172,18 @@ export const mutations = {
         state.volunteer = data;
     },
     setVolunteerList(state, data) {
-        console.log(data);
         state.volunteerList = data;
+    },
+    addValunteerList(state, data) {
+        console.log(data, 'addValunteerList')
+        this._vm.$set(state.volunteerList, state.volunteerList.length, data)
+        console.log(state.volunteerList, 'after addValunteerList')
+    },
+    modifyValunteerList(state, data) {
+        const { vol_id, name, phone, id, written } = data
+        console.log(data, 'modifyValunteerList')
+        this._vm.$set(state.volunteerList, data.index, { vol_id, name, phone, id, written })
+
     },
     //마을 그룹
     setGroup(state, group) {

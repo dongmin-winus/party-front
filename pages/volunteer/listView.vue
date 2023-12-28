@@ -23,9 +23,9 @@
           
             <label for="">본인 정보</label>
             <div class="vol-info">
-              <template v-if="volunteer.vol_id">
-                <span>{{ volunteer.name }} / {{ volunteer.phone }}</span>
-                <span class="verified">등록완료</span>
+              <template v-if="getVolunteer.vol_id">
+                <span style="padding:2px;">{{ getVolunteer.name }} / <input type="number" name="" id="" class="phone" v-model="vol_info.phone" placeholder="전화번호"></span>
+                <span class="verified" @click="updateVolunteer">연락처수정</span>
               </template>
               <template v-else>
                 <input type="text" name="" id="" class="name" v-model="vol_info.name" placeholder="이름">
@@ -34,20 +34,25 @@
               </template>
             </div>
             <p style="padding: 5px">자유대한민국을 지키기위해 30명 확보합시다!</p>
-                    <p style="padding: 5px"><span style="color: red">*</span><span>본인 인증 진행 후 명단 등록이 가능합니다. 이름과 연락처 기재 후
-                            인증버튼을 클릭하세요.
-                        </span></p>
+            <p style="padding: 5px">
+              <span style="color: red">*</span>
+              <span>
+                본인 인증 진행 후 명단 등록이 가능합니다. 이름과 연락처 기재 후 본인등록 버튼을 클릭하세요.
+              </span>
+            </p>
         </div>
       </div>
 
       <Edit 
-        :propList="list"
-        :listForm="listLeft"
         :editType="editMode"
-        :disabled="!volunteer.vol_id"
-        @cancel="cancel"
+        :disabled="!getVolunteer.vol_id"
         @updateList="updateList"
+        @rerenderList="getList"
       />
+      <div v-if="getVolunteer.vol_id" class="logout-btn">
+        <span class="logout" @click="activeModal = true">로그아웃</span>
+
+      </div>
       <!-- <Edit 
         v-else-if="editMode == 'modify'"
         :propList="list"
@@ -67,43 +72,44 @@
         </div>
       </div> -->
     </div>
+    <modal
+        v-if="activeModal"
+        @cancel="activeModal = false; "
+    >
+        <template #inner>
+            <div class="m-pop-title">
+                <span class="point">30명 추천서</span>
+            </div>
+
+            <div class="m-input-text type01">
+                <span>로그아웃 하시겠습니까?</span>
+            </div>
+            <div class="mt-20"></div>
+
+            <button type="button" class="m-btn type02 bg-revert-red width-100" @click="logout">로그아웃</button>
+        </template>
+    </modal>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import common from '@/utils/common';
 import Edit from '@/components/volunteer/Edit.vue';
 import List from '@/components/volunteer/List.vue';
 export default {
   auth:false,
+  mixins: [common],
   components: {
     Edit,
     List
   },
   computed: {
-    volunteer: {
-      get () {
-        return this.$store.getters.getVolunteer;
-      },
-      set (value) {
-        this.$store.commit('setVolunteer', value);
-      }
-    },
+    ...mapGetters(['getVolunteer','getVolunteerList']),
+
     isListFull() {
-      return this.list.length == 30;
+      return this.getVolunteerList.length == 30;
     },
-    listLeft() {
-      const leftLength = 30 - this.list.length;
-      const container = [];
-      for(let i = 0; i < 30; i++) {
-        container.push({
-          name: '',
-          phone: '',
-          vol_id: this.$store.getters.getVolunteer.vol_id ?? null
-        })
-      }
-      return container;
-    }
   },
   data() {
     return {
@@ -115,13 +121,13 @@ export default {
         phone: ''
       },
       vol_info: {
-        vol_id: this.$store.getters.getVolunteer.vol_id ?? null,
-        name: this.$store.getters.getVolunteer.name ?? null,
-        phone: this.$store.getters.getVolunteer.phone ?? null
+        vol_id:this.$store.getters.getVolunteer.vol_id ?? '',
+        name: this.$store.getters.getVolunteer.name ?? '',
+        phone: this.$store.getters.getVolunteer.phone ?? ''
       },
       list: [],
       editMode: 'create',
-
+      activeModal: false
 
     }
   },
@@ -129,7 +135,7 @@ export default {
     await this.getList();
   },
   methods: {
-    ...mapActions(['FETCH_VOLUNTEER','FETCH_VOLUNTEER_LIST']),
+    ...mapActions(['FETCH_VOLUNTEER','FETCH_VOLUNTEER_LIST','ADD_VOLUNTEER_LIST','MODIFY_VOLUNTEER_LIST']),
     async checkVolunteer() {
       const { name, phone } = this.vol_info;
       const response = await this.$axios.get('/api/volunteer-check', {
@@ -148,59 +154,87 @@ export default {
       }
       
     },
-    storeVolunteer() {
+    async updateVolunteer() {
       const { vol_id, name, phone } = this.vol_info;
       if(!name) return alert('이름을 입력해주세요.');
-      if(!phone) return alert('전화번호를 입력해주세요.');
+      if(!this.validatePhone(phone)) return alert('전화번호를 올바르게 입력해주세요.');
+      const response = await this.$axios.put(`/api/volunteer-check/${vol_id}`, {
+        name,
+        phone
+      });
+      if(response.data.result) {
+        this.storeVolunteer('연락처 수정이 완료되었습니다.');
+      } else {
+        alert('연락처 수정에 실패하였습니다.');
+        this.vol_info = {
+          ...this.vol_info,
+          name: this.getVolunteer.name,
+          phone: this.getVolunteer.phone
+        }
+      }
+    },
+    storeVolunteer(msg = null) {
+      const { vol_id, name, phone } = this.vol_info;
+      if(!name) return alert('이름을 입력해주세요.');
+      if(!this.validatePhone(phone)) return alert('전화번호를 올바르게 입력해주세요.');
       this.FETCH_VOLUNTEER({
-        ...this.volunteerInfo,
         vol_id,
         name,
         phone
       });
-      alert('회원 인증이 완료되었습니다.');
+      alert(msg??'본인 인증이 완료되었습니다.');
       this.getList();
       // this.$router.push('/volunteer/listView');
     },
-
-    updateList(listItem = null) {
-      if(listItem) {
-        const newList = this.list.map(item => {
-          if(item.id == listItem.id) {
-            return listItem;
-          }
-          return item;
+    updateList(listItem = null, index = null) {
+      if(listItem !== null && listItem.id == null) {
+        this.ADD_VOLUNTEER_LIST({ ...listItem });
+      } else if(listItem == null) {
+        //삭제
+        this.MODIFY_VOLUNTEER_LIST({
+          written:2,
+          id:'',
+          name: '',
+          phone: '',
+          vol_id: this.$store.getters.getVolunteer.vol_id,
+          index
         });
-        this.FETCH_VOLUNTEER({
-          ...this.volunteer,
+      }else {
+        //수정
+        this.MODIFY_VOLUNTEER_LIST({
+          written:2,
+          id:listItem.id,
+          name: listItem.name,
+          phone: listItem.phone,
+          vol_id: this.$store.getters.getVolunteer.vol_id,
+          index
         });
-        this.FETCH_VOLUNTEER_LIST([...newList])
-        this.getList();
-        // this.list = [...this.$store.getters.getVolunteerList]
       }
     },
     async getList() {
       const response = await this.$axios.get('/api/volunteer-list', {
         params: {
-          vol_id: this.volunteer.vol_id
+          vol_id: this.getVolunteer.vol_id
         }
       });
       if(response.data.result) {
-        this.list = [...response.data.data];
-        this.FETCH_VOLUNTEER({
-          ...this.volunteer,
-        });
         this.FETCH_VOLUNTEER_LIST([...response.data.data]);
       }
-      
     },
-    toEdit(mode) {
-      mode == 'create' ? this.editMode = 'create' : this.editMode = 'modify';
-      
-    },
-    cancel() {
-      this.editMode = null;
-      this.getList();
+    logout() {
+      this.FETCH_VOLUNTEER({
+        vol_id: null,
+        name: null,
+        phone: null
+      });
+      this.FETCH_VOLUNTEER_LIST([]);
+      this.vol_info = {
+        vol_id:'',
+        name: '',
+        phone: ''
+      }
+      this.activeModal = false;
+      window.scrollTo(0, 0);
     }
   },
 }
@@ -208,7 +242,7 @@ export default {
 
 <style scoped>
   .vol-info {
-    border: 1px solid #eee;
+    /* border: 1px solid #eee; */
     height: 40px;
     padding: 4px;
     border-radius: 4px;
@@ -222,7 +256,7 @@ export default {
     border-radius: 4px;
   }
   .vol-info .phone {
-    width: 40%;
+    width: 50%;
     border : 1px solid #eee;
     border-radius: 4px;
   }
@@ -233,6 +267,8 @@ export default {
     border-radius: 4px;
     font-size: 12px;
     padding: 4px;
+    width: 60px;
+    text-align:center;
   }
   .verified {
     color: #0BAF00;
@@ -241,6 +277,8 @@ export default {
     border-radius: 4px;
     border: 1px solid #0BAF00;
     font-size: 12px;
+    width: 75px;
+    text-align: center;
   }
 
   .list-container {
@@ -291,5 +329,21 @@ export default {
   }
   .sticky-btns .w-500 {
     width: 100%;
+  }
+  .logout-btn {
+    margin-top: 12px;
+    padding: 10px;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .logout {
+    color: red;
+    background-color: white;
+    padding: 4px;
+    border-radius: 4px;
+    border: 1px solid red;
+    font-size: 12px;
+    width: 75px;
+    text-align: center;
   }
 </style>
