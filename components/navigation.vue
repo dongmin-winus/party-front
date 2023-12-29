@@ -20,12 +20,14 @@
                     <h3 class="title">마을소식</h3> 
                 </a>
             </div>
-            <div :class="`nav-wrap ${$route.path.includes('/volunteer') ? '' : ''}`">
-                <nuxt-link to="/volunteer/register" class="">
+            <div :class="`nav-wrap ${$route.path.includes('/organization') ? '' : ''}`">
+                <nuxt-link to="/organization" class="">
                     <div class="img-wrap organizational_position">
-                        <div class="" :class="`${ $route.path.includes('/volunteer') ? 'organizational_tap_active' : 'organizational_tap' } `">
-                            <img :src="require(`@/assets/images/${$route.path.includes('/volunteer') ? 'organizational_solid.png' : 'organizational.png'}`)" alt="" style="width: 23px;">
-                             <h3 :class="`${$route.path.includes('/volunteer') ? 'organizational_title_active' : 'organizational_title'} `">조직활동</h3>
+                        <div class="" :class="`${ $route.path.includes('/organization') ? 'organizational_tap_active' : 'organizational_tap' } `">
+                            <!-- <img :src="require(`@/assets/images/${$route.path.includes('/organization') ? 'organizational_solid.png' : 'organizational.png'}`)" alt="" style="width: 23px;"> -->
+                            <h3 :class="`${$route.path.includes('/organization') ? 'organizational_title_active' : 'organizational_title'} `">
+                                조직<br/>활동
+                            </h3>
                         </div>
                        
                     </div>
@@ -94,8 +96,8 @@ export default {
     width: 70px;
     height: 70px;
     border-radius: 50%;
-    background-color: white;
-    filter: drop-shadow(0px 2px 6px rgba(0, 0, 0, 0.30));
+    background: linear-gradient(to bottom, #0BAF00, #0A8803);
+    filter: drop-shadow(0px 2px 6px rgba(11, 175, 0, 0.70));
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -106,24 +108,29 @@ export default {
     width: 70px;
     height: 70px;
     border-radius: 50%;
-    background-color: white;
+    background: linear-gradient(to bottom, #0BAF00, #0A8803);
     filter: drop-shadow(0px 2px 6px rgba(11, 175, 0, 0.70));
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    border: 4px solid white;
 }
 .organizational_title
  {
     margin-top: 4px;
-    font-size:12px; 
-  
-    color:#696969;
+    font-size:16px; 
+    color:white;
+    line-height: 95%;
+    padding-bottom: 5px;
 }
 .organizational_title_active
  {
     margin-top: 4px;
-    font-size:12px; 
-    color:#0baf00;
+    font-size:16px;
+    font-weight: 500; 
+    color:white;
+    line-height: 95%;
+    padding-bottom: 5px;
 }
 </style>
