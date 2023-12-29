@@ -46,6 +46,29 @@
               </div>
             </div>
           </button>
+          <div class="m-input-checkboxes type04 mt-12">
+            <div class="m-input-checkbox" :class="toggleList == 'waiting' ? 'activated' : ''">
+              <input type="radio" id="waiting" value="waiting" v-model="toggleList">
+              <label for="waiting" style="height:100%;">
+                <p style="color:red">{{ totalCount - items.meta.total_call_count }}</p>
+                <p style="color:red">대기중</p>
+              </label>
+            </div>
+            <div class="m-input-checkbox" :class="toggleList == 'confirmed' ? 'activated' : ''">
+              <input type="radio" id="confirmed" value="confirmed" v-model="toggleList">
+              <label for="confirmed">
+                <p>{{ items.meta.total_call_count }}</p>
+                <p>확인완료</p>
+              </label>
+            </div>
+            <!-- <div class="m-input-checkbox" :class="toggleList == 'total' ? 'activated' : ''" style="background-color:#E7F7E5">
+              <input type="radio" id="total" value="total" v-model="toggleList">
+              <label for="total">
+                <p>{{ total }}</p>
+                <p>총 인원</p>
+              </label>
+            </div>   -->
+          </div> 
         </div>
       </div>
       
@@ -55,7 +78,10 @@
       <div class="flex-w-full bg-lightGray"><div class="col-name">서명일</div> <div class="col-name">회원정보</div></div>
       <div class="wrap">
         <div class="m-boards type02">
-            <name v-for="item in items.data" :key="item.id" :item="item" @makeProxyPhoneCall="getProxyPhoneCall(item)"/>
+            <name v-for="item in items.data" :key="item.id" :item="item" 
+              :commissioner="true"
+              @makeProxyPhoneCall="getProxyPhoneCall(item)"
+            />
         </div>
       </div>
       <scroll-loading @load="loadMore" v-if="items.links.next" />
@@ -102,9 +128,13 @@ export default {
       selectedItem: {},
 
       formerVn: undefined,
+      toggleList: 'waiting',
     }
   },
   computed: {
+    totalCount() {
+      return this.items.meta.total_count;
+    },
     computedDistricts() {
       return this.districts.map(district => {
         return district.district;
@@ -118,6 +148,10 @@ export default {
         this.districtSelected = true;
         this.getItems();
       }
+    },
+    toggleList(val) {
+      this.form.page = 1;
+      this.getItems();
     }
   },
   methods: {
@@ -169,10 +203,17 @@ export default {
         this.form.page = 1;
         const district = this.districts.find(item => item.district === this.selectedItem.district);
 
-        this.$axios.get(`/api/districts/${district.id}/members`)
-            .then(response => {
-                this.items = response.data;
-            });
+        this.$axios.get(`/api/districts/${district.id}/members`,{
+          params: {
+            call_count: this.toggleList == 'waiting' ? null : 1,
+            
+          }
+        })
+        .then(response => {
+            this.items = response.data;
+        }).catch (error => {
+            console.log(error);
+        });
     },
     async getDistricts() {
       const response = await this.$axios.get(`/api/districts/1/executive/h-certify`,{
@@ -363,11 +404,11 @@ export default {
 }
 .m-input-checkboxes.type03 input:checked + label {
     color:#0BAF00;
-    text-decration:underline;
 }
 
 .m-input-checkboxes.type04 {
     display:flex; width: 100%;   overflow:hidden;
+    padding-top: 10px;
 }
 .m-input-checkboxes.type04 .m-input-checkbox {
     flex:1;
@@ -384,7 +425,6 @@ export default {
 }
 .m-input-checkboxes.type04 input:checked + label {
     color:#0BAF00;
-    text-decration:underline;
 }
 
 .m-btns.type01 {
@@ -416,4 +456,8 @@ export default {
     color:#0BAF00 !important;
 }
 
+.activated {
+  border: 2px solid ; 
+  box-shadow: 0 0 10px #0BAF00;
+}
 </style>  
