@@ -9,7 +9,7 @@
                 {{item.name }}
                 
             </div>
-            <div class="items " @click="$emit('clickNumber')">
+            <div class="items " v-if="!commissioner" @click="$emit('clickNumber')">
                 {{item.manager_name?.split(',').length }}
                 
             </div>
@@ -28,6 +28,10 @@ export default {
     props: {
         item: {
             required: true
+        },
+        commissioner: {
+            required: false,
+            default: false
         },
 
     },
