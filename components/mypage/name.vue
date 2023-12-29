@@ -13,7 +13,7 @@
                 {{item.manager_name?.split(',').length }}
                 
             </div>
-            <div class="items">
+            <div class="items" @click.stop="$emit('makeProxyPhoneCall')">
                 <img class="call_image" :src="require(`@/assets/images/${everCalled(item)}`)" alt="">
                 <div v-if="showWhiteround(item)" class="white-round">{{ `${item.call_count && item.call_count > 1 ? item.call_count : 0}` }}</div>
             </div>
