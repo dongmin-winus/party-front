@@ -35,11 +35,10 @@ export default {
       type: Number,
       default: 30
     },
-    //not used
-    editType: {
-      default(){
-        return 'create';
-      }
+    list: {
+      required: true,
+      type: Array,
+      default: () => []
     }
   },
   computed: {
@@ -52,16 +51,16 @@ export default {
         container.push({
           name: '',
           phone: '',
-          vol_id: this.$store.getters.getVolunteer.vol_id ?? null
+          vol_id: this.$auth.user.id
         })
       }
       return container;
     }
   },
   watch: {
-   '$store.getters.getVolunteerList':{
+    list:{
       handler(newVal) {
-        console.log(newVal,'volunteerList watched')
+        console.log(newVal,'list watched')
         const mappingList =  this.listForm.map((item, index) => {
           return {
             ...item,
@@ -107,7 +106,7 @@ export default {
           }
         }
 
-        const api = type == 'create' ? '/api/volunteer-register' : `/api/volunteer-list/${id}`;
+        const api = type == 'create' ? '/api/user-register' : `/api/user-list/${id}`;
         const params = type == 'create' ? {vol_id,name, phone, written:0} : { name, phone, written:2};
         const method = type == 'create' ? 'post' : 'put';
         const response = await this.$axios[method]( api, { ...params });
