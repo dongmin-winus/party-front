@@ -5,10 +5,10 @@
     <div class="container">
         <div class="content">
           <div class="m-title type01">
-              <p class="sub">마을소개</p>
-              {{ $auth.user.district.district }} 조직활동
+              {{ $auth.user.district.district }} 조직활동 신청
           </div>
         </div>
+        <p style="padding: 20px 20px 0px 20px">대기중, 승인, 미승인</p>
 
       <Edit 
         :maxLength="20"
@@ -41,12 +41,18 @@
 
 <script>
 import common from '@/utils/common';
+import Echo from 'laravel-echo';
+import Pusher from 'pusher-js';
 import Edit from '@/components/organization/Edit.vue';
 export default {
   auth:true,
   mixins: [common],
   components: {
     Edit,
+  },
+  async created() {
+    //pusher check
+    if(this.echo) this.disconnect();
   },
   computed: {
 
@@ -91,6 +97,28 @@ export default {
         this.list = [...response.data.data];
       }
     },
+    /**
+     * socket 통신(pusher-js)
+     */
+     connect(id) {
+      if (!window.Pusher)
+        window.Pusher = Pusher;
+      if (!this.echo) {
+        this.echo = new Echo({
+          broadcaster: "pusher",
+          key: "668bac10cc6db3a1338c",
+          cluster: "ap3",
+          authEndpoint: '/api/broadcasting/auth',
+          encrypted: true,
+
+        });
+      }
+      this.echo.channel(`supervisorUpdate`+ id)
+        .listen("SupervisorUpdated", (payload) => { this.onSupervisorUpdated(payload) });
+    },
+    disconnect() {
+      this.echo.leaveChannel("SupervisorUpdated");
+    },
   },
 }
 </script>
@@ -101,6 +129,8 @@ export default {
     text-align: center;
     padding: 40px 0;
   }
+
+
 
   .list-container {
     margin: 24px 5px 0 5px;

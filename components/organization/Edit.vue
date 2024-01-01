@@ -2,7 +2,7 @@
   <div>
     <div class="list-container">
       <div v-for="(item,index) in dataCase" :key="index">
-        <span style="text-align: center;">{{ index + 1 }}</span>
+        <span style="text-align: center;">{{ index + 1 }} ({{ item.allow }})</span>
         <input class="name" type="text" :disabled="disabled" v-model="item.name"  placeholder="이릅입력">
         <input class="phone" :class="setPhoneWidth" type="number" :disabled="disabled" v-model="item.phone"  placeholder="휴대폰입력">
         <button v-if="!disabled" class="action" :class="setActionBtnColor(item)" @click.prevnet="action(item,index)">{{ setActionBtnName(item) }}</button>
