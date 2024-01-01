@@ -20,6 +20,7 @@
                             </div>
 
                             <span class="count">
+                              <!-- {{local_api_url}}/goal/{{district_id }} , param : { count, goal_count } -->
                                 가입자수:{{ `${this.$auth.user.activity_index >= 100 ? 100 : this.$auth.user.activity_index}` }} / 목표수:1000
                             </span>
                         </div>
