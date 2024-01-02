@@ -8,7 +8,7 @@
               {{ $auth.user.district.district }} 조직활동 신청
           </div>
         </div>
-        <p style="padding: 20px 20px 0px 20px">대기중:미표시, 승인:✅, 거절:❎ </p>
+        <p style="padding: 20px 20px 0px 20px">대기중:미표시, 승인:✅, 거절:❌<br/>등록 시 등록 확인 문자가 발송됩니다. </p>
 
       <Edit 
         :maxLength="20"
@@ -76,12 +76,23 @@ export default {
 
     }
   },
-  async mounted () {
-    await this.getList();
-    //pusher check
-    if(this.echo) this.disconnect();
-    if(this.list.length > 0) this.connect(this.list[0].id);
+  mounted() {
+    this.$axios.get('/api/user-list', {
+      params: {
+        vol_id: this.$auth.user.id
+      }
+    }).then((response) => {
+      if(response.data.result) {
+        this.list = [...response.data.data];
+      }
+    }).then(() => {
+      if(this.echo) this.disconnect();
+      this.connect(this.list[0].vol_id)
+    }) 
   },
+  // async mounted () {
+  //   await this.getList();
+  // },
   methods: {
     updateList() {
       this.getList();
@@ -112,19 +123,13 @@ export default {
 
         });
       }
-      // this.echo.channel(`supervisorUpdate` + id)
-      //   .listen("SupervisorUpdated", (e) => {
-      //     console.log(e);
-      //   });
-      this.echo.channel(`supervisorUpdate`+ id)
-        .listen("SupervisorUpdated", (payload) => {
-          console.log(payload, 'payload');
-          this.onSupervisorUpdated(payload) 
+      this.echo.channel(`supervisors` + id)
+        .listen("SupervisorUpdated", (e) => {
+          this.onSupervisorUpdated(e);
         });
-        console.log(this.echo, 'this.echo connected')
     },
     disconnect() {
-      this.echo.leaveChannel("SupervisorUpdated");
+      this.echo.leaveChannel("supervisors");
     },
     onSupervisorUpdated(payload) {
       console.log(payload, 'onSupervisorUpdated')
