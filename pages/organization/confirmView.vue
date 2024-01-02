@@ -23,7 +23,7 @@ export default {
   methods: {
     // {{local_api_url}}/user-accept/{{id}}?allow=1, param: {allow 1인 경우 승인, allow 2인 경우 미승인} 
     async clickEvent(number) {
-      const response = await this.$axios.post(`api/user-accept/${this.$route.params.id}?allow=${number}`);
+      const response = await this.$axios.post(`api/user-accept/${this.$route.query.id}?allow=${number}`);
       if(response) {
         alert('응답이 등록되었습니다.')
         this.$router.push('/');
