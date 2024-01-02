@@ -2,10 +2,10 @@
   <div>
     <div class="list-container">
       <div v-for="(item,index) in dataCase" :key="index">
-        <span style="text-align: center;">{{ index + 1 }} ({{ item.allow }})</span>
-        <input class="name" type="text" :disabled="disabled" v-model="item.name"  placeholder="이릅입력">
-        <input class="phone" :class="setPhoneWidth" type="number" :disabled="disabled" v-model="item.phone"  placeholder="휴대폰입력">
-        <button v-if="!disabled" class="action" :class="setActionBtnColor(item)" @click.prevent="action(item,index)">{{ setActionBtnName(item) }}</button>
+        <span style="text-align: center;">{{ index + 1 }} {{ getAllowIcon(item.allow) }}</span>
+        <input class="name" type="text" :disabled="item.allow == 1" v-model="item.name"  placeholder="이릅입력">
+        <input class="phone" :class="setPhoneWidth" type="number" :disabled="item.allow == 1" v-model="item.phone"  placeholder="휴대폰입력">
+        <button v-if="!disabled" class="action" :disabled="item.allow == 1" :class="setActionBtnColor(item)" @click.prevent="action(item,index)">{{ setActionBtnName(item) }}</button>
       </div>
     </div>
     <!-- <div class="sticky-btns">
@@ -84,7 +84,15 @@ export default {
 
   },
   methods: {
-
+    getAllowIcon(allow) {
+      if(allow == 0) {
+        return '';
+      } else if(allow == 1) {
+        return '✅';
+      } else if(allow == 2) {
+        return '❎';
+      }
+    },
     async action(listItem, index){
       console.log(listItem,index, 'action:listItem')
       try {
@@ -128,6 +136,7 @@ export default {
 
     },
     setActionBtnName(listItem){
+      if(listItem.allow == 1) return '승인';
       return listItem.id ? '수정' : '등록';
     },
     setActionBtnColor(listItem){
