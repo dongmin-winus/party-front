@@ -8,70 +8,90 @@
           </div>
         </div>
     </div>
-            <div class="wrap">
-              <div class="m-temp type01">
-                    <div :class="`gage-wrap ${activityClass}`">
-                        <div class="gage">
-                            <div class="active" :style="`width:30%;`"></div>
+      <div class="wrap">
+        <div class="m-temp type01" v-if="$auth.user">
+          <div :class="`gage-wrap ${activityClass}`">
+              <div class="gage">
+                <div class="active" :style="`width:${count/goal_count*100}%;`"></div>
 
-                            <div class="comment">
-                                자유마을 가입수
-                                <img src="@/assets/images/polygon.png" alt="" class="deco">
-                            </div>
+                <!-- <div class="comment">
+                    자유마을 가입수
+                    <img src="@/assets/images/polygon.png" alt="" class="deco">
+                </div> -->
 
-                            <span class="count">
-                              <!-- {{local_api_url}}/goal/{{district_id }} , param : { count, goal_count } -->
-                                가입자수:{{ `${this.$auth.user.activity_index >= 100 ? 100 : this.$auth.user.activity_index}` }} / 목표수:1000
-                            </span>
-                        </div>
-                    </div>
-                </div>
+                <span class="count">
+                    가입자수:{{ count }} / 목표수:{{goal_count}}
+                </span>
               </div>
-              <div class="area-mypage">
-                <div class="menus-wrap">
-                    <h3 class="title">활동신청</h3>
-                    <div class="menus">
-                        <div class="wrap">
-                            <nuxt-link to="/organization/list" class="menu">
-                                <img src="@/assets/images/board.png" alt="" class="icon" style="width:14px;">
-                                <p class="text">신청하러 가기</p>
-                            </nuxt-link>
-                        </div>
-                    </div>
-                </div>
+            </div>
+          </div>
+        </div>
+        <div class="area-mypage">
+          <div class="menus-wrap">
+              <h3 class="title">활동신청</h3>
+              <div class="menus">
+                  <div class="wrap">
+                      <nuxt-link to="/organization/list" class="menu">
+                          <img src="@/assets/images/board.png" alt="" class="icon" style="width:14px;">
+                          <p class="text">신청하러 가기</p>
+                      </nuxt-link>
+                  </div>
+              </div>
+          </div>
 
-                <div class="menus-wrap">
-                    <h3 class="title">조직관리</h3>
-                    <div class="menus">
-                        <div class="wrap">
-                            <nuxt-link to="#" class="menu">
-                                <img src="@/assets/images/board.png" alt="" class="icon" style="width:14px;">
-                                <p class="text">업데이트 될 예정</p>
-                            </nuxt-link>
-                        </div>
-                    </div>
-                </div>
+          <div class="menus-wrap">
+              <h3 class="title">조직관리</h3>
+              <div class="menus">
+                  <div class="wrap">
+                      <nuxt-link to="#" class="menu">
+                          <img src="@/assets/images/board.png" alt="" class="icon" style="width:14px;">
+                          <p class="text">업데이트 예정</p>
+                      </nuxt-link>
+                  </div>
+              </div>
+          </div>
 
-                <div class="menus-wrap">
-                    <h3 class="title">조직도</h3>
-                    <div class="menus">
-                        <div class="wrap">
-                            <nuxt-link to="#" class="menu">
-                                <img src="@/assets/images/board.png" alt="" class="icon" style="width:14px;">
-                                <p class="text">업데이트 될 예정</p>
-                            </nuxt-link>
-                        </div>
-                    </div>
-                </div>
+          <div class="menus-wrap">
+              <h3 class="title">조직도</h3>
+              <div class="menus">
+                  <div class="wrap">
+                      <nuxt-link to="#" class="menu">
+                          <img src="@/assets/images/board.png" alt="" class="icon" style="width:14px;">
+                          <p class="text">업데이트 예정</p>
+                      </nuxt-link>
+                  </div>
+              </div>
+          </div>
   </div>
   </div>
 </template>
 
 <script>
 export default {
+  auth:false,
+  computed: {
+    activityClass() {
+      let level = Math.ceil(this.count / this.goal_count * 10); // Calculate level based on index, max out at 10
+      return `level${level}`;
+    },
+  },
   mounted () {
     //alert('조직활동 페이지 오픈 예정입니다.');
     //this.$router.push('/');
+    this.getRegisterCount();
+  },
+  data() {
+    return {
+      count: 0,
+      goal_count: 0,
+    }
+  },
+  methods: {
+    async getRegisterCount() {
+      const {data} = await this.$axios.get(`api/goal/${this.$auth.user.district_id}`);
+      this.count = data.count;
+      this.goal_count = data.goal_count;
+    }
   },
 }
 </script>

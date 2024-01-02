@@ -3675,13 +3675,13 @@ label {
     font-weight:bold;
     color:#D50101;
 }
-.m-temp.type01 .gage .count:after {
+/* .m-temp.type01 .gage .count:after {
     display:inline-block;
     content:"";
     width:20px; height:20px;
      margin-left:8px;
     background-image:url("@/assets/images/f_01.png"); background-size:100%; background-position:center;
-}
+} */
 .m-temp.type01 .gage .comment {
     padding:4px 10px;
     position:absolute; bottom: 23px; left:20%;
