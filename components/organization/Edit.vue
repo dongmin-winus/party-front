@@ -7,15 +7,25 @@
         <input class="phone" :class="setPhoneWidth" type="number" :disabled="item.allow == 1" v-model="item.phone"  placeholder="휴대폰입력">
         <button v-if="!disabled" class="action" :disabled="item.allow == 1" :class="setActionBtnColor(item)" @click.prevent="action(item,index)">{{ setActionBtnName(item) }}</button>
       </div>
+      <modal
+        v-show="active"
+        @cancel="active = false; "
+    >
+        <template #inner>
+            <div class="m-pop-title">
+                <span class="point">조직활동 등록</span>
+            </div>
+
+            <div class="m-input-text type01">
+                <span>조직활동 등록 하시겠습니까?<br/>등록 시 등록 확인 문자가 발송됩니다.</span>
+            </div>
+            <div class="mt-20"></div>
+
+            <button type="button" class="m-btn type02 bg-revert-primary width-100" @click="action(registerItem,registerIndex)">등록</button>
+        </template>
+    </modal>
     </div>
-    <!-- <div class="sticky-btns">
-      <div class="m-btn-wrap w-500" @click="$emit('cancel')">
-          <a class="m-btn type01 bg-revert-red">뒤로</a>
-      </div>
-      <div class="m-btn-wrap w-500" @click="submit">
-          <a class="m-btn type01 bg-revert-primary">{{ btnEditType }}</a>
-      </div>
-    </div> -->
+
   </div>
   
 </template>
@@ -78,6 +88,9 @@ export default {
       //props not to be mutated
       dataCase: [],
       case2: [],
+
+      registerItem: {},
+      registerIndex: 0,
     }
   },
   created () {
@@ -90,7 +103,7 @@ export default {
       } else if(allow == 1) {
         return '✅';
       } else if(allow == 2) {
-        return '❎';
+        return '❌';
       }
     },
     async action(listItem, index){
@@ -104,6 +117,12 @@ export default {
           }
           if (!this.validatePhone(phone)) {
             return alert(`${index + 1} 번 전화번호를 올바르게 입력해주세요.`);
+          }
+          if(!this.active) {
+            this.registerItem = listItem;
+            this.registerIndex = index;
+            this.active = true;
+            return;
           }
         } else if (type === 'update') {
           if (name !== '' && !phone) {
@@ -119,14 +138,17 @@ export default {
         const method = type == 'create' ? 'post' : 'put';
         const response = await this.$axios[method]( api, { ...params });
         if(response.data.result) {
+          this.active = false;
           type == 'create' ? alert('등록 문자가 발송되었습니다.') : alert('회원정보가 수정되었습니다.');
           this.$emit('updateList', response.data.data, index);
         } else {
+          this.active = false;
           //TODO 여기가 문제
           alert('회원정보 등록/수정에 실패하였습니다.');
           this.$emit('rerenderList');
         }
       } catch (error) {
+        this.active = false;
         //list 새로 조회
         console.log(error, 'action:error')
         alert('회원정보 등록/수정 중 오류가 발생하였습니다.');
@@ -164,11 +186,11 @@ export default {
     width: 25%;
   }
   .list-container .phone.inactive {
-    width: 60%;
+    width: 58%;
     margin-right:10px;
   }
   .list-container .phone.active {
-    width: 40%;
+    width: 38%;
   }
   .list-container .action {
     width: 20%;
