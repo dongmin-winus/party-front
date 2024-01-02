@@ -12,7 +12,7 @@
         <div class="m-temp type01" v-if="$auth.user">
           <div :class="`gage-wrap ${activityClass}`">
               <div class="gage">
-                <div class="active" :style="`width:${count/goal_count*100}%;`"></div>
+                <div class="active" :style="`width:${count/goal_count > 1 ? 100 : count/goal_count*100}%;`"></div>
 
                 <!-- <div class="comment">
                     자유마을 가입수
