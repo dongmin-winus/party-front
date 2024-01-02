@@ -144,14 +144,14 @@ export default {
         } else {
           this.active = false;
           //TODO 여기가 문제
-          alert('회원정보 등록/수정에 실패하였습니다.');
+          alert(response.data.message?? '회원정보 등록/수정에 실패하였습니다.');
           this.$emit('rerenderList');
         }
       } catch (error) {
         this.active = false;
         //list 새로 조회
         console.log(error, 'action:error')
-        alert('회원정보 등록/수정 중 오류가 발생하였습니다.');
+        alert(response.data.message?? '회원정보 등록/수정 중 오류가 발생하였습니다.');
         //TODO 여기도 테스트 필요
         this.$emit('rerenderList');
       }

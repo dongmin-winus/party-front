@@ -87,7 +87,7 @@ export default {
       }
     }).then(() => {
       if(this.echo) this.disconnect();
-      this.connect(this.list[0].vol_id)
+      this.connect(this.$auth.user.id)
     }) 
   },
   // async mounted () {
@@ -125,6 +125,7 @@ export default {
       }
       this.echo.channel(`supervisors` + id)
         .listen("SupervisorUpdated", (e) => {
+          console.log(e, 'SupervisorUpdated')
           this.onSupervisorUpdated(e);
         });
     },
