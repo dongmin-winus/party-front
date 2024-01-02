@@ -119,7 +119,7 @@ export default {
         const method = type == 'create' ? 'post' : 'put';
         const response = await this.$axios[method]( api, { ...params });
         if(response.data.result) {
-          alert('회원정보 등록/수정에 성공하였습니다.');
+          type == 'create' ? alert('등록 문자가 발송되었습니다.') : alert('회원정보가 수정되었습니다.');
           this.$emit('updateList', response.data.data, index);
         } else {
           //TODO 여기가 문제
