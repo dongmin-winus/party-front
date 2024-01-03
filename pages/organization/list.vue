@@ -89,7 +89,7 @@ export default {
       return this.counterList.filter((item) => item.allow == 1).length;
     },
     formLength() {
-      return this.counterList.length < 12 ? 12 : Math.min(Math.ceil(this.list.length / 12) * 12, 144);
+      return this.counterList.length < 12 ? 12 : Math.min((Math.floor(this.list.length / 12) + 1) * 12, 144);
     },
     listFull() {
       return this.formLength == this.list.length;
