@@ -5,13 +5,13 @@
     </button>
     <div class="wrap evenly">
       <div class="m-title type01 text-center">
-        {{ $route.query.name }}님과 함께<br /> <span class="point">자유마을</span>에서<br />활동하시겠습니까?
+        {{ $route.query.name }}님과 함께<br /> <span class="point text-center">자유마을</span>에서<br />활동하시겠습니까?
       </div>
       <div>
         <div class="center m-board-btns">
           <div class="m-btns type01">
             <div class="m-btn-wrap">
-              <a href="#" class="m-btn type01 bg-primary" @click.prevent="clickEvent(1)">동의</a>
+              <a href="#" class="m-btn type01 bg-primary" @click.prevent="clickEvent(1)">동&nbsp;&nbsp;&nbsp;의</a>
             </div>
             <!-- <div class="m-btn-wrap">
               <a href="#" class="m-btn type01 bg-revert-red" @click.prevent="clickEvent(2)">아니오</a>
@@ -19,8 +19,8 @@
           </div>
         </div>
         <div class="m-title type01  mt-12">
-          <p class="sub">
-            ※ 동의하시는 경우, 귀하의 전화번호가 통해 SMS, 전화 수신 등 마케팅 활동을 위한 정보 수집에 활용됩니다.
+          <p class="sub custom">
+            ※ 동의하시는 경우, 귀하의 전화번호를 SMS, 전화 수신 등 마케팅 활동을 위한 정보 수집 등에 활용합니다.
           </p>
         </div>
       </div>
@@ -46,6 +46,10 @@ export default {
 </script>
 
 <style scoped>
+.custom {
+  font-family: 'GmarketSans' !important;
+}
+
 .f-height {
   height: 83vh;
 
@@ -78,5 +82,6 @@ export default {
 
 .text-center {
   text-align: center;
+  font-size: 26px !important;
 }
 </style>
