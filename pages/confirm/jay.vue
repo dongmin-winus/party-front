@@ -7,8 +7,8 @@
       <div class="m-title type01 text-center">
         {{ $route.query.name }}님과 함께<br /> <span class="point text-center">자유마을</span>에서<br />활동하시겠습니까?
       </div>
-      <div>
-        <div class="center m-board-btns">
+      <div class="mt-32">
+        <div class="mt-32 center m-board-btns">
           <div class="m-btns type01">
             <div class="m-btn-wrap">
               <a href="#" class="m-btn type01 bg-primary" @click.prevent="clickEvent(1)">동&nbsp;&nbsp;&nbsp;의</a>
@@ -76,7 +76,7 @@ export default {
 .evenly {
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: center;
   height: 100%;
 }
 
