@@ -39,7 +39,7 @@
                     <nuxt-link to="/notices" class="btn-util">
                         <img src="@/assets/images/bell.png" alt="" style="width:18px;">
                     </nuxt-link>
-<!--                    <button class="btn-util">
+                    <!--                    <button class="btn-util">
                         <img src="@/assets/images/dots.png" alt="" style="width:3px;">
                     </button>-->
                 </div>
@@ -66,7 +66,8 @@
                         <div class="fragment">
                             <div class="left">
                                 <div class="writer">
-                                    <div class="thumbnail" :style="`background-image:url('${item.user.img.url}')`" v-if="item.user.img"></div>
+                                    <div class="thumbnail" :style="`background-image:url('${item.user.img.url}')`"
+                                        v-if="item.user.img"></div>
                                     {{ item.user.nickname }}
                                 </div>
                                 <p class="date">{{ item.created_at }}</p>
@@ -80,12 +81,12 @@
 
                                 <div class="info">
                                     <img src="@/assets/images/comment-gray.png" alt="" style="width:12px;">
-                                    {{item.comment_count}}
+                                    {{ item.comment_count }}
                                 </div>
 
                                 <div class="info">
                                     <img src="@/assets/images/heart-gray.png" alt="" style="width:12px;">
-                                    {{item.like_count}}
+                                    {{ item.like_count }}
                                 </div>
                             </div>
                         </div>
@@ -94,7 +95,7 @@
                     <div class="m-board-content">
                         <h3 class="title">{{ item.title }}</h3>
 
-<!--                        <div class="m-thumbnail type01 mb-8" :style="`background-image:url(${item.img.url})`" v-if="item.img"></div>-->
+                        <!--                        <div class="m-thumbnail type01 mb-8" :style="`background-image:url(${item.img.url})`" v-if="item.img"></div>-->
 
                         <!-- 마을모임용 상세 -->
                         <div v-if="item.board === 'meetings'">
@@ -135,7 +136,7 @@
                                         모집인원
                                     </div>
                                     <p class="body">
-                                        {{ item.participant_count }} / {{item.participant_available_count}}
+                                        {{ item.participant_count }} / {{ item.participant_available_count }}
                                     </p>
                                 </div>
 
@@ -153,8 +154,10 @@
                             <div class="mt-16"></div>
 
                             <div class="m-tabs type02">
-                                <button :class="`m-tab ${tabIndex === 0 ? 'active' : ''}`" @click="tabIndex = 0">상세내용</button>
-                                <button :class="`m-tab ${tabIndex === 1 ? 'active' : ''}`" @click="() => {tabIndex = 1; initMap();}">장소</button>
+                                <button :class="`m-tab ${tabIndex === 0 ? 'active' : ''}`"
+                                    @click="tabIndex = 0">상세내용</button>
+                                <button :class="`m-tab ${tabIndex === 1 ? 'active' : ''}`"
+                                    @click="() => { tabIndex = 1; initMap(); }">장소</button>
                             </div>
 
                             <div class="mt-16"></div>
@@ -163,7 +166,7 @@
                                 <div :class="`m-tabs-content ${tabIndex === 0 ? 'active' : ''}`">
                                     <div class="editor-body" v-html="item.content"></div>
                                     <div>
-                                        장소: {{item.address}} {{item.address_detail}}
+                                        장소: {{ item.address }} {{ item.address_detail }}
                                     </div>
                                 </div>
 
@@ -173,10 +176,26 @@
                             </div>
 
                             <div class="mt-16"></div>
+                            <!--  비회원 일떄 인풋창 보임 -->
+                            <div class="m-input-text type01">
+                                <input v-model="noUser.name" type="text" v-if="this.$auth.user == null"
+                                    placeholder="성함 ex)홍길동"
+                                    oninput="this.value = this.value.replace(/[^ㄱ-힣a-zA-Z]/g, '').replace(/(\..*)\./g, '$1');" />
+                            </div>
+                            <div class="mt-16  m-input-wrap m-input-text type01">
+                                <input v-model="noUser.phone" type="text" v-if="this.$auth.user == null"
+                                    placeholder="연락처 11자리(-없이 숫자만 입력)" maxlength="11"
+                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+                            </div>
+                            <div class="mt-16"></div>
 
-                            <a href="#" class="m-btn type03 state03" v-if="!item.can_participate">{{item.meetingState}}</a>
-                            <a href="#" class="m-btn type03 state02" v-else-if="item.is_participate" @click="unparticipate">참여취소</a>
+                            <a href="#" class="m-btn type03 state03" v-if="!item.can_participate">{{ item.meetingState
+                            }}</a>
+                            <a href="#" class="m-btn type03 state02" v-else-if="item.is_participate"
+                                @click="unparticipate">참여취소</a>
                             <a href="#" class="m-btn type03" v-else @click.prevent="participate">참여하기</a>
+
+
                         </div>
 
                         <!-- 마을소식, 포토, 영상, 질문 등 -->
@@ -196,18 +215,20 @@
                                     <a href="#" class="m-btn type01 bg-revert-red" @click.prevent="remove">삭제하기</a>
                                 </div>
                                 <div class="m-btn-wrap">
-                                    <nuxt-link :to="`/posts/create?id=${item.id}`" href="#" class="m-btn type01 bg-primary">수정하기</nuxt-link>
+                                    <nuxt-link :to="`/posts/create?id=${item.id}`" href="#"
+                                        class="m-btn type01 bg-primary">수정하기</nuxt-link>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="m-board-bottom">
+                <div class="m-board-bottom" :class="this.$auth.user == null ? 'm-board-bottom-margin' : ''">
                     <div class="wrap">
                         <div class="utils">
                             <button class="btn-util" @click="toggleLike">
-                                <img src="@/assets/images/heart-active.png" alt="" style="width:14px;" v-if="item.is_like == 1">
+                                <img src="@/assets/images/heart-active.png" alt="" style="width:14px;"
+                                    v-if="item.is_like == 1">
                                 <img src="@/assets/images/heart-inactive.png" alt="" style="width:14px;" v-else>
                                 좋아요 {{ item.like_count }}
                             </button>
@@ -232,22 +253,19 @@
 
                 <div class="wrap">
                     <trigger-observer @transparent="hideQuicks">
-                    <comments :commentable_id="item.id" commentable_type="post" @calculateCommentCount="calculateCommentCount" @removed="commentRemoved" v-if="item.id"/>
+                        <comments :commentable_id="item.id" commentable_type="post"
+                            @calculateCommentCount="calculateCommentCount" @removed="commentRemoved" v-if="item.id" />
 
                     </trigger-observer>
                 </div>
             </div>
 
-            <quicks 
-                :create-url="`/posts/create?board=${item.board}`"
-                :btnName="'글쓰기'"
-                v-show="showQuicks"
-            />
+            <quicks :create-url="`/posts/create?board=${item.board}`" :btnName="'글쓰기'" v-show="showQuicks" />
         </div>
 
         <!-- 하단 네비게이션바 -->
         <!-- <comment-navigation @created="(data) => {comments.data.push(data)}" /> -->
-            <navigation />
+        <navigation />
     </div>
 </template>
 
@@ -260,7 +278,7 @@ import KakaoHelper from '../../utils/KakaoHelper';
 import TriggerObserver from '../../components/triggerObserver';
 import { mapActions } from 'vuex';
 export default {
-    components: {InputThumbnail, InputImg, InputLink, InputCamera, TriggerObserver},
+    components: { InputThumbnail, InputImg, InputLink, InputCamera, TriggerObserver },
     auth: false,
     data() {
         return {
@@ -283,6 +301,13 @@ export default {
             activeSpamPop: false,
 
             showQuicks: true,
+
+            // 비회원 
+            noUser: {
+                name: "",
+                phone: "",
+            }
+
         }
     },
     methods: {
@@ -297,24 +322,24 @@ export default {
                 });
         },
 
-        remove(){
+        remove() {
             this.$axios.delete("/api/posts/" + this.item.id)
                 .then(response => {
-                    this.$router.push({name: 'posts', params: {deleted: true}});
+                    this.$router.push({ name: 'posts', params: { deleted: true } });
                 });
         },
 
-        toggleLike(e){
+        toggleLike(e) {
             e.preventDefault();
             e.stopPropagation();
 
-            if(!this.$auth.user)
+            if (!this.$auth.user)
                 return alert("로그인 후 이용 부탁드립니다.");
 
-            if(this.item.is_like){
+            if (this.item.is_like) {
                 this.item.is_like = 0;
                 this.item.like_count -= 1;
-            }else{
+            } else {
                 this.item.is_like = 1;
                 this.item.like_count += 1;
             }
@@ -322,23 +347,47 @@ export default {
             this.$axios.put("/api/likes/posts/" + this.item.id);
         },
         calculateCommentCount(type) {
-            if(type == 'add')
-                this.item.comment_count +=1;
-            if(type === 'remove')
-                this.item.comment_count -=1;
+            if (type == 'add')
+                this.item.comment_count += 1;
+            if (type === 'remove')
+                this.item.comment_count -= 1;
         },
 
-        participate(){
-            this.$axios.post("/api/participants", {
-                post_id: this.item.id
-            }).then(response => {
-                alert(response.data.message);
-
-                this.item = response.data.data;
-            })
+        participate() {
+            if (this.$auth.user == null) {
+                if(this.noUser.name == "") {
+                    alert('성함을 입력해주세요.')
+                    return;
+                } else if(this.noUser.phone == "") {
+                    alert('연락처를 입력해주세요.')
+                    return;
+                } else if(this.noUser.phone.length != 11) {
+                    alert('연락처를 11자리 입력해주세요')
+                    return;
+                }  else {
+                    this.$axios.post("/api/participants", {
+                        post_id: this.item.id,
+                        name: this.noUser.name,
+                        phone: this.noUser.phone,
+                    }).then(response => {
+                        alert(response.data.message);
+                        this.item = response.data.data;
+                        if (this.$auth.user == null) {
+                            this.$router.push("/posts");
+                        }
+                    })
+                }
+            } else {
+                this.$axios.post("/api/participants", {
+                    post_id: this.item.id,
+                }).then(response => {
+                    alert(response.data.message);
+                    this.item = response.data.data;
+                })
+            }
         },
 
-        unparticipate(){
+        unparticipate() {
             this.$axios.delete("/api/participants", {
                 params: {
                     post_id: this.item.id
@@ -348,21 +397,21 @@ export default {
             })
         },
 
-        commentRemoved(){
+        commentRemoved() {
             this.item.comment_count -= 1;
         },
 
         initMap() {
             let self = this;
 
-            setTimeout(function(){
+            setTimeout(function () {
                 const container = document.getElementById("map");
 
-                if(!self.map){
-                    const coords =  new kakao.maps.LatLng(self.item.y, self.item.x);
+                if (!self.map) {
+                    const coords = new kakao.maps.LatLng(self.item.y, self.item.x);
 
                     const options = {
-                        center:coords,
+                        center: coords,
                         level: 5,
                     };
 
@@ -379,8 +428,8 @@ export default {
 
         },
 
-        back(){
-            if(document.referrer)
+        back() {
+            if (document.referrer)
                 return this.$router.back();
 
             return this.$router.push("/");
@@ -400,14 +449,17 @@ export default {
             });
     },
     beforeDestroy() {
-        if(this.$route.name !== 'posts')
+        if (this.$route.name !== 'posts')
             this.CLEAR_POST_STATE();
     }
 }
 </script>
 
 <style scoped>
-    .m-board-content .title {
-        padding-bottom:30px;
-    }
-</style>
+.m-board-content .title {
+    padding-bottom: 30px;
+}
+
+.m-board-bottom-margin {
+    margin-top: 30px;
+}</style>
