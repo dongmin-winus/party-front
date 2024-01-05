@@ -17,7 +17,7 @@
           </div>
 
           <div class="m-input-text type01">
-            <span>조직활동 등록 하시겠습니까?<br />등록 시 등록 확인 문자가 발송됩니다.</span>
+            <span>{{ targetName }}님에게 동의 요청 하시겠습니까?<br />요청 시 등록 확인 문자가 발송됩니다.</span>
           </div>
           <div class="mt-20"></div>
 
@@ -108,6 +108,7 @@ export default {
 
       focused: false,
       focusedIdx: -1,
+      targetName: '',
     }
   },
   methods: {
@@ -125,6 +126,7 @@ export default {
     async action(listItem, index) {
       try {
         const { name, phone, id, vol_id } = listItem;
+        this.targetName = name;
         const type = id ? this.focused && listItem.id == this.dataCase[this.focusedIdx].id ? 'update' : 'resend' : 'create';
         if (type === 'create') {
           if (!name) {
@@ -166,7 +168,7 @@ export default {
             api: '/api/user-register',
             method: 'post',
             params: { vol_id, name, phone, written: 0 },
-            success: '등록 문자가 발송되었습니다.',
+            success: '활동요청문자가 발송되었습니다.',
             fail: '회원정보 등록에 실패하였습니다.'
           },
           {
@@ -182,8 +184,8 @@ export default {
             api: `/api/user-resend/${id}`,
             method: 'post',
             params: { phone },
-            success: '등록 문자가 발송되었습니다.',
-            fail: '등록 문자 발송에 실패하였습니다.'
+            success: '활동요청문자가 발송되었습니다.',
+            fail: '활동요청문자 발송에 실패하였습니다.'
           }
         ]
         // const api = type == 'create' ? '/api/user-register' : `/api/user-list/${id}`;

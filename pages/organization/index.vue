@@ -5,7 +5,7 @@
       <div class="content">
         <div class="m-title type01">
           <p class="sub">일천만 조직을 위한</p>
-          {{ $auth.user.district.district }} <span class="point">조직활동</span>
+          {{ $store.state.district.district }} <span class="point">조직활동</span>
         </div>
       </div>
     </div>
@@ -28,24 +28,24 @@
         <nuxt-link to="/organization/list" class="menus first">
           <div class="left">
             <p class="sub primary">누구나 우리마을 동대표!</p>
-            <p class="title primary">조직구성</p>
+            <p class="title primary">12명 조직하기</p>
           </div>
           <div class="right" :style="getRightIcon(1)"></div>
         </nuxt-link>
         <div @click="block" class="menus second">
           <div class="left">
             <p class="sub white">다양한 조직업무를 한번에</p>
-            <p class="title white">조직관리</p>
+            <p class="title white">보고&관리</p>
           </div>
           <div class="right" :style="getRightIcon(2)"></div>
         </div>
-        <div @click="block" class="menus third">
+        <nuxt-link to="/organization/brief" class="menus third">
           <div class="left">
             <p class="sub primary">우리 조직도을 한눈에</p>
             <p class="title primary">조직도</p>
           </div>
           <div class="right" :style="getRightIcon(3)"></div>
-        </div>
+        </nuxt-link>
       </div>
 
 
@@ -86,7 +86,7 @@ export default {
       alert('오픈 예정입니다.');
     },
     async getRegisterCount() {
-      const { data } = await this.$axios.get(`api/goal/${this.$auth.user.district_id}`);
+      const { data } = await this.$axios.get(`api/goal/${this.$store.state.district.id}`);
       this.count = data.count;
       this.goal_count = data.goal_count;
     },

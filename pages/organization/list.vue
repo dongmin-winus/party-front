@@ -10,7 +10,7 @@
           </button>
         </div>
         <div class="center">
-          <h3 class="title">{{ $auth.user.district.district }} 조직구성</h3>
+          <h3 class="title">{{ $store.state.district.district }}</h3>
         </div>
 
         <!-- <nuxt-link to="/contents/settings" class="btn-util">
@@ -23,7 +23,7 @@
     <div class="container">
       <div class="content">
         <div class="m-title type01">
-          <span class="point">임원구성</span>
+          <span class="point">12명 구성</span>
         </div>
       </div>
       <p class="info-quote">등록 완료 시 입력 된 회원에게 확인 문자가 발송됩니다. 12명 이상 승인 시 자동 승급됩니다.</p>
@@ -52,20 +52,20 @@
     <modal v-if="activeModal" @cancel="activeModal = false;">
       <template #inner>
         <div class="m-pop-title">
-          <span class="point">30명 추천서</span>
+          <span class="point">12명 조직하기</span>
         </div>
 
-        <div class="m-input-text type01">
-          <span>로그아웃 하시겠습니까?</span>
+        <div class="m-input-text type01" style="display:flex; justify-content:center;">
+          <span>{{ `${promoteLabel} 신청 자격을 취득하셨습니다.` }} <br /> {{ `${$store.state.district.district} ${promoteLabel}
+            신청하시겠습니까?` }}</span>
         </div>
         <div class="mt-20"></div>
 
-        <button type="button" class="m-btn type02 bg-revert-red width-100" @click="logout">로그아웃</button>
+        <button type="button" class="m-btn type02 bg-primary width-100" @click="promote">신청</button>
       </template>
     </modal>
   </div>
 </template>
-
 <script>
 import common from '@/utils/common';
 import Echo from 'laravel-echo';
@@ -112,7 +112,8 @@ export default {
       list: [],
       listType: 'all',
       counterList: [], // 숫자세기용
-      activeModal: false
+      activeModal: false,
+      promoteLabel: '',
 
     }
   },
@@ -125,6 +126,10 @@ export default {
       if (response.data.result) {
         this.list = [...response.data.data];
         this.counterList = [...response.data.data];
+        if (this.granted > 11 && !response.data.position) {
+          this.promoteLabel = '동대표';
+          this.activeModal = true;
+        }
       }
     }).then(() => {
       if (this.echo) this.disconnect();
@@ -135,6 +140,23 @@ export default {
   //   await this.getList();
   // },
   methods: {
+    async promote() {
+      const response = await this.$axios.post('/api/supers/register', {
+
+        district_id: this.$auth.user.district.id,
+        phone: this.$auth.user.phone,
+        name: this.$auth.user.name,
+        position: this.promoteLabel
+
+      });
+      if (response.data.result) {
+        alert('동대표 신청이 완료되었습니다.');
+        this.activeModal = false;
+        this.$router.push('/organization');
+      } else {
+        alert(response.data.message);
+      }
+    },
     updateList() {
       this.getList();
     },
