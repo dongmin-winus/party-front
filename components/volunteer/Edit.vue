@@ -1,11 +1,13 @@
 <template>
   <div>
     <div class="list-container">
-      <div v-for="(item,index) in dataCase" :key="index">
+      <div v-for="(item, index) in dataCase" :key="index">
         <span style="text-align: center;">{{ index + 1 }}</span>
-        <input class="name" type="text" :disabled="disabled" v-model="item.name"  placeholder="이릅입력">
-        <input class="phone" :class="setPhoneWidth" type="number" :disabled="disabled" v-model="item.phone"  placeholder="휴대폰입력">
-        <button v-if="!disabled" class="action" :class="setActionBtnColor(item)" @click.prevnet="action(item,index)">{{ setActionBtnName(item) }}</button>
+        <input class="name" type="text" :disabled="disabled" v-model="item.name" placeholder="이릅입력">
+        <input class="phone" :class="setPhoneWidth" type="number" :disabled="disabled" v-model="item.phone"
+          placeholder="휴대폰입력">
+        <button v-if="!disabled" class="action" :class="setActionBtnColor(item)" @click.prevnet="action(item, index)">{{
+          setActionBtnName(item) }}</button>
       </div>
     </div>
     <!-- <div class="sticky-btns">
@@ -17,7 +19,6 @@
       </div>
     </div> -->
   </div>
-  
 </template>
 
 <script>
@@ -26,7 +27,7 @@ export default {
   mixins: [common],
   props: {
     disabled: {
-      default(){
+      default() {
         return true;
       }
     },
@@ -37,18 +38,18 @@ export default {
     },
     //not used
     editType: {
-      default(){
+      default() {
         return 'create';
       }
     }
   },
   computed: {
-    setPhoneWidth(){
+    setPhoneWidth() {
       return this.disabled ? 'inactive' : 'active';
     },
     listForm() {
       const container = [];
-      for(let i = 0; i < this.maxLength; i++) {
+      for (let i = 0; i < this.maxLength; i++) {
         container.push({
           name: '',
           phone: '',
@@ -59,10 +60,10 @@ export default {
     }
   },
   watch: {
-   '$store.getters.getVolunteerList':{
+    '$store.getters.getVolunteerList': {
       handler(newVal) {
-        console.log(newVal,'volunteerList watched')
-        const mappingList =  this.listForm.map((item, index) => {
+        console.log(newVal, 'volunteerList watched')
+        const mappingList = this.listForm.map((item, index) => {
           return {
             ...item,
             ...newVal[index]
@@ -81,13 +82,13 @@ export default {
       case2: [],
     }
   },
-  created () {
+  created() {
 
   },
   methods: {
 
-    async action(listItem, index){
-      console.log(listItem,index, 'action:listItem')
+    async action(listItem, index) {
+      console.log(listItem, index, 'action:listItem')
       try {
         const { name, phone, id, vol_id } = listItem;
         const type = id ? 'update' : 'create';
@@ -108,15 +109,15 @@ export default {
         }
 
         const api = type == 'create' ? '/api/volunteer-register' : `/api/volunteer-list/${id}`;
-        const params = type == 'create' ? {vol_id,name, phone, written:0} : { name, phone, written:2};
+        const params = type == 'create' ? { vol_id, name, phone, written: 0 } : { name, phone, written: 2 };
         const method = type == 'create' ? 'post' : 'put';
-        const response = await this.$axios[method]( api, { ...params });
-        if(response.data.result) {
+        const response = await this.$axios[method](api, { ...params });
+        if (response.data.result) {
           alert('회원정보 등록/수정에 성공하였습니다.');
           this.$emit('updateList', response.data.data, index);
         } else {
           //TODO 여기가 문제
-          alert('회원정보 등록/수정에 실패하였습니다.');
+          alert(response.data.message ?? '회원정보 등록/수정에 실패하였습니다.');
           this.$emit('rerenderList');
         }
       } catch (error) {
@@ -128,10 +129,10 @@ export default {
       }
 
     },
-    setActionBtnName(listItem){
+    setActionBtnName(listItem) {
       return listItem.id ? '수정' : '등록';
     },
-    setActionBtnColor(listItem){
+    setActionBtnColor(listItem) {
       return listItem.id ? 'bg-revert-red' : 'bg-revert-primary';
     }
   }
@@ -139,67 +140,76 @@ export default {
 </script>
 
 <style scoped>
-  .list-container {
-    margin: 24px 5px 0 5px;
-  }
-  .list-container > div {
-    display: flex;
-    justify-content: space-between;
-  }
-  .list-container > div > input {
-    border: 1px solid #eee;
-    border-radius: 4px;
-    padding: 8px;
-    margin-top: 8px;
-  }
-  .list-container .name {
-    width: 25%;
-  }
-  .list-container .phone.inactive {
-    width: 60%;
-    margin-right:10px;
-  }
-  .list-container .phone.active {
-    width: 40%;
-  }
-  .list-container .action {
-    width: 20%;
-    margin-top: 8px;
-    margin-right: 10px;
-    border: 1px solid #eee;
-    border-radius: 4px;
-    padding: 8px;
-    font-size: 14px;
-    
-  }
-  .list-container > div > span {
-    width: 10%;
-    padding: 10px 2px;
-    margin-top: 8px;
-  }
+.list-container {
+  margin: 24px 5px 0 5px;
+}
+
+.list-container>div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.list-container>div>input {
+  border: 1px solid #eee;
+  border-radius: 4px;
+  padding: 8px;
+  margin-top: 8px;
+}
+
+.list-container .name {
+  width: 25%;
+}
+
+.list-container .phone.inactive {
+  width: 60%;
+  margin-right: 10px;
+}
+
+.list-container .phone.active {
+  width: 40%;
+}
+
+.list-container .action {
+  width: 20%;
+  margin-top: 8px;
+  margin-right: 10px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  padding: 8px;
+  font-size: 14px;
+
+}
+
+.list-container>div>span {
+  width: 10%;
+  padding: 10px 2px;
+  margin-top: 8px;
+}
+
+.sticky-btns {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+@media screen and (min-width: 501px) {
   .sticky-btns {
     position: fixed;
     bottom: 0;
-    left: 0;
-    width: 100%;
+    left: 36%;
+    width: 28%;
     display: flex;
     justify-content: space-between;
     padding: 12px;
-    background-color: rgba( 255, 255, 255, 0.1 );
+    background-color: rgba(255, 255, 255, 0.1);
   }
-  @media screen and (min-width: 501px) {
-    .sticky-btns {
-      position: fixed;
-      bottom: 0;
-      left: 36%;
-      width: 28%;
-      display: flex;
-      justify-content: space-between;
-      padding: 12px;
-      background-color: rgba( 255, 255, 255, 0.1 );
-    }
-  }
-  .sticky-btns .w-500 {
-    width: 48%;
-  }
-</style>
+}
+
+.sticky-btns .w-500 {
+  width: 48%;
+}</style>
