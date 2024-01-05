@@ -130,7 +130,7 @@ export default {
     },
     // {{local_api_url}}/user-accept/{{id}}?allow=1, param: {allow 1인 경우 승인, allow 2인 경우 미승인} 
     async clickEvent(number, id = '') {
-      const response = await this.$axios.post(`api/user-accept/${this.$route.query.id}?allow=${number}&user_id=${id}`);
+      const response = await this.$axios.post(`api/user-accept/${this.$route.query.id}?allow=${number}&district_id=${id}`);
       if (response) {
         alert('응답이 등록되었습니다.')
         this.$router.push('/');
@@ -140,8 +140,8 @@ export default {
       try {
         const response1 = await this.$axios.post("/api/auth/register", this.form)
         console.log(response1, 44)
-        const user_id = response1.data.data.id
-        const response2 = await this.clickEvent(number, user_id);
+        const district_id = response1.data.data.district_id
+        const response2 = await this.clickEvent(number, district_id);
       } catch (error) {
         alert('데이터 전송 중 오류가 발생하였습니다.')
         console.log(error, 'error')
