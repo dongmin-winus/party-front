@@ -522,7 +522,6 @@ export default {
 }
 .m-input-checkboxes.type03 input:checked + label {
     color:#0BAF00;
-    text-decration:underline;
 }
 
 .m-input-checkboxes.type04 {
@@ -544,7 +543,6 @@ export default {
 }
 .m-input-checkboxes.type04 input:checked + label {
     color:#0BAF00;
-    text-decration:underline;
 }
 
 .m-btns.type01 {
