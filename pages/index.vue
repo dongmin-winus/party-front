@@ -738,7 +738,7 @@
                         <span>{{ modalSlideCurrentPage }}</span> &nbsp;|&nbsp;
                         <span>{{ noticePopupContents?.length }}</span>&nbsp;&nbsp;
                         <button class="circle-btn" @click="startAutoplay" v-if="!modalSlideActive">▶︎</button>
-                        <button class="circle-btn" @click="pauseAutoplay" v-else-if="modalSlideActive">⏸</button>
+                        <button class="circle-btn" @click="pauseAutoplay" v-else-if="modalSlideActive">⏽⏽</button>
                         <button class="circle-btn" @click="showPrev">❮</button>
                         <button class="circle-btn" @click="showNext">❯</button>
                     </div>
@@ -1749,7 +1749,7 @@ export default {
 
 .btn-container .btn {
     flex: 1;
-    font-size: 14px;
+    font-size: 18px;
     background-color: transparent;
     color: #eee;
 }
