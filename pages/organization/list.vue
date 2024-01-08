@@ -129,6 +129,9 @@ export default {
         if (this.granted > 11 && !response.data.position) {
           this.promoteLabel = '동대표';
           this.activeModal = true;
+        } else if (this.granted == 144 && response.data.position == '동대표') {
+          this.promoteLabel = '실행위원장';
+          this.activeModal = true;
         }
       }
     }).then(() => {
@@ -150,7 +153,7 @@ export default {
 
       });
       if (response.data.result) {
-        alert('동대표 신청이 완료되었습니다.');
+        alert(`${this.promoteLabel} 신청이 완료되었습니다.`);
         this.activeModal = false;
         this.$router.push('/organization');
       } else {
