@@ -367,6 +367,7 @@ export default {
                 }  else {
                     this.$axios.post("/api/participants", {
                         post_id: this.item.id,
+                        user_id: null,
                         name: this.noUser.name,
                         phone: this.noUser.phone,
                     }).then(response => {
@@ -390,7 +391,8 @@ export default {
         unparticipate() {
             this.$axios.delete("/api/participants", {
                 params: {
-                    post_id: this.item.id
+                    post_id: this.item.id,
+                    user_id: this.$auth.user.id,
                 }
             }).then(response => {
                 this.item = response.data.data;
@@ -438,7 +440,6 @@ export default {
 
     mounted() {
         kakao.maps.load();
-
         let kakaoHelper = new KakaoHelper(Kakao);
 
         this.$axios.get("/api/posts/" + this.$route.params.id)
