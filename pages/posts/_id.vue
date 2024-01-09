@@ -381,6 +381,7 @@ export default {
             } else {
                 this.$axios.post("/api/participants", {
                     post_id: this.item.id,
+                    user_id: this.$auth.user.id,
                 }).then(response => {
                     alert(response.data.message);
                     this.item = response.data.data;
@@ -392,7 +393,6 @@ export default {
             this.$axios.delete("/api/participants", {
                 params: {
                     post_id: this.item.id,
-                    user_id: this.$auth.user.id,
                 }
             }).then(response => {
                 this.item = response.data.data;
