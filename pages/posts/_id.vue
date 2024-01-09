@@ -136,7 +136,7 @@
                                         모집인원
                                     </div>
                                     <p class="body">
-                                        {{ item.participant_count }} / {{ item.participant_available_count }}
+                                        {{ item.participant_count  == null ? 0 : item.participant_count  }} / {{ item.participant_available_count }}
                                     </p>
                                 </div>
 
@@ -444,7 +444,6 @@ export default {
         this.$axios.get("/api/posts/" + this.$route.params.id)
             .then(response => {
                 this.item = response.data.data;
-
                 kakaoHelper.initSharePost(this.item, this.$auth.user.id);
             });
     },
