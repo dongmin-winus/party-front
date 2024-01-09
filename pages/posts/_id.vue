@@ -444,6 +444,9 @@ export default {
         this.$axios.get("/api/posts/" + this.$route.params.id)
             .then(response => {
                 this.item = response.data.data;
+                if(this.$auth.user == null) {
+                    this.item.is_participate = 0;
+                }
                 kakaoHelper.initSharePost(this.item, this.$auth.user.id);
             });
     },
