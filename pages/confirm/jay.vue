@@ -1,6 +1,6 @@
 <template>
   <div class=" f-height">
-    <button class="btn-close" @click.prevent="clickEvent(2)">
+    <button class="btn-close" @click.prevent="$router.push('/')">
       <img src="@/assets/images/x.png" alt="x" style="width:21px;">
     </button>
     <div class="wrap evenly">
@@ -9,7 +9,7 @@
       </div>
       <div class="area-register">
         <!-- 내용 영역 -->
-        <div class="">
+        <div v-if="!isMember">
           <div class="wrap">
             <div class="mt-12"></div>
 
@@ -58,11 +58,12 @@
       <div class="mt-12 center m-board-btns">
         <div class="m-btns type01">
           <div class="m-btn-wrap">
-            <a href="#" class="m-btn type01 bg-primary" @click.prevent="registerAndClickEvent(1)">동&nbsp;&nbsp;&nbsp;의</a>
+            <a href="#" class="m-btn type01 bg-revert-red" @click.prevent="clickEvent(2)">거 절</a>
           </div>
-          <!-- <div class="m-btn-wrap">
-              <a href="#" class="m-btn type01 bg-revert-red" @click.prevent="clickEvent(2)">아니오</a>
-            </div> -->
+          <div class="m-btn-wrap">
+            <a href="#" class="m-btn type01 bg-primary" @click.prevent="handleAgree">동&nbsp;&nbsp;&nbsp;의</a>
+          </div>
+
         </div>
       </div>
       <div class="m-title type01  mt-12">
@@ -81,6 +82,7 @@ export default {
   mixins: [common],
   data() {
     return {
+      isMember: true,
       form: {
         nickname: "",
         birth: "",
@@ -116,6 +118,12 @@ export default {
   },
   async mounted() {
     const { data } = await this.$axios.get(`api/user-info/${this.$route.query.id}`);
+    const isMember = await this.$axios.$get(`/api/member-certify?phone=${data.phone}`)
+    if (isMember.message == '이미 가입된 연락처입니다.') {
+      this.isMember = true
+    }else {
+      this.isMember = false
+    }
     this.form = {
       ...this.form,
       nickname: data.name,
@@ -132,8 +140,15 @@ export default {
     async clickEvent(number, id = '') {
       const response = await this.$axios.post(`api/user-accept/${this.$route.query.id}?allow=${number}&district_id=${id}`);
       if (response) {
-        alert('응답이 등록되었습니다.')
+        alert(`${response.data.message}처리 되었습니다.`)
         this.$router.push('/');
+      }
+    },
+    handleAgree() {
+      if (this.isMember) {
+        this.clickEvent(1)
+      } else {
+        this.registerAndClickEvent(1)
       }
     },
     async registerAndClickEvent(number) {
