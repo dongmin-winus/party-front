@@ -28,21 +28,25 @@
           </div>
           <div class="mt-12 contents-shadow">
             <div class="mission">
-              <div class="inner-content" v-for="(item,index) in surveys"  :key="index">
+              <div class="inner-content" v-for="(item,index) in surveys" :key="index">
                 <div class="right">
-                  <nuxt-link :to="`/survey/list/${item.id}`" class="writings">
+                  <nuxt-link v-if="item.user_check == 0" :to="`/survey/list/${item.id}`" class="writings">
                     <b class="title">{{ replaceText(item.title,10) }}</b>
                     <p style="color:#777">{{ formatDate(item.created_at,'.') }}</p>
                     <!-- <p><span style="color:#0BAF00">{{ item.participant_count }}</span>명 참여중</p> -->
                   </nuxt-link>
+                  <div v-else @click="block" class="writings">
+                    <b class="title">{{ replaceText(item.title,10) }}</b>
+                    <p style="color:#777">{{ formatDate(item.created_at,'.') }}</p>
+                  </div>
                   <div class="btns">
-                    <button v-if="item.is_participate == 0" class="m-btn type01 primary" style="width: 80px; background-color:rgb(228,245,226);"
-                      @click.stop="toggleParticipate(item.id)"
+                    <button v-if="item.user_check == 0" class="m-btn type01 primary" style="width: 80px; background-color:rgb(228,245,226);"
+                      @click.stop="$router.push(`/survey/list/${item.id}`)"
                     >
                       참여
                     </button>
-                    <button v-if="item.is_participate != 0" class="m-btn type01 bg-revert-primary primary" style="width: 80px; background-color:rgb(228,245,226);"
-                      @click.stop="toggleParticipate(item.id)" 
+                    <button v-if="item.user_check != 0" class="m-btn type01 bg-revert-primary primary" style="width: 80px; background-color:rgb(228,245,226);"
+                      @click.stop="block" 
                     >
                       참여 완료
                     </button>
@@ -50,7 +54,7 @@
                 </div>
               </div>
             </div>
-            <nuxt-link to="" class="m-btn type02 bg-revert-primary"> 더보기 +</nuxt-link>
+            <!-- <nuxt-link to="" class="m-btn type02 bg-revert-primary"> 더보기 +</nuxt-link> -->
           </div>
         </div>
 
@@ -99,9 +103,14 @@ export default {
     }
   },
   methods: {
-    async getList() {
-      const response = await this.$axios.get(`/api/forms`)
-      this.surveys = response.data.data.filter(item => item.opening == 1);
+    async getList(page = 1) {
+      const response = await this.$axios.get(`/api/forms?page=${page}`)
+      const filteredData = response.data.data.filter(item => item.opening == 1);
+      if(filteredData.length > 0) {
+        this.surveys = filteredData;
+      }else {
+        await this.getList(page+1);
+      }
     },
     async getMissions(categoryId = null) {
       const response = await this.$axios.get(`/api/missions`, {
@@ -125,6 +134,9 @@ export default {
         alert(response.data.message);
         this.getMissions(this.selectedCategory);
       }
+    },
+    block() {
+      alert('이미 참여하셨습니다.');
     }
   },
   mounted () {

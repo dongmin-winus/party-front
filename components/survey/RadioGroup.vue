@@ -7,7 +7,7 @@
         {{item.sub_text}}
       </p>
       <div class="value">
-        <div class="checkboxes custom">
+        <div class="checkboxes" :class="setCustom">
           <div class="checkbox" v-for="(el, index) in item.values" :key="index">
             <input type="radio" style="display:inline !important;" :id="el" :value="index"
               v-model="inputValue" />
@@ -34,6 +34,10 @@ export default {
       type: Object,
       default: () => { }
     },
+    isCustom: {
+      type: Boolean,
+      default: false
+    }
   }, 
   watch: {
     inputValue(val) {
@@ -42,6 +46,11 @@ export default {
         value: val
       }
       this.$emit('inputValue', response)
+    }
+  },
+  computed: {
+    setCustom() {
+      return this.isCustom ? 'custom' : ''
     }
   },
   data() {

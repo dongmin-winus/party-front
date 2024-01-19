@@ -149,14 +149,12 @@ export default {
     },
     async submit() {
       //validation
-      const requiredArr = this.formBuildArr.filter(e => e.required === 1);
+      const requiredArr = this.buildArrWoHeader.filter(e => e.required === 1);
       const requiredIds = requiredArr.map(e => e.id);
-      const requiredValues = this.values.filter(e => requiredIds.includes(e.id));
-      const requiredValuesIds = requiredValues.map(e => e.id);
-      const requiredValuesValues = requiredValues.map(e => e.value);
-      const requiredValuesValuesFiltered = requiredValuesValues.filter(e => e !== '');
-      if (requiredValuesIds.length !== requiredValuesValuesFiltered.length) {
-        alert('필수값을 입력해주세요.')
+      const valuesIds = this.values.map(e => e.id);
+      const diff = requiredIds.filter(x => !valuesIds.includes(x));
+      if (diff.length > 0) {
+        alert('필수항목을 입력해주세요.');
         return;
       }
 
