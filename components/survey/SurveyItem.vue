@@ -1,7 +1,7 @@
 <template>
   <div>
     <CheckboxGroup v-if="item.tag === 'checkbox'" :item="item" @inputValue="inputValueChanged" />
-    <RadioGroup v-if="item.tag === 'radio'" :item="item" @inputValue="inputValueChanged" />
+    <RadioGroup v-if="item.tag === 'radio'" :item="item" :isCustom="custom" @inputValue="inputValueChanged" />
     <File v-if="item.tag === 'file'" :item="item" :form_id="form_id" @inputValue="inputValueChanged" />
     <Textarea v-if="item.tag === 'textarea'" :item="item" @inputValue="inputValueChanged"/>
     <InputText v-if="item.tag === 'text'" :item="item" @inputValue="inputValueChanged"/>
@@ -39,6 +39,11 @@ export default {
       type: String,
       default: null
     },
+    custom: {
+      type: Boolean,
+      default: false
+    
+    }
   },
   methods: {
     inputValueChanged(item) {

@@ -10,7 +10,7 @@
         <!-- <input type="file" class="input-text" /> -->
         
         <div class="filebox">
-          <input type="search" class="upload-name" v-model="file_name" :class="remove" placeholder="첨부파일" disabled >
+          <input type="search" class="upload-name" v-model="file_name" placeholder="첨부파일" disabled >
               <svg 
                 v-if="file_name != '첨부파일'"
                 @click="clearInputValue"
