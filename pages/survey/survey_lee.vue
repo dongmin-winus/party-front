@@ -48,7 +48,7 @@
             </div>
           </div>
           <div class="item">
-            <Label :dot="true" :required="true" highlight="7대 결의사항" label="가입" />
+            <Label :dot="true" :required="true" highlight="6대 결의사항" label="가입" />
             <p class="explaination">
               ①자유마을 가입 ②자유일보 구독 ③퍼스트모바일 가입 ④선교카드 가입(농협중앙회) ⑤광화문온앱 가입 ⑥너알아TV/일천만방송TV/FNL NEWS 시청 및 구독
             </p>
