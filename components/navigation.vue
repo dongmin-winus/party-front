@@ -21,7 +21,16 @@
                 </a>
             </div>
             <div :class="`nav-wrap ${$route.path.includes('/organization') ? '' : ''}`">
-                <nuxt-link to="/organization" class="">
+                <!-- <nuxt-link to="/organization" class="">
+                    <div class="img-wrap organizational_position">
+                        <div class="" :class="`${ $route.path.includes('/organization') ? 'organizational_tap_active' : 'organizational_tap' } `">
+                            <h3 :class="`${$route.path.includes('/organization') ? 'organizational_title_active' : 'organizational_title'} `">
+                                조직<br/>활동
+                            </h3>
+                        </div>
+                    </div>
+                </nuxt-link> -->
+                <div @click="organBlock">
                     <div class="img-wrap organizational_position">
                         <div class="" :class="`${ $route.path.includes('/organization') ? 'organizational_tap_active' : 'organizational_tap' } `">
                             <!-- <img :src="require(`@/assets/images/${$route.path.includes('/organization') ? 'organizational_solid.png' : 'organizational.png'}`)" alt="" style="width: 23px;"> -->
@@ -29,11 +38,8 @@
                                 조직<br/>활동
                             </h3>
                         </div>
-                       
                     </div>
-                      
-                  
-                </nuxt-link>
+                </div>
             </div>
 
             <div :class="`nav-wrap ${$route.path.includes('/chat') ? 'active' : ''}`">
@@ -72,7 +78,9 @@ export default {
     },
 
     methods: {
-
+        organBlock() {
+            alert('자유마을 조직 개편작업으로 인해 일시적으로 사용이 불가합니다');
+        }
     },
 
     mounted() {
