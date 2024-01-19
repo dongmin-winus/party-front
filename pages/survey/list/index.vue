@@ -50,7 +50,7 @@
                 </div>
               </div>
             </div>
-            <nuxt-link to="/stuff/mission" class="m-btn type02 bg-revert-primary"> 더보기 +</nuxt-link>
+            <nuxt-link to="" class="m-btn type02 bg-revert-primary"> 더보기 +</nuxt-link>
           </div>
         </div>
 
