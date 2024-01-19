@@ -1,186 +1,209 @@
 <template>
-  <div class="area-survey">
-    <header-type01/>
-    <!-- 내용 -->
+  <div>
+    <!-- 헤더영역 -->
+    <div class="m-header type02">
+      <div class="wrap">
+        <div class="left">
+          <button class="btn-util" @click="$router.go(-1)">
+            <img src="@/assets/images/back.png" alt="" style="width:10px;">
+          </button>
+        </div>
+        <div class="center">
+          <h3 class="title">{{ $auth.user.district.district }}</h3>
+        </div>
+
+        <!-- <nuxt-link to="/contents/settings" class="btn-util">
+            <img src="@/assets/images/setting.png" alt="" style="width:20px;">
+        </nuxt-link> -->
+        <div class="right" style="margin-left: 25px;"></div>
+      </div>
+    </div>
     <div class="container">
       <div class="content">
-        <div class="title-container">
-          <div class="mt-32 m-title type01">
-            <span class="point">자유마을</span> 설문조사
-          </div>
-          <div class="mt-16 m-title type02">
-            <span class="point">제 3차</span> &nbsp;2023.11.20 (월) ~
-          </div>
-        </div>
-        <div class="form-container">
-          <div class="item">
-            <Label :dot="true" highlight="현수막" label="설치"/>
-            <div class="value">
-              설치 수량 &nbsp;
-              <input type="number" class="input-text" v-model="bannerCount"/> &nbsp;
-              개
-            </div>
-          </div>
-          <div class="item">
-            <Label :dot="true" highlight="아침방송" label="시청"/>
-            <div class="value">
-              <div class="checkboxes">
-                <div class="checkbox" v-for="(item, index) in days1" :key="index">
-                  <input type="checkbox" style="display:inline !important;" :id="item.value" :value="item.value" @change="check('daysCheck1', item.label)"/>
-                  <label :for="item.value">{{ item.label }}</label>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="item">
-            <Label :dot="true" :required="true" highlight="7대 결의사항" label="가입"/>
-            <p class="explaination">
-              ①자유마을 가입 ②자유일보 구독 ③퍼스트모바일 가입 ④선교카드 가입(농협중앙회) ⑤광화문온앱 가입 ⑥너알아TV/일천만방송TV/FNL NEWS 시청 및 구독
-            </p>
-            <div class="value">
-              <div class="checkboxes custom">
-                <div class="checkbox" v-for="(item, index) in items3" :key="index">
-                  <input type="radio" style="display:inline !important;" :id="item.value" :value="item.value" @change="choose('sevenCheck',item.value == '1' ? '1' : '0')"/>
-                  <label :for="item.value">{{ item.label }}</label>
-                </div>
-              </div>
-              <p class="explaination" style="font-size:10px;">
-                (이번 주에 완료하신분만 체크)
-              </p>
-            </div>
-          </div>
-          <div class="item">
-            <Label :dot="true" highlight="파라솔" label="설치"/>
-            <div class="value">
-              <div class="checkboxes">
-                <div class="checkbox" v-for="(item, index) in days2" :key="index">
-                  <input type="checkbox" style="display:inline !important;" :id="item.value" :value="item.value" @change="check('daysCheck2', item.label)"/>
-                  <label :for="item.value">{{ item.label }}</label>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="item">
-            <Label :dot="true" :required="true" highlight="집회" label="참석"/>
-            <div class="value">
-              <div class="checkboxes custom">
-                <div class="checkbox" v-for="(item, index) in items5" :key="index">
-                  <input type="radio" style="display:inline !important;" :id="item.value" :value="item.value" @change="choose('assemblyCheck',item.value == '3' ? '1' : '0')" />
-                  <label :for="item.value">{{ item.label }}</label>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <button class="m-btn type01 bg-primary" style="width:90%;" @click="submit">설문 제출하기</button>
-
-        <div class="btn-container">
+        <div class="m-title type01">
+          {{ $auth.user.district.district }} <span class="point">보고&관리</span>
         </div>
       </div>
     </div>
+    <div class="wrap">
+      <div class="mt-24 menus-container">
+        <nuxt-link to="/survey/survey_lee" class="menus first">
+          <div class="left">
+            <p class="sub primary"></p>
+            <p class="title primary">설문&보고</p>
+          </div>
+          <div class="right" :style="getRightIcon(1)"></div>
+        </nuxt-link>
+        <nuxt-link to="/survey/list" class="menus second">
+          <div class="left">
+            <p class="sub white"></p>
+            <p class="title white">설문조사 목록</p>
+          </div>
+          <div class="right" :style="getRightIcon(2)"></div>
+        </nuxt-link>
+        <!-- <nuxt-link to="/organization/brief" class="menus third">
+          <div class="left">
+            <p class="sub primary">우리 조직도을 한눈에</p>
+            <p class="title primary">조직도</p>
+          </div>
+          <div class="right" :style="getRightIcon(3)"></div>
+        </nuxt-link> -->
+      </div>
+
+
+    </div>
+    <navigation />
   </div>
 </template>
 
 <script>
-import Label from '@/components/form/Label.vue'
 export default {
   auth: true,
-  components: {
-    Label,
+  computed: {
+    activityClass() {
+      let level = Math.ceil(this.count / this.goal_count * 10); // Calculate level based on index, max out at 10
+      return `level${level}`;
+    },
+    getSmile() {
+      // let level = isNaN(Math.ceil(this.count / this.goal_count * 10)) ? 10 : Math.ceil(this.count / this.goal_count * 10); // Calculate level based on index, max out at 10
+      const level = Math.ceil(this.count / this.goal_count * 10);
+      const fileName = level > 9 ? 'f_10.png' : `f_0${level}.png`;
+      return !isNaN(level) ? `background-image: url(${require(`@/assets/images/${fileName}`)}); background-size:cover;` : '';
+      // assets/images/f_01.png
+    }
   },
-  watch: {
-    // daysCheck1(newVal, oldVal) {
-    //   console.log(newVal, oldVal,33333)
-    //   this.daysCheck1 = this.transDays(newVal)
-    // }
+  mounted() {
+    //alert('조직활동 페이지 오픈 예정입니다.');
+    //this.$router.push('/');
+    this.getRegisterCount();
   },
   data() {
     return {
-      days1: [
-        { label: '월요일', value: 'mon' },
-        { label: '화요일', value: 'tue' },
-        { label: '수요일', value: 'wed' },
-        { label: '목요일', value: 'thu' },
-        { label: '금요일', value: 'fri' },
-        { label: '토요일', value: 'sat' },
-      ],
-      days2: [
-        { label: '월요일', value: 'mon2' },
-        { label: '화요일', value: 'tue2' },
-        { label: '수요일', value: 'wed2' },
-        { label: '목요일', value: 'thu2' },
-        { label: '금요일', value: 'fri2' },
-        { label: '토요일', value: 'sat2' },
-      ],
-      items3: [
-        { label: '모두 가입완료', value: '1' },
-        { label: '기존 가입완료/미가입', value: '2' },
-      ],
-      items5: [
-        { label: '한번이라도 참석', value: '3' },
-        { label: '불참', value: '4' },
-      ],
-
-      bannerCount: '',
-      daysCheck1: [],
-      daysCheck2: [],
-      sevenCheck: [],
-      assemblyCheck: [],
-
+      count: 0,
+      goal_count: 0,
     }
   },
   methods: {
-    check(containerKey, value) {
-      const container = this[containerKey];
-      if(container.includes(value)) {
-      this[containerKey] = container.filter(item => item !== value);
-      } else {
-        this[containerKey] = [...container, value];
-      }
+    block() {
+      alert('오픈 예정입니다.');
     },
-    choose(containerKey, value) {
-      this[containerKey] = value;
+    async getRegisterCount() {
+      const { data } = await this.$axios.get(`api/goal/${this.$store.state.district.id}`);
+      this.count = data.count;
+      this.goal_count = data.goal_count;
     },
-    async submit() {
-      const json_data = {
-        quantity: this.bannerCount == '' ? 0 : this.bannerCount,
-        broadcast: this.daysCheck1.join(', '),
-        parasol: this.daysCheck2.join(', '),
-        seven: this.sevenCheck,
-        event: this.assemblyCheck,
-      }
-      console.log(json_data)
-      //seven이나 event가 비었으면 alert
-      if(this.sevenCheck == '' || this.assemblyCheck == '') {
-        alert('설문조사를 완료해주세요.')
-        return;
-      }
-      try {
-        const response = await this.$axios.post('/api/forms/form-answer', {
-          json_data,
-          form_id: 1,
-        })
-        console.log(response.data)
-        if(response.status === 200) {
-            alert("성공적으로 처리되었습니다.");
-            this.$router.push('/')
-        }
-      } catch (error) {
-        console.log(error,333)
-        // if (error.response && error.response.data)
-        //     this.errors = error.response.data.errors;
-      }
+    getRightIcon(index) {
+      return `background-image: url(${require(`@/assets/images/organization/organ${index}.png`)}); background-size:cover;`;
     }
   },
 }
 </script>
 
 <style scoped>
- * {
-  font-family: 'GmarketSans';
- }
- .custom {
-  grid-template-columns: 130px 170px !important;
-  grid-template-rows:1fr !important;
- }
+.content {
+  background: #eee;
+  text-align: center;
+  padding: 40px 0;
+}
+
+.m-temp.type01 .gage-wrap.organ {
+  margin-top: 20px;
+}
+
+.m-temp.type01 .gage-wrap.organ .upper-gage {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.m-temp.type01 .gage-wrap.organ .upper-gage span {
+
+  font-weight: 600;
+}
+
+.m-temp.type01 .gage-wrap.organ .upper-gage .count {
+  color: #0baf00;
+}
+
+.m-temp.type01 .gage-wrap.organ .upper-gage .smile {
+  width: 48px;
+
+}
+
+.wrap .menus {
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+  border-radius: 10px;
+  background-color: #999;
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+.menus .left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.menus .left .sub {
+  font-size: 11px;
+  font-weight: 350;
+}
+
+.menus .left .title {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.menus .left .title.primary {
+  color: #0baf00 !important;
+}
+
+.menus .left .sub.primary {
+  color: #777 !important;
+}
+
+.menus .left .white {
+  color: #fff;
+}
+
+.menus.first .right {
+  width: 39px;
+  height: 34px;
+}
+
+.menus.second .right {
+  width: 31px;
+  height: 34px;
+  margin-right: 5px;
+}
+
+.menus.third .right {
+  width: 33px;
+  height: 34px;
+  margin-right: 3px;
+}
+
+
+.menus.first {
+  background: #E7F7E5;
+}
+
+.menus.second {
+  background: #0baf00;
+}
+
+.menus.third {
+  background: white;
+  border: 1px solid #0baf00;
+}
+
+@media screen and (min-width: 501px) {
+  .smile {
+    width: 44px;
+    height: 48px;
+  }
+}
 </style>

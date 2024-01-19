@@ -10,7 +10,7 @@
           </button>
         </div>
         <div class="center">
-          <h3 class="title">{{ $store.state.district.district }}</h3>
+          <h3 class="title">{{ $auth.user.district.district }}</h3>
         </div>
 
         <!-- <nuxt-link to="/contents/settings" class="btn-util">

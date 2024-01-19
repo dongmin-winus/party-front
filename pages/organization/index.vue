@@ -1,11 +1,25 @@
 <template>
   <div>
-    <header-type01 />
+    <!-- 헤더영역 -->
+    <div class="m-header type02">
+      <div class="wrap">
+        <div class="left">
+          <button class="btn-util" @click="$router.go(-1)">
+            <img src="@/assets/images/back.png" alt="" style="width:10px;">
+          </button>
+        </div>
+        <div class="center">
+          <h3 class="title">{{ $auth.user.district.district }}</h3>
+        </div>
+
+        <div class="right" style="margin-left: 25px;"></div>
+      </div>
+    </div>
     <div class="container">
       <div class="content">
         <div class="m-title type01">
           <p class="sub">일천만 조직을 위한</p>
-          {{ $store.state.district.district }} <span class="point">조직활동</span>
+          {{ $auth.user.district.district }} <span class="point">조직활동</span>
         </div>
       </div>
     </div>
@@ -22,6 +36,9 @@
           <div class="gage">
             <div class="active" :style="`width:${count / goal_count > 1 ? 100 : count / goal_count * 100}%;`"></div>
           </div>
+          <!-- <progress style="width:100%;" :value="count / goal_count > 1 ? 100 : count / goal_count * 100" max="100">{{
+            count / goal_count > 1 ?
+            100 : count / goal_count * 100 }}%</progress> -->
         </div>
       </div>
       <div class="mt-24 menus-container">
@@ -32,13 +49,13 @@
           </div>
           <div class="right" :style="getRightIcon(1)"></div>
         </nuxt-link>
-        <div @click="block" class="menus second">
+        <nuxt-link to="/survey" class="menus second">
           <div class="left">
             <p class="sub white">다양한 조직업무를 한번에</p>
             <p class="title white">보고&관리</p>
           </div>
           <div class="right" :style="getRightIcon(2)"></div>
-        </div>
+        </nuxt-link>
         <nuxt-link to="/organization/brief" class="menus third">
           <div class="left">
             <p class="sub primary">우리 조직도을 한눈에</p>
@@ -56,7 +73,7 @@
 
 <script>
 export default {
-  auth: false,
+  auth: true,
   computed: {
     activityClass() {
       let level = Math.ceil(this.count / this.goal_count * 10); // Calculate level based on index, max out at 10
