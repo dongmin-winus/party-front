@@ -1,10 +1,10 @@
 <template>
   <div class="label">
-    <template v-if="dot">
+    <!-- <template v-if="dot">
       <span class="orange">·</span>
-      &nbsp;
-    </template>
-    <span class="highlight">{{ highlight }}</span>&nbsp;{{ label }}&nbsp;<span v-if="required" style="color:red;">*</span>
+    </template> -->
+    <span class="highlight">{{ highlight }}</span>
+    {{ label }}<span v-if="required" style="color:red;">*</span>
   </div>
 </template>
 
@@ -13,11 +13,11 @@ export default {
   props: {
     label: {
       type: String,
-      default: '하이라이트'
+      default: ''
     },
     highlight: {
       type: String,
-      default: '라벨'
+      default: ''
     },
     dot: {
       type: Boolean,
