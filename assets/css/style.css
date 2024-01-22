@@ -3066,7 +3066,8 @@ html {
 }
 .m-thumbnail.type01 {
     content:"";
-    width:100%; height:200px;
+    width:100%; min-height:100px;
+    aspect-ratio:1/1;
     position:relative;
     background-size:contain; background-repeat:no-repeat; background-position:center; border-radius:5px;
     overflow:hidden;
