@@ -215,11 +215,11 @@
                     <div class="mt-24"></div>
 
                     <div class="m-btns type01">
-                        <div class="m-btn-wrap">
+                        <!-- <div class="m-btn-wrap">
                             <button type="submit" class="m-btn type02 width-100" @click="helpRegister">가입 도와주기</button>
-                        </div>
+                        </div> -->
                         <div class="m-btn-wrap">
-                            <button type="submit" class="m-btn type02 width-100" @click="register">직접 가입하기</button>
+                            <button type="submit" class="m-btn type02 width-100" @click="register">가입하기</button>
                         </div>
                     </div>
 

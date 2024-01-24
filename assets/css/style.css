@@ -3069,7 +3069,9 @@ html {
     width:100%; min-height:100px;
     aspect-ratio:1/1;
     position:relative;
-    background-size:contain; background-repeat:no-repeat; background-position:center; border-radius:5px;
+    background-size:contain; background-repeat:no-repeat;
+    background-position:center !important;
+     border-radius:5px;
     overflow:hidden;
 }
 .m-thumbnail.type01 .m-thumbnail-base {
