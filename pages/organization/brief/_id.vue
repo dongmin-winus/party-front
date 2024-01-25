@@ -1,6 +1,19 @@
 <template>
   <div>
-    <header-type01 />
+    <!-- 헤더영역 -->
+    <div class="m-header type02">
+      <div class="wrap">
+        <div class="left">
+          <button class="btn-util" @click="$router.go(-1)">
+            <img src="@/assets/images/back.png" alt="" style="width:10px;">
+          </button>
+        </div>
+        <div class="center">
+          <h3 class="title">{{ $auth.user.district.district }}</h3>
+        </div>
+        <div class="right" style="margin-left: 25px;"></div>
+      </div>
+    </div>
     <div class="conatiner">
       <div class="content">
         <div class="leader-organ" v-if="$auth.user">
