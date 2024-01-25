@@ -55,30 +55,12 @@
               </div>
             </div>
             <!-- <nuxt-link to="" class="m-btn type02 bg-revert-primary"> 더보기 +</nuxt-link> -->
-          </div>
-        </div>
+            <div @click="loadMore" v-if="links?.next" class="m-btn type02 bg-revert-primary"> 더보기 +</div>
 
-        <!-- TODO 마을교육  -->
-        <!-- <div class="m-24 edu fragment frame">
-          <div class="m-title type01">
-            <p class="sub02">우리는 이겼습니다!</p>
-            <span class="highlighter-point">나라살리는 마을교육</span>
           </div>
-          <swiperCarusel 
-            :swiperOption="educationSlideOption"
-            :swiperList="boardLists.education"
-          />
-          <div v-if="boardLists.education?.length>0" class="mt-24 latest-container">
-            <div class="banner01" :style="`position:relative; background-image:url(${boardLists.education[0]?.video_thumbnail})`">
-              <div class="new">NEW</div>
-            </div>
-            <div class="mt-12 title">
-              <div class="badge">마을교육</div>
-              <p class="sub02">{{ boardLists.education[0].title }}</p>
-            </div>
-          </div>
-          <nuxt-link to="/" class="mt-12 m-btn type02 bg-revert-primary">마을교육 더보기 +</nuxt-link>
-        </div> -->
+
+          <!-- <div class="mt-40"></div> -->
+        </div>
       </section>
     </div>
     <navigation />
@@ -100,40 +82,32 @@ export default {
       missions: [],
       boardLists:{},
       surveys: [],
+      links:null,
+      meta:null,
     }
   },
   methods: {
-    async getList(page = 1) {
-      const response = await this.$axios.get(`/api/forms?page=${page}`)
-      const filteredData = response.data.data.filter(item => item.opening == 1);
-      if(filteredData.length > 0) {
-        this.surveys = filteredData;
-      }else {
-        await this.getList(page+1);
-      }
-    },
-    async getMissions(categoryId = null) {
-      const response = await this.$axios.get(`/api/missions`, {
-        params: {
-          board: 'mission',
-          category_id: categoryId
+    async loadMore(state) {
+        let page;
+        if (this.meta?.current_page < this.meta?.last_page) {
+            page = this.meta?.current_page + 1;
         }
-      })
-      this.missions = response.data.data;
+        if (page) {
+            await this.getList(page);
+        }
     },
-    async toggleParticipate(id) {
-      // if(!this.$auth.user) {
-      //   alert('로그인 후 이용해주세요.');
-      //   this.$router.push('/auth/login');
-      //   return;
-      // } 
-      const response = await this.$axios.post(`/api/enroll`, {
-        event_id: id,
-      });
-      if (response) {
-        alert(response.data.message);
-        this.getMissions(this.selectedCategory);
-      }
+    async getList(page = 1) {
+      // const response = await this.$axios.get(`/api/forms?page=${page}`)
+      // const filteredData = response.data.data.filter(item => item.opening == 1);
+      // if(filteredData.length > 0) {
+      //   this.surveys = filteredData;
+      // }else {
+      //   await this.getList(page+1);
+      // }
+      const response = await this.$axios.get(`/api/forms?page=${page}`)
+      this.surveys = response.data.data.filter(item => item.opening == 1);
+      this.links = response.data.links;
+      this.meta = response.data.meta;
     },
     block() {
       alert('이미 참여하셨습니다.');
@@ -141,7 +115,6 @@ export default {
   },
   mounted () {
     this.getList();
-    this.getMissions();
   },
 }
 </script>

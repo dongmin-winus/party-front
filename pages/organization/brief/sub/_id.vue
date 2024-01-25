@@ -32,7 +32,7 @@
               {{ member.name }}
               {{ member.position }}
             </div>
-            <div class="title" v-if="member.position == '동대표'">
+            <div class="title" v-if="member.position == '반대표'">
               ❯
             </div>
           </div>
@@ -70,7 +70,7 @@
 <script>
 export default {
   async mounted() {
-    const response = await this.$axios.get(`api/supers/sub-list/${this.$route.params.id}?team=${this.$route.query.team}`);
+    const response = await this.$axios.get(`api/supers/sub-list/${this.$route.query.team}?team=${this.$route.params.id}`);
     this.teamData = response.data.data;
   },
   computed: {
