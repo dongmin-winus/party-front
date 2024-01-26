@@ -124,7 +124,7 @@ export default {
       if (position == '동대표') {
         return 'member-item type01';
       }
-      if (position == '반대표') {
+      if (position == '통대표') {
         return 'member-item type02';
       }
       // if (position == '통장' && members) {
