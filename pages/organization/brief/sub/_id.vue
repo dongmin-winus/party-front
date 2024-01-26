@@ -108,7 +108,7 @@ export default {
       if (position == '동대표') {
         return 'member-item type01';
       }
-      if (position == '통장') {
+      if (position == '반대표') {
         return 'member-item type02';
       }
     }
