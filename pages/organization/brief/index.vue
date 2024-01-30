@@ -57,7 +57,7 @@ export default {
   },
   computed: {
     teamList() {
-      return this.teamData?.team;
+      return this.teamData?.team?.sort((a, b) => a.group - b.group);
     },
     setGridSize() {
       const length = this.teamList?.length;

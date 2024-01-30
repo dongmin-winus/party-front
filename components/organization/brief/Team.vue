@@ -53,10 +53,10 @@ export default {
   },
   computed: {
     setColorOrder() {
-      return this.colorMap[this.index % 10];
+      return this.colorMap[(this.team.group-1) % 10];
     },
     setTeamName() {
-      return String.fromCharCode(65 + this.index);
+      return String.fromCharCode(65 + this.team.group - 1);
     }
   },
   methods: {
