@@ -15,7 +15,7 @@
       </div>
     </div>
     <div class="container">
-      <section class="section-ad">
+      <!-- <section class="section-ad">
         <swiper :options="middleBannerOptions">
             <swiper-slide v-for="(slide,index) in banners" :key="slide.id">
                 <a :href="slide.link_url" target="_blank" class="link" @click="countClick('banner',slide.id)">
@@ -23,8 +23,13 @@
                 </a>
             </swiper-slide>
         </swiper> 
-      </section>
+      </section> -->
       <div class="qr-container" v-html="qrData"></div>
+      <div class="qr-info">
+        <p class="serial">{{ computedQrSerial }}</p>
+        <p class="name">{{ qrInfo?.name }}</p>
+        <p class="position">{{ qrInfo?.position }}</p>
+      </div>
     </div>
     <!-- 광고배너 -->
     
@@ -49,7 +54,13 @@ export default {
         },
       },
       qrData: null,
+      qrInfo: {},
       banners:[],
+    }
+  },
+  computed: {
+    computedQrSerial() {
+      return this.qrInfo?.serial ? `${this.qrInfo?.serial_number}` : '';
     }
   },
   methods: {
@@ -59,15 +70,19 @@ export default {
     },
     async getQr() {
       const response = await this.$axios.get(`/api/qrcode/${this.$auth.user.id}`)
-      console.log(response)
       if(response.data) {
         this.qrData = response.data;
       }
-    }
+    },
+    async getQrInfo() {
+      const response = await this.$axios.get(`/api/auth/qrinfo`);
+      this.qrInfo = {...response.data};
+    },
   },
   mounted () {
     this.getQr();
-    this.getBannerList();
+    this.getQrInfo();
+    // this.getBannerList();
   },
 }
 </script>
@@ -75,9 +90,45 @@ export default {
 <style>
   .qr-container {
     width: 100%;
-    height: 50vh;
+    height: 85vh;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
+    padding-top: 17vh;
+    background-image:url('@/assets/images/qr_back_img.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+  }
+  .container {
+    position: relative;
+  }
+  .container .qr-info {
+    position: absolute;
+    top: 52%;
+    left: 50%;
+    transform: translate(-50%, -25%);
+    margin-top: 10px;
+    text-align:center;
+  }
+
+  .qr-info p {
+    width: 100vw;
+  }
+  .qr-info .serial {
+    font-size: 20px;
+    font-weight: 500;
+    font-family: gmarketSans;
+    margin-bottom: 10px;
+  }
+  .qr-info .name {
+    font-size: 50px;
+    font-weight: bold;
+    font-family: gmarketSans;
+  }
+  .qr-info .position {
+    font-size: 35px;
+    font-weight: 500;
+    font-family: gmarketSans;
   }
 </style>
