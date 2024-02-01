@@ -2,10 +2,10 @@
   <div class="m-board-btns">
     <div class="m-btns type01">
       <div class="m-btn-wrap">
-        <a href="#" :class="btnColor" class="m-btn type01" @click.prevent="$emit('click')">{{ label }}</a>
+        <a href="#" :class="btnColor" class="m-btn type01" style="font-weight:400" @click.prevent="$emit('click')">{{ label }}</a>
       </div>
       <div class="m-btn-wrap" v-if="viceBtn">
-        <a href="#" :class="viceBtnColor" class="m-btn type01" @click.prevent="$emit('clickVice')">{{ viceLabel }}</a>
+        <a href="#" :class="viceBtnColor" class="m-btn type01" style="font-weight:400" @click.prevent="$emit('clickVice')">{{ viceLabel }}</a>
       </div>
     </div>
   </div>

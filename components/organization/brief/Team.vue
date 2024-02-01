@@ -2,7 +2,10 @@
   <div class="teams">
     <div class="upper-container" :class="direction">
       <div class="team-logo" :style="`background-color:rgba(${setColorOrder},0.1);`">
-        <span :style="`color:rgb(${setColorOrder});`">{{ setTeamName }}</span>
+        <span class="team-name" :style="`color:rgb(${setColorOrder});`">
+          {{ setTeamName }}
+        </span>
+        <span class="team" :style="`color:rgb(${setColorOrder});`">팀</span>
       </div>
       <div class="name-container">
         <p class="name">{{ team.name }}</p>
@@ -10,7 +13,7 @@
       </div>
     </div>
 
-    <div class="mt-8 btn-container">
+    <div class="btn-container">
       <btn :label="'보기'" :btnColor="'bg-revert-primary'" @click="selectTeam" />
     </div>
   </div>
@@ -75,7 +78,7 @@ export default {
   border-radius: 5px;
   background: #FFF;
   box-shadow: 0px 2px 7px 0px rgba(11, 175, 0, 0.25);
-  padding: 3px;
+  padding: 5px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -104,9 +107,9 @@ export default {
 
 
 .teams .upper-container.row .team-logo {
-  width: 50px;
-  height: 50px;
-  border-radius: 10px;
+  width: 65px;
+  height: 55px;
+  border-radius: 5px;
   background: #eee;
   margin-right: 10px;
   font-size: 28px;
@@ -114,7 +117,8 @@ export default {
   font-family: 'GmarketSans';
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
+  padding-bottom: 10px;
 }
 
 .teams .upper-container.col .team-logo {
@@ -125,14 +129,25 @@ export default {
 
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
+  padding-bottom: 10px;
 }
 
-.team-logo span {
-  font-size: 28px;
+.team-logo .team-name {
+  font-size: 35px;
   font-weight: 600;
   font-family: 'GmarketSans';
+  margin-right: 2px;
+  margin-bottom: -2px;
+ 
 }
+.team-logo .team {
+  font-size: 16px;
+  font-weight: 400;
+  font-family: 'GmarketSans';
+  margin-bottom: 2px;
+}
+
 
 .teams .upper-container.row .name-container {
   display: flex;
@@ -145,7 +160,8 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  height: inherit
 }
 
 .teams .upper-container .name-container .name {
