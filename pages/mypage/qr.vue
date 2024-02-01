@@ -89,16 +89,15 @@ export default {
 
 <style>
   .qr-container {
+    margin: 5px;
     width: 100%;
-    height: 85vh;
+    height: 80vh;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-    padding-top: 17vh;
-    background-image:url('@/assets/images/qr_back_img.png');
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
+    align-items: top;
+    padding-top: calc(40vh - 200px);
+    background:url("@/assets/images/qr_back_img.png") no-repeat center center;
+    background-size:cover;
   }
   .container {
     position: relative;
