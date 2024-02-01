@@ -589,8 +589,8 @@
                 </div>
             </section>
 
-            <!-- TODO 230802 마을사랑 주인공 비활성화 -->
-            <section class="section-popular">
+            <!--240131 개인랭킹 비활성화-->
+            <!-- <section class="section-popular">
                 <div class="wrap">
                     <div class="content">
                         <div class="m-title type01">
@@ -675,7 +675,7 @@
                     </ul>
                     <nuxt-link to="/popular/rank" class="m-btn type02 bg-revert-primary">개인 랭킹 TOP 100 +</nuxt-link>
                 </div>
-            </section>
+            </section> -->
 
             <!-- 우리마을 국회의원 -->
             <section class="section-contact" v-if="district && district.id != 0 && congressmanItem?.congress_code !== ''">
