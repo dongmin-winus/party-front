@@ -19,7 +19,10 @@
         <div class="leader-organ" v-if="$auth.user">
           <div class="upper-container">
             <div class="team-logo" :style="`background-color:rgba(${setColorOrder},0.1);`">
-              <span :style="`color:rgb(${setColorOrder});`">{{ $route.params.id }}</span>
+              <span class="team-name" :style="`color:rgb(${setColorOrder});`">
+                {{ $route.params.id }}
+              </span>
+              <span class="team" :style="`color:rgb(${setColorOrder});`">팀</span>
             </div>
             <div class="name-container">
               <p class="name">{{ leader?.name }}</p>
@@ -37,7 +40,8 @@
         <div :class="setMemberClass(member)">
           <div class="title">
             <span class="thick" v-if="member.position == '동대표'">
-              {{ $route.params.id }}팀
+              <!-- TODO 240201 코드 정해지면 수정해야함 -->
+              {{ $route.params.id }}팀 
             </span>
             {{ member.name }}
             {{ member.position }}
@@ -183,9 +187,9 @@ export default {
 }
 
 .upper-container .team-logo {
-  width: 50px;
-  height: 50px;
-  border-radius: 10px;
+  width: 65px;
+  height: 55px;
+  border-radius: 5px;
   background: #eee;
   margin-right: 10px;
   font-size: 28px;
@@ -193,13 +197,35 @@ export default {
   font-family: 'GmarketSans';
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
+  padding-bottom: 10px;
 }
 
-.team-logo span {
-  font-size: 28px;
+.teams .upper-container.col .team-logo {
+  width: 100%;
+  height: 50px;
+  border-radius: 5px;
+  background: #eee;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding-bottom: 10px;
+}
+
+.team-logo .team-name {
+  font-size: 35px;
   font-weight: 600;
   font-family: 'GmarketSans';
+  margin-right: 2px;
+  margin-bottom: -2px;
+ 
+}
+.team-logo .team {
+  font-size: 16px;
+  font-weight: 400;
+  font-family: 'GmarketSans';
+  margin-bottom: 2px;
 }
 
 .upper-container .name-container {
