@@ -89,7 +89,6 @@ export default {
 
 <style>
   .qr-container {
-    margin: 5px;
     width: 100%;
     height: 80vh;
     display: flex;
