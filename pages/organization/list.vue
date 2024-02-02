@@ -52,11 +52,11 @@
     <modal v-if="activeModal" @cancel="activeModal = false;">
       <template #inner>
         <div class="m-pop-title">
-          <span class="point">12명 조직하기</span>
+          <span class="point">조직 구성하기</span>
         </div>
 
         <div class="m-input-text type01" style="display:flex; justify-content:center;">
-          <span>{{ `${promoteLabel} 신청 자격을 취득하셨습니다.` }} <br /> {{ `${$store.state.district.district} ${promoteLabel}
+          <span><span class="point">{{ promoteLabel }}</span>신청 자격을 취득하셨습니다. <br /> {{ `${$store.state.district.district} ${promoteLabel}
             신청하시겠습니까?` }}</span>
         </div>
         <div class="mt-20"></div>
@@ -89,7 +89,7 @@ export default {
       return this.counterList.filter((item) => item.allow == 1).length;
     },
     formLength() {
-      return this.counterList.length < 12 ? 12 : Math.min((Math.floor(this.list.length / 12) + 1) * 12, 144);
+      return this.counterList.length < 12 ? 12 : Math.min((Math.floor(this.list.length / 12) + 1) * 12, 156);
     },
     listFull() {
       return this.formLength == this.list.length;
@@ -129,7 +129,7 @@ export default {
         if (this.granted > 11 && !response.data.position) {
           this.promoteLabel = '동대표';
           this.activeModal = true;
-        } else if (this.granted == 144 && response.data.position == '동대표') {
+        } else if (this.granted == 156 && response.data.position.position == '동대표') {
           this.promoteLabel = '실행위원장';
           this.activeModal = true;
         }
@@ -219,6 +219,9 @@ export default {
 </script>
 
 <style scoped>
+.point {
+  color: red;
+}
 .content {
   background: #eee;
   text-align: center;
