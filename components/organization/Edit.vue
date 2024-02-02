@@ -4,7 +4,7 @@
       <div v-for="(item, index) in dataCase" :key="index" v-if="listTypeFilter === true || item.allow == listTypeFilter">
         <span style="text-align: center;">{{ index + 1 }}</span>
         <input class="name" type="text" :disabled="item.allow == 1" @focus="onFocus(index)" @blur="onBlur"
-          v-model="item.name" placeholder="이릅입력">
+          v-model="item.name" placeholder="이름입력">
         <input class="phone" :class="setPhoneWidth" type="number" @focus="onFocus(index)" @blur="onBlur"
           :disabled="item.allow == 1" v-model="item.phone" placeholder="휴대폰입력">
         <button v-if="!disabled" class="action" :disabled="item.allow == 1" :class="setActionButton(item, 'color')"
