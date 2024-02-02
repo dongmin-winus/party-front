@@ -56,7 +56,7 @@
         </div>
 
         <div class="m-input-text type01" style="display:flex; justify-content:center;">
-          <span><span class="point">{{ promoteLabel }}</span>신청 자격을 취득하셨습니다. <br /> {{ `${$store.state.district.district} ${promoteLabel}
+          <span><span class="point">{{ promoteLabel }}</span>신청 자격을 취득하셨습니다. <br /> {{ `${setLocation} ${promoteLabel}
             신청하시겠습니까?` }}</span>
         </div>
         <div class="mt-20"></div>
@@ -93,6 +93,9 @@ export default {
     },
     listFull() {
       return this.formLength == this.list.length;
+    },
+    setLocation() {
+      return this.promoteLabel == '동대표' ? this.$auth.user.district.district : `${this.$auth.user.district.state} ${this.$auth.user.district.election}`;
     }
   },
   data() {
@@ -113,7 +116,7 @@ export default {
       listType: 'all',
       counterList: [], // 숫자세기용
       activeModal: false,
-      promoteLabel: '',
+      promoteLabel: '동대표',          
 
     }
   },
