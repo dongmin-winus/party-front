@@ -28,9 +28,11 @@
           </div>
           <div class="mt-12 contents-shadow">
             <div class="mission">
+              <div v-if="surveys?.length == 0" class="empty-list">내용이 없습니다.</div>
+
               <div class="inner-content" v-for="(item,index) in surveys" :key="index">
                 <div class="right">
-                  <nuxt-link v-if="item.user_check == 0" :to="`/survey/list/${item.id}`" class="writings">
+                  <nuxt-link v-if="item.user_check == 0" :to="`/organization/report/list/${item.id}`" class="writings">
                     <b class="title">{{ replaceText(item.title,10) }}</b>
                     <p style="color:#777">{{ formatDate(item.created_at,'.') }}</p>
                     <!-- <p><span style="color:#0BAF00">{{ item.participant_count }}</span>명 참여중</p> -->
@@ -41,7 +43,7 @@
                   </div>
                   <div class="btns">
                     <button v-if="item.user_check == 0" class="m-btn type01 primary" style="width: 80px; background-color:rgb(228,245,226);"
-                      @click.stop="$router.push(`/survey/list/${item.id}`)"
+                      @click.stop="$router.push(`/organization/report/list/${item.id}`)"
                     >
                       참여
                     </button>
@@ -55,7 +57,7 @@
               </div>
             </div>
             <!-- <nuxt-link to="" class="m-btn type02 bg-revert-primary"> 더보기 +</nuxt-link> -->
-            <div @click="loadMore" v-if="links?.next" class="m-btn type02 bg-revert-primary"> 더보기 +</div>
+            <div @click="loadMore" v-if="surveys?.length > 0 && links?.next" class="m-btn type02 bg-revert-primary"> 더보기 +</div>
 
           </div>
 
@@ -148,5 +150,12 @@ export default {
     border-radius: 10px;
     text-align: center;
   }
-
+  .empty-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+    font-family: gmarketSans;
+    color: #777;
+  }
 </style>

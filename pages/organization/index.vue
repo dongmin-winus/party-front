@@ -49,19 +49,26 @@
           </div>
           <div class="right" :style="getRightIcon(1)"></div>
         </nuxt-link>
-        <nuxt-link to="/survey" class="menus second">
+        <nuxt-link to="/organization/manage" class="menus second">
           <div class="left">
             <p class="sub white">다양한 조직업무를 한번에</p>
-            <p class="title white">보고&관리</p>
+            <p class="title white">조직관리</p>
           </div>
           <div class="right" :style="getRightIcon(2)"></div>
         </nuxt-link>
-        <nuxt-link to="/organization/brief" class="menus third">
+        <nuxt-link to="/organization/report" class="menus third">
+          <div class="left">
+            <p class="sub white">다양한 조직업무를 한번에</p>
+            <p class="title white">조직보고</p>
+          </div>
+          <div class="right" :style="getRightIcon(3)"></div>
+        </nuxt-link>
+        <nuxt-link to="/organization/brief" class="menus fourth">
           <div class="left">
             <p class="sub primary">우리 조직도을 한눈에</p>
             <p class="title primary">조직도</p>
           </div>
-          <div class="right" :style="getRightIcon(3)"></div>
+          <div class="right" :style="getRightIcon(4)"></div>
         </nuxt-link>
       </div>
 
@@ -197,6 +204,12 @@ export default {
 
 .menus.third .right {
   width: 33px;
+  height: 35px;
+  margin-right: 3px;
+}
+
+.menus.fourth .right {
+  width: 33px;
   height: 34px;
   margin-right: 3px;
 }
@@ -211,6 +224,10 @@ export default {
 }
 
 .menus.third {
+  background: #087900;
+}
+
+.menus.fourth {
   background: white;
   border: 1px solid #0baf00;
 }

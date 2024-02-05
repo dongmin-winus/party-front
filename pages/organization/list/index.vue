@@ -27,6 +27,19 @@
         </div>
       </div>
       <p class="info-quote">등록 완료 시 입력 된 회원에게 확인 문자가 발송됩니다. 12명 이상 승인 시 자동 승급됩니다.</p>
+      <div v-if="promoteLabel" class="box-box">
+        <span class="promo-quote">
+          {{ promoteLabel }} {{ `${ eligibility ? '자격' : '' }` }} 달성!
+        </span>
+        <div class="info-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M19 0H5C2.23858 0 0 2.23858 0 5V19C0 21.7614 2.23858 24 5 24H19C21.7614 24 24 21.7614 24 19V5C24 2.23858 21.7614 0 19 0Z" fill="#F67700"/>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M11.7236 5.00002C10.8956 5.00002 10.2236 5.67233 10.2236 6.50002C10.2236 7.3277 10.8956 8.00002 11.7236 8.00002C12.5516 8.00002 13.2236 7.3277 13.2236 6.50002C13.2236 5.67233 12.5516 5.00002 11.7236 5.00002Z" fill="white"/>
+            <path d="M10 18.2797H13.3333" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M11.6673 18.2801V10.9301H10.1006" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
       <div class="mt-12 counter-container">
         <div class="counter first" @click="filterList('waiting')">
           <p class="number">{{ waiting }}</p>
@@ -64,6 +77,17 @@
         <button type="button" class="m-btn type02 bg-primary width-100" @click="promote">신청</button>
       </template>
     </modal>
+    <!-- 승급시 축하 모달 -->
+    <modal v-if="promoModal" @cancel="promoModal = false;" :noPaddingModal="true" :paddingModal="false" :cancelBtn="false"
+      :btnTransparent="false">
+      <template #outter>
+        <div :class="`${promoClass}`"></div>
+        <div class="btn-container">
+            <button class="btn" @click="promoModal = false">닫기</button>
+        </div>
+      </template>
+
+    </modal>
   </div>
 </template>
 <script>
@@ -96,6 +120,9 @@ export default {
     },
     setLocation() {
       return this.promoteLabel == '동대표' ? this.$auth.user.district.district : `${this.$auth.user.district.state} ${this.$auth.user.district.election}`;
+    },
+    promoClass() {
+      return this.promoteLabel == '동대표' ? 'promo1' : this.promoteLael == '실행위원장' ?  'promo2' : '';
     }
   },
   data() {
@@ -116,8 +143,9 @@ export default {
       listType: 'all',
       counterList: [], // 숫자세기용
       activeModal: false,
-      promoteLabel: '동대표',          
-
+      promoModal: false,
+      promoteLabel: null,          
+      eligibility: false,
     }
   },
   mounted() {
@@ -129,11 +157,17 @@ export default {
       if (response.data.result) {
         this.list = [...response.data.data];
         this.counterList = [...response.data.data];
+        if(response.data.position) {
+          this.promoteLabel = response.data.position.position;
+          this.eligibility = false;
+        }
         if (this.granted > 11 && !response.data.position) {
           this.promoteLabel = '동대표';
+          this.eligibility = true;
           this.activeModal = true;
         } else if (this.granted == 156 && response.data.position.position == '동대표') {
           this.promoteLabel = '실행위원장';
+          this.eligibility = true;
           this.activeModal = true;
         }
       }
@@ -156,7 +190,8 @@ export default {
 
       });
       if (response.data.result) {
-        alert(`${this.promoteLabel} 신청이 완료되었습니다.`);
+        // alert(`${this.promoteLabel} 신청이 완료되었습니다.`);
+        this.promoModal = true;
         this.activeModal = false;
         this.$router.push('/organization');
       } else {
@@ -229,6 +264,36 @@ export default {
   background: #eee;
   text-align: center;
   padding: 15px 0;
+}
+
+
+.box-box {
+    height: 45px;
+    border: 3px solid transparent;
+    border-radius: 10px;
+    
+    background-image: linear-gradient(#fff, #fff), linear-gradient(to right, #F67700 0%, #FFE608 70%, #FFA217 100%);
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+    margin: 10px;
+
+    display: flex;
+    justify-content: space-between
+}
+.box-box .promo-quote {
+  color: #F67700;
+  font-size: 22px;
+  font-weight: 600;
+  /* margin: 10px; */
+  padding-left: 20px;
+  padding-top: 2px;
+}
+.box-box .info-icon {
+  width: 25px;
+  height: 25px;
+  /* background: url('@/assets/images/organization/info_icon.png') no-repeat center center; */
+  /* background-size: cover; */
+  margin: 7px 10px 0 0;
 }
 
 .info-quote {
@@ -391,5 +456,28 @@ export default {
   font-size: 12px;
   width: 75px;
   text-align: center;
+}
+
+.promo1 {
+  background: url('@/assets/images/organization/promo1.png') no-repeat center center;
+  background-size: cover;
+  height: calc(40vh - 20px);
+  width: 100%;
+}
+.promo2 {
+  background: url('@/assets/images/organization/promo2.png') no-repeat center center;
+  background-size: cover;
+  height: calc(45vh - 20px);
+  width: 100%;
+}
+
+.btn-container {
+  display: flex;
+  justify-content: center;
+  padding: 15px;
+  
+}
+.btn-container button {
+  font-size: 24px;
 }
 </style>
