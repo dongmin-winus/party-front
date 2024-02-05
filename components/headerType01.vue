@@ -82,7 +82,7 @@
                         <div class="links">
                             <a href="https://www.jayupress.com/" target="_blank" class="link">자유일보</a>
                             <a href="http://junacademy.org/" target="_blank" class="link">설교학교</a>
-                            <a href="http://khmon.com/" target="_blank" class="link">광화문온</a>
+                            <a href="https://m.khmon.com/" target="_blank" class="link">광화문온</a>
                             <a href="https://wkoreaf.org/" target="_blank" class="link">교민청</a>
                         </div>
                     </div>
