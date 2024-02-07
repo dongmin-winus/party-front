@@ -219,7 +219,7 @@
                             <button type="submit" class="m-btn type02 width-100" @click="helpRegister">가입 도와주기</button>
                         </div> -->
                         <div class="m-btn-wrap">
-                            <button type="submit" class="m-btn type02 width-100" @click="register">가입하기</button>
+                            <button type="submit" class="m-btn type02 width-100" @click="debounceRegister">가입하기</button>
                         </div>
                     </div>
 
@@ -242,7 +242,7 @@
 <script>
 import common from '../../utils/common'
 import InputRegion from "~/components/inputRegion";
-
+import { debounce } from "@/utils/debounce";
 export default {
     components: {InputRegion},
     auth: 'guest',
@@ -425,6 +425,11 @@ export default {
 
     async mounted() {
         await this.getAggrements();
+    },
+    created() {
+        this.debounceRegister = debounce((item) => {
+            this.register(item)
+        }, 500);
     }
 }
 </script>
