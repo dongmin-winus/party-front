@@ -22,6 +22,10 @@
     <div class="container">
       <div class="wrap">
         <div class="mt-24 m-input-wrap">
+          <h3 class="m-input-title type01">상태</h3>
+          <div style="font-weight:400;" :class="getStatusClass(item.status)">{{item.status}}</div>
+        </div>
+        <div class="mt-24 m-input-wrap">
             <h3 class="m-input-title type01">신청인</h3>
             <div class="m-input-text type03">
                 <input type="text" readonly v-model="assignor">
@@ -43,39 +47,11 @@
                 <input type="text" readonly v-model="item.target.name">
             </div>
         </div>
-        <div class="mt-24"></div>
-        <div class="m-btns type01 stretch">
-            <div class="m-btn-wrap">
-                <a href="#" class="m-btn type03 light bg-revert-red" @click.prevent="submit('nay')">결재반려</a>
-            </div>
-            <div class="m-btn-wrap">
-                <a href="#" class="m-btn type03 light bg-primary" @click.prevent="submit('yea')">결재승인</a>
-            </div>
-        </div>
       </div>
     </div>
     <navigation />
 
-    <modal v-if="submitModal" @cancel="submitModal = false;">
-      <template #inner>
-        <div class="center">
-          <Yea v-if="submitStatus == 'yea'"/>
-          <Nay v-if="submitStatus == 'nay'"/>
-          <div class="m-pop-title">
-            <span class="yea" v-if="submitStatus == 'yea'">결재 승인 완료</span>
-            <span class="nay" v-if="submitStatus == 'nay'">결재 반려 완료</span>
-          </div>
 
-          <p class="mt-12">결재 처리완료된 내역은</p>
-          <p>결재리스트 처리완료에서</p>
-          <p>확인이 가능합니다.</p>
-        </div>
-
-        <div class="mt-20"></div>
-
-        <nuxt-link to="/organization/manage" class="m-btn type02 bg-revert-primary width-100">조직관리 홈</nuxt-link>
-      </template>
-    </modal>
   </div>
 </template>
 
@@ -117,6 +93,18 @@ export default {
     }
   },
   methods: {
+    getStatusClass(status) {
+      switch(status) {
+        case '승인':
+          return 'status approve';
+        case '반려':
+          return 'status reject';
+        case '대기':
+          return 'status wait';
+        default:
+          return '';
+      }
+    },
     submit(type) {
       this.submitModal = true;
       type === 'yea' ? this.submitStatus = 'yea' : this.submitStatus = 'nay';
@@ -135,9 +123,26 @@ export default {
     flex-direction: column;
     height: 95%;
   }
-  .container .wrap .stretch {
-    flex-grow: 1;
-    align-content: flex-end;
+  .status {
+    display: flex;
+    width:100%;
+    height: 50px;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
+    font-size: 22px;
+  }
+  .status.approve {
+    background-color: #ffca10;
+  }
+  .status.reject {
+    background-color: #ff0000;
+    color: white;
+  }
+  .status.wait {
+    border: 1px solid #BDC3C7;
+    background-color:#BDC3C7;  
+
   }
 
   .center {

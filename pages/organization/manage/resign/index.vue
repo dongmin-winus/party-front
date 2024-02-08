@@ -48,16 +48,17 @@
             <p>이에 사임서를 제출합니다.</p>
           </div>
         </div>
-        <div class="mt-24 m-btns type01 stretch">
-            <div class="m-btn-wrap">
-                <a href="#" class="m-btn type01 bg-revert-grey" @click.prevent="$router.back()">취소</a>
-            </div>
-            <div class="m-btn-wrap">
-                <a href="#" class="m-btn type01 bg-primary" @click.prevent="">완료</a>
-            </div>
-        </div>
+
       </div>
     </div>
+            <div class="mt-24 m-btns type01 stretch">
+            <div class="m-btn-wrap">
+                <a href="#" class="m-btn type03 bg-revert-grey" @click.prevent="$router.back()">취소</a>
+            </div>
+            <div class="m-btn-wrap">
+                <a href="#" class="m-btn type03 bg-primary" @click.prevent="">완료</a>
+            </div>
+        </div>
     <navigation />
   </div>
 </template>
@@ -100,20 +101,23 @@ export default {
     closeCalendar() {
       if(this.showCalendar) this.showCalendar = false;
     },
-    calcBodyHeight() {
-      const header = document.querySelector('.m-header');
-      const container = document.querySelector('.container');
-      const height = window.innerHeight - header.clientHeight;
-      container.style.height = `${height}px`;
-    }
+    // calcBodyHeight() {
+    //   const header = document.querySelector('.m-header');
+    //   const container = document.querySelector('.container');
+    //   const height = window.innerHeight - header.clientHeight;
+    //   container.style.height = `${height}px`;
+    // }
   },
   mounted () {
-    this.calcBodyHeight();
+    // this.calcBodyHeight();
   },
 }
 </script>
 
 <style scoped>
+  .container {
+    min-height: calc(95vh - 100px);
+  }
   .container .wrap {
     display: flex;
     flex-direction: column;
