@@ -126,6 +126,10 @@
                 </div>
 
                 <div class="utils">
+                    <button class="btn-util" @click="$router.push(`/mypage/${$auth.user.serial_number ? '' : 'new'}card`)">
+                        <img src="@/assets/images/card-icon.png" style="width:32px;" alt="" @click="">
+
+                    </button>
                     <button class="btn-util">
                         <img src="@/assets/images/search.png" style="width:18px;" alt="" @click="activeSearch = !activeSearch">
 

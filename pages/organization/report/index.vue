@@ -27,27 +27,20 @@
     </div>
     <div class="wrap">
       <div class="mt-24 menus-container">
-        <nuxt-link to="/survey/survey_lee" class="menus first">
+        <nuxt-link to="/organization/report/survey_lee" class="menus first">
           <div class="left">
             <p class="sub primary"></p>
             <p class="title primary">설문&보고</p>
           </div>
           <div class="right" :style="getRightIcon(1)"></div>
         </nuxt-link>
-        <nuxt-link to="/survey/list" class="menus second">
+        <nuxt-link to="/organization/report/list" class="menus second">
           <div class="left">
             <p class="sub white"></p>
             <p class="title white">설문조사 목록</p>
           </div>
           <div class="right" :style="getRightIcon(2)"></div>
         </nuxt-link>
-        <!-- <nuxt-link to="/organization/brief" class="menus third">
-          <div class="left">
-            <p class="sub primary">우리 조직도을 한눈에</p>
-            <p class="title primary">조직도</p>
-          </div>
-          <div class="right" :style="getRightIcon(3)"></div>
-        </nuxt-link> -->
       </div>
 
 

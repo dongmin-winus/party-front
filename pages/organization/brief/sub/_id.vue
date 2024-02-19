@@ -40,6 +40,7 @@
           <div :class="setMemberClass(member)" v-for="(member, index) in team" :key="index">
             <div class="title">
               <span class="thick" v-if="member.position == '동대표'">
+                <!-- TODO 240201 코드 정해지면 수정해야함 -->
                 {{ $route.query.team_name }}팀
               </span>
               {{ member.name }}

@@ -239,7 +239,7 @@ html {
 }
 .m-pop.type01 .m-pop-inner {
     width:100%; max-width:500px;
-    padding:30px; padding-top:50px;
+    padding:30px; padding-top:40px;
     position:relative;
     background-color:#fff; border-radius:5px;
 }
@@ -3115,6 +3115,47 @@ html {
     background-color:#0BAF00; color:#fff; border-radius:5px;
     border:1px solid transparent;
 }
+
+.m-btn.type03 {
+    display:flex; align-items: center; justify-content: center;
+    height:45px; padding:0 16px;
+    font-weight:500; font-size:18px;
+    background-color:#0BAF00; color:#fff; border-radius:5px;
+    border:1px solid transparent;
+}
+.m-btn.type03.light {
+    display:flex; align-items: center; justify-content: center;
+    height:55px; padding:0 16px;
+    font-weight:400; font-size:20px;
+    background-color:#0BAF00; color:#fff; border-radius:5px;
+    border:1px solid transparent;
+}
+.m-btn-orange.type03 {
+    display:flex; align-items: center; justify-content: center;
+    height:45px; padding:0 16px;
+    font-weight:500; font-size:18px;
+    background-color:#FF7C2E; color:#fff; border-radius:5px;
+    border:1px solid transparent;
+}
+.m-btn.type03.state02 {
+    color:red; border-color:red; background-color:#fff;
+}
+.m-btn.type03.state03 {
+    color:gray; border-color:gray; background-color:#fff;
+}
+
+.m-btn.type04 {
+    height: 30px;
+    padding: 0 8px;
+    border-radius: 5px;
+    border:1px solid transparent;
+
+}
+
+.m-btn.type01.type-revert {
+    border-color:#F88600; color:#F88600; background-color:#fff;
+}
+
 .primary {
     color:#0BAF00 !important;
 }
@@ -3165,38 +3206,6 @@ html {
 }
 .bg-orange {
     background-color: #FF7C2E !important;
-}
-.m-btn.type03 {
-    display:flex; align-items: center; justify-content: center;
-    height:45px; padding:0 16px;
-    font-weight:500; font-size:18px;
-    background-color:#0BAF00; color:#fff; border-radius:5px;
-    border:1px solid transparent;
-}
-.m-btn-orange.type03 {
-    display:flex; align-items: center; justify-content: center;
-    height:45px; padding:0 16px;
-    font-weight:500; font-size:18px;
-    background-color:#FF7C2E; color:#fff; border-radius:5px;
-    border:1px solid transparent;
-}
-.m-btn.type03.state02 {
-    color:red; border-color:red; background-color:#fff;
-}
-.m-btn.type03.state03 {
-    color:gray; border-color:gray; background-color:#fff;
-}
-
-.m-btn.type04 {
-    height: 30px;
-    padding: 0 8px;
-    border-radius: 5px;
-    border:1px solid transparent;
-
-}
-
-.m-btn.type01.type-revert {
-    border-color:#F88600; color:#F88600; background-color:#fff;
 }
 
 .m-navigation.type01 {
@@ -3421,6 +3430,48 @@ input[type="radio"] {display:none;}
 }
 .m-input-checkbox.type03 input:checked + label:before {
     background:url("@/assets/images/checkbox-active.png") no-repeat; background-size:100%;
+}
+
+.m-input-radio.type01 {
+    display:flex;
+    position:relative;
+}
+
+.m-input-radio.type01 label {
+    display: flex; align-items: center; justify-content: space-between;
+    width: 100%;
+    padding-left:24px;
+    font-size:18px; word-break: keep-all;
+}
+
+.m-input-radio.type01 label:before {
+    content:""; width:16px; height:16px;
+    position:absolute; left:0; top:7px;
+    background:url("@/assets/images/radio-inactive.png") no-repeat; background-size:100%;
+}
+.m-input-radio.type01 input:checked + label:before {
+    background:url("@/assets/images/radio-active.png") no-repeat; background-size:100%;
+}
+
+.m-input-radio.type02 {
+    display:flex;
+    position:relative;
+}
+
+.m-input-radio.type02 label {
+    display: flex; align-items: center; justify-content: space-between;
+    width: 100%;
+    padding-left:24px;
+    font-size:18px; word-break: keep-all;
+}
+
+.m-input-radio.type02 label:before {
+    content:""; width:16px; height:16px;
+    position:absolute; left:0; top:7px;
+    background:url("@/assets/images/radio-inactive.png") no-repeat; background-size:100%;
+}
+.m-input-radio.type02 input:checked + label:before {
+    background:url("@/assets/images/radio-red-active.png") no-repeat; background-size:100%;
 }
 
 .editor-body img {
