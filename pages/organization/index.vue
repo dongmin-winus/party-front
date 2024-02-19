@@ -2,17 +2,26 @@
   <div>
     <!-- 헤더영역 -->
     <div class="m-header type02">
-      <div class="wrap">
-        <div class="left">
+      <div class="wrap" style="padding:0 !important;">
+        <div class="left" style="padding-left: 20px;">
           <button class="btn-util" @click="$router.go(-1)">
             <img src="@/assets/images/back.png" alt="" style="width:10px;">
           </button>
         </div>
-        <div class="center">
+        <div class="center" style="padding-left: 20px;">
           <h3 class="title">{{ $auth.user.district.district }}</h3>
         </div>
 
-        <div class="right" style="margin-left: 25px;"></div>
+        <div class="right" style="margin-left: 25px;">
+          <button class="btn-util" @click="$router.push(`/mypage/${$auth.user.serial_number ? '' : 'new'}card`)">
+              <!-- <img src="@/assets/images/card-icon.png" style="width:36px;" alt="" @click=""> -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="59" height="59" viewBox="0 0 83 83" fill="none">
+              <rect width="83" height="83" fill="#0BAF00"/>
+              <circle cx="43" cy="42" r="32.25" fill="#0BAF00" stroke="white" stroke-width="1.5"/>
+              <path d="M57 24H25C22.78 24 21.02 25.78 21.02 28L21 52C21 54.22 22.78 56 25 56H45V52H25V40H61V28C61 25.78 59.22 24 57 24ZM57 32H25V28H57V32ZM65 50V54H59V60H55V54H49V50H55V44H59V50H65Z" fill="white"/>
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
     <div class="container">
@@ -42,6 +51,19 @@
         </div>
       </div>
       <div class="mt-24 menus-container">
+        <nuxt-link :to="`/mypage/${$auth.user.serial_number ? '' : 'new'}card`" class="menus orange">
+          <div class="left">
+            <p class="sub white">회원카드 등록 & 출석체크</p>
+            <p class="title white">내 카드</p>
+          </div>
+          <div class="right" style="padding-right: 5px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="10 5 83 83" fill="none">
+              <rect width="83" height="83" fill="#F88600"/>
+              <circle cx="43" cy="42" r="32.25" fill="#F88600" stroke="white" stroke-width="1.5"/>
+              <path d="M57 24H25C22.78 24 21.02 25.78 21.02 28L21 52C21 54.22 22.78 56 25 56H45V52H25V40H61V28C61 25.78 59.22 24 57 24ZM57 32H25V28H57V32ZM65 50V54H59V60H55V54H49V50H55V44H59V50H65Z" fill="white"/>
+            </svg>
+          </div>
+        </nuxt-link>
         <nuxt-link to="/organization/list" class="menus first">
           <div class="left">
             <p class="sub primary">누구나 우리마을 동대표!</p>
@@ -71,8 +93,6 @@
           <div class="right" :style="getRightIcon(4)"></div>
         </nuxt-link>
       </div>
-
-
     </div>
     <navigation />
   </div>
@@ -214,6 +234,12 @@ export default {
   margin-right: 3px;
 }
 
+.menus.orange .right {
+    width: 33px;
+  height: 34px;
+  margin-right: 3px;
+}
+
 
 .menus.first {
   background: #E7F7E5;
@@ -230,6 +256,10 @@ export default {
 .menus.fourth {
   background: white;
   border: 1px solid #0baf00;
+}
+
+.menus.orange {
+  background: #F88600;
 }
 
 @media screen and (min-width: 501px) {

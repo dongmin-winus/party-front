@@ -98,14 +98,15 @@
                 <div class="mt-12"></div>
                 <div class="menus">
                     <div class="wrap">
-                        <nuxt-link to="/popular/rank" class="menu">
-                            <img src="@/assets/images/board.png" alt="" class="icon" style="width:14px;">
-                            <p class="text">개인랭킹</p>
+                        <nuxt-link :to="`/mypage/${$auth.user.serial_number ? '' : 'new'}card`" class="menu">
+                            <img src="@/assets/images/card-skeleton.png" alt="" class="icon" style="width:16px;">
+                            <p class="text">내 카드</p>
                         </nuxt-link>
-                        <nuxt-link to="/mypage/qr" class="menu">
-                            <img src="@/assets/images/board.png" alt="" class="icon" style="width:14px;">
-                            <p class="text">내 큐알코드 확인</p>
-                        </nuxt-link>
+                        <!-- <nuxt-link to="/mypage/bannerPicture" class="menu">
+                            <img src="@/assets/images/camera.png" alt="" class="icon" style="width:14px;">
+                            <p class="text">현수막 사진</p>
+                        </nuxt-link> -->
+
                         <nuxt-link to="/mypage/choochun" class="menu">
                             <img src="@/assets/images/board.png" alt="" class="icon" style="width:14px;">
                             <p class="text">추천인 받은 횟수 확인</p>
