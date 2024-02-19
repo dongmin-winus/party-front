@@ -53,7 +53,7 @@
       <div class="mt-24 menus-container">
         <nuxt-link :to="`/mypage/${$auth.user.serial_number ? '' : 'new'}card`" class="menus orange">
           <div class="left">
-            <p class="sub white">회원카드 등록 & 출석체크</p>
+            <p class="sub white">회원카드 {{`${$auth.user.serial_number ? '확인' : '등록'}`}} & 출석체크</p>
             <p class="title white">내 카드</p>
           </div>
           <div class="right" style="padding-right: 5px;">
