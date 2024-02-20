@@ -188,8 +188,11 @@ export default {
           alert(res.data.message);
         }
       } catch (error) {
-        console.log(error, 4444)
-        alert('카드 등록에 실패했습니다.');
+        if(error.response.data.message) {
+          alert(error.response.data.message);
+        }else {
+          alert('카드 등록에 실패했습니다.');
+        }
       }
 
 
