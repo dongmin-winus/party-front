@@ -196,6 +196,10 @@ export default {
     },
   },
   mounted () {
+    if(this.$auth.user.serial_number) {
+      alert('이미 등록된 카드가 있습니다.')
+      this.$router.push('/mypage/card');
+    }
   },
   created() {
       this.debounceRegister = debounce((item) => {

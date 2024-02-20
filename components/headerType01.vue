@@ -126,7 +126,7 @@
                 </div>
 
                 <div class="utils">
-                    <button class="btn-util" @click="$router.push(`/mypage/${$auth.user.serial_number ? '' : 'new'}card`)">
+                    <button v-if="$auth.user.role != 10" class="btn-util" @click="$router.push(`/mypage/${$auth.user.serial_number ? '' : 'new'}card`)">
                         <img src="@/assets/images/card-icon.png" style="width:32px;" alt="" @click="">
 
                     </button>
