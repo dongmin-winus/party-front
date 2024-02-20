@@ -98,7 +98,7 @@
                 <div class="mt-12"></div>
                 <div class="menus">
                     <div class="wrap">
-                        <nuxt-link :to="`/mypage/${$auth.user.serial_number ? '' : 'new'}card`" class="menu">
+                        <nuxt-link v-if="$auth.user.role != 10" :to="`/mypage/${$auth.user.serial_number ? '' : 'new'}card`" class="menu">
                             <img src="@/assets/images/card-skeleton.png" alt="" class="icon" style="width:16px;">
                             <p class="text">내 카드</p>
                         </nuxt-link>
