@@ -102,6 +102,10 @@
                             <img src="@/assets/images/card-skeleton.png" alt="" class="icon" style="width:16px;">
                             <p class="text">내 카드</p>
                         </nuxt-link>
+                        <nuxt-link to="/mypage/qr" class="menu">
+                            <img src="@/assets/images/board.png" alt="" class="icon" style="width:14px;">
+                            <p class="text">내 큐알코드 확인</p>
+                        </nuxt-link>
                         <!-- <nuxt-link to="/mypage/bannerPicture" class="menu">
                             <img src="@/assets/images/camera.png" alt="" class="icon" style="width:14px;">
                             <p class="text">현수막 사진</p>
