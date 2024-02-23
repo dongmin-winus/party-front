@@ -143,6 +143,10 @@ export default {
   
   },
   mounted () {
+    if(!this.$auth.user.serial_number) {
+      alert('카드를 등록해주세요!');
+      this.$router.push('/mypage/newcard');
+    }
     if(this.$nuxt.context.from?.path === '/card/newcard') {
       this.updateUserInfo();
     }
