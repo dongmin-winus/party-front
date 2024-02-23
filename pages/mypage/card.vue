@@ -15,6 +15,9 @@
       </div>
     </div>
     <div class="container bg">
+      <div class="lost-box" @click="lostModal = true">
+        분실신고
+      </div>
       <div class="qr-container">
         <div class="inner-wrap">
           <div class="qr" v-html="qrData"></div>
@@ -47,7 +50,40 @@
       </div>
 
     </div>
-    <!-- 광고배너 -->
+    <modal
+        v-if="lostModal"
+        @cancel="lostModal = false"
+    >
+      <template #inner>
+        <div class="m-pop-title">
+            <span class="point">분실 신고</span>
+        </div>
+        <div class="lost-announcement">
+          <div align="center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="55" height="55" viewBox="0 0 55 55" fill="none">
+              <ellipse cx="27.5" cy="27.0339" rx="27.5" ry="27.0339" fill="#E01500"/>
+              <path d="M25.1211 31.2806V13.258H29.1952V31.2806H25.1211ZM25.1211 41.2932V37.2881H29.1952V41.2932H25.1211Z" fill="white"/>
+            </svg>
+          </div>
+
+          분실신고 하시겠습니까?<br/>
+          분실신고 하시면 해당 카드는 사용이 불가능합니다.
+        </div>
+        <div class="mt-20"></div>
+        <div class="m-btns type01">
+            <div class="m-btn-wrap">
+                <a href="#" class="m-btn type01 bg-red" @click.prevent="lostCard">신고하기</a>
+            </div>
+            <div class="m-btn-wrap">
+                <a href="#" class="m-btn type01 bg-primary" @click.prevent="lostModal = false">취 소</a>
+                
+            </div>
+        </div>
+        <!-- <button type="button" class="m-btn type03 width-100" @click="lostModal = false">신고하기</button>
+
+        <button type="button" class="m-btn type03 width-100" @click="lostModal = false">닫기</button> -->
+      </template>
+    </modal>
     
     <navigation />
   </div>
@@ -57,7 +93,7 @@
 import 'swiper/css/swiper.css'
 export default {
   auth:true,
-  name: 'qr',
+  name: 'card',
   data() {
     return {
       qrData: null,
@@ -67,7 +103,8 @@ export default {
         '·타인에게 양도, 담보 또는 대여할 수 없습니다.',
         '·카드의 재발급에는 별도의 비용이 추가됩니다.(장당 5000원)',
         '·QR코드에는 자유마을회원 ID와 회원일련번호 외에 별도의 다른 정보가 입력되어 있지 않습니다.'
-      ]
+      ],
+      lostModal: false,
     }
   },
   methods: {
@@ -85,9 +122,31 @@ export default {
       const res = await this.$axios.$get('/api/auth/user');
       this.$auth.setUser(res);
     },
+    async lostCard() {
+      try {
+        const res = await this.$axios.$post('/api/certificates/lost-card', {
+          qrcode: this.qrInfo.serial_number
+        })
+        if(res.success) {
+          alert(res.message);
+          this.lostModal = false;
+          this.$router.push('/mypage');
+        }
+      } catch (error) {
+        if(error.response) {
+          alert(error.response.data.message);
+          this.lostModal = false;
+        }
+      }
+
+    }
   
   },
   mounted () {
+    if(!this.$auth.user.serial_number) {
+      alert('카드를 등록해주세요!');
+      this.$router.push('/mypage/newcard');
+    }
     if(this.$nuxt.context.from?.path === '/card/newcard') {
       this.updateUserInfo();
     }
@@ -105,7 +164,7 @@ export default {
     padding-bottom: 45px;
   }
   .container.bg {
-    background-image: url('@/assets/images/card/card-bg.png');
+    background-image: url("@/assets/images/card/card-bg.png");
     background-size: cover;
     background-position: top 60px right 50%;
     background-repeat: no-repeat;
@@ -122,8 +181,20 @@ export default {
     inset: 0;
     opacity: 0.4;
   }
+  .container.bg .lost-box {
+    position: absolute;
+    top: 70px;
+    right: 10px;
+    padding: 5px 10px;
+    background-color: rgb(255, 0, 0, 0.7);
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+    border-radius: 10px;
+    z-index: 1;
+  }
   .qr-container {
-    width: 100vw;
+    width: 100%;
     height: 50vh;
     display: flex;
     justify-content: center;
@@ -215,5 +286,16 @@ export default {
     font-size: 20px;
     font-weight: 500;
     margin-bottom: 10px;
+  }
+
+  .lost-announcement {
+    font-size: 20px;
+    font-weight: 500;
+    font-family: gmarketSans;
+    min-height: 200px;
+    /* text-align: center; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
   }
 </style>

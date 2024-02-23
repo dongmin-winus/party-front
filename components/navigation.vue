@@ -21,7 +21,7 @@
                 </a>
             </div>
             <div :class="`nav-wrap ${$route.path.includes('/organization') ? '' : ''}`">
-                <!-- <nuxt-link to="/organization" class="">
+                <nuxt-link to="/organization" class="">
                     <div class="img-wrap organizational_position">
                         <div class="" :class="`${ $route.path.includes('/organization') ? 'organizational_tap_active' : 'organizational_tap' } `">
                             <h3 :class="`${$route.path.includes('/organization') ? 'organizational_title_active' : 'organizational_title'} `">
@@ -29,17 +29,7 @@
                             </h3>
                         </div>
                     </div>
-                </nuxt-link> -->
-                <div @click="organBlock">
-                    <div class="img-wrap organizational_position">
-                        <div class="" :class="`${ $route.path.includes('/organization') ? 'organizational_tap_active' : 'organizational_tap' } `">
-                            <!-- <img :src="require(`@/assets/images/${$route.path.includes('/organization') ? 'organizational_solid.png' : 'organizational.png'}`)" alt="" style="width: 23px;"> -->
-                            <h3 :class="`${$route.path.includes('/organization') ? 'organizational_title_active' : 'organizational_title'} `">
-                                조직<br/>활동
-                            </h3>
-                        </div>
-                    </div>
-                </div>
+                </nuxt-link>
             </div>
 
             <div :class="`nav-wrap ${$route.path.includes('/chat') ? 'active' : ''}`">

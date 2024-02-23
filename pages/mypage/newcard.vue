@@ -17,7 +17,25 @@
     <div class="container grey">
       <div class="wrap" style="padding-top: 20px; padding-bottom:20px;">
         <div class="card-img-container">
-          <img src="@/assets/images/card/card-default.png" alt="신규카드">
+          <!-- <img src="@/assets/images/card/card-default.png" alt="신규카드"> -->
+          <client-only>
+              <carousel :adjustableHeight="true" :loop="true" :per-page="1" :autoplay="false"
+                  :mouse-drag="true" :pagination-enabled="true"
+                  :center-mode="true"
+                  pagination-active-color="#0baf00"
+                  pagination-color="#777"
+                  :pagination-position="'bottom-overlay'">
+                  <slide class="swiper-slide" v-for="(slide, index) in announceImgs" :key="slide.id">
+                      <div class="m-title type01 flex-center">
+                          <span class="point">{{slide.title}} 찾기</span>
+                      </div>
+                      <div class="image-container">
+                        <img :src="`${slide.src}`" class="img" alt="">
+                      </div>
+
+                  </slide>
+              </carousel>
+          </client-only>
         </div>
         <div class="card-info-container">
           <div class="m-input-wrap">
@@ -123,6 +141,11 @@ export default {
       questionModal: false,
       modal_img_type: 'barcode',
       modal_title: '카드 번호',
+
+      announceImgs: [
+        { id: 1,title:'카드 번호', src: require('@/assets/images/card/barcode-check.png') },
+        { id: 2,title:'CVC 번호', src: require('@/assets/images/card/cvc-check.png') },
+      ],
     }
   },
   computed: {
@@ -251,4 +274,22 @@ export default {
     align-items: center;
     margin: 20px 0;
   }
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.image-container {
+    margin-bottom:10px;
+    display:flex; align-items: center; justify-content: center;
+    /* width:100%; */
+    height: 400px;
+    
+}
+.image-container .img {
+    object-fit: scale-down;
+    /* min-height: 350px; */
+}
 </style>

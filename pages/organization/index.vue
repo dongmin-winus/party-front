@@ -13,7 +13,7 @@
         </div>
 
         <div class="right" style="margin-left: 25px; padding-left:25px;">
-          <button v-if="$auth.user.role != 10" class="btn-util" @click="$router.push(`/mypage/${$auth.user.serial_number ? '' : 'new'}card`)">
+          <button class="btn-util" @click="$router.push(`/mypage/${$auth.user.serial_number ? '' : 'new'}card`)">
               <!-- <img src="@/assets/images/card-icon.png" style="width:36px;" alt="" @click=""> -->
             <svg xmlns="http://www.w3.org/2000/svg" width="59" height="59" viewBox="0 0 83 83" fill="none">
               <rect width="83" height="83" fill="#0BAF00"/>
@@ -51,7 +51,7 @@
         </div>
       </div>
       <div class="mt-24 menus-container">
-        <nuxt-link v-if="$auth.user.role != 10" :to="`/mypage/${$auth.user.serial_number ? '' : 'new'}card`" class="menus orange">
+        <nuxt-link :to="`/mypage/${$auth.user.serial_number ? '' : 'new'}card`" class="menus orange">
           <div class="left">
             <p class="sub white">회원카드 {{`${$auth.user.serial_number ? '확인' : '등록'}`}} & 출석체크</p>
             <p class="title white">내 카드</p>
