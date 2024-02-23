@@ -94,9 +94,10 @@ export default {
       return replaced;
     },
 
-    replaceText(target, maskLength, mask = '...') {
+    replaceText(target, maskLength, mask = '...', maskPart = 'back') {
       if (target === null || target === undefined) return;
       if (target.length <= maskLength) return target;
+      if (maskPart === 'front') return mask + target.substring(target.length - maskLength, target.length);
       return target.substring(0, maskLength) + mask;
     },
 
