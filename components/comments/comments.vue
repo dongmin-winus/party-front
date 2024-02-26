@@ -3,15 +3,20 @@
     <div class="create-comment">
       <div class="up">
         <div class="left">
-          <input type="text" placeholder="작성자" />
-          <input type="text" placeholder="비밀번호" />
+          <template v-if="!$auth.user">
+            <input type="text" placeholder="작성자" v-model="name"/>
+            <input type="text" placeholder="비밀번호" v-model="password"/>
+          </template>
+          <template v-else>
+            <span class="name">{{$auth.user.name}} 님</span>
+          </template>
         </div>
         <div class="light">
-          <div class="m-btn type01 bg-red">등록</div>
+          <div class="m-btn type01 bg-red" @click="action">등록</div>
         </div>
       </div>
       <div class="down">
-        <textarea class="text-area" name="" id="" cols="30" rows="3" placeholder="내용"></textarea>
+        <textarea class="text-area" v-model="content" cols="30" rows="3" placeholder="내용"></textarea>
       </div>
     </div>
     <div class="mt-20 order-btns">
@@ -47,9 +52,9 @@ export default {
   },
   computed: {
     bestComments() {
-      //comments 에서 recommend 와 replies.length 의 합이 가장 높은 상위 3개의 댓글을 반환
+      //comments 에서 like_count 와 comments.length 의 합이 가장 높은 상위 3개의 댓글을 반환
       return this.comments.sort((a, b) => {
-        return (b.recommend + b.replies.length) - (a.recommend + a.replies.length)
+        return (b.like_count + b.comments?.length) - (a.like_count + a.comments?.length)
       }).slice(0, 3)
     }
   },
@@ -58,15 +63,76 @@ export default {
       orderType: 'latest',
       tooltipVisible: false,
 
+      name: null,
+      password: null,
+      content: null,
+      postCreateUrl: '/api/comments?commentable_type=post&commentable_id=1'
     }
   },
   methods: {
     isSelected(type) {
       return this.orderType === type ? 'active' : '';
     },
-    showTooltip() {
-      this.tooltipVisible = !this.tooltipVisible;
+    validateUserInput() {
+      if(!this.name) {
+        alert('작성자를 입력해주세요')
+        return false
+      }
+      if(!this.password) {
+        alert('비밀번호를 입력해주세요')
+        return false
+      }
+      return true
+    },
+    async createComment() {
+      try {
+        const res = await this.$axios.$post(this.postCreateUrl, {
+          content: this.content
+        })
+        console.log(res,'comment create response',565656)
+        if(res.data) {
+          alert(res.message)
+        }
+      } catch (error) {
+        if(error.response?.data) {
+          alert(error.response.data.message)
+        }else {
+          alert('서버에러 발생')
+          console.error(error)
+        }
+      }
+
+},
+    async action () {
+      if(!this.$auth.user) {
+        if(this.validateUserInput()) {
+          try {
+            const res = await this.$axios.$post('/api/auth/login', {
+              name: this.name,
+              password: this.password
+            })
+            if(res.name) {
+              await this.$auth.setUser(res)
+              console.log(this.$auth.user,'this.$auth.user',454545)
+              await this.createComment();
+            }else if(res.status == false) {
+              return alert('비밀번호가 틀렸습니다')
+            }
+          } catch (error) {
+            if(error.response?.data) {
+              alert(error.response.data.message)
+            }else {
+              alert('서버에러 발생')
+              console.error(error)
+            }
+          }
+
+        }
+      }else {
+        await this.createComment();
+      }
     }
+
   }
 }
 </script>
@@ -95,6 +161,11 @@ export default {
     margin-right: 5px;
     padding: 5px;
     width: 100%;
+  }
+  .create-comment .up .left .name {
+    font-size: 20px;
+    font-weight: 700;
+    padding-top: 5px;
   }
   .create-comment .up .light {
     width: 17%;
