@@ -126,7 +126,6 @@ export default {
   },
   methods: {
     toggleReplyCreate() {
-      console.log('toggleReplyCreate called')
       this.replyCreate = !this.replyCreate
     },
     toggleReplies() {
@@ -157,9 +156,9 @@ export default {
       }
       const res = await this.$axios.delete(`/api/comments/${this.comment.id}`);
       if(res.status === 200) {
-        alert(res.data.message)
+        alert(res.data.message);
+        this.comment.deleted_at = 1;
       }
-      console.log(res,77777)
     
     },
     validateUserInput() {
@@ -181,6 +180,7 @@ export default {
         })
         if(res.data) {
           alert(res.message);
+          this.comment.comments.push(res.data)
           this.toggleReplyCreate();
         }
       } catch (error) {
@@ -192,15 +192,19 @@ export default {
         }
       }
     },
+    async login() {
+      const res = await this.$auth.loginWith('laravelSanctum', {data: {
+        name: this.name,
+        password: this.password
+      }})
+      return res;
+    },
     async action() {
       if(!this.$auth.user) {
         if(this.validateUserInput()) {
           try {
-            const res = await this.$axios.$post('/api/auth/login', {
-              name: this.name,
-              password: this.password
-            })
-            if(res.name) {
+            const res = await this.login();   
+            if(res.data.name) {
               await this.$auth.setUser(res)
               await this.createCommentReply();
             }else if(res.status == false) {

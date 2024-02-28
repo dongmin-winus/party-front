@@ -125,7 +125,6 @@ export default {
         const res = await this.$axios.$post(this.postCreateUrl, {
           content: this.content
         })
-        console.log(res,'comment create response',565656)
         if(res.data) {
           alert(res.message);
           this.comments.unshift(res.data)
@@ -141,17 +140,23 @@ export default {
       }
 
     },
+    async login() {
+      const res = await this.$auth.loginWith('laravelSanctum', {data: {
+        name: this.name,
+        password: this.password
+      }})
+      return res;
+    },
     async action () {
       if(!this.$auth.user) {
         if(this.validateUserInput()) {
           try {
-            const res = await this.$axios.$post('/api/auth/login', {
-              name: this.name,
-              password: this.password
-            })
-            if(res.name) {
-              await this.$auth.setUser(res)
-              console.log(this.$auth.user,'this.$auth.user',454545)
+            // const res = await this.$axios.$post('/api/auth/login', {
+            //   name: this.name,
+            //   password: this.password
+            // })
+            const res = await this.login();
+            if(res.data.name) {
               await this.createComment();
             }else if(res.status == false) {
               return alert('비밀번호가 틀렸습니다')
