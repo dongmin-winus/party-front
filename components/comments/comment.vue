@@ -3,24 +3,24 @@
     <div class="comment-item__header">
       <div class="comment-item__header__content">
         <div class="comment-item__header__name">
-          {{ replaceText(comment.name,2,'O','back') }}
+          {{ replaceText(comment.user.name,2,'O','back') }}
         </div>
         <div class="comment-item__header__date">
           {{ comment.created_at }}
         </div>
       </div>
       <!-- <div class="comment-item__header__delete" @click="deleteModal = true"> -->
-      <div v-if="isAuthor" class="comment-item__header__delete" @click="deleteComment">
+      <div v-if="isAuthor && !comment.deleted_at" class="comment-item__header__delete" @click="deleteComment">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="0 0 16 20" fill="none">
         <path d="M14.2852 16.5714C14.2852 18.2314 12.9452 19.5714 11.2852 19.5714H4.28516C2.62516 19.5714 1.28516 18.2314 1.28516 16.5714V4.57141H0.285156V1.57141H4.78516L5.78516 0.571411H9.78516L10.7852 1.57141H15.2852V4.57141H14.2852V16.5714ZM2.28516 4.57141V16.5714C2.28516 17.6714 3.18516 18.5714 4.28516 18.5714H11.2852C12.3852 18.5714 13.2852 17.6714 13.2852 16.5714V4.57141H2.28516ZM14.2852 3.57141V2.57141H10.2852L9.28516 1.57141H6.28516L5.28516 2.57141H1.28516V3.57141H14.2852ZM4.28516 6.57141H5.28516V16.5714H4.28516V6.57141ZM10.2852 6.57141H11.2852V16.5714H10.2852V6.57141Z" fill="black"/>
         </svg>
       </div>
     </div>
     <div class="comment-item__content">
-      <span v-if="isBest" class="best-comment">BEST</span>{{ comment.content }}
+      <span v-if="isBest" class="best-comment">BEST</span>{{ comment.deleted_at ? '댓글이 삭제되었습니다.' : comment.content }}
     </div>
     <div class="comment-item__footer">
-      <div class="comment-item__footer__create" @click="replyCreate = !replyCreate">
+      <div v-if="!comment.is_reply" class="comment-item__footer__create" @click="replyCreate = !replyCreate">
         답글 {{replyCreate ? '취소' : '작성'}}
       </div>
       <div class="comment-item__footer__recommend" @click="toggleLike">
@@ -34,7 +34,7 @@
         </svg>
         {{ comment.like_count }}
       </div>
-      <div v-if="comment.comments " @click="toggleReplies" class="comment-item__footer__reply">
+      <div v-if="comment.comments && !comment.is_reply" @click="toggleReplies" class="comment-item__footer__reply">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="16" viewBox="0 0 18 18" fill="none">
           <path d="M17.991 1.8C17.991 0.81 17.19 0 16.2 0H1.8C0.81 0 0 0.81 0 1.8V12.6C0 13.59 0.81 14.4 1.8 14.4H14.4L18 18L17.991 1.8ZM14.4 10.8H3.6V9H14.4V10.8ZM14.4 8.1H3.6V6.3H14.4V8.1ZM14.4 5.4H3.6V3.6H14.4V5.4Z" fill="black"/>
         </svg> 
@@ -54,11 +54,11 @@
             </template>
           </div>
           <div class="light">
-            <div class="m-btn type01 bg-red" @click="">등록</div>
+            <div class="m-btn type01 bg-red" @click="action">등록</div>
           </div>
         </div>
         <div class="down">
-          <textarea class="text-area" name="" id="" cols="30" rows="3" placeholder="내용"></textarea>
+          <textarea class="text-area" v-model="content" cols="30" rows="3" placeholder="내용"></textarea>
         </div>
       </div>
     </div>
@@ -84,7 +84,7 @@ export default {
         name: '자유사랑',
         password: '1234',
         content: '유옹유 호앋이 이새졍 찌어눠',
-        createdAt: '2024-02-22',
+        created_at: '2024-02-22',
         recommend: 10,
         comments: [
           {
@@ -92,7 +92,7 @@ export default {
             name: '홍길동',
             password: '1234',
             content: '안녕하세요',
-            createdAt: '2024-02-22',
+            created_at: '2024-02-22',
             recommend: 10,
             comments: []
           },
@@ -107,7 +107,7 @@ export default {
   computed: {
     isAuthor() {
       if(!this.$auth.user) return false;
-      return this.comment?.id === this.$auth.user?.id
+      return this.comment.user.id === this.$auth.user?.id
     },
   },
   data() {
@@ -116,12 +116,19 @@ export default {
       replyCreate: false,
       name: null,
       password: null,
+      content: null,
       is_like: null,
       like_count: null,
-      deleteModal: false
+      deleteModal: false,
+
+      commentCreateUrl: `/api/comments?commentable_type=comment`
     }
   },
   methods: {
+    // toggleReplyCreate() {
+    //   console.log('toggleReplyCreate',3333)
+    //   this.replyCreate = !this.replyCreate
+    // },
     toggleReplies() {
       if(this.comment.comments.length === 0) return;
       this.showReplies = !this.showReplies
@@ -132,9 +139,7 @@ export default {
         return;
       }
       const res = await this.$axios.put(`/api/likes/comments/${this.comment.id}`)
-      console.log(res,77777)
       if(res.status === 200) {
-        console.log(this.is_like,8888)
         if(this.is_like == 0) {
           this.comment.like_count++;
           this.is_like = 1;
@@ -143,27 +148,76 @@ export default {
           this.is_like = 0;
         }
       }
-      // if(res.data.is_like) {
-      //   this.comment.like_count++
-      // } else {
-      //   this.comment.like_count--
-      // }
-      // this.comment.is_like = res.data.is_like
+
     },
     async deleteComment() {
       if(!this.$auth.user) {
         alert('댓글 삭제는 작성자만 가능합니다')
         return;
       }
-      const res = await this.$axios.delete(`/api/comments/${this.comment.id}`)
+      const res = await this.$axios.delete(`/api/comments/${this.comment.id}`);
+      if(res.status === 200) {
+        alert(res.data.message)
+      }
       console.log(res,77777)
-      // if(res.data.is_like) {
-      //   this.comment.like_count++
-      // } else {
-      //   this.comment.like_count--
-      // }
-      // this.comment.is_like = res.data.is_like
     
+    },
+    validateUserInput() {
+      if(!this.name) {
+        alert('작성자를 입력해주세요')
+        return false
+      }
+      if(!this.password) {
+        alert('비밀번호를 입력해주세요')
+        return false
+      }
+      return true
+    },
+    async createCommentReply() {
+      try {
+        const res = await this.$axios.$post(this.commentCreateUrl, {
+          commentable_id: this.comment.id,
+          content: this.content
+        })
+        if(res.data) {
+          alert(res.message);
+        }
+      } catch (error) {
+        if(error.response?.data) {
+          alert(error.response.data.message)
+        }else {
+          alert('서버에러 발생')
+          console.error(error)
+        }
+      }
+    },
+    async action() {
+      if(!this.$auth.user) {
+        if(this.validateUserInput()) {
+          try {
+            const res = await this.$axios.$post('/api/auth/login', {
+              name: this.name,
+              password: this.password
+            })
+            if(res.name) {
+              await this.$auth.setUser(res)
+              await this.createCommentReply();
+            }else if(res.status == false) {
+              return alert('비밀번호가 틀렸습니다')
+            }
+          } catch (error) {
+            if(error.response?.data) {
+              alert(error.response.data.message)
+            }else {
+              alert('서버에러 발생')
+              console.error(error)
+            }
+          }
+        }
+      }else {
+        await this.createCommentReply();
+      
+      }
     }
   },
   mounted() {

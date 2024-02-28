@@ -23,17 +23,17 @@
       <div class="left">
         <input type="radio" id="latest" value="latest" v-model="orderType">
         <label for="latest" :class="isSelected('latest')">최신순</label>
-        <input type="radio" id="recommend" value="recommend" v-model="orderType">
-        <label for="recommend" :class="isSelected('recommend')">추천순</label>
-        <input type="radio" id="replies" value="replies" v-model="orderType">
-        <label for="replies" :class="isSelected('replies')">댓글순</label>
+        <input type="radio" id="like" value="like" v-model="orderType">
+        <label for="like" :class="isSelected('like')">추천순</label>
+        <input type="radio" id="comment" value="comment" v-model="orderType">
+        <label for="comment" :class="isSelected('comment')">댓글순</label>
       </div>
       <div class="right">
         BEST 댓글
       </div>
     </div>
     <comment-item v-for="comment in bestComments"  :comment="comment" :isBest="true" />
-    <comment-item v-for="comment in comments" :comment="comment" />
+    <comment-item v-for="comment in comments" :comment="comment"/>
     <no-ssr>
         <!-- <infinite-loading @infinite="loadMore" v-if="links.next" /> -->
         <scroll-loading @load="loadMore" v-if="links.next" />
@@ -53,6 +53,10 @@ export default {
       type: Array,
       default: () => {}
     },
+    bestComments: {
+      type: Array,
+      default: () => {}
+    },
     links: {
       type: Object,
       default: () => {}
@@ -66,48 +70,24 @@ export default {
       default: 1
     }
   },
-  computed: {
-    bestComments() {
-      //comments 에서 like_count 와 comments.length 의 합이 가장 높은 상위 3개의 댓글을 반환
-      return this.comments.sort((a, b) => {
-        return (b.like_count + b.comments?.length) - (a.like_count + a.comments?.length)
-      }).slice(0, 3)
-    }, 
-    orderedComments() {
-     let orderedComments;
-      // if(type === 'latest') {
-      //   return this.comments.sort((a, b) => {
-      //     return new Date(b.created_at) - new Date(a.created_at)
-      //   })
-      // }else if(type === 'recommend') {
-      //   return this.comments.sort((a, b) => {
-      //     return b.like_count - a.like_count
-      //   })
-      // }else if(type === 'replies') {
-      //   return this.comments.sort((a, b) => {
-      //     return b.comments.length - a.comments.length
-      //   })
-      // }
-      switch(this.orderType) {
-        case 'latest':
-          orderedComments = this.comments.sort((a, b) => {
-            return new Date(b.created_at) - new Date(a.created_at)
-          })
-          break;
-        case 'recommend':
-          orderedComments = this.comments.sort((a, b) => {
-            return b.like_count - a.like_count
-          })
-          break;
-        case 'replies':
-          orderedComments = this.comments.sort((a, b) => {
-            return b.comments.length - a.comments.length
-          })
-          break;
+  watch: {
+    orderType(val, oldVal) {
+      if(val !== oldVal) { 
+        if(val == 'latest'){
+          this.$emit('alignComments', 1,'')
+        }else {
+          this.$emit('alignComments', 1,val)
+        }
       }
-      console.log(orderedComments,'orderedComments', 1111)
-      return orderedComments
     }
+  },
+  computed: {
+    // bestComments() {
+    //   //comments 에서 like_count 와 comments.length 의 합이 가장 높은 상위 3개의 댓글을 반환
+    //   return this.comments.sort((a, b) => {
+    //     return (b.like_count + b.comments?.length) - (a.like_count + a.comments?.length)
+    //   }).slice(0, 3)
+    // }, 
   },
   data() {
     return {
@@ -124,16 +104,6 @@ export default {
     loadMore(state) {
         if(this.meta.current_page <= this.meta.last_page){  
             this.$emit('loadMore', this.meta.current_page + 1)
-            // this.$axios.get("/api/comments", {
-            //     params: this.form
-            // }).then(response => {
-            //     this.items = {
-            //         ...response.data,
-            //         data: [...this.items.data, ...response.data.data]
-            //     };
-
-            //     state.loaded();
-            // });
         }
     },
     isSelected(type) {
@@ -157,7 +127,9 @@ export default {
         })
         console.log(res,'comment create response',565656)
         if(res.data) {
-          alert(res.message)
+          alert(res.message);
+          this.comments.unshift(res.data)
+          this.content = '';
         }
       } catch (error) {
         if(error.response?.data) {
@@ -168,7 +140,7 @@ export default {
         }
       }
 
-},
+    },
     async action () {
       if(!this.$auth.user) {
         if(this.validateUserInput()) {
@@ -192,7 +164,6 @@ export default {
               console.error(error)
             }
           }
-
         }
       }else {
         await this.createComment();

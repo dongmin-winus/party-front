@@ -1,7 +1,7 @@
 <template>
   <div class="area-test">
     <!-- <headerType01 /> -->
-    <div class="container bg" style="padding-top: 20px !important;">
+    <div class="container bg" style="padding-top: 0px !important;">
       <div class="number-container">
         <span class="total">total.</span>
         <template v-for="(msg, idx) in splitedNumber">
@@ -21,7 +21,11 @@
         </div>
       </div> -->
       <div class="bg-image">
-        <img :src="require(`@/assets/images/dkvsjm.png`)" class="img" alt="bg-image" />
+        <!-- TODO 슬라이더 자리 -->
+        <img :src="require(`@/assets/images/party/slide_1.png`)" class="img" alt="bg-image" />
+        <div class="mt-12"></div>
+        <img :src="require(`@/assets/images/party/five-per.png`)" class="img" alt="bg-image" />
+
         <div class="total-comments-container">
           <div class="comment-info">
             전체 댓글 {{ countDots(totalComments) }}
@@ -31,12 +35,12 @@
 
     </div>
     <div class="mt-20 wrap">
-      <!-- 아직 안되는것: [totalView, totalComments] echo 연결, 
-      좋아요 토글, 댓글 삭제, 대댓글 작성, 대댓글 좋아요? 토글, 대댓글 삭제 -->
-      <div v-if="$auth.user" class="m-btn type01 bg-revert-red" @click="logout">로그아웃</div>
+      <!-- 아직 안되는것:  댓글 삭제, 대댓글 작성, 대댓글 좋아요? 토글, 대댓글 삭제 -->
       <comments
         @loadMore="getCommentList"
+        @alignComments="getCommentList"
         :comments="comments" 
+        :bestComments="bestComments"
         :links="links" 
         :meta="meta" 
       />
@@ -147,6 +151,7 @@ export default {
           comments: []
         }
       ],
+      bestComments: [],
       comments: [],
       links: {},
       meta: {}
@@ -177,16 +182,27 @@ export default {
       const regex = /^[0-9]*$/
       return regex.test(msg);
     },
-    async getCommentList(page = 1) {
+    async getCommentList(page = 1, align = '') {
       const res = await this.$axios.$get('/api/comments?commentable_type=post&commentable_id=1',{
         params: {
-          page
+          page,
+          align
         }
       })
       if(res.data) {
+        if(page === 1) {
+          this.comments = res.data;
+       }else {
         this.comments = [...this.comments,...res.data];
+       }
         this.links = res.links;
         this.meta = res.meta;
+      }
+    },
+    async getBestComments() {
+      const res = await this.$axios.$get('/api/best');
+      if(res.data) {
+        this.bestComments = res.data;
       }
     },
     async logout() {
@@ -206,10 +222,6 @@ export default {
       }
     }
   },
-  async created() {
-
-
-  },
   async mounted() {
     await this.getCountInfo();
     if (this.echo) this.disconnect();
@@ -220,7 +232,7 @@ export default {
     //   this.numberPlus();
     //   this.commentPlus();
     // }, Math.floor(Math.random() * 4000) + 1000)
-
+    await this.getBestComments();
     await this.getCommentList()
   }
 }
@@ -228,7 +240,11 @@ export default {
 
 <style scopped>
   .container.bg {
-    background-color: #000;
+    /* background-color: #000; */
+    background-image: url('@/assets/images/party/back.jpeg');
+    background-size: cover;
+    background-position: center;
+
   }
   .number-container {
     display: flex;
@@ -250,7 +266,8 @@ export default {
     padding: 0 3px;
   }
   .bg-image {
-    background-color: rgb(255, 85, 0, 0.5);
+    /* background-color: rgb(255, 85, 0, 0.5); */
+    background: transparent;
   }
   .bg-image img {
     width: 100%;
@@ -262,7 +279,7 @@ export default {
     justify-content: center;
     padding-top: 10px;
     padding-bottom: 20px; 
-    background-image: linear-gradient(rgba(255, 85, 0, 0) 10%, rgba(0, 0, 0, 0.8) 100%);
+    /* background-image: linear-gradient(rgba(255, 85, 0, 0) 10%, rgba(0, 0, 0, 0.8) 100%); */
     /* padding: 10px 0; */
   }
   .comment-info {
