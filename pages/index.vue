@@ -242,7 +242,7 @@ export default {
   .container.bg {
     /* background-color: #000; */
     background-image: url('@/assets/images/party/back.jpeg');
-    background-size: cover;
+    background-size: contain;
     background-position: center;
 
   }
