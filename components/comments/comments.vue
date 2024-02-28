@@ -34,6 +34,10 @@
     </div>
     <comment-item v-for="comment in bestComments"  :comment="comment" :isBest="true" />
     <comment-item v-for="comment in comments" :comment="comment" />
+    <no-ssr>
+        <!-- <infinite-loading @infinite="loadMore" v-if="links.next" /> -->
+        <scroll-loading @load="loadMore" v-if="links.next" />
+    </no-ssr>
   </div>
 </template>
 
@@ -49,6 +53,18 @@ export default {
       type: Array,
       default: () => {}
     },
+    links: {
+      type: Object,
+      default: () => {}
+    },
+    meta: {
+      type: Object,
+      default: () => {}
+    },
+    page: {
+      type: Number,
+      default: 1
+    }
   },
   computed: {
     bestComments() {
@@ -56,6 +72,41 @@ export default {
       return this.comments.sort((a, b) => {
         return (b.like_count + b.comments?.length) - (a.like_count + a.comments?.length)
       }).slice(0, 3)
+    }, 
+    orderedComments() {
+     let orderedComments;
+      // if(type === 'latest') {
+      //   return this.comments.sort((a, b) => {
+      //     return new Date(b.created_at) - new Date(a.created_at)
+      //   })
+      // }else if(type === 'recommend') {
+      //   return this.comments.sort((a, b) => {
+      //     return b.like_count - a.like_count
+      //   })
+      // }else if(type === 'replies') {
+      //   return this.comments.sort((a, b) => {
+      //     return b.comments.length - a.comments.length
+      //   })
+      // }
+      switch(this.orderType) {
+        case 'latest':
+          orderedComments = this.comments.sort((a, b) => {
+            return new Date(b.created_at) - new Date(a.created_at)
+          })
+          break;
+        case 'recommend':
+          orderedComments = this.comments.sort((a, b) => {
+            return b.like_count - a.like_count
+          })
+          break;
+        case 'replies':
+          orderedComments = this.comments.sort((a, b) => {
+            return b.comments.length - a.comments.length
+          })
+          break;
+      }
+      console.log(orderedComments,'orderedComments', 1111)
+      return orderedComments
     }
   },
   data() {
@@ -70,6 +121,21 @@ export default {
     }
   },
   methods: {
+    loadMore(state) {
+        if(this.meta.current_page <= this.meta.last_page){  
+            this.$emit('loadMore', this.meta.current_page + 1)
+            // this.$axios.get("/api/comments", {
+            //     params: this.form
+            // }).then(response => {
+            //     this.items = {
+            //         ...response.data,
+            //         data: [...this.items.data, ...response.data.data]
+            //     };
+
+            //     state.loaded();
+            // });
+        }
+    },
     isSelected(type) {
       return this.orderType === type ? 'active' : '';
     },

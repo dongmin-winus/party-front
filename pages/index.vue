@@ -34,7 +34,12 @@
       <!-- 아직 안되는것: [totalView, totalComments] echo 연결, 
       좋아요 토글, 댓글 삭제, 대댓글 작성, 대댓글 좋아요? 토글, 대댓글 삭제 -->
       <div v-if="$auth.user" class="m-btn type01 bg-revert-red" @click="logout">로그아웃</div>
-      <comments :comments="comments" />
+      <comments
+        @loadMore="getCommentList"
+        :comments="comments" 
+        :links="links" 
+        :meta="meta" 
+      />
 
     </div>
   </div>
@@ -64,9 +69,9 @@ export default {
   data() {
     return {
       echo: null,
-      number:999980,
-      totalComments: 980,
-      comments: [
+      number: 0,
+      totalComments: 0,
+      old_comments: [
         {
           id: 1,
           name: '자유사랑',
@@ -91,7 +96,26 @@ export default {
               content: '안녕하세요',
               createdAt: '2024-02-01',
               like_count: 10,
-              comments: []
+              comments: [
+                {
+                  id: 5,
+                  name: '이영희',
+                  password: '1234',
+                  content: '안녕하세요',
+                  createdAt: '2024-02-01',
+                  like_count: 13,
+                  comments: []
+                },
+                {
+                  id: 6,
+                  name: '박철수',
+                  password: '1234',
+                  content: '안녕하세요',
+                  createdAt: '2024-02-01',
+                  like_count: 10,
+                  comments: []
+                }
+              ]
             },
             {
               id: 2,
@@ -122,7 +146,10 @@ export default {
           like_count: 10,
           comments: []
         }
-      ]
+      ],
+      comments: [],
+      links: {},
+      meta: {}
     }
   },
   methods: {
@@ -137,36 +164,29 @@ export default {
           authEndpoint: '/api/broadcasting/auth',
         })
       }
-      this.echo.channel('totalComments')
-        .listen("TotalCommentChanged", (payload) => { this.onTotalCommentChanged(payload) });
-      this.echo.channel(`totalView`)
-        .listen("TotalViewChanged", (payload) => { this.onTotalViewChanged(payload) });
+      this.echo.channel('CommentCountChannel')
+        .listen("CommentCount", (payload) => { this.totalComments = payload.count });
+      this.echo.channel(`VisitorCountChannel`)
+        .listen("VisitorCount", (payload) => { this.number = payload.count});
     },
     disconnect() {
-      this.echo.leaveChannel("totalComments");
-      this.echo.leaveChannel("totalView");
-    },
-    async onTotalCommentChanged(payload) {
-      console.log('TotalCommentChanged 진입', 1111)
-      console.log(payload, 'payload', 2222)
-    },
-    commentPlus() {
-      let random = Math.floor(Math.random() * 10)
-      this.totalComments = this.totalComments + random;
-    },
-    numberPlus() {
-      let random = Math.floor(Math.random() * 10)
-      this.number = this.number + random;
+      this.echo.leaveChannel("CommentCountChannel");
+      this.echo.leaveChannel("BisitorCountChannel");
     },
     numberTest(msg) {
       const regex = /^[0-9]*$/
       return regex.test(msg);
     },
-    async getCommentList() {
-      const res = await this.$axios.$get('/api/comments?commentable_type=post&commentable_id=1')
+    async getCommentList(page = 1) {
+      const res = await this.$axios.$get('/api/comments?commentable_type=post&commentable_id=1',{
+        params: {
+          page
+        }
+      })
       if(res.data) {
-        console.log(res.data, 'comment list',67676767)
-        this.comments = res.data
+        this.comments = [...this.comments,...res.data];
+        this.links = res.links;
+        this.meta = res.meta;
       }
     },
     async logout() {
@@ -174,18 +194,34 @@ export default {
       if(res.data) {
         this.$auth.logout()
       }
+    },
+    async visitorCount() {
+      const res = await this.$axios.$post('/api/visitor/count')
+    },
+    async getCountInfo() {
+      const res = await this.$axios.$get('/api/visitor/home')
+      if(res) {
+        this.number = res.view_count;
+        this.totalComments = res.comment_count;
+      }
     }
   },
-  mounted() {
-    // if (this.echo) this.disconnect();
-    // this.connect();
-    // 0~9의 숫자를 1000~5000ms 사이의 랜덤한 시간마다 숫자 증가
-    setInterval(() => {
-      this.numberPlus();
-      this.commentPlus();
-    }, Math.floor(Math.random() * 4000) + 1000)
+  async created() {
 
-    // this.getCommentList()
+
+  },
+  async mounted() {
+    await this.getCountInfo();
+    if (this.echo) this.disconnect();
+    this.connect();
+    await this.visitorCount();
+    // 0~9의 숫자를 1000~5000ms 사이의 랜덤한 시간마다 숫자 증가
+    // setInterval(() => {
+    //   this.numberPlus();
+    //   this.commentPlus();
+    // }, Math.floor(Math.random() * 4000) + 1000)
+
+    await this.getCommentList()
   }
 }
 </script>

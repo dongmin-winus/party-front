@@ -6,7 +6,7 @@
           {{ replaceText(comment.name,2,'O','back') }}
         </div>
         <div class="comment-item__header__date">
-          {{ comment.createdAt }}
+          {{ comment.created_at }}
         </div>
       </div>
       <!-- <div class="comment-item__header__delete" @click="deleteModal = true"> -->
@@ -25,20 +25,20 @@
       </div>
       <div class="comment-item__footer__recommend" @click="toggleLike">
         <!-- empty thumb-up -->
-        <svg v-if="!comment.is_like" xmlns="http://www.w3.org/2000/svg" width="20" height="18" viewBox="0 0 20 18" fill="none">
+        <svg v-show="!this.is_like" xmlns="http://www.w3.org/2000/svg" width="20" height="18" viewBox="0 0 20 18" fill="none">
           <path d="M11.11 3.72L10.54 6.61C10.42 7.2 10.58 7.81 10.96 8.27C11.34 8.73 11.9 9 12.5 9H18V10.08L15.43 16H7.34C7.16 16 7 15.84 7 15.66V7.82L11.11 3.72ZM12 0L5.59 6.41C5.21 6.79 5 7.3 5 7.83V15.66C5 16.95 6.05 18 7.34 18H15.44C16.15 18 16.8 17.63 17.16 17.03L19.83 10.88C19.94 10.63 20 10.36 20 10.08V9C20 7.9 19.1 7 18 7H12.5L13.42 2.35C13.47 2.13 13.44 1.89 13.34 1.69C13.11 1.24 12.82 0.83 12.46 0.47L12 0ZM2 7H0V18H2C2.55 18 3 17.55 3 17V8C3 7.45 2.55 7 2 7Z" fill="black"/>
         </svg>
         <!-- filled thumb-up -->
-        <svg v-else xmlns="http://www.w3.org/2000/svg" width="18" height="20" viewBox="0 0 22 18" fill="none">
+        <svg v-show="this.is_like" xmlns="http://www.w3.org/2000/svg" width="18" height="20" viewBox="0 0 22 18" fill="none">
           <path d="M23 10C23 8.89 22.1 8 21 8H14.68L15.64 3.43C15.66 3.33 15.67 3.22 15.67 3.11C15.67 2.7 15.5 2.32 15.23 2.05L14.17 1L7.59 7.58C7.22 7.95 7 8.45 7 9V19C7 19.5304 7.21071 20.0391 7.58579 20.4142C7.96086 20.7893 8.46957 21 9 21H18C18.83 21 19.54 20.5 19.84 19.78L22.86 12.73C22.95 12.5 23 12.26 23 12V10ZM1 21H5V9H1V21Z" fill="black"/>
         </svg>
         {{ comment.like_count }}
       </div>
-      <div @click="toggleReplies" class="comment-item__footer__reply">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="16" viewBox="0 0 18 18" fill="none">
-        <path d="M17.991 1.8C17.991 0.81 17.19 0 16.2 0H1.8C0.81 0 0 0.81 0 1.8V12.6C0 13.59 0.81 14.4 1.8 14.4H14.4L18 18L17.991 1.8ZM14.4 10.8H3.6V9H14.4V10.8ZM14.4 8.1H3.6V6.3H14.4V8.1ZM14.4 5.4H3.6V3.6H14.4V5.4Z" fill="black"/>
-      </svg> 
-      {{ comment.comments?.length }}
+      <div v-if="comment.comments " @click="toggleReplies" class="comment-item__footer__reply">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="16" viewBox="0 0 18 18" fill="none">
+          <path d="M17.991 1.8C17.991 0.81 17.19 0 16.2 0H1.8C0.81 0 0 0.81 0 1.8V12.6C0 13.59 0.81 14.4 1.8 14.4H14.4L18 18L17.991 1.8ZM14.4 10.8H3.6V9H14.4V10.8ZM14.4 8.1H3.6V6.3H14.4V8.1ZM14.4 5.4H3.6V3.6H14.4V5.4Z" fill="black"/>
+        </svg> 
+        {{ comment.comments?.length }}
       </div>
     </div>
     <div v-if="replyCreate">
@@ -54,7 +54,7 @@
             </template>
           </div>
           <div class="light">
-            <div class="m-btn type01 bg-red">등록</div>
+            <div class="m-btn type01 bg-red" @click="">등록</div>
           </div>
         </div>
         <div class="down">
@@ -108,7 +108,7 @@ export default {
     isAuthor() {
       if(!this.$auth.user) return false;
       return this.comment?.id === this.$auth.user?.id
-    }
+    },
   },
   data() {
     return {
@@ -116,7 +116,8 @@ export default {
       replyCreate: false,
       name: null,
       password: null,
-
+      is_like: null,
+      like_count: null,
       deleteModal: false
     }
   },
@@ -132,6 +133,16 @@ export default {
       }
       const res = await this.$axios.put(`/api/likes/comments/${this.comment.id}`)
       console.log(res,77777)
+      if(res.status === 200) {
+        console.log(this.is_like,8888)
+        if(this.is_like == 0) {
+          this.comment.like_count++;
+          this.is_like = 1;
+        } else {
+          this.comment.like_count--;
+          this.is_like = 0;
+        }
+      }
       // if(res.data.is_like) {
       //   this.comment.like_count++
       // } else {
@@ -154,6 +165,10 @@ export default {
       // this.comment.is_like = res.data.is_like
     
     }
+  },
+  mounted() {
+    this.is_like = this.comment.is_like;
+    this.like_count = this.comment.like_count;
   }
 }
 </script>

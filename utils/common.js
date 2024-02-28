@@ -18,6 +18,26 @@ export default {
         this.$emit('cancel');
       }
     },
+    timeAgo(pastDate) {
+      const currentTime = new Date();
+      const pastTime = new Date(pastDate);
+      const timeDiff = currentTime - pastTime; // 밀리초 단위로 차이 계산
+
+      const seconds = timeDiff / 1000; // 초
+      const minutes = seconds / 60; // 분
+      const hours = minutes / 60; // 시간
+      const days = hours / 24; // 일
+
+      if (days > 1) {
+        return `${Math.floor(days)}일 전`;
+      } else if (hours > 1) {
+        return `${Math.floor(hours)}시간 전`;
+      } else if (minutes > 1) {
+        return `${Math.floor(minutes)}분 전`;
+      } else {
+        return `${Math.floor(seconds)}초 전`;
+      }
+    },
     formatDate(dateString, delimiter = '.') {
       if (!dateString) return '';
       const date = new Date(dateString);
