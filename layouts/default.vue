@@ -67,7 +67,7 @@ export default {
         }
     },
   mounted() {
-      Kakao.init('0b676e15765c46418fa53c1333910c0a');
+      // Kakao.init('0b676e15765c46418fa53c1333910c0a');
   }
 }
 </script>

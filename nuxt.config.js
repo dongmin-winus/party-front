@@ -21,7 +21,7 @@ export default {
             { hid: 'description', name: 'description', content: '' },
             { name: 'format-detection', content: 'telephone=no' },
             { property: 'og:image', content: 'https://dotmzh1fysixs.cloudfront.net/1007/KakaoTalk_Photo_2023-02-28-12-12-25.jpeg' },
-            { property: 'og:title', content: '자유마을 - 3506개의 희망' },
+            { property: 'og:title', content: '자유통일당 대국민 TV 토론' },
             { property: 'og:description', content: '대한민국세력은 하나로 함께' },
         ],
         link: [
@@ -34,9 +34,9 @@ export default {
             { rel: 'icon', type: 'image/x-icon', href: '/images/favicon-32x32.png' },
         ],
         script: [
-            { src: '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js' },
-            { src: '//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=0b676e15765c46418fa53c1333910c0a&libraries=services,clusterer' },
-            { src: '//developers.kakao.com/sdk/js/kakao.min.js' },
+            // { src: '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js' },
+            // { src: '//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=0b676e15765c46418fa53c1333910c0a&libraries=services,clusterer' },
+            // { src: '//developers.kakao.com/sdk/js/kakao.min.js' },
             { src: '//ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js' },
             {
                 src: "https://www.googletagmanager.com/gtag/js?id=" + process.env.GOOGLE_ANALYTICS_ID,

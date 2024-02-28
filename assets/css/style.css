@@ -191,7 +191,6 @@ html {
     content:"";
     width:14px; height:14px;
     position:absolute; left:-30px; top:50%; transform: translateY(-50%);
-    background:url("@/assets/images/deco-history.png") no-repeat; background-size:100%;
 }
 .m-histories.type01 .history .body {
     font-size:16px; word-break: keep-all;
@@ -1172,7 +1171,6 @@ html {
 }
 .area-index .section-banner .content {
     padding:40px 20px 30px 20px;
-    background:url("https://dotmzh1fysixs.cloudfront.net/1039/00_Main.png") no-repeat; background-size:cover; border-radius:5px;
     text-align: center;
 }
 
@@ -1784,9 +1782,6 @@ html {
 .area-news .section-ranking .ranking.focused .title {
     font-size:20px; color:#0BAF00;
 }
-.area-news .section-ranking .ranking.focused .count .icon {
-    background-image:url("@/assets/images/heart-active.png");
-}
 .area-news .section-ranking .ranking.focused .count .text {
     color:#000;
 }
@@ -1814,7 +1809,6 @@ html {
 .area-news .section-ranking .ranking .count .icon {
     display:inline-block;
     width:11px; height:10px;
-    background:url("@/assets/images/heart-inactive.png") no-repeat; background-size:100%;
 }
 .area-news .section-ranking .ranking .count .text {
     font-size:12px; color:#DDDDDD;
@@ -2310,21 +2304,7 @@ html {
 .area-survey .content .form-container .item .value .checkboxes .checkbox label {
     font-weight: 300;
 }
-.m-icon-heart {
-    display:inline-block;
-    width:11px; height:10px;
-    background:url("@/assets/images/heart-inactive.png") no-repeat; background-size:100%;
-}
-.m-icon-heart-active {
-    display:inline-block;
-    width:11px; height:10px;
-    background:url("@/assets/images/heart-active.png") no-repeat; background-size:100%;
-}
-.m-icon-comment {
-    display:inline-block;
-    width:14px; height:13px;
-    background:url("@/assets/images/comment.png") no-repeat; background-size:100%;
-}
+
 .m-title.type01 {
     font-size:30px; font-weight:bold; font-family: "GmarketSans";
 }
@@ -3387,14 +3367,7 @@ input[type="radio"] {display:none;}
 .m-input-checkbox.type01 label .link {
     font-size:14px;
 }
-.m-input-checkbox.type01 label:before {
-    content:""; width:16px; height:16px;
-    position:absolute; left:0; top:7px;
-    background:url("@/assets/images/checkbox-inactive.png") no-repeat; background-size:100%;
-}
-.m-input-checkbox.type01 input:checked + label:before {
-    background:url("@/assets/images/checkbox-active.png") no-repeat; background-size:100%;
-}
+
 
 .m-input-checkbox.type02 {
     display:flex;
@@ -3408,13 +3381,7 @@ input[type="radio"] {display:none;}
 .m-input-checkbox.type02 label .link {
     font-size:14px;
 }
-.m-input-checkbox.type02 label:before {
-    content:""; width:16px; height:16px;
-    background:url("@/assets/images/checkbox-inactive.png") no-repeat; background-size:100%;
-}
-.m-input-checkbox.type02 input:checked + label:before {
-    background:url("@/assets/images/checkbox-active.png") no-repeat; background-size:100%;
-}
+
 
 .m-input-checkbox.type03 label {
     display: flex; align-items: center; justify-content: space-between;
@@ -3423,13 +3390,6 @@ input[type="radio"] {display:none;}
 }
 .m-input-checkbox.type03 label .link {
     font-size:14px;
-}
-.m-input-checkbox.type03 label:before {
-    content:""; width:16px; height:16px;
-    background:url("@/assets/images/checkbox-inactive.png") no-repeat; background-size:100%;
-}
-.m-input-checkbox.type03 input:checked + label:before {
-    background:url("@/assets/images/checkbox-active.png") no-repeat; background-size:100%;
 }
 
 .m-input-radio.type01 {
@@ -3447,10 +3407,10 @@ input[type="radio"] {display:none;}
 .m-input-radio.type01 label:before {
     content:""; width:16px; height:16px;
     position:absolute; left:0; top:7px;
-    background:url("@/assets/images/radio-inactive.png") no-repeat; background-size:100%;
+    /* background:url("@/assets/images/radio-inactive.png") no-repeat; background-size:100%; */
 }
 .m-input-radio.type01 input:checked + label:before {
-    background:url("@/assets/images/radio-active.png") no-repeat; background-size:100%;
+    /* background:url("@/assets/images/radio-active.png") no-repeat; background-size:100%; */
 }
 
 .m-input-radio.type02 {
@@ -3468,10 +3428,10 @@ input[type="radio"] {display:none;}
 .m-input-radio.type02 label:before {
     content:""; width:16px; height:16px;
     position:absolute; left:0; top:7px;
-    background:url("@/assets/images/radio-inactive.png") no-repeat; background-size:100%;
+    /* background:url("@/assets/images/radio-inactive.png") no-repeat; background-size:100%; */
 }
 .m-input-radio.type02 input:checked + label:before {
-    background:url("@/assets/images/radio-red-active.png") no-repeat; background-size:100%;
+    /* background:url("@/assets/images/radio-red-active.png") no-repeat; background-size:100%; */
 }
 
 .editor-body img {
@@ -3617,7 +3577,10 @@ label {
     font-weight:500;
 }
 .m-input-select.type01:after {content:""; width:10px; height:6px; position:absolute; right:20px; top:50%;
-    transform:translateY(-50%); background:url("@/assets/images/chevron-down.png") no-repeat; background-size:10px auto;}
+    transform:translateY(-50%); 
+    /* background:url("@/assets/images/chevron-down.png") no-repeat;  */
+    background-size:10px auto;
+}
 .m-input-select.type01 select::-ms-expand { display: none; }
 
 .m-input-select.type01  {
@@ -3641,7 +3604,9 @@ label {
     font-weight:500;
 }
 .m-input-select.type02:after {content:""; width:10px; height:6px; position:absolute; right:16px; top:50%;
-    transform:translateY(-50%); background:url("@/assets/images/chevron-down.png") no-repeat; background-size:10px auto;}
+    transform:translateY(-50%); 
+    /* background:url("@/assets/images/chevron-down.png") no-repeat; */
+    background-size:10px auto;}
 .m-input-select.type02 select::-ms-expand { display: none; }
 
 
@@ -3662,7 +3627,9 @@ label {
 }
 .m-input-select.type03:after {
     content:""; width:10px; height:6px; position:absolute; right:0px; top:50%;
-    transform:translateY(-50%); background:url("@/assets/images/chevron-down.png") no-repeat; background-size:10px auto;
+    transform:translateY(-50%); 
+    /* background:url("@/assets/images/chevron-down.png") /no-repeat; */
+    background-size:10px auto;
 }
 .m-input-select.type03 select::-ms-expand { display: none; }
 
@@ -3813,7 +3780,7 @@ label {
     color:#691DB5;
 }
 .m-temp.type01 .level1 .gage .count:after {
-    background-image:url("@/assets/images/f_01.png");
+    /* background-image:url("@/assets/images/f_01.png"); */
 }
 
 .m-temp.type01 .level2 .gage .active {
@@ -3823,7 +3790,7 @@ label {
     color:#0058C1;
 }
 .m-temp.type01 .level2 .gage .count:after {
-    background-image:url("@/assets/images/f_02.png");
+    /* background-image:url("@/assets/images/f_02.png"); */
 }
 
 .m-temp.type01 .level3 .gage .active {
@@ -3833,7 +3800,7 @@ label {
     color:#00A9F1;
 }
 .m-temp.type01 .level3 .gage .count:after {
-    background-image:url("@/assets/images/f_03.png");
+    /* background-image:url("@/assets/images/f_03.png"); */
 }
 
 .m-temp.type01 .level4 .gage .active {
@@ -3843,7 +3810,7 @@ label {
     color:#0A8803;
 }
 .m-temp.type01 .level4 .gage .count:after {
-    background-image:url("@/assets/images/f_04.png");
+    /* background-image:url("@/assets/images/f_04.png"); */
 }
 
 .m-temp.type01 .level5 .gage .active {
@@ -3853,7 +3820,7 @@ label {
     color:#0BAF00;
 }
 .m-temp.type01 .level5 .gage .count:after {
-    background-image:url("@/assets/images/f_05.png");
+    /* background-image:url("@/assets/images/f_05.png"); */
 }
 
 .m-temp.type01 .level6 .gage .active {
@@ -3863,7 +3830,7 @@ label {
     color:#81E731;
 }
 .m-temp.type01 .level6 .gage .count:after {
-    background-image:url("@/assets/images/f_06.png");
+    /* background-image:url("@/assets/images/f_06.png"); */
 }
 
 .m-temp.type01 .level7 .gage .active {
@@ -3873,7 +3840,7 @@ label {
     color:#FFE607;
 }
 .m-temp.type01 .level7 .gage .count:after {
-    background-image:url("@/assets/images/f_07.png");
+    /* background-image:url("@/assets/images/f_07.png"); */
 }
 
 .m-temp.type01 .level8 .gage .active {
@@ -3883,7 +3850,7 @@ label {
     color:#FFB017;
 }
 .m-temp.type01 .level8 .gage .count:after {
-    background-image:url("@/assets/images/f_08.png");
+    /* background-image:url("@/assets/images/f_08.png"); */
 }
 
 .m-temp.type01 .level9 .gage .active {
@@ -3893,7 +3860,7 @@ label {
     color:#FF630C;
 }
 .m-temp.type01 .level9 .gage .count:after {
-    background-image:url("@/assets/images/f_09.png");
+    /* background-image:url("@/assets/images/f_09.png"); */
 }
 
 .m-temp.type01 .level10 .gage .active {
@@ -3903,7 +3870,7 @@ label {
     color:#D30000;
 }
 .m-temp.type01 .level10 .gage .count:after {
-    background-image:url("@/assets/images/f_10.png");
+    /* background-image:url("@/assets/images/f_10.png"); */
 }
 
 .area-myDistricts .container .title {
