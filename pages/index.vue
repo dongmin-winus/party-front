@@ -268,11 +268,11 @@ export default {
   .bg-image {
     /* background-color: rgb(255, 85, 0, 0.5); */
     background: transparent;
+    width: 100%;
+    max-width: 100vw;
   }
   .bg-image img {
     width: 100%;
-    height: fit-content;
-    object-fit: cover;
   }
   .total-comments-container {
     display: flex;
