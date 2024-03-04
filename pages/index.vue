@@ -163,11 +163,6 @@ export default {
 
       currentIndex: 0,
       images:[],
-      old_images: [
-        require('@/assets/images/party/slide_0.png'),
-        require('@/assets/images/party/slide_1.png'),
-        require('@/assets/images/party/slide_2.png'),
-      ],
     }
   },
   methods: {
