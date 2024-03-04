@@ -1,6 +1,5 @@
 <template>
   <div class="area-test">
-    <!-- <headerType01 /> -->
     <div class="container bg" style="padding-top: 0px !important;">
       <div class="number-container">
         <span class="total">total.</span>
@@ -15,14 +14,22 @@
           </div>
         </template>
       </div>
-      <!-- <div class="m-btns type01">
-        <div class="m-btn-wrap">
-          <button class="m-btn type02 bg-revert-red width-100" @click.prevent="numberPlus">숫자 증가</button>
-        </div>
-      </div> -->
       <div class="bg-image">
-        <!-- TODO 슬라이더 자리 -->
-        <img :src="require(`@/assets/images/party/slide_1.png`)" class="img" alt="bg-image" />
+          <div class="slide-container">
+            <button class="prev" @click="prevImage">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M15.41 16.58L10.83 12L15.41 7.41L14 6L8 12L14 18L15.41 16.58Z" fill="#E7E7E7"/>
+              </svg>
+            </button>
+            <button class="next" @click="nextImage">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M8.58984 16.58L13.1698 12L8.58984 7.41L9.99984 6L15.9998 12L9.99984 18L8.58984 16.58Z" fill="#E7E7E7"/>
+              </svg>
+            </button>
+            <transition name="fade" mode="out-in">
+                <img v-if="images.length > 0" :src="images[currentIndex]?.banner_image?.preview_url" :key="currentIndex" class="img" alt="bg-image" @click="handleImageClick"/>
+            </transition>
+          </div>
         <div class="mt-12"></div>
         <img :src="require(`@/assets/images/party/five-per.png`)" class="img" alt="bg-image" />
 
@@ -35,7 +42,6 @@
 
     </div>
     <div class="mt-20 wrap">
-      <!-- 아직 안되는것:  댓글 삭제, 대댓글 작성, 대댓글 좋아요? 토글, 대댓글 삭제 -->
       <comments
         @loadMore="getCommentList"
         @alignComments="getCommentList"
@@ -66,7 +72,6 @@ export default {
     splitedNumber() {
       const formattedNumber = new Intl.NumberFormat('en-US').format(this.number);
       return formattedNumber.toString().split('')
-      // return this.number.toString().split('')
     },
 
   },
@@ -154,7 +159,15 @@ export default {
       bestComments: [],
       comments: [],
       links: {},
-      meta: {}
+      meta: {},
+
+      currentIndex: 0,
+      images:[],
+      old_images: [
+        require('@/assets/images/party/slide_0.png'),
+        require('@/assets/images/party/slide_1.png'),
+        require('@/assets/images/party/slide_2.png'),
+      ],
     }
   },
   methods: {
@@ -217,28 +230,83 @@ export default {
     async getCountInfo() {
       const res = await this.$axios.$get('/api/visitor/home')
       if(res) {
-        this.number = res.view_count;
-        this.totalComments = res.comment_count;
+        this.number = res.view_count ?? 0;
+        this.totalComments = res.comment_count ?? 0;
+      }
+    },
+    async getSlides() {
+      const res = await this.$axios.$get('/api/party-admin/banners')
+      this.images = res.data;
+    },
+    nextImage() {
+      console.log('nextImage')
+      this.currentIndex = (this.currentIndex + 1) % this.images.length;
+    },
+    prevImage() {
+      console.log('prevImage')
+      this.currentIndex = (this.currentIndex + this.images.length - 1) % this.images.length;
+    },
+    handleImageClick(event) {
+      const width = event.currentTarget.offsetWidth;
+      const clickX = event.clientX - event.currentTarget.getBoundingClientRect().left;
+      if (clickX < width / 2) {
+        // 이미지의 왼쪽 절반 클릭
+        this.prevImage();
+      } else {
+        // 이미지의 오른쪽 절반 클릭
+        this.nextImage();
       }
     }
   },
   async mounted() {
+    await this.getSlides();
+
     await this.getCountInfo();
     if (this.echo) this.disconnect();
     this.connect();
     await this.visitorCount();
-    // 0~9의 숫자를 1000~5000ms 사이의 랜덤한 시간마다 숫자 증가
-    // setInterval(() => {
-    //   this.numberPlus();
-    //   this.commentPlus();
-    // }, Math.floor(Math.random() * 4000) + 1000)
     await this.getBestComments();
-    await this.getCommentList()
+    await this.getCommentList();
   }
 }
 </script>
 
 <style scopped>
+  .slide-container {
+    overflow: hidden;
+    position: relative;
+    min-height: 400px;
+  }
+
+  .slide-container button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.3);
+    border: none;
+    color: #fff;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 10;
+  }
+  .slide-container button.prev {
+    left: 0;
+  }
+  .slide-container button.next {
+    right: 0;
+  }
+  .slide-container img {
+    object-fit: cover;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+  }
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity 0.3s;
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+    opacity: 0;
+  }
+
   .container.bg {
     /* background-color: #000; */
     background-image: url('@/assets/images/party/back.jpeg');

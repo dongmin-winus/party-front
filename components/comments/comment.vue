@@ -1,5 +1,5 @@
 <template>
-  <div class="comment-item">
+  <div v-if="!comment.deleted_at" class="comment-item">
     <div class="comment-item__header">
       <div class="comment-item__header__content">
         <div class="comment-item__header__name">
@@ -264,6 +264,7 @@ export default {
     background-color: red;
     padding: 0 5px;
     border-radius: 5px;
+    min-width: 49px;
   }
   .comment-item__footer {
     display: flex;
