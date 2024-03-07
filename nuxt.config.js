@@ -20,7 +20,7 @@ export default {
             { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1' },
             { hid: 'description', name: 'description', content: '' },
             { name: 'format-detection', content: 'telephone=no' },
-            { property: 'og:image', content: 'https://dotmzh1fysixs.cloudfront.net/1007/KakaoTalk_Photo_2023-02-28-12-12-25.jpeg' },
+            { property: 'og:image', content: 'https://d2d5wqehjh5x7e.cloudfront.net/2/conversions/slide_1-preview.jpg' },
             { property: 'og:title', content: '자유통일당 대국민 TV 토론' },
             { property: 'og:description', content: '대한민국세력은 하나로 함께' },
         ],
