@@ -232,7 +232,7 @@ export default {
     async getSlides() {
       const res = await this.$axios.$get('/api/party-admin/banners')
       this.images = res.data;
-      if(this.images.length > 2) {
+      if(this.images.length >= 2) {
         setInterval(() => {
           this.nextImage();
         }, 3000);
