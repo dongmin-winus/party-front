@@ -21,8 +21,8 @@ export default {
             { hid: 'description', name: 'description', content: '' },
             { name: 'format-detection', content: 'telephone=no' },
             { property: 'og:image', content: 'https://d2d5wqehjh5x7e.cloudfront.net/2/conversions/slide_1-preview.jpg' },
-            { property: 'og:title', content: '자유통일당 대국민 TV 토론' },
-            { property: 'og:description', content: '대한민국세력은 하나로 함께' },
+            { property: 'og:title', content: '유동규의 진실게임' },
+            { property: 'og:description', content: '유동규의 진실게임' },
             { name:'keywords', content: '유동규, 이재명, TV토론, 유동규와 이재명 TV토론, 자유통일당, 더불어민주당, 유동규의 진실게임, 진실게임 '},
             // 네이버, 구글
             { hid: 'naver-site-verification', name: 'naver-site-verification', content: 'e8fc0161b4affd8c7441bfb7a9d76186adc62ca3' },
